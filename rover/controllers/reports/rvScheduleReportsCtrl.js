@@ -761,7 +761,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             SHOW_RATE_ADJUSTMENTS_ONLY: 'SHOW_RATE_ADJUSTMENTS_ONLY',
             INCLUDE_CANCELLED: 'INCLUDE_CANCELLED',
             INCLUDE_LAST_YEAR: 'INCLUDE_LAST_YEAR',
-            INCLUDE_VARIANCE: 'INCLUDE_VARIANCE'
+            INCLUDE_VARIANCE: 'INCLUDE_VARIANCE',
+            ACCOUNT: 'ACCOUNT',
+            GUEST: 'GUEST'
         };
 
         var matchSortFields = {
@@ -782,7 +784,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             END_DATE: 'END_DATE',
             ROOM_TYPE: 'ROOM_TYPE',
             START_DATE: 'START_DATE',
-            GUEST_USER: 'GUEST_USER'
+            GUEST_USER: 'GUEST_USER',
+            CREDIT: 'CREDIT',
+            DEBIT: 'DEBIT'
         };
         
         var groupByFields = {
@@ -910,18 +914,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             _.each($scope.selectedEntityDetails.filters, function(filter) {
                 var selected = false,
                     mustSend = false;
-
-                if (filter.value === 'ACCOUNT' || filter.value === 'GUEST') {
-                    selected = true;
-                    $scope.filters.hasGeneralOptions.data.push({
-                        paramKey: filter.value.toLowerCase(),
-                        description: filter.description,
-                        selected: selected,
-                        mustSend: mustSend
-                    });
-                }
-
-                selected = false;
+                
                 // For credit check report, include due out comes under show
                 if (matchGeneralOptions[filter.value] && !$scope.isCreditCheckReport) {
                     if ($scope.selectedEntityDetails.report.description === 'Arriving Guests' && filter.value === 'DUE_IN_ARRIVALS') {
@@ -945,6 +938,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     }
 
                     if ($scope.selectedEntityDetails.report.title === reportNames['OCCUPANCY_REVENUE_SUMMARY']) {
+                        selected = true;
+                    }
+
+                    if (filter.value === 'ACCOUNT' || filter.value === 'GUEST') {
                         selected = true;
                     }
 
@@ -1583,7 +1580,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Room Status Report': true,
                 'Rate Adjustment Report': true,
                 'Occupancy & Revenue Summary': true,
-                'Rooms OOO/OOS': true
+                'Rooms OOO/OOS': true,
+                'Deposit Balance Summary': true
             };
 
             var forWeekly = {
@@ -1603,7 +1601,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Room Status Report': true,
                 'Rate Adjustment Report': true,
                 'Occupancy & Revenue Summary': true,
-                'Rooms OOO/OOS': true
+                'Rooms OOO/OOS': true,
+                'Deposit Balance Summary': true
             };
             var forMonthly = {
                 'Arrival': true,
@@ -1622,7 +1621,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Room Status Report': true,
                 'Rate Adjustment Report': true,
                 'Occupancy & Revenue Summary': true,
-                'Rooms OOO/OOS': true
+                'Rooms OOO/OOS': true,
+                'Deposit Balance Summary': true
             };
 
             var forHourly = {
@@ -1639,7 +1639,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Room Status Report': true,
                 'Rate Adjustment Report': true,
                 'Occupancy & Revenue Summary': true,
-                'Rooms OOO/OOS': true
+                'Rooms OOO/OOS': true,
+                'Deposit Balance Summary': true
             };
 
             if (forHourly[item.report.title]) {
