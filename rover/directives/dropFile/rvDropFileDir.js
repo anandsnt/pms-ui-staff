@@ -25,6 +25,7 @@ sntRover.directive("rvDropFile", function() {
                 evt.preventDefault();
                 var files = evt.originalEvent && evt.originalEvent.dataTransfer ? evt.originalEvent.dataTransfer.files : [];
                 var filesRead = 0;
+
                 for (var i = 0, f; f = files[i]; i++) {
                     var reader = new FileReader();
 
@@ -36,8 +37,8 @@ sntRover.directive("rvDropFile", function() {
                                 size: theFile.size,
                                 lastModifiedDate: theFile.lastModifiedDate,
                                 base64: e.target.result
-                            }
-                            console.log(newFile);
+                            };
+                            
                             scope.$emit('FILE_UPLOADED', newFile);
                             filesRead++;
                             if (filesRead === files.length) {
@@ -46,8 +47,8 @@ sntRover.directive("rvDropFile", function() {
                                 });
                             }
                         };
-                    })(f)
-                    reader.onerror = function(e) {
+                    })(f);
+                    reader.onerror = function() {
                         scope.$apply(function() {
                             scope.dragInProgress = false;
                         });
@@ -58,5 +59,5 @@ sntRover.directive("rvDropFile", function() {
                 
             });
         }
-    }
+    };
 });

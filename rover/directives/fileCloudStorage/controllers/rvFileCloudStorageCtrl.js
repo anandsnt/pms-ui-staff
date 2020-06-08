@@ -10,6 +10,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 					var indexOffileInSelectedList = _.findIndex($scope.cardData.selectedFileList, function(selectedFile) {
 						return selectedFile.id === file.id;
 					});
+
 					file.is_selected = indexOffileInSelectedList !== -1;
 					$scope.cardData.fileTypes = _.union($scope.cardData.fileTypes, [file.type]);
 				});
@@ -26,7 +27,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			}, 100);
 		});
 
-		$scope.fileSelectionChanged = function () {
+		$scope.fileSelectionChanged = function() {
 			$scope.cardData.selectedFileList = _.filter($scope.cardData.fileList, function(file) {
 				return file.is_selected;
 			});
@@ -40,14 +41,14 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 		};
 
 		$scope.getFileCount = function(fileType) {
-			var filesOfFileType = _.filter($scope.cardData.fileList, function(file){
+			var filesOfFileType = _.filter($scope.cardData.fileList, function(file) {
 				return file.type === fileType;
 			});
 
 			return filesOfFileType.length;
 		};
 
-		$scope.filterChanged = function () {
+		$scope.filterChanged = function() {
 			$scope.refreshScroller('card_file_list_scroller');
 		};
 
@@ -90,14 +91,14 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			});
 		};
 
-		$scope.$on('FETCH_FILES', function(){
+		$scope.$on('FETCH_FILES', function() {
 			$scope.setScroller('card_file_list_scroller', {});
 			fetchFiles();
 		});
 
 		$scope.sortFiles = function(file) {
 			var dateString = file.updated_date + ' ' + file.updated_time;
-			var date = moment(dateString, 'MM-DD-YYYY hh:mm A')
+			var date = moment(dateString, 'MM-DD-YYYY hh:mm A');
 
 			return date;
 		};
