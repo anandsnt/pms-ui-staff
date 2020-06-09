@@ -216,6 +216,8 @@ angular.module('sntRover')
                     setRestrictionDataForPopup();
                 };
 
+                $scope.addListener('REFRESH_FORM_SCROLL', refreshScroller);
+
                 initController();
             }
     ]);
