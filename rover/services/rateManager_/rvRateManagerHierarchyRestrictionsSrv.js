@@ -30,7 +30,7 @@ angular.module('sntRover').service('rvRateManagerHierarchyRestrictionsSrv', ['$q
         };
 
         service.searchRoomTypes = (params) => {
-            return BaseWebSrvV2.postJSON('/api/room_types.json', params);
+            return BaseWebSrvV2.getJSON('/api/room_types.json', params);
         };
     }
 ]);

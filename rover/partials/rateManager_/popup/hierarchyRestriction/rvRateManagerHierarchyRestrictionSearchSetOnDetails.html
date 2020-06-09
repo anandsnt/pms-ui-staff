@@ -5,14 +5,14 @@
             - .selected - when we have selected rate/room types
             - .searching - when we are searching for new rates
         -->
-        <div class="entry full-width autocomplete-search">
+        <div class="entry full-width autocomplete-search" ng-class="{'searching': searchObj.query !== ''}">
             <!-- add .hidden when apply to all is checked -->
-            <div class="search">
+            <div class="search" ng-hide="searchObj.isApplyOnAll">
                 <button type="submit" name="submit" class="icons icon-search">Search</button>
                 <input ng-model="searchObj.query" name="autocomplete-search" class="query" placeholder="{{searchObj.placeholder}}" autocomplete="off" type="search">
             </div>
             <!-- Remove .hidden when apply to all is checked -->
-            <div class="apply-on-all" ng-hide="searchObj.isApplyOnAll">
+            <div class="apply-on-all" ng-show="searchObj.isApplyOnAll">
                 <div class="notice">
                     {{searchObj.noticeLabel}}
                 </div>

@@ -50,7 +50,8 @@ angular.module('sntRover')
                         daysList: hierarchyUtils.repeatOnDatesList,
                         cellDate: $scope.ngDialogData.date,
                         untilDate: '',
-                        listData: $scope.ngDialogData.listData
+                        listData: $scope.ngDialogData.listData,
+                        selectedRoomTypeIds: []
                     };
                 },
                 initialiseFirstScreen = () => {
@@ -148,6 +149,9 @@ angular.module('sntRover')
                             options.params.weekdays = selectedWeekDays;
                         }
                         options.params.to_date = $scope.restrictionObj.untilDate;
+                    }
+                    if ($scope.restrictionObj.selectedRoomTypeIds.length > 0){
+                        options.params.room_type_ids = $scope.restrictionObj.selectedRoomTypeIds;
                     }
 
                     $scope.callAPI(hierarchySrv.saveHouseRestrictions, options);

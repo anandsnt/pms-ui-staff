@@ -56,8 +56,7 @@ angular.module('sntRover')
                     };
 
                     let params = {
-                        'exclude_pseudo': true,
-                        'query': $scope.ngDialogData.hierarchyLevel
+                        'exclude_pseudo': true
                     };
                     let options = {
                         params: params,
@@ -74,9 +73,13 @@ angular.module('sntRover')
                  *  @param {Number | null} [ index of clicked item in 'min_length_of_stay', 'max_length_of_stay' etc.]
                  */
                 $scope.clickedOnResult = function(index) {
+                    let item = $scope.searchObj.results[index];
+
                     console.log($scope.searchObj.results[index]);
                     $scope.searchObj.selectedList.push($scope.searchObj.results[index]);
                     $scope.searchObj.results.splice(index, 1);
+
+                    $scope.restrictionObj.selectedRoomTypeIds = _.pluck($scope.searchObj.selectedList, 'id');
                 };
 
                 /*
@@ -89,6 +92,8 @@ angular.module('sntRover')
                     console.log($scope.searchObj.selectedList[index]);
                     $scope.searchObj.results.push($scope.searchObj.selectedList[index]);
                     $scope.searchObj.selectedList.splice(index, 1);
+
+                    $scope.restrictionObj.selectedRoomTypeIds = _.pluck($scope.searchObj.selectedList, 'id');
                 };
 
                 $scope.clickedOnAllCheckBox = function() {
