@@ -2,6 +2,7 @@ angular.module('sntRover').service('rvRateManagerHierarchyRestrictionsSrv', ['$q
     function($q, BaseWebSrvV2) {
         // Exclusive service for hierarchy restrictions
         var service = this,
+            houseUrl = '/api/restrictions/house',
             roomTypeUrl =  '/api/restrictions/room_types';
         
         service.saveHouseRestrictions = (params) => {

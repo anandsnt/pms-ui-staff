@@ -99,27 +99,20 @@ angular.module('sntRover')
                     $scope.$broadcast('SCROLL_REFRESH_REPEAT_ON_DATES');
                 };
 
-                // Check repeat on dates fields are valid.
-                const isRepeatOnDatesValid = () => {
+                // Check repeat on dates fields are not valid.
+                const isRepeatOnDatesNotValid = () => {
                     return ($scope.restrictionObj && $scope.restrictionObj.isRepeatOnDates && $scope.restrictionObj.untilDate === '');
                 };
-
-                const isSetOnSelectFormValid = () => {
-                    let isSetOnSelectFormValid = false;
-
-                    if ($scope.ngDialogData.hierarchyLevel === 'House') {
-                        isSetOnSelectFormValid = true;
-                    }
-                    else if ($scope.restrictionObj.isSetOnAllActive  || (!$scope.restrictionObj.isSetOnAllActive  && $scope.restrictionObj.selectedSetOnIds.length > 0 )) {
-                        isSetOnSelectFormValid = true;
-                    }
-                    return isSetOnSelectFormValid;
+                
+                // Check set on search field is not valid.
+                const isSetOnSelectFormNotValid = () => {
+                    return ($scope.ngDialogData.hierarchyLevel !== 'House' && !$scope.restrictionObj.isSetOnAllActive && $scope.restrictionObj.selectedSetOnIds.length === 0);
                 };
 
                 $scope.validateForm = () => {
                     var formValid;
 
-                    if ($scope.showPlaceholder() || isRepeatOnDatesValid() || isSetOnSelectFormValid()) {
+                    if ($scope.showPlaceholder() || isRepeatOnDatesNotValid() || isSetOnSelectFormNotValid()) {
                         formValid = false;
                     }
                     else {
