@@ -51,7 +51,8 @@ angular.module('sntRover')
                         cellDate: $scope.ngDialogData.date,
                         untilDate: '',
                         listData: $scope.ngDialogData.listData,
-                        selectedRoomTypeIds: []
+                        selectedRoomTypeIds: [],
+                        isSetOnAllActive: false
                     };
                 },
                 initialiseFirstScreen = () => {
@@ -67,6 +68,7 @@ angular.module('sntRover')
                     $scope.popUpView = 'NEW';
                     $scope.restrictionStylePack = angular.copy(hierarchyUtils.restrictionColorAndIconMapping);
                     $scope.showRestrictionSelection = false;
+                    $scope.$broadcast('INIT_SET_ON_SEARCH');
                 };
 
                 var setRestrictionDataForPopup = () => {

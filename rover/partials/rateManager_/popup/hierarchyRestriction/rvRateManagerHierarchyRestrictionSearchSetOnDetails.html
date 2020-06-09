@@ -1,17 +1,11 @@
 <div class="entry-group" ng-controller="rvRateManagerHierarchyRestrictionSearchSetOnDetailsCtrl">
     <div class="entry full-width">
         <label>{{searchObj.headerLabel}}</label>
-        <!-- Classes that can be added:
-            - .selected - when we have selected rate/room types
-            - .searching - when we are searching for new rates
-        -->
         <div class="entry full-width autocomplete-search" ng-class="{'selected': searchObj.selectedList.length > 0, 'searching': searchObj.query !== ''}">
-            <!-- add .hidden when apply to all is checked -->
             <div class="search" ng-hide="searchObj.isApplyOnAll">
                 <button type="submit" name="submit" class="icons icon-search">Search</button>
                 <input ng-model="searchObj.query" ng-change="queryEntered()" name="autocomplete-search" class="query" placeholder="{{searchObj.placeholder}}" autocomplete="off" type="search">
             </div>
-            <!-- Remove .hidden when apply to all is checked -->
             <div class="apply-on-all" ng-show="searchObj.isApplyOnAll">
                 <div class="notice">
                     {{searchObj.noticeLabel}}
@@ -27,26 +21,20 @@
             <!-- This holds the results from the search -->
             <div ng-show="searchObj.query !== '' && !searchObj.isApplyOnAll" class="scrollable" ng-iscroll="searchSetOnDetailsScroll">
                 <div class="wrapper">
-                    <div class="card" ng-repeat="item in searchObj.results | filter: searchObj.query" ng-click="clickedOnResult(item)">
+                    <div class="card" ng-repeat="item in searchObj.results | filter: { name : searchObj.query, code: searchObj.query }" ng-click="clickedOnResult(item)">
                         <!-- Wrap letters with .highlight that are matched with the search term -->
                         <span ng-bind-html="escapeNull(item.name)|highlight:searchObj.query:false" class="rate-name"></span>
                     </div>
-                    <!-- ... repeat for each result -->
                 </div>
             </div>
             <!-- This holds the selected results -->
             <div ng-show="searchObj.query === '' && !searchObj.isApplyOnAll" class="scrollable autocomplete-search-selected">
                 <div class="card" ng-repeat="item in searchObj.selectedList">
                     <span class="rate-name"><strong>{{item.name}}</strong></span>
-                    <!-- 
-                        on click, it will remove the card
-                        if the last one is removed, remove the class .selected from the autocomplete-search
-                    -->
                     <button type="button" class="button remove-card" ng-click="clickedOnRemoveItem($index)">
                         <span class="icons icon-remove-10"></span>
                     </button>
                 </div>
-                <!-- ... repeat for each selected result -->
             </div>
         </div>
     </div>

@@ -8,6 +8,7 @@ angular.module('sntRover')
             hierarchySrv,
             $timeout) {
                 BaseCtrl.call(this, $scope);
+                let apiMethod = '';
 
                 const setscroller = () => {
                     $scope.setScroller('searchSetOnDetailsScroll');
@@ -19,35 +20,11 @@ angular.module('sntRover')
                     }, 500);
                 };
 
-                $scope.searchObj = {
-                    query: '',
-                    results: [],
-                    selectedList: [],
-                    isApplyOnAll: false,
-                    headerLabel: '',
-                    noticeLabel: '',
-                    placeholder: ''
-                };
-
-                let apiMethod = '';
-
-                switch ($scope.ngDialogData.hierarchyLevel) {
-                    case 'RoomType':
-                        $scope.searchObj.headerLabel = 'Set on Room Type(s)';
-                        $scope.searchObj.noticeLabel = 'Applies to All Room Types!';
-                        $scope.searchObj.placeholder = 'Search by Room Name or Code';
-                        apiMethod = hierarchySrv.searchRoomTypes;
-                        break;
-
-                    default:
-                    break;
-                }
-
+                // Fetch comeplete list for set on filter/search.
                 const fetchSetOnData = () => {
                     const fetchSetOnSuccessCallback = ( response ) => {
                         $scope.errorMessage = '';
                         $scope.searchObj.results = response.results;
-                        refreshScroller();
                     };
                     const fetchSetOnFailureCallback = (errorMessage) => {
                         $scope.errorMessage = errorMessage;
@@ -65,14 +42,41 @@ angular.module('sntRover')
                     $scope.callAPI(apiMethod, options);
                 };
 
+                const init = () => {
+                    $scope.searchObj = {
+                        query: '',
+                        results: [],
+                        selectedList: [],
+                        isApplyOnAll: false,
+                        headerLabel: '',
+                        noticeLabel: '',
+                        placeholder: ''
+                    };
+
+                    switch ($scope.ngDialogData.hierarchyLevel) {
+                        case 'RoomType':
+                            $scope.searchObj.headerLabel = 'Set on Room Type(s)';
+                            $scope.searchObj.noticeLabel = 'Applies to All Room Types!';
+                            $scope.searchObj.placeholder = 'Search by Room Name or Code';
+                            apiMethod = hierarchySrv.searchRoomTypes;
+                            break;
+
+                        default:
+                        break;
+                    }
+
+                    fetchSetOnData();
+                    setscroller();
+                    refreshScroller();
+                };
+
                 const updateSetOnIdList = () => {
                     $scope.restrictionObj.selectedRoomTypeIds = _.pluck($scope.searchObj.selectedList, 'id');
                 };
 
                 /*
                  *  Handle list item click
-                 *  @param {String} ['closed', 'close_arrival' etc.]
-                 *  @param {Number | null} [ index of clicked item in 'min_length_of_stay', 'max_length_of_stay' etc.]
+                 *  @param {Object} [clicked item data]
                  */
                 $scope.clickedOnResult = function( clickedItem ) {
                     $scope.searchObj.selectedList.push(clickedItem);
@@ -83,10 +87,8 @@ angular.module('sntRover')
                 };
 
                 /*
-                 *  Handle delete button click on each item on LIST screen.
-                 *  @param {String} ['closed', 'close_arrival' etc.]
-                 *  @param {Boolean | null} [value will be false or null]
-                 *  @param {Array | undefined} [set on list values]
+                 *  Handle Remove action.
+                 *  @param {Number} [index value]
                  */
                 $scope.clickedOnRemoveItem = function(index) {
                     $scope.searchObj.results.push($scope.searchObj.selectedList[index]);
@@ -94,7 +96,7 @@ angular.module('sntRover')
                     updateSetOnIdList();
                     $scope.$emit('REFRESH_FORM_SCROLL');
                 };
-
+                // Handle ON ALL checkbox toggle.
                 $scope.clickedOnAllCheckBox = function() {
                     $scope.searchObj.isApplyOnAll = !$scope.searchObj.isApplyOnAll;
                     if ($scope.searchObj.isApplyOnAll) {
@@ -103,12 +105,14 @@ angular.module('sntRover')
                         $scope.$emit('REFRESH_FORM_SCROLL');
                     }
                 };
-
+                // Handle query entered on change event.
                 $scope.queryEntered = () => {
                     $scope.$emit('REFRESH_FORM_SCROLL');
                     refreshScroller();
                 };
                 
-                fetchSetOnData();
+                init();
+
+                $scope.addListener('INIT_SET_ON_SEARCH', init);
             }
     ]);
