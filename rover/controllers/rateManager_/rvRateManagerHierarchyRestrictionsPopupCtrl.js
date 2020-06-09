@@ -51,7 +51,7 @@ angular.module('sntRover')
                         cellDate: $scope.ngDialogData.date,
                         untilDate: '',
                         listData: $scope.ngDialogData.listData,
-                        selectedRoomTypeIds: [],
+                        selectedSetOnIds: [],
                         isSetOnAllActive: false
                     };
                 },
@@ -100,14 +100,26 @@ angular.module('sntRover')
                 };
 
                 // Check repeat on dates fields are valid.
-                let isRepeatOnDatesValid = () => {
+                const isRepeatOnDatesValid = () => {
                     return ($scope.restrictionObj && $scope.restrictionObj.isRepeatOnDates && $scope.restrictionObj.untilDate === '');
+                };
+
+                const isSetOnSelectFormValid = () => {
+                    let isSetOnSelectFormValid = false;
+
+                    if ($scope.ngDialogData.hierarchyLevel === 'House') {
+                        isSetOnSelectFormValid = true;
+                    }
+                    else if ($scope.restrictionObj.isSetOnAllActive  || (!$scope.restrictionObj.isSetOnAllActive  && $scope.restrictionObj.selectedSetOnIds.length > 0 )) {
+                        isSetOnSelectFormValid = true;
+                    }
+                    return isSetOnSelectFormValid;
                 };
 
                 $scope.validateForm = () => {
                     var formValid;
 
-                    if ($scope.showPlaceholder() || isRepeatOnDatesValid()) {
+                    if ($scope.showPlaceholder() || isRepeatOnDatesValid() || isSetOnSelectFormValid()) {
                         formValid = false;
                     }
                     else {
@@ -125,38 +137,51 @@ angular.module('sntRover')
                     }
                     return formValid;
                 };
-
-                $scope.setHouseHierarchyRestriction = () => {
-                    var restrictions = {};
+                    
+                $scope.saveHierarchyRestriction = () => {
+                    let restrictions = {};
+                    let apiMethod = '';
 
                     restrictions[$scope.selectedRestriction.key] = $scope.selectedRestriction.type === 'number' ? Math.round($scope.selectedRestriction.value) : true;
-                    var params = {
+                    let params = {
                         from_date: $scope.ngDialogData.date,
                         to_date: $scope.ngDialogData.date,
                         restrictions 
-                    },
-                    houseRestrictionSuccessCallback = () => {
-                        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
-                        $scope.$broadcast('RELOAD_RESTRICTIONS_LIST');
-                    },
-                    options = {
-                        params: params,
-                        onSuccess: houseRestrictionSuccessCallback
                     };
-                
+
+                    switch ($scope.ngDialogData.hierarchyLevel) {
+                        case 'House':
+                            apiMethod = hierarchySrv.saveHouseRestrictions;
+                            break;
+                        case 'RoomType':
+                            params.room_type_ids = !$scope.restrictionObj.isSetOnAllActive ? $scope.restrictionObj.selectedSetOnIds : [];
+                            apiMethod = hierarchySrv.saveRoomTypeRestrictions;
+                            break;
+
+                        default:
+                        break;
+                    }
+
                     if ($scope.restrictionObj.isRepeatOnDates) {
                         let selectedWeekDays = hierarchyUtils.getSelectedWeekDays($scope.restrictionObj.daysList);
 
                         if (selectedWeekDays.length > 0) {
-                            options.params.weekdays = selectedWeekDays;
+                            params.weekdays = selectedWeekDays;
                         }
-                        options.params.to_date = $scope.restrictionObj.untilDate;
-                    }
-                    if ($scope.restrictionObj.selectedRoomTypeIds.length > 0){
-                        options.params.room_type_ids = $scope.restrictionObj.selectedRoomTypeIds;
+                        params.to_date = $scope.restrictionObj.untilDate;
                     }
 
-                    $scope.callAPI(hierarchySrv.saveHouseRestrictions, options);
+                    const houseRestrictionSuccessCallback = () => {
+                        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
+                        $scope.$broadcast('RELOAD_RESTRICTIONS_LIST');
+                    };
+
+                    let options = {
+                        params: params,
+                        onSuccess: houseRestrictionSuccessCallback
+                    };
+
+                    $scope.callAPI(apiMethod, options);
                 };
 
                 $scope.backToInitialScreen = () => {

@@ -2,24 +2,24 @@
     <div class="entry full-width">
         <label>{{searchObj.headerLabel}}</label>
         <div class="entry full-width autocomplete-search" ng-class="{'selected': searchObj.selectedList.length > 0, 'searching': searchObj.query !== ''}">
-            <div class="search" ng-hide="searchObj.isApplyOnAll">
+            <div class="search" ng-hide="restrictionObj.isSetOnAllActive">
                 <button type="submit" name="submit" class="icons icon-search">Search</button>
                 <input ng-model="searchObj.query" ng-change="queryEntered()" name="autocomplete-search" class="query" placeholder="{{searchObj.placeholder}}" autocomplete="off" type="search">
             </div>
-            <div class="apply-on-all" ng-show="searchObj.isApplyOnAll">
+            <div class="apply-on-all" ng-show="restrictionObj.isSetOnAllActive">
                 <div class="notice">
                     {{searchObj.noticeLabel}}
                 </div>
             </div>
 
-            <label class="checkbox autocomplete-checkbox" ng-click="clickedOnAllCheckBox()" ng-class="{'checked': searchObj.isApplyOnAll}">
-                <span class="icon-form icon-checkbox" ng-class="{'checked': searchObj.isApplyOnAll}"></span>
+            <label class="checkbox autocomplete-checkbox" ng-click="clickedOnAllCheckBox()" ng-class="{'checked': restrictionObj.isSetOnAllActive}">
+                <span class="icon-form icon-checkbox" ng-class="{'checked': restrictionObj.isSetOnAllActive}"></span>
                 <input type="checkbox" value="1"/>
                 On All
             </label>
 
             <!-- This holds the results from the search -->
-            <div ng-show="searchObj.query !== '' && !searchObj.isApplyOnAll" class="scrollable" ng-iscroll="searchSetOnDetailsScroll">
+            <div ng-show="searchObj.query !== '' && !restrictionObj.isSetOnAllActive" class="scrollable" ng-iscroll="searchSetOnDetailsScroll">
                 <div class="wrapper">
                     <div class="card" ng-repeat="item in searchObj.results | filter: { name : searchObj.query, code: searchObj.query }" ng-click="clickedOnResult(item)">
                         <!-- Wrap letters with .highlight that are matched with the search term -->
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <!-- This holds the selected results -->
-            <div ng-show="searchObj.query === '' && !searchObj.isApplyOnAll" class="scrollable autocomplete-search-selected">
+            <div ng-show="searchObj.query === '' && !restrictionObj.isSetOnAllActive" class="scrollable autocomplete-search-selected">
                 <div class="card" ng-repeat="item in searchObj.selectedList">
                     <span class="rate-name"><strong>{{item.name}}</strong></span>
                     <button type="button" class="button remove-card" ng-click="clickedOnRemoveItem($index)">

@@ -107,44 +107,38 @@ angular.module('sntRover')
                         to_date: $scope.ngDialogData.date,
                         restrictions
                     };
-                    let apiMethod = hierarchySrv.deleteHouseRestrictions;
+                    let apiMethod = hierarchySrv.saveHouseRestrictions;
 
                     if (setOnIdList.length > 0) {
                         switch ($scope.ngDialogData.hierarchyLevel) {
                             case 'RoomType':
                                 params.room_type_ids = setOnIdList;
-                                apiMethod = hierarchySrv.deleteRoomTypeRestrictions;
+                                apiMethod = hierarchySrv.saveRoomTypeRestrictions;
                                 break;
 
                             default:
                             break;
                         }
                     }
-
-                    const deleteSuccessCallback = () => {
-                        $scope.errorMessage = '';
-                        fetchRestrictionList();
-                        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
-                    };
-
-                    const deleteFailureCallback = (errorMessage) => {
-                        $scope.errorMessage = errorMessage;
-                    };
-
-                    let options = {
-                        params: params,
-                        successCallBack: deleteSuccessCallback,
-                        failureCallBack: deleteFailureCallback
-                    };
-
+                    
                     if ($scope.restrictionObj.isRepeatOnDates) {
                         let selectedWeekDays = hierarchyUtils.getSelectedWeekDays($scope.restrictionObj.daysList);
 
                         if (selectedWeekDays.length > 0) {
-                            options.params.weekdays = selectedWeekDays;
+                            params.weekdays = selectedWeekDays;
                         }
-                        options.params.to_date = $scope.restrictionObj.untilDate;
+                        params.to_date = $scope.restrictionObj.untilDate;
                     }
+
+                    const deleteSuccessCallback = () => {
+                        fetchRestrictionList();
+                        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
+                    };
+
+                    let options = {
+                        params: params,
+                        successCallBack: deleteSuccessCallback
+                    };
 
                     $scope.callAPI(apiMethod, options);
                 };

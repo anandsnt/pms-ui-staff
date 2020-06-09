@@ -47,7 +47,6 @@ angular.module('sntRover')
                         query: '',
                         results: [],
                         selectedList: [],
-                        isApplyOnAll: false,
                         headerLabel: '',
                         noticeLabel: '',
                         placeholder: ''
@@ -58,7 +57,7 @@ angular.module('sntRover')
                             $scope.searchObj.headerLabel = 'Set on Room Type(s)';
                             $scope.searchObj.noticeLabel = 'Applies to All Room Types!';
                             $scope.searchObj.placeholder = 'Search by Room Name or Code';
-                            apiMethod = hierarchySrv.searchRoomTypes;
+                            apiMethod = hierarchySrv.fetchAllRoomTypes;
                             break;
 
                         default:
@@ -71,7 +70,7 @@ angular.module('sntRover')
                 };
 
                 const updateSetOnIdList = () => {
-                    $scope.restrictionObj.selectedRoomTypeIds = _.pluck($scope.searchObj.selectedList, 'id');
+                    $scope.restrictionObj.selectedSetOnIds = _.pluck($scope.searchObj.selectedList, 'id');
                 };
 
                 /*
@@ -98,9 +97,9 @@ angular.module('sntRover')
                 };
                 // Handle ON ALL checkbox toggle.
                 $scope.clickedOnAllCheckBox = function() {
-                    $scope.searchObj.isApplyOnAll = !$scope.searchObj.isApplyOnAll;
-                    if ($scope.searchObj.isApplyOnAll) {
-                        $scope.restrictionObj.selectedRoomTypeIds = [];
+                    $scope.restrictionObj.isSetOnAllActive = !$scope.restrictionObj.isSetOnAllActive;
+                    if ($scope.restrictionObj.isSetOnAllActive) {
+                        $scope.restrictionObj.selectedSetOnIds = [];
                         $scope.searchObj.selectedList = [];
                         $scope.$emit('REFRESH_FORM_SCROLL');
                     }
