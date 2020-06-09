@@ -987,7 +987,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       var isValidSelectedRoomType = (typeof selectedRoomType !== 'undefined');
 
       // forming [1,2,3,4]
-      $scope.possibleNumberOfRooms = isValidSelectedRoomType ? _.range(1, util.convertToInteger(selectedRoomType.total_rooms) + 1) : [];
+      $scope.possibleNumberOfRooms = isValidSelectedRoomType ? _.range(1, util.convertToInteger(selectedRoomType.availability) + 1) : [];
 
       // setting single as default occupancy as part of CICO-27540
       $scope.selectedOccupancy = '1';

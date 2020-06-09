@@ -136,6 +136,15 @@ angular.module('sntRover')
                         failureCallBack: deleteFailureCallback
                     };
 
+                    if ($scope.restrictionObj.isRepeatOnDates) {
+                        let selectedWeekDays = hierarchyUtils.getSelectedWeekDays($scope.restrictionObj.daysList);
+
+                        if (selectedWeekDays.length > 0) {
+                            options.params.weekdays = selectedWeekDays;
+                        }
+                        options.params.to_date = $scope.restrictionObj.untilDate;
+                    }
+
                     $scope.callAPI(apiMethod, options);
                 };
 

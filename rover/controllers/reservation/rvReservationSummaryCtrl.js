@@ -1646,6 +1646,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         });
 
         $scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data) {
+            $scope.guestCardData.contactInfo.email = data.is_email_updated.value;
             $scope.sendAutomaticEmails(data);
         });
 
