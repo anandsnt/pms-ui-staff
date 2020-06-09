@@ -21,8 +21,7 @@
             <!-- This holds the results from the search -->
             <div ng-show="searchObj.query !== '' && !restrictionObj.isSetOnAllActive" class="scrollable" ng-iscroll="searchSetOnDetailsScroll">
                 <div class="wrapper">
-                    <div class="card" ng-repeat="item in searchObj.results | filter: searchObj.query" ng-click="clickedOnResult(item)">
-                        <!-- Wrap letters with .highlight that are matched with the search term -->
+                    <div class="card" ng-repeat="item in searchObj.results" ng-click="clickedOnResult(item)">
                         <span ng-bind-html="escapeNull(item.name)|highlight:searchObj.query:false" class="rate-name"></span>
                     </div>
                 </div>

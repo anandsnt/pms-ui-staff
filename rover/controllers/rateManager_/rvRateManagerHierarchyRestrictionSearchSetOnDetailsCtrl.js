@@ -9,6 +9,7 @@ angular.module('sntRover')
             $timeout) {
                 BaseCtrl.call(this, $scope);
                 let apiMethod = '';
+                let initialSetOnListData = [];
 
                 const setscroller = () => {
                     $scope.setScroller('searchSetOnDetailsScroll');
@@ -25,6 +26,7 @@ angular.module('sntRover')
                     const fetchSetOnSuccessCallback = ( response ) => {
                         $scope.errorMessage = '';
                         $scope.searchObj.results = response.results;
+                        initialSetOnListData = angular.copy(response.results);
                     };
                     const fetchSetOnFailureCallback = (errorMessage) => {
                         $scope.errorMessage = errorMessage;
@@ -80,7 +82,7 @@ angular.module('sntRover')
                 $scope.clickedOnResult = function( clickedItem ) {
                     $scope.searchObj.selectedList.push(clickedItem);
                     $scope.searchObj.query = '';
-                    $scope.searchObj.results = $scope.searchObj.results.filter((item) => item.id !== clickedItem.id);
+                    initialSetOnListData = initialSetOnListData.filter((item) => item.id !== clickedItem.id);
                     updateSetOnIdList();
                     $scope.$emit('REFRESH_FORM_SCROLL');
                 };
@@ -90,7 +92,7 @@ angular.module('sntRover')
                  *  @param {Number} [index value]
                  */
                 $scope.clickedOnRemoveItem = function(index) {
-                    $scope.searchObj.results.push($scope.searchObj.selectedList[index]);
+                    initialSetOnListData.push($scope.searchObj.selectedList[index]);
                     $scope.searchObj.selectedList.splice(index, 1);
                     updateSetOnIdList();
                     $scope.$emit('REFRESH_FORM_SCROLL');
@@ -108,6 +110,26 @@ angular.module('sntRover')
                 $scope.queryEntered = () => {
                     $scope.$emit('REFRESH_FORM_SCROLL');
                     refreshScroller();
+                    var displayResults = [];
+
+                    if ($scope.searchObj.query && $scope.searchObj.query.length > 0) {
+                        displayResults = initialSetOnListData.filter(function(item) {
+                            // check if the querystring is number or string
+                            var result = 
+                                (
+                                    isNaN($scope.searchObj.query) &&
+                                    item.name.toUpperCase().includes($scope.searchObj.query.toUpperCase())
+                                ) ||
+                                (
+                                    isNaN($scope.searchObj.query) &&
+                                    item.code.toUpperCase().includes($scope.searchObj.query.toUpperCase())
+                                );
+
+                            return result;
+                        });
+                        
+                        $scope.searchObj.results = displayResults;
+                    }
                 };
                 
                 init();

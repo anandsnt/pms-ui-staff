@@ -9,7 +9,7 @@ angular.module('sntRover').service('rvRateManagerHierarchyRestrictionsSrv', ['$q
             return BaseWebSrvV2.postJSON(houseUrl, params);
         };
 
-        service.saveRoomTypeRestrictions = () => {
+        service.saveRoomTypeRestrictions = (params) => {
             return BaseWebSrvV2.postJSON(roomTypeUrl, params);
         };
 
