@@ -32,27 +32,37 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
         };
 
         $scope.openNotesPopup = function() {
-            sntActivity.start('FETCH_NOTES');
-            $scope.callAPI(RVReservationNotesService.fetch, {
-                params: $scope.reservationData.reservation_card.reservation_id,
-                successCallBack: function(notes) {
-                    // The following step is reqd as the reservation details response no longer holds notes information
-                    $scope.reservationData.reservation_card.notes = $scope.reservationData.reservation_card.notes || {};
-                    $scope.reservationData.reservation_card.notes.reservation_notes = notes;
-                    ngDialog.open({
-                        template: '/assets/partials/reservationCard/rvReservationCardNotesPopup.html',
-                        className: 'ngdialog-theme-default',
-                        scope: $scope,
-                        closeByDocument: false,
-                        closeByEscape: false
-                    });
-                    sntActivity.stop('FETCH_NOTES');
-                },
-                failureCallBack: function(err) {
-                    $scope.errorMessage = err;
-                    sntActivity.stop('FETCH_NOTES');
-                }
-            });
+            if ($scope.isCloudStorageEnabledForCardType('stay_card')) {
+                ngDialog.open({
+                    template: '/assets/directives/fileCloudStorage/partials/rvReservationCardNotesAndFiles.html',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope,
+                    closeByDocument: false,
+                    closeByEscape: false
+                });
+            } else {
+                sntActivity.start('FETCH_NOTES');
+                $scope.callAPI(RVReservationNotesService.fetch, {
+                    params: $scope.reservationData.reservation_card.reservation_id,
+                    successCallBack: function(notes) {
+                        // The following step is reqd as the reservation details response no longer holds notes information
+                        $scope.reservationData.reservation_card.notes = $scope.reservationData.reservation_card.notes || {};
+                        $scope.reservationData.reservation_card.notes.reservation_notes = notes;
+                        ngDialog.open({
+                            template: '/assets/partials/reservationCard/rvReservationCardNotesPopup.html',
+                            className: 'ngdialog-theme-default',
+                            scope: $scope,
+                            closeByDocument: false,
+                            closeByEscape: false
+                        });
+                        sntActivity.stop('FETCH_NOTES');
+                    },
+                    failureCallBack: function(err) {
+                        $scope.errorMessage = err;
+                        sntActivity.stop('FETCH_NOTES');
+                    }
+                });
+            }
         };
 
         $scope.navigateToGroup = function(event) {

@@ -29,6 +29,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			function(){
 				sntActivity.stop('FETCH_FILES');
 				$scope.errorMessage = [$filter('translate')('FILE_FETCHING_FAILED')];
+				$scope.cardData.firstFileFetch = false;
 			});
 		};
 

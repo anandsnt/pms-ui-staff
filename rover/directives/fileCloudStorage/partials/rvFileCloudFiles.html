@@ -1,5 +1,5 @@
 <!-- Create scroll -->
-<div class="notes-files scrollable" ng-iscroll="card_file_list_scroller" rv-drop-file drag-in-progress="cardData.dragInProgress">
+<div class="notes-files scrollable" ng-iscroll="card_file_list_scroller" style="height: 100%;" rv-drop-file drag-in-progress="cardData.dragInProgress">
   <div class="wrapper">
     <ng-include ng-if="cardData.group_files_by === 'FILE_TYPE' && !cardData.searchText"
     src="'/assets/directives/fileCloudStorage/partials/rvGroupedFilesList.html'"></ng-include>

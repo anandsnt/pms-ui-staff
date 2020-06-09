@@ -30,6 +30,12 @@ angular.module('sntRover').service('rvCardNotesSrv', ['$q', 'rvBaseWebSrvV2',
 					"create": service.baseApiURL + '/save_account_note',
 					"update": service.baseApiURL + '/update_account_note',
 					"delete": service.baseApiURL + '/delete_account_note'
+				},
+				"stay_card": {
+					"fetch": '/api/reservations/' + service.cardId + '/notes',
+					"create": '/reservation_notes',
+					"update": '/reservation_notes/' + params.note_id,
+					"delete": '/reservation_notes/' + params.note_id
 				}
 			};
 

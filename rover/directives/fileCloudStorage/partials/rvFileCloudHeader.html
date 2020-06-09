@@ -1,5 +1,5 @@
-<div id="gc-notes-header" class="tab-header search-form no-print">
-    <div class="entry switch" ng-class="{'hidden': cardData.selectedFileList.length !== 0 && !cardData.notesViewOn}">
+<div class="" ng-class="{'tab-header search-form no-print':  cardType !== 'stay_card', 'notes-files-header search-form': cardType === 'stay_card'}">
+    <div class="entry switch" ng-class="{'hidden': (cardData.selectedFileList.length !== 0 && !cardData.notesViewOn) || cardType === 'stay_card'}">
         <div class="switch-button full-width" ng-class="{'on': cardData.notesViewOn}">
             <input id="gc-notes-switch" value="1" type="checkbox" checked="" ng-model="cardData.notesViewOn" ng-change="screenModeChanged(cardData.notesViewOn ? 'NOTES' : 'FILES')">
             <label class="data-off">

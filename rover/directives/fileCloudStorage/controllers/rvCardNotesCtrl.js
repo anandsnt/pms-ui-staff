@@ -11,9 +11,14 @@ sntRover.controller('rvCardNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', 'rvCa
 				description: $scope.cardData.noteText // used in  TA and company note Apis
 			};
 
+			if ($scope.cardType === 'stay_card') {
+				delete params.card_id;
+				params.reservation_id = $scope.cardId;
+			}
+
 			return params;
 		};
-		var processNotes = function(notes) {
+		var processCoTaNotes = function(notes) {
 			_.each(notes, function(note) {
 				note.posted_user_image_url = note.avatar;
 				note.posted_user_first_name = note.user_name;
@@ -24,12 +29,28 @@ sntRover.controller('rvCardNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', 'rvCa
 			return notes;
 		};
 
+		var processStayCardNotes = function(notes) {
+			_.each(notes, function(note) {
+				note.posted_user_image_url = note.user_image;
+				note.posted_user_first_name = note.username;
+				note.posted_user_last_name = '';
+				note.text = note.text;
+				note.time = note.posted_time;
+				note.date = note.posted_date;
+				note.id = note.note_id;
+			});
+			return notes;
+		};
+
 		var fetchNotes = function() {
 			var options = {
 				params: generateApiParams(),
 				successCallBack: function(response) {
-					if ($scope.cardType !== 'guest_card') {
-						response.notes = processNotes(response.notes);
+					if ($scope.cardType === 'cota_card') {
+						response.notes = processCoTaNotes(response.notes);
+					} else if ($scope.cardType === 'stay_card') {
+						response.notes = response.notes.reservation_notes;
+						response.notes = processStayCardNotes(response.notes);
 					}
 					$scope.notes = response.notes;
 					$scope.refreshScroller('card_notes_scroller');
