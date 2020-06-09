@@ -45,12 +45,8 @@
         <!-- Guest Card Tab 6 Activity Log-->
         <span ng-show="current == 'activity-log' && isStandAlone" ng-include="'/assets/partials/guestCard/guestCardActivityLog.html'"></span>
         <!-- Guest Card Tab 7 Notes-->
-        <span ng-show="current == 'notes' && isStandAlone && !isCloudStorageEnabledForCardType('guest_card')" 
-              ng-include="'/assets/partials/guestCard/guestCardNotes.html'">
-        </span>
-
         <form method="post" action="{action}" id="gc-notes" name="gc-notes" class="form inner-header card-tab notes-tab no-print"
-              ng-if="current == 'notes' && isStandAlone && isCloudStorageEnabledForCardType('guest_card')">
+              ng-if="current == 'notes' && isStandAlone">
             <div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
             <span ng-include="'/assets/partials/guestCard/rvGuestCardNotesAndFiles.html'">
             </span>

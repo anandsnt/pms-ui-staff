@@ -1220,7 +1220,12 @@ sntRover.controller('roverController', [
         };
 
         $scope.isCloudStorageEnabledForCardType = function(cardType) {
-            return RVHotelDetailsSrv.hotelDetails.cloud_storage_config &&
+            // TODO: Remove when implementing for TA/company and groups
+            if(cardType !== 'guest_card'){
+                return false;
+            }
+            return RVHotelDetailsSrv.hotelDetails.cloud_storage_config.enabled &&
+                RVHotelDetailsSrv.hotelDetails.cloud_storage_config &&
                 RVHotelDetailsSrv.hotelDetails.cloud_storage_config["enabled_" + cardType];
         };
 

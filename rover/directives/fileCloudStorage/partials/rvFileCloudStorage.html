@@ -1,5 +1,5 @@
 <div>
-	<ng-include src="'/assets/directives/fileCloudStorage/partials/rvFileCloudHeader.html'"></ng-include>
+	<ng-include src="'/assets/directives/fileCloudStorage/partials/rvFileCloudHeader.html'" ng-if="showFiles"></ng-include>
 	<div class="tab-details">
 		<ng-include ng-show="cardData.notesViewOn" src="'/assets/directives/fileCloudStorage/partials/rvCardNotes.html'"></ng-include>
 		<ng-include ng-if="!cardData.notesViewOn" src="'/assets/directives/fileCloudStorage/partials/rvFileCloudFiles.html'"></ng-include>

@@ -4,7 +4,8 @@ sntRover.directive('rvFileCloudStorage', function() {
         replace: 'true',
         scope: {
             cardType: '@',
-            cardId: '@'
+            cardId: '@',
+            showFiles: '='
         },
         templateUrl: '/assets/directives/fileCloudStorage/partials/rvFileCloudStorage.html',
         controller: 'rvFileCloudStorageAndNotesCtrl'

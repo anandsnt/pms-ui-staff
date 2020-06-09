@@ -121,12 +121,8 @@
                     <!-- Company - Activity Log -->
                     <span ng-controller="RVCompanyCardActivityLogCtrl" ng-include="'/assets/partials/companyCard/activityLog/rvCompanyCardActivityLog.html'" ng-show="currentSelectedTab == 'cc-activity-log'"></span>
                     <!-- Company - Notes -->
-                    <span  ng-show="currentSelectedTab == 'cc-notes' && !isCloudStorageEnabledForCardType('cota_card')"
-                           ng-include="'/assets/partials/companyCard/rvCompanyCardNotes.html'">       
-                    </span>
-
-                    <form method="post" action="{action}" id="gc-notes" name="gc-notes" class="form inner-header card-tab notes-tab no-print"
-                        ng-if="currentSelectedTab == 'cc-notes' && isCloudStorageEnabledForCardType('cota_card')">
+                    <form method="post" id="gc-notes" name="gc-notes" class="form inner-header card-tab notes-tab no-print"
+                        ng-if="currentSelectedTab == 'cc-notes'">
                         <div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
                         <span ng-include="'/assets/partials/companyCard/rvCompanyTAFilesAndNotes.html'">
                         </span>

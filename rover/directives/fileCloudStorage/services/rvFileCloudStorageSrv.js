@@ -6,31 +6,34 @@ sntRover.service('rvFileCloudStorageSrv', ['$q', 'rvBaseWebSrvV2', function($q, 
 	};
 
     service.fetchFiles = function (params) {
-        var url = '/sample_json/cards/file_attachments.json';
+        // var url = '/sample_json/cards/file_attachments.json';
+        var url = '/api/file_attachments';
 
         params.card_type =  service.cardTye;
         return rvBaseWebSrvV2.getJSON(url, params);
     };
 
     service.uploadFile = function (params) {
-        var url = '/sample_json/cards/file_attachments.json';
+        // var url = '/sample_json/cards/file_attachments.json';
+        var url = '/api/file_attachments';
 
         params.card_type =  service.cardTye;
+        return rvBaseWebSrvV2.postJSON(url, params);
+    };
+
+    service.downLoadFile = function(params) {
+
+        var url = '/api/file_attachments/' + params.id + '/download';
+
+        // params.card_type = service.cardTye;
         return rvBaseWebSrvV2.getJSON(url, params);
     };
 
-     service.downLoadFile = function (params) {
-        var url = '/sample_json/cards/file_attachments.json';
+    service.deleteFile = function(params) {
+        var url = '/api/file_attachments' + params.id;
 
-        params.card_type = service.cardTye;
-        return rvBaseWebSrvV2.getJSON(url, params);
-    };
-
-    service.deleteFile = function (params) {
-        var url = '/sample_json/cards/file_attachments.json';
-
-        params.card_type = service.cardTye;
-        return rvBaseWebSrvV2.getJSON(url, params);
+        // params.card_type = service.cardTye;
+        return rvBaseWebSrvV2.deleteJSON(url, params);
     };
 
 }]);

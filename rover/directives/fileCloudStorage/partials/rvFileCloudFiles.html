@@ -19,20 +19,20 @@
         </label>
         <div class="file-container open-modal">
           <div class="file-image">
-            <div ng-if="file.type !== 'image'" class="file-icon">
+            <div ng-if="file.content_type !== 'image'" class="file-icon">
               <span class="icons icon-document"
-                ng-class="{'icon-document': file.type === 'document' || file.type === 'pdf',
-                'icon-sheet': file.type === 'csv' || file.type === 'numbers' || file.type === 'xsls',
-              'icon-presentation': file.type === 'keynote' || file.type === 'ppt'}"></span>
-              <div class="file-type {{ (file.type === 'pdf') ? 'pdf' :
-              (file.type === 'csv' || file.type === 'numbers' || file.type === 'xsls') ? 'sheet': (file.type === 'keynote' || file.type === 'ppt') ? 'presentation' : ''}}">{{file.type}}</div>
+                ng-class="{'icon-document': file.content_type === 'document' || file.content_type === 'pdf',
+                'icon-sheet': file.content_type === 'csv' || file.content_type === 'numbers' || file.content_type === 'xsls',
+              'icon-presentation': file.content_type === 'keynote' || file.content_type === 'ppt'}"></span>
+              <div class="file-type {{ (file.content_type === 'pdf') ? 'pdf' :
+              (file.content_type === 'csv' || file.content_type === 'numbers' || file.content_type === 'xsls') ? 'sheet': (file.content_type === 'keynote' || file.content_type === 'ppt') ? 'presentation' : ''}}">{{file.content_type}}</div>
             </div>
-            <img ng-if="file.type === 'image'" src="{{file.img_preview}}"/>
+            <img ng-if="file.content_type === 'image'" src="{{file.preview_url}}"/>
           </div>
-          <h3 class="file-title">{{file.title}}</h3>
+          <h3 class="file-title">{{file.file_name}}</h3>
           <div class="file-details">
-            <div class="file-author">{{file.author}}</div>
-            <div class="file-date">{{file.updated_time}}  · {{file.updated_date}}</div>
+            <div class="file-author">{{file.user}}</div>
+            <div class="file-date">{{file.uploaded_at}}</div>
           </div>
         </div>
       </li>

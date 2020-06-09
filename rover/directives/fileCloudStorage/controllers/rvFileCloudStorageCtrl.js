@@ -1,18 +1,24 @@
-sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv', '$timeout',
-	function($scope, rvFileCloudStorageSrv, $timeout) {
+sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv', '$timeout', 'sntActivity',
+	function($scope, rvFileCloudStorageSrv, $timeout, sntActivity) {
 
 		$scope.cardData.fileList = [];
 		$scope.cardData.selectedFileList = [];
 		var newFileList = [];
 		var fetchFiles = function() {
-			rvFileCloudStorageSrv.fetchFiles({}).then(function(fileList) {
+			sntActivity.start('FETCH_FILES');
+			rvFileCloudStorageSrv.fetchFiles({
+				card_id: $scope.cardId
+			}).then(function(fileList) {
+				sntActivity.stop('FETCH_FILES');
 				_.each(fileList, function(file) {
 					var indexOffileInSelectedList = _.findIndex($scope.cardData.selectedFileList, function(selectedFile) {
 						return selectedFile.id === file.id;
 					});
 
 					file.is_selected = indexOffileInSelectedList !== -1;
-					$scope.cardData.fileTypes = _.union($scope.cardData.fileTypes, [file.type]);
+					file.content_type = file.content_type ? file.content_type.split("/")[1] : '';
+
+					$scope.cardData.fileTypes = _.union($scope.cardData.fileTypes, [file.content_type]);
 				});
 				$scope.cardData.fileList = fileList;
 				$scope.refreshScroller('card_file_list_scroller');
@@ -20,8 +26,25 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 		};
 
 		$scope.$on('FILE_UPLOADED', function(evt, file) {
+
+			console.log(file);
+
+// 			base64: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAA"
+// lastModifiedDate: Thu Jun 04 2020 10:05:49 GMT-0400 (Eastern Daylight Time) {}
+// name: "English-Language-Flag-1-icon.png"
+// size: 17596
+// type: "image/png"
+
+			var newFile = {
+				"file_name": file.name,
+				"content_type": file.type,
+				"base64_data": file.base64 ? file.base64.split(";base64,")[1] : '',
+				"card_id": $scope.cardId,
+				"card_type": "guest_card"
+			};
+
 			$scope.cardData.newFile = file;
-			newFileList.push(file);
+			newFileList.push(newFile);
 			$timeout(function() {
 				$scope.cardData.dragInProgress = false;
 			}, 100);
@@ -42,7 +65,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 
 		$scope.getFileCount = function(fileType) {
 			var filesOfFileType = _.filter($scope.cardData.fileList, function(file) {
-				return file.type === fileType;
+				return file.content_type === fileType;
 			});
 
 			return filesOfFileType.length;
@@ -59,16 +82,15 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 				uploadedFileCount++;
 				// when all files are uploaded, load new file list
 				if (uploadedFileCount === newFileList.length) {
+					sntActivity.stop('UPLOADING_FILES');
 					newFileList = [];
 					$scope.cardData.newFile = {};
 					fetchFiles();
 				}
 			};
-
+			sntActivity.start('UPLOADING_FILES');
 			_.each(newFileList, function(file) {
-				rvFileCloudStorageSrv.uploadFile({
-					"name": file.name
-				}).then(fileUploadSuccess);
+				rvFileCloudStorageSrv.uploadFile(file).then(fileUploadSuccess);
 			});
 		};
 
