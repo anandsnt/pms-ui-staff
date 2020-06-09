@@ -4,8 +4,7 @@
     <ng-include ng-if="cardData.group_files_by === 'FILE_TYPE' && !cardData.searchText"
     src="'/assets/directives/fileCloudStorage/partials/rvGroupedFilesList.html'"></ng-include>
     <!-- if grouping by file type, add .files-file-type -->
-    <ul class="files" ng-if="cardData.group_files_by !== 'FILE_TYPE' || cardData.searchText"
-      ng-class="{'files-file-type': cardData.searchText}">
+    <ul class="files files-file-type" ng-if="cardData.group_files_by !== 'FILE_TYPE' || cardData.searchText">
       
       <li class="file"
         ng-repeat="file in cardData.fileList | orderBy : sortFiles : cardData.sort_files_by === 'NEWLY_ADDED' | filter: cardData.searchText"
@@ -40,7 +39,7 @@
     </ul>
   </div>
   <!-- remove .hidden if dragging files -->
-  <div class="notes-files-drag" ng-class="{ 'hidden': !cardData.dragInProgress}">
+  <div class="notes-files-drag" ng-class="{ 'hidden': (!cardData.dragInProgress && cardData.fileList.length !== 0) || cardData.firstFileFetch }">
     <div class="notes-files-drag-content">
       <span class="icon-upload"></span>
       <p translate>DROP_FILES_TO_UPLOAD</p>

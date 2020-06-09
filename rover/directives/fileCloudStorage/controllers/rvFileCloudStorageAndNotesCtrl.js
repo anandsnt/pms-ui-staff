@@ -17,6 +17,7 @@ sntRover.controller('rvFileCloudStorageAndNotesCtrl', ['$scope', 'rvFileCloudSto
 				$scope: $scope
 			});
 			$scope.$broadcast('FETCH_NOTES');
+			$scope.errorMessage = '';
 		})();
 	}
 ]);

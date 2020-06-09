@@ -14,4 +14,9 @@
 "LAST_ADDED": "Last Added",
 "FIRST_ADDED": "First Added",
 "ADD_NEW_FILE": "+ Add New",
-"CANCEL_FILE_SELECTION": "Cancel Selection"
+"CANCEL_FILE_SELECTION": "Cancel Selection",
+"FILE_FETCHING_FAILED": "File fetching failed",
+"FILE_UPLOADING_FAILED": "File uploading failed",
+"FILE_DELETION_FAILED": "File deletion failed",
+"FILE_UPDATION_FAILED": "File updation failed",
+"FILE_DOWNLOAD_FAILED": "File Download failed"

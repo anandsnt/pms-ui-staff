@@ -30,7 +30,7 @@ sntRover.service('rvFileCloudStorageSrv', ['$q', 'rvBaseWebSrvV2', function($q, 
     };
 
     service.deleteFile = function(params) {
-        var url = '/api/file_attachments' + params.id;
+        var url = '/api/file_attachments/' + params.id;
 
         // params.card_type = service.cardTye;
         return rvBaseWebSrvV2.deleteJSON(url, params);

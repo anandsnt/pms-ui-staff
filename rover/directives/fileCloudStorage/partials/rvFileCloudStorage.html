@@ -1,4 +1,5 @@
 <div>
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<ng-include src="'/assets/directives/fileCloudStorage/partials/rvFileCloudHeader.html'" ng-if="showFiles"></ng-include>
 	<div class="tab-details">
 		<ng-include ng-show="cardData.notesViewOn" src="'/assets/directives/fileCloudStorage/partials/rvCardNotes.html'"></ng-include>

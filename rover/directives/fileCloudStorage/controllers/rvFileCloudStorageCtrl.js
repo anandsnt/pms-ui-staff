@@ -1,15 +1,17 @@
-sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv', '$timeout', 'sntActivity',
-	function($scope, rvFileCloudStorageSrv, $timeout, sntActivity) {
+sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv', '$timeout', 'sntActivity', '$filter',
+	function($scope, rvFileCloudStorageSrv, $timeout, sntActivity, $filter) {
 
 		$scope.cardData.fileList = [];
 		$scope.cardData.selectedFileList = [];
 		var newFileList = [];
 		var fetchFiles = function() {
+			$scope.errorMessage = '';
 			sntActivity.start('FETCH_FILES');
 			rvFileCloudStorageSrv.fetchFiles({
 				card_id: $scope.cardId
 			}).then(function(fileList) {
 				sntActivity.stop('FETCH_FILES');
+				$scope.cardData.fileTypes = [];
 				_.each(fileList, function(file) {
 					var indexOffileInSelectedList = _.findIndex($scope.cardData.selectedFileList, function(selectedFile) {
 						return selectedFile.id === file.id;
@@ -22,19 +24,15 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 				});
 				$scope.cardData.fileList = fileList;
 				$scope.refreshScroller('card_file_list_scroller');
+				$scope.cardData.firstFileFetch = false;
+			},
+			function(){
+				sntActivity.stop('FETCH_FILES');
+				$scope.errorMessage = [$filter('translate')('FILE_FETCHING_FAILED')];
 			});
 		};
 
 		$scope.$on('FILE_UPLOADED', function(evt, file) {
-
-			console.log(file);
-
-// 			base64: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAA"
-// lastModifiedDate: Thu Jun 04 2020 10:05:49 GMT-0400 (Eastern Daylight Time) {}
-// name: "English-Language-Flag-1-icon.png"
-// size: 17596
-// type: "image/png"
-
 			var newFile = {
 				"file_name": file.name,
 				"content_type": file.type,
@@ -89,8 +87,14 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 				}
 			};
 			sntActivity.start('UPLOADING_FILES');
+			$scope.errorMessage = '';
 			_.each(newFileList, function(file) {
-				rvFileCloudStorageSrv.uploadFile(file).then(fileUploadSuccess);
+				rvFileCloudStorageSrv.uploadFile(file).
+				then(fileUploadSuccess,
+					function() {
+						sntActivity.stop('UPLOADING_FILES');
+						$scope.errorMessage = [$filter('translate')('FILE_UPLOADING_FAILED')];
+					});
 			});
 		};
 
@@ -106,15 +110,31 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 		};
 
 		$scope.deleteFiles = function() {
+			sntActivity.start('DELETING_FILES');
+			var deletedFilesCount = 0;
+			var fileDeletionSuccess = function() {
+				deletedFilesCount++;
+				// when all files are uploaded, load new file list
+				if (deletedFilesCount === $scope.cardData.selectedFileList.length) {
+					sntActivity.stop('DELETING_FILES');
+					$scope.cardData.selectedFileList = [];
+					fetchFiles();
+				}
+			};
 			_.each($scope.cardData.selectedFileList, function(file) {
 				rvFileCloudStorageSrv.deleteFile({
 					id: file.id
-				}).then(fetchFiles);
+				}).then(fileDeletionSuccess,
+				function(){
+					sntActivity.stop('DELETING_FILES');
+					$scope.errorMessage = [$filter('translate')('FILE_DELETION_FAILED')];
+				});
 			});
 		};
 
 		$scope.$on('FETCH_FILES', function() {
 			$scope.setScroller('card_file_list_scroller', {});
+			$scope.cardData.firstFileFetch = true;
 			fetchFiles();
 		});
 
