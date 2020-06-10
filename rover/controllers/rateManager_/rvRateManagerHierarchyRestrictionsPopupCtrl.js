@@ -66,6 +66,7 @@ angular.module('sntRover')
                     $scope.popUpView = 'NEW';
                     $scope.restrictionStylePack = angular.copy(hierarchyUtils.restrictionColorAndIconMapping);
                     $scope.showRestrictionSelection = false;
+                    $scope.restrictionObj.isRepeatOnDates = false;
                 };
 
                 var setRestrictionDataForPopup = () => {
