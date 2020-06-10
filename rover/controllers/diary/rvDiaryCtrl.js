@@ -20,6 +20,7 @@ angular.module('sntRover')
         '$timeout',
         'RVReservationSummarySrv',
         'baseSearchData',
+        '$interval',
         function(
 			$scope,
 			$rootScope,
@@ -39,7 +40,8 @@ angular.module('sntRover')
 			RVReservationBaseSearchSrv,
 			$timeout,
 			RVReservationSummarySrv,
-			baseSearchData
+            baseSearchData,
+            $interval
 		) {
             $scope.$emit('showLoader');
             BaseCtrl.call(this, $scope);
@@ -61,7 +63,7 @@ angular.module('sntRover')
                     'useCache': true
                 }
             };
-
+            
             /**
              * Handler for unassigned reservation selection event
              * callback function params
@@ -71,11 +73,11 @@ angular.module('sntRover')
              */
             $scope.addListener('UNASSIGNED_RESERVATION_SELECTED', function(event, options, reservation) {
                 var params = getCustomAvailabilityCallingParams(options.arrival_time, options.arrival_date, options.stay_span, options.room_type_id),
-                    keepOpen = true,
-                    self = $scope.gridProps.unassignedRoomList,
-                    success,
-                    apiOptions;
-
+                keepOpen = true,
+                self = $scope.gridProps.unassignedRoomList,
+                success,
+                apiOptions;
+                
                 params.reservation_id = options.reservationId;
                 $scope.hideRoomUnAssignButton = true;
                 $scope.showSaveChangesAfterEditing = false;
@@ -83,8 +85,8 @@ angular.module('sntRover')
                     // CICO-24243: Set top filter values to selected reservation attributes
                     if (data.length) {
                         var rawData = data[0],
-                            filters = $scope.gridProps.filter;
-
+                        filters = $scope.gridProps.filter;
+                        
                         filters.arrival_time = new Date(rawData.arrival).toTimeString().substring(0, 5);
                         filters.room_type = _.findWhere(filters.room_types, { id: rawData.room_type_id });
                     }
@@ -594,8 +596,108 @@ angular.module('sntRover')
                         $scope.message = ['Cannot change duration - A reservation for the current duration has already been selected'];
                         openMessageShowingPopup();
                     }
+                },
+                autoAssignData: {
+                    lockUI: false,
+                    status: '',
+                    statusText: '',
+                    statusDescription: '',
+                    statusClass: '',
+                    processDate: ''
                 }
             };
+
+            // CICO-79422 auto-lock D-diary on autoAssign initiated from N-diary: START
+            var hourlyDiaryLockInterval,
+                initAutoAssignVariables = function() {
+                    $scope.gridProps.autoAssignData = {
+                        lockUI: false,
+                        status: '',
+                        statusText: '',
+                        statusDescription: '',
+                        statusClass: '',
+                        processDate: ''
+                    };
+                },
+                setAutoAssignStatus = function(data) {
+                    $scope.gridProps.autoAssignData.lockUI = data.is_diary_locked;
+                    $scope.gridProps.autoAssignData.status = data.auto_room_assignment_status;
+                    $scope.gridProps.autoAssignData.processDate = data.process_date;
+                    if (data.is_diary_locked) {
+                        $scope.editCancel();
+                    }
+                    switch (data.auto_room_assignment_status) {
+                        case 'pending':
+                            $scope.gridProps.autoAssignData.statusText = 'Room auto assignment in progress';
+                            $scope.gridProps.autoAssignData.statusDescription = 'Diary is locked until process is completed';
+                            $scope.gridProps.autoAssignData.statusClass = '';
+                            break;
+                        case 'failed':
+                            $scope.gridProps.autoAssignData.statusText = 'Room auto assignment failed';
+                            $scope.gridProps.autoAssignData.statusDescription = '0 Rooms Assigned';
+                            $scope.gridProps.autoAssignData.statusClass = 'failed';
+                            break;
+                        case 'partial':
+                            $scope.gridProps.autoAssignData.statusText = 'Room auto assignment completed';
+                            $scope.gridProps.autoAssignData.statusDescription = 'Some Reservations Remain Unassigned';
+                            $scope.gridProps.autoAssignData.statusClass = 'semi-completed';
+                            break;
+                        case 'completed':
+                            if (data.is_diary_locked) {
+                                $scope.gridProps.autoAssignData.statusText = 'Room auto assignment completed';
+                                $scope.gridProps.autoAssignData.statusDescription = 'Rooms Assigned to All Reservations';
+                                $scope.gridProps.autoAssignData.statusClass = 'completed';
+                            }
+                            else {
+                                $scope.gridProps.autoAssignData.statusText = '';
+                                $scope.gridProps.autoAssignData.statusDescription = '';
+                                $scope.gridProps.autoAssignData.statusClass = '';
+                            }
+                            break;
+                    }
+                };
+
+            /**
+             * Function for diary lock status calls
+             */
+            $scope.refreshAutoAssignStatus = function() {
+                rvDiarySrv.fetchAutoAssignStatus().then(setAutoAssignStatus);
+            };
+            /**
+             * Unlocks room diary after completion of the autoAssign process
+             * Then refresh the diary data
+             */
+            $scope.unlockRoomDiary = function() {
+                var options = {
+                    successCallBack: function(response) {
+                        if (!response.is_diary_locked) {
+                            initAutoAssignVariables();
+                            $scope.gridProps.unassignedRoomList.reset();
+                            $scope.gridProps.unassignedRoomList.fetchCount();
+                            $scope.clearAvailability();
+                            $scope.resetEdit();
+                            $scope.renderGrid();
+                        }
+                    },
+                    failureCallBack: function(errorMessage) {
+                        if (errorMessage.httpStatus && errorMessage.httpStatus === 470) {
+                            $scope.refreshAutoAssignStatus();
+                        }
+                    }
+                };
+
+                $scope.callAPI(rvDiarySrv.unlockRoomDiary, options);
+            };
+            /**
+             * Listeners for auto-lock status polling
+             */
+            $scope.addListener('POLL_D_DIARY_AUTO_ASSIGN_STATUS', function() {
+                hourlyDiaryLockInterval = $interval($scope.refreshAutoAssignStatus, 2000);
+            });
+            $scope.addListener('STOP_D_DIARY_AUTO_ASSIGN_STATUS_POLLING', function() {
+                $interval.cancel(hourlyDiaryLockInterval);
+            });
+            // CICO-79422 - END
 
             /**
              * Need to check if there is a DST Time change
