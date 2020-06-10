@@ -94,7 +94,7 @@ angular.module('sntRover')
                     params: data,
                     successCallBack: function(response) {
                         clearFilters();
-                        initVariables()
+                        initVariables();
                         $scope.$emit('SET_AUTO_ASSIGN_STATUS', response);
                     },
                     failureCallBack: function(errorMessage) {
