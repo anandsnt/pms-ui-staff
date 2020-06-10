@@ -1,0 +1,39 @@
+<div id="modal" class="modal-show" role="dialog">
+  <div id="edit-file" name="deposit-balance" class="modal-content file-edit">
+    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog();"><span class="icons icon-close invert"></button>
+      
+      <div class="modal-body">
+        <div class="file-info">
+          <span class="message h2">Edit File</span>
+          <div class="file-image">
+            <div class="file-icon">
+              <span class="icons icon-document"
+                ng-class="{'icon-document': selectedFile.content_type === 'document' || selectedFile.content_type === 'pdf',
+                'icon-sheet': selectedFile.content_type === 'csv' || selectedFile.content_type === 'numbers' || selectedFile.content_type === 'xsls',
+              'icon-presentation': selectedFile.content_type === 'keynote' || selectedFile.content_type === 'ppt'}"></span>
+              <div class="file-type {{ (selectedFile.content_type === 'pdf') ? 'pdf' :
+              (selectedFile.content_type === 'csv' || selectedFile.content_type === 'numbers' || selectedFile.content_type === 'xsls') ? 'sheet': (selectedFile.content_type === 'keynote' || selectedFile.content_type === 'ppt') ? 'presentation' : ''}}">{{selectedFile.content_type}}</div>
+            </div>
+            <img ng-if="selectedFile.content_type === 'image'" src="{{selectedFile.preview_url}}"/>
+          </div>
+          <div class="file-details">
+            <div class="file-author">{{selectedFile.user}}</div>
+            <div class="file-date">{{selectedFile.uploaded_at}}}</div>
+          </div>
+          <textarea class="file-title">{{selectedFile.file_name}}</textarea>
+        </div>
+        <!-- if there is a previe of the file, show this:
+        <div class="preview-file">
+          {file-preview}
+        </div>
+        -->
+      </div>
+      <div class="actions">
+        <button class="button blue" ng-click="replaceFile(selectedFile)">Replace File</button>
+        <button class="button purple" ng-click="donwloadFiles(selectedFile)">Download File</button>
+        <button class="button red" ng-click="deleteFiles(selectedFile)">Delete File</button>
+        <button class="button blank" ng-click="closeDialog()">Cancel</button>
+        <button class="button green" ng-click="updateFile(selectedFile)">Save Changes</button>
+      </div>
+    </div>
+  </div>

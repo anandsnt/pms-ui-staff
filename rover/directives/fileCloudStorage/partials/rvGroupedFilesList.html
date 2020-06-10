@@ -14,7 +14,7 @@
 				<span class="icon-form icon-checkbox" ng-class="{'checked': file.is_selected }"></span>
 				<input ng-model="file.is_selected" type="checkbox" ng-change="fileSelectionChanged()"/>
 			</label>
-			<div class="file-container open-modal">
+			<div class="file-container open-modal" ng-click="openFileDetails(file)">
 				<div class="file-image">
 					<div ng-if="file.content_type !== 'image'" class="file-icon">
 						<span class="icons icon-document"

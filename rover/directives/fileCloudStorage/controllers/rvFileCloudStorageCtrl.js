@@ -1,9 +1,10 @@
-sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv', '$timeout', 'sntActivity', '$filter',
-	function($scope, rvFileCloudStorageSrv, $timeout, sntActivity, $filter) {
+sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv', '$timeout', 'sntActivity', '$filter', 'ngDialog',
+	function($scope, rvFileCloudStorageSrv, $timeout, sntActivity, $filter, ngDialog) {
 
 		$scope.cardData.fileList = [];
 		$scope.cardData.selectedFileList = [];
 		var newFileList = [];
+		var fileDetailsPopup;
 		var fetchFiles = function() {
 			$scope.errorMessage = '';
 			sntActivity.start('FETCH_FILES');
@@ -31,6 +32,12 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 				$scope.errorMessage = [$filter('translate')('FILE_FETCHING_FAILED')];
 				$scope.cardData.firstFileFetch = false;
 			});
+		};
+
+		var closePopupIfOpened = function() {
+			if (fileDetailsPopup) {
+				fileDetailsPopup.close();
+			}
 		};
 
 		$scope.$on('FILE_UPLOADED', function(evt, file) {
@@ -101,28 +108,32 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 
 		$scope.$on('FILE_UPLOADED_DONE', $scope.fileUploadCompleted);
 
-		$scope.donwloadFiles = function() {
+		$scope.donwloadFiles = function(selectedFile) {
+			var fileList = selectedFile ? [selectedFile] : $scope.cardData.selectedFileList;
 
-			_.each($scope.cardData.selectedFileList, function(file) {
+			_.each(fileList, function(file) {
 				rvFileCloudStorageSrv.downLoadFile({
 					id: file.id
 				});
 			});
 		};
 
-		$scope.deleteFiles = function() {
+		$scope.deleteFiles = function(selectedFile) {
+			var fileList = selectedFile ? [selectedFile] : $scope.cardData.selectedFileList;
+
 			sntActivity.start('DELETING_FILES');
 			var deletedFilesCount = 0;
 			var fileDeletionSuccess = function() {
 				deletedFilesCount++;
 				// when all files are uploaded, load new file list
-				if (deletedFilesCount === $scope.cardData.selectedFileList.length) {
+				if (deletedFilesCount === fileList.length) {
 					sntActivity.stop('DELETING_FILES');
 					$scope.cardData.selectedFileList = [];
+					closePopupIfOpened();
 					fetchFiles();
 				}
 			};
-			_.each($scope.cardData.selectedFileList, function(file) {
+			_.each(fileList, function(file) {
 				rvFileCloudStorageSrv.deleteFile({
 					id: file.id
 				}).then(fileDeletionSuccess,
@@ -146,6 +157,17 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			return date;
 		};
 
+		$scope.openFileDetails = function(file) {
+			$scope.selectedFile = file;
+			fileDetailsPopup = ngDialog.open({
+						template: '/assets/directives/fileCloudStorage/partials/rvFileDetails.html',
+						className: '',
+						scope: $scope,
+						closeByDocument: false,
+						closeByEscape: false
+					});
+		};
+
 		(function() {
 			$scope.cardData.newFile = {
 				base64: '',
@@ -158,6 +180,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			$scope.cardData.group_files_by = 'UNGROUPED';
 			$scope.cardData.searchText = '';
 			$scope.cardData.dragInProgress = false;
+			$scope.selectedFile = '';
 		})();
 	}
 ]);
