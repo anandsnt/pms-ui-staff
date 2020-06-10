@@ -947,7 +947,8 @@ angular.module('sntRover')
                 }
                 else {
                     var params = {
-                        id: this.currentResizeItem.reservation_id
+                        id: this.currentResizeItem.reservation_id,
+                        is_from_diary: true
                     };
 
                     var success = function() {
