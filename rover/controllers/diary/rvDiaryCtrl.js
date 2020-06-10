@@ -682,6 +682,7 @@ angular.module('sntRover')
                     failureCallBack: function(errorMessage) {
                         if (errorMessage.httpStatus && errorMessage.httpStatus === 470) {
                             $scope.refreshAutoAssignStatus();
+                            $scope.errorMessage = errorMessage.errorMessage;
                         }
                     }
                 };
@@ -2305,7 +2306,8 @@ angular.module('sntRover')
                     'reservationId': reservation.reservation_id,
                     'stay_dates': stay,
                     // CICO-14143: Diary - Move without rate change actually changes rate
-                    'is_move_without_rate_change': isMoveWithoutRateChange ? isMoveWithoutRateChange : false
+                    'is_move_without_rate_change': isMoveWithoutRateChange ? isMoveWithoutRateChange : false,
+                    'is_from_diary': true
                 };
             };
 
@@ -2346,7 +2348,8 @@ angular.module('sntRover')
                             }
                         ]
                     ],
-                    is_move_without_rate_change: true
+                    is_move_without_rate_change: true,
+                    is_from_diary: true
                 };
 
                 var options = {
@@ -2384,6 +2387,10 @@ angular.module('sntRover')
             }.bind($scope.gridProps);
 
             var failureCallBackOfSaveReservation = function(errorMessage) {
+                if (errorMessage.httpStatus && errorMessage.httpStatus === 470) {
+                    $scope.refreshAutoAssignStatus();
+                    $scope.errorMessage = errorMessage.errorMessage;
+                }
                 $scope.errorMessage = errorMessage;
             };
 
