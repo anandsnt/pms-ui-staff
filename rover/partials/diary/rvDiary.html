@@ -175,5 +175,5 @@
     <div ng-include="'/assets/partials/diary/rvDiaryUnAssignedList.html'" include-replace></div>
     
     <!-- Diary Content -->
-    <react-component id="component-wrapper" class="component-wrapper" name="DiaryContent"></react-component>
+    <react-component id="component-wrapper" class="component-wrapper" ng-class="{'locked': gridProps.autoAssignData.lockUI}" name="DiaryContent"></react-component>
 </section>

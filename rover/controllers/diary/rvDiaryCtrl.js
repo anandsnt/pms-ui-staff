@@ -623,7 +623,7 @@ angular.module('sntRover')
                     $scope.gridProps.autoAssignData.lockUI = data.is_diary_locked;
                     $scope.gridProps.autoAssignData.status = data.auto_room_assignment_status;
                     $scope.gridProps.autoAssignData.processDate = data.process_date;
-                    if (data.is_diary_locked) {
+                    if (data.is_diary_locked && ($scope.gridProps.edit.active || $scope.gridProps.unassignedRoomList.isItemSelected)) {
                         $scope.editCancel();
                     }
                     switch (data.auto_room_assignment_status) {
@@ -960,6 +960,10 @@ angular.module('sntRover')
                     };
 
                     var error = function(msg) {
+                        if (msg.httpStatus && msg.httpStatus === 470) {
+                            $scope.refreshAutoAssignStatus();
+                            $scope.errorMessage = msg.errorMessage;
+                        }
                         $scope.$emit('hideLoader');
                         $scope.errorMessage = msg;
                     };
