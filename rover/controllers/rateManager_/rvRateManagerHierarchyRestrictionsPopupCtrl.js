@@ -123,19 +123,6 @@ angular.module('sntRover')
                     return formValid;
                 };
 
-                // Utility method to pick up selected week days for API.
-                let getSelectedWeekDays = function() {
-                    let weekDays = [];
-
-                    _.each($scope.restrictionObj.daysList, function( day ) {
-                        if (day.isChecked) {
-                            weekDays.push(day.value);
-                        }
-                    });
-
-                    return weekDays;
-                };
-
                 $scope.setHouseHierarchyRestriction = () => {
                     var restrictions = {};
 
@@ -155,7 +142,7 @@ angular.module('sntRover')
                     };
                 
                     if ($scope.restrictionObj.isRepeatOnDates) {
-                        let selectedWeekDays = getSelectedWeekDays();
+                        let selectedWeekDays = hierarchyUtils.getSelectedWeekDays($scope.restrictionObj.daysList);
 
                         if (selectedWeekDays.length > 0) {
                             options.params.weekdays = selectedWeekDays;

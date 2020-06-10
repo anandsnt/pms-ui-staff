@@ -148,7 +148,8 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
                 'arrival_date': data.arrival_date,
                 'dep_date': data.dep_date,
                 'room_number': data.room_number,
-                'authorize_credit_card': data.authorize_credit_card
+                'authorize_credit_card': data.authorize_credit_card,
+                'is_from_diary': true
             };
             var deferred = $q.defer ();
 
@@ -351,7 +352,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
          * Unlock Diary after auto-assign process
          */
         this.unlockRoomDiary = function() {
-            var url = ' api/auto_room_assign_processes/unlock_diary';
+            var url = 'api/auto_room_assign_processes/unlock_diary';
 
             return sntBaseWebSrv.postJSON(url);
         };

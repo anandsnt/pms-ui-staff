@@ -82,7 +82,7 @@ angular.module('reportsModule')
             			},
                         'COMPANY_TA_TOP_PRODUCERS': {
                             'fromDate': getDates.aWeekAgo,
-            				'untilDate': getDates.businessDate
+            				'untilDate': getDates.yesterday
                         },
                         'FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT': {
                             'fromDate': getDates.businessDate,
