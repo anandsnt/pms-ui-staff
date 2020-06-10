@@ -42,6 +42,7 @@ module.exports = {
                     'rover/directives/stringToNumber/*js',
                     'shared/sntUtils/directives/sntSessionTimeoutDir.js',
                     'rover/directives/dropFile/rvDropFileDir.js',
+                    'rover/directives/imageError/rvImageErrorDir.js',
 
                     // Eliminate all spec files
                     '!**/*.spec.js'

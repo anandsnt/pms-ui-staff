@@ -10,9 +10,10 @@
               <span class="icons icon-document {{getIconClass(selectedFile.content_type)}"></span>
               <div class="file-type {{getContentTypeClass(selectedFile.content_type)}}">{{selectedFile.content_type}}</div>
             </div>
-            <img ng-if="selectedFile.content_type === 'image'"
+           <!--  <img ng-if="isImageAndHasThumbNail(selectedFile)"
                  ng-src="{{selectedFile.preview_url}}"
-                 img-error/>
+                 img-error
+                 /> -->
           </div>
           <div class="file-details">
             <div class="file-author">{{selectedFile.user}}</div>
@@ -22,7 +23,9 @@
         </div>
         <!-- if there is a previe of the file, show this:-->
         <div class="preview-file" ng-if="selectedFile.preview_url" style="position: relative;">
-          <img src="{{selectedFile.preview_url}}" style="position: absolute;
+          <img ng-src="{{selectedFile.preview_url}}" 
+               img-error
+               style="position: absolute;
                                                         left: 50%;
                                                         top: 50%;
                                                         transform: translate(-50%, -50%);">
