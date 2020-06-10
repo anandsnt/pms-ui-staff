@@ -18,15 +18,12 @@
         </label>
         <div class="file-container open-modal" ng-click="openFileDetails(file)">
           <div class="file-image">
-            <div ng-if="file.content_type !== 'image'" class="file-icon">
-              <span class="icons icon-document"
-                ng-class="{'icon-document': file.content_type === 'document' || file.content_type === 'pdf',
-                'icon-sheet': file.content_type === 'csv' || file.content_type === 'numbers' || file.content_type === 'xsls',
-              'icon-presentation': file.content_type === 'keynote' || file.content_type === 'ppt'}"></span>
-              <div class="file-type {{ (file.content_type === 'pdf') ? 'pdf' :
-              (file.content_type === 'csv' || file.content_type === 'numbers' || file.content_type === 'xsls') ? 'sheet': (file.content_type === 'keynote' || file.content_type === 'ppt') ? 'presentation' : ''}}">{{file.content_type}}</div>
+            <div ng-if="!isImageAndHasThumbNail(file)" class="file-icon">
+              <span class="icons icon-document {{getIconClass(file.content_type)}}"></span>
+              <div class="file-type {{getContentTypeClass(file.content_type)}}">{{file.content_type}}</div>
             </div>
-            <img ng-if="file.content_type === 'image'" src="{{file.preview_url}}"/>
+            <img ng-if="isImageAndHasThumbNail(file)" ng-src="{{file.preview_url}}"
+                 img-error/>
           </div>
           <h3 class="file-title">{{file.file_name}}</h3>
           <div class="file-details">

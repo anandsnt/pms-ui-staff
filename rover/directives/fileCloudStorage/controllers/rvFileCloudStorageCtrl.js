@@ -5,38 +5,49 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 		$scope.cardData.selectedFileList = [];
 		var newFileList = [];
 		var fileDetailsPopup;
+
+		var retrieveFileType = function(content_type) {
+			var contentTypeRemovingSlash = content_type.split("/")[1];
+			var contentTypeRemovingDot = contentTypeRemovingSlash.split(".")[contentTypeRemovingSlash.split(".").length - 1];
+			var finalContentType = contentTypeRemovingDot.split("-")[contentTypeRemovingDot.split("-").length - 1];
+			finalContentType = finalContentType === 'powerpoint' ? 'ppt' : finalContentType;
+
+			return finalContentType;
+		};
+
 		var fetchFiles = function() {
 			$scope.errorMessage = '';
 			sntActivity.start('FETCH_FILES');
 			rvFileCloudStorageSrv.fetchFiles({
 				card_id: $scope.cardId
 			}).then(function(fileList) {
-				sntActivity.stop('FETCH_FILES');
-				$scope.cardData.fileTypes = [];
-				_.each(fileList, function(file) {
-					var indexOffileInSelectedList = _.findIndex($scope.cardData.selectedFileList, function(selectedFile) {
-						return selectedFile.id === file.id;
+					sntActivity.stop('FETCH_FILES');
+					$scope.cardData.fileTypes = [];
+					_.each(fileList, function(file) {
+						var indexOffileInSelectedList = _.findIndex($scope.cardData.selectedFileList, function(selectedFile) {
+							return selectedFile.id === file.id;
+						});
+
+						file.is_selected = indexOffileInSelectedList !== -1;
+						file.content_type = file.content_type ? retrieveFileType(file.content_type) : '';
+
+						$scope.cardData.fileTypes = _.union($scope.cardData.fileTypes, [file.content_type]);
 					});
-
-					file.is_selected = indexOffileInSelectedList !== -1;
-					file.content_type = file.content_type ? file.content_type.split("/")[1] : '';
-
-					$scope.cardData.fileTypes = _.union($scope.cardData.fileTypes, [file.content_type]);
+					$scope.cardData.fileList = fileList;
+					$scope.refreshScroller('card_file_list_scroller');
+					$scope.cardData.firstFileFetch = false;
+				},
+				function() {
+					sntActivity.stop('FETCH_FILES');
+					$scope.errorMessage = [$filter('translate')('FILE_FETCHING_FAILED')];
+					$scope.cardData.firstFileFetch = false;
 				});
-				$scope.cardData.fileList = fileList;
-				$scope.refreshScroller('card_file_list_scroller');
-				$scope.cardData.firstFileFetch = false;
-			},
-			function(){
-				sntActivity.stop('FETCH_FILES');
-				$scope.errorMessage = [$filter('translate')('FILE_FETCHING_FAILED')];
-				$scope.cardData.firstFileFetch = false;
-			});
 		};
 
 		var closePopupIfOpened = function() {
 			if (fileDetailsPopup) {
 				fileDetailsPopup.close();
+				fileDetailsPopup = '';
 			}
 		};
 
@@ -106,6 +117,33 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			});
 		};
 
+		$scope.fileReplaced = function() {
+			sntActivity.start('UPLOADING_FILES');
+			$scope.errorMessage = '';
+			var params = angular.copy(newFileList[0]);
+			params.id = $scope.selectedFile.id;
+
+			var fileUploadSuccess = function() {
+				sntActivity.stop('UPLOADING_FILES');
+				newFileList = [];
+				$scope.cardData.newFile = {};
+				$scope.deleteFiles($scope.selectedFile);
+			};
+
+			var file = newFileList[0];
+			rvFileCloudStorageSrv.uploadFile(file).
+			then(fileUploadSuccess,
+				function() {
+					sntActivity.stop('UPLOADING_FILES');
+					$scope.errorMessage = [$filter('translate')('FILE_UPLOADING_FAILED')];
+				});
+
+		};
+
+		$scope.replaceFile = function() {
+			$('#replace-file').trigger('click');
+		};
+
 		$scope.$on('FILE_UPLOADED_DONE', $scope.fileUploadCompleted);
 
 		$scope.donwloadFiles = function(selectedFile) {
@@ -137,10 +175,10 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 				rvFileCloudStorageSrv.deleteFile({
 					id: file.id
 				}).then(fileDeletionSuccess,
-				function(){
-					sntActivity.stop('DELETING_FILES');
-					$scope.errorMessage = [$filter('translate')('FILE_DELETION_FAILED')];
-				});
+					function() {
+						sntActivity.stop('DELETING_FILES');
+						$scope.errorMessage = [$filter('translate')('FILE_DELETION_FAILED')];
+					});
 			});
 		};
 
@@ -160,12 +198,55 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 		$scope.openFileDetails = function(file) {
 			$scope.selectedFile = file;
 			fileDetailsPopup = ngDialog.open({
-						template: '/assets/directives/fileCloudStorage/partials/rvFileDetails.html',
-						className: '',
-						scope: $scope,
-						closeByDocument: false,
-						closeByEscape: false
-					});
+				template: '/assets/directives/fileCloudStorage/partials/rvFileDetails.html',
+				className: '',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false
+			});
+		};
+
+		$scope.closeFileDetailsPopup = function() {
+			closePopupIfOpened();
+		};
+
+		var imageFormats = ['tif', 'tiff', 'bmp', 'jpg', 'jpeg', 'gif', 'png'];
+		var sheetFormats = ['csv', 'numbers', 'xsls', 'sheet', 'excel'];
+		var presentationFormats = ['keynote', 'ppt', 'powerpoint'];
+
+		$scope.isImageAndHasThumbNail = function(file) {
+			var imageFormats = ['tif', 'tiff', 'bmp', 'jpg', 'jpeg', 'gif', 'png'];
+			var indexOfFileType = _.indexOf(imageFormats, file.content_type);
+
+			return indexOfFileType !== -1 && file.preview_url;
+		};
+
+		$scope.getIconClass = function(content_type) {
+
+			var iconClass = 'icon-document';
+
+			if (content_type === 'document' || content_type === 'pdf') {
+				iconClass = 'icon-document';
+			} else if (_.indexOf(sheetFormats, content_type) !== -1) {
+				iconClass = 'icon-sheet';
+			} else if (_.indexOf(presentationFormats, content_type) !== -1) {
+				iconClass = 'icon-presentation';
+			}
+			return iconClass;
+		};
+
+		$scope.getContentTypeClass = function(content_type) {
+			var contentTypeClass;
+
+			if (content_type === 'pdf') {
+				contentTypeClass = 'pdf';
+			} else if (_.indexOf(sheetFormats, content_type) !== -1) {
+				contentTypeClass = 'sheet';
+			} else if (_.indexOf(presentationFormats, content_type) !== -1) {
+				contentTypeClass = 'presentation';
+			}
+
+			return contentTypeClass;
 		};
 
 		(function() {
