@@ -29,7 +29,7 @@
                 <strong><span ng-if = "printData.folio_label && !printData.is_invoice_void_number_enabled">{{printData.folio_label}}:</span>  
                     <span ng-if = "!printData.folio_label && !printData.is_invoice_void_number_enabled">{{printData.translation.folio_number}}:</span>
                     <span ng-if = "printData.is_invoice_void_number_enabled && printData.void_number_label">{{printData.void_number_label}}:</span>
-                    <span ng-if = "printData.is_invoice_void_number_enabled && !printData.void_number_label">{{printData.translation.folio_number}}:</span>
+                    <span ng-if = "printData.is_invoice_void_number_enabled && !printData.void_number_label">{{printData.translation.void_number}}:</span>
                 </strong>{{printData.folio_number}}<br/>
             </span>
             <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !printData.is_informational_invoice">
@@ -93,7 +93,7 @@
                     <strong><span ng-if = "printData.folio_label && !printData.is_invoice_void_number_enabled">{{printData.folio_label}}:</span>  
                     <span ng-if = "!printData.folio_label && !printData.is_invoice_void_number_enabled">{{printData.translation.folio_number}}:</span>
                     <span ng-if = "printData.is_invoice_void_number_enabled && printData.void_number_label">{{printData.void_number_label}}:</span>
-                    <span ng-if = "printData.is_invoice_void_number_enabled && !printData.void_number_label">{{printData.translation.folio_number}}:</span>
+                    <span ng-if = "printData.is_invoice_void_number_enabled && !printData.void_number_label">{{printData.translation.void_number}}:</span>
                 </strong>{{printData.folio_number}}<br/>
                 </span>
                 <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !printData.is_informational_invoice">
