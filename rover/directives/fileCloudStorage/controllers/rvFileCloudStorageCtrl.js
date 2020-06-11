@@ -6,6 +6,14 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 		var newFileList = [];
 		var fileDetailsPopup;
 
+		var scrollToTop = function() {
+			var scroller = $scope.getScroller('card_file_list_scroller');
+
+			$timeout(function() {
+				scroller.scrollTo(0, 0, 300);
+			}, 0);
+		};
+
 		var retrieveFileType = function(content_type) {
 			var contentTypeRemovingSlash = content_type.split("/")[1];
 			var contentTypeRemovingDot = contentTypeRemovingSlash.split(".")[contentTypeRemovingSlash.split(".").length - 1];
@@ -101,6 +109,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 
 		$scope.filterChanged = function() {
 			$scope.refreshScroller('card_file_list_scroller');
+			scrollToTop();
 		};
 
 		$scope.fileUploadCompleted = function() {
@@ -177,7 +186,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 				a.click();
 				sntActivity.stop('DOWNLOADING_FILES');
 			} else {
-				zip.file(file.file_name, fileData.base64_data.split(',')[1], {
+				zip.file(file.file_name, fileData.base64_data, {
 					base64: true
 				});
 			}
@@ -242,7 +251,6 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 		};
 
 		$scope.$on('FETCH_FILES', function() {
-			$scope.setScroller('card_file_list_scroller', {});
 			$scope.cardData.firstFileFetch = true;
 			fetchFiles();
 		});
