@@ -13,12 +13,12 @@
         </div>
     </div>
     <!-- Remove .hidden if checked Selection -->
-    <div class="files-selected" ng-class="{'hidden': cardData.selectedFileList.length === 0 || cardData.notesViewOn}">
+    <div class="files-selected" ng-class="{'hidden': (!cardData.hasDeleteFilePermission && !cardData.hasDownloadFilePermission) || cardData.selectedFileList.length === 0 || cardData.notesViewOn}">
         <strong class="files-count"><span class="count">{{cardData.selectedFileList.length}}</span> {{ 'FILES_SELECTED' | translate }}</strong>
-        <button type="button" class="button purple" ng-click="donwloadFiles()" translate>
+        <button type="button" class="button purple" ng-click="donwloadFiles()" ng-if="cardData.hasDownloadFilePermission" translate>
             DOWNLOAD_SELECTED
         </button>
-        <button type="button" class="button red" ng-click="deleteFiles()" translate>
+        <button type="button" class="button red" ng-click="deleteFiles()"  ng-if="cardData.hasDeleteFilePermission" translate>
             DELETE_SELECTED
         </button>
     </div>
@@ -63,7 +63,7 @@
         </div>
     </div>
     <!-- Remove .hidden if showing files. Add .hidden if not showing files or selecting files -->
-    <div class="entry add-new" ng-class="{'hidden': cardData.selectedFileList.length !== 0 || cardData.notesViewOn}">
+    <div class="entry add-new" ng-class="{'hidden': cardData.selectedFileList.length !== 0 || cardData.notesViewOn || !cardData.hasUploadFilePermission}">
         <label for="add-new-file" class="add-new-button">
             <input id="add-new-file" 
                    type="file" 

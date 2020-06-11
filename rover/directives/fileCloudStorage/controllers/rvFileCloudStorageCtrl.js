@@ -1,5 +1,5 @@
-sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv', '$timeout', 'sntActivity', '$filter', 'ngDialog',
-	function($scope, rvFileCloudStorageSrv, $timeout, sntActivity, $filter, ngDialog) {
+sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv', '$timeout', 'sntActivity', '$filter', 'ngDialog', 'rvPermissionSrv',
+	function($scope, rvFileCloudStorageSrv, $timeout, sntActivity, $filter, ngDialog, rvPermissionSrv) {
 
 		$scope.cardData.fileList = [];
 		$scope.cardData.selectedFileList = [];
@@ -53,6 +53,14 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 		};
 
 		$scope.$on('FILE_UPLOADED', function(evt, file) { 
+			if (!$scope.cardData.hasUploadFilePermission) {
+				$timeout(function() {
+					$scope.errorMessage = [$filter('translate')('NO_FILE_UPLOAD_PERMISSION')];
+					$scope.cardData.dragInProgress = false;
+					sntActivity.stop('UPLOADING_FILES');
+				}, 100);
+				return;
+			}
 			console.log(file.base64.split(";base64,")[0]);
 			var newFile = {
 				"file_name": file.name,
@@ -242,6 +250,9 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 		};
 
 		$scope.openFileDetails = function(file) {
+			if (!$scope.cardData.hasViewFilePermission) {
+				return;
+			}
 			$scope.selectedFile = file;
 			fileDetailsPopup = ngDialog.open({
 				template: '/assets/directives/fileCloudStorage/partials/rvFileDetails.html',
@@ -308,6 +319,12 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			$scope.cardData.searchText = '';
 			$scope.cardData.dragInProgress = false;
 			$scope.selectedFile = '';
+
+			$scope.cardData.hasViewFilePermission = rvPermissionSrv.getPermissionValue('CLOUD_STORAGE_VIEW');
+			$scope.cardData.hasUploadFilePermission = rvPermissionSrv.getPermissionValue('CLOUD_STORAGE_UPLOAD');
+			$scope.cardData.hasDownloadFilePermission = rvPermissionSrv.getPermissionValue('CLOUD_STORAGE_DOWNLOAD');
+			$scope.cardData.hasDeleteFilePermission = rvPermissionSrv.getPermissionValue('CLOUD_STORAGE_DELETE');
+
 		})();
 	}
 ]);

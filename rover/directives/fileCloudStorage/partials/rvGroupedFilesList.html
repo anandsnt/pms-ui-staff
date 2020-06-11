@@ -10,7 +10,7 @@
 			ng-if="file.content_type === fileType"
 			ng-repeat="file in cardData.fileList | orderBy : sortFiles : cardData.sort_files_by === 'NEWLY_ADDED' | filter: cardData.searchText"
 			ng-class="{'selected': file.is_selected}">
-			<label class="checkbox inline" ng-class="{'hidden': !cardData.hasFilePersmissions}" >
+			<label class="checkbox inline" ng-class="{'hidden': (!cardData.hasDeleteFilePermission && !cardData.hasDownloadFilePermission)}" >
 				<span class="icon-form icon-checkbox" ng-class="{'checked': file.is_selected }"></span>
 				<input ng-model="file.is_selected" type="checkbox" ng-change="fileSelectionChanged()"/>
 			</label>

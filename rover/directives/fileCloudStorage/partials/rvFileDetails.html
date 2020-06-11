@@ -4,7 +4,7 @@
       
       <div class="modal-body">
         <div class="file-info">
-          <span class="message h2">Edit File</span>
+          <!-- <span class="message h2">Edit File</span> -->
           <div class="file-image">
             <div class="file-icon">
               <span class="icons icon-document {{getIconClass(selectedFile.content_type)}"></span>
@@ -19,7 +19,7 @@
             <div class="file-author">{{selectedFile.user}}</div>
             <div class="file-date">{{selectedFile.uploaded_at}}</div>
           </div>
-          <textarea class="file-title">{{selectedFile.file_name}}</textarea>
+          <textarea class="file-title disabled" disabled="">{{selectedFile.file_name}}</textarea>
         </div>
         <!-- if there is a previe of the file, show this:-->
         <div class="preview-file" ng-if="selectedFile.preview_url && cardData.cloudType !== 'DROP_BOX' || isImageAndHasThumbNail(selectedFile)" style="position: relative;">
@@ -43,11 +43,11 @@
            accept="*" app-filereader 
            ng-change="fileReplaced()"
            class="hidden"/>
-        <button class="button blue" ng-click="replaceFile(selectedFile)">Replace File</button>
-        <button class="button purple" ng-click="donwloadFiles(selectedFile)">Download File</button>
-        <button class="button red" ng-click="deleteFiles(selectedFile)">Delete File</button>
+        <button class="button blue" ng-click="replaceFile(selectedFile)" ng-if="cardData.hasUploadFilePermission">Replace File</button>
+        <button class="button purple" ng-click="donwloadFiles(selectedFile)" ng-if="cardData.hasDownloadFilePermission">Download File</button>
+        <button class="button red" ng-click="deleteFiles(selectedFile)" ng-if="cardData.hasDeleteFilePermission">Delete File</button>
         <button class="button blank" ng-click="closeFileDetailsPopup()">Cancel</button>
-        <button class="button green" ng-click="updateFile(selectedFile)">Save Changes</button>
+        <!-- <button class="button green" ng-click="updateFile(selectedFile)">Save Changes</button> -->
       </div>
     </div>
   </div>

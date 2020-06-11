@@ -19,4 +19,5 @@
 "FILE_UPLOADING_FAILED": "File uploading failed",
 "FILE_DELETION_FAILED": "File deletion failed",
 "FILE_UPDATION_FAILED": "File updation failed",
-"FILE_DOWNLOAD_FAILED": "File Download failed"
+"FILE_DOWNLOAD_FAILED": "File Download failed",
+"NO_FILE_UPLOAD_PERMISSION": "Sorry, you don't have file uploading permission"
