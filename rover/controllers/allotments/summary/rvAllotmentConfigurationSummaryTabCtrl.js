@@ -654,30 +654,6 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			}
 
 			showRateChangePopup();
-			// var summaryData = $scope.allotmentConfigData.summary,
-			// 	uniqId = summaryData.uniqId,
-			// 	rateId = uniqId && uniqId.split(':')[0],
-			// 	contractId = uniqId && uniqId.split(':')[1];
-
-			// $scope.allotmentConfigData.summary.contract_id = contractId;
-			// $scope.allotmentConfigData.summary.rate = rateId;
-			// if (!summaryData.allotment_id || !uniqId) {
-			// 	return false;
-			// }
-
-			// var params = {
-			// 	allotment_id: summaryData.allotment_id,
-			// 	rate_id: rateId,
-			// 	contract_id: contractId
-			// };
-
-			// var options = {
-			// 	successCallBack: onRateChangeSuccess,
-			// 	failureCallBack: onRateChangeFailure,
-			// 	params: params
-			// };
-
-			// $scope.callAPI(rvAllotmentConfigurationSrv.updateRate, options);
 		};
 
 
