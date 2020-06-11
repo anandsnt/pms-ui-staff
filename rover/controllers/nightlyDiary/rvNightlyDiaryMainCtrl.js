@@ -239,10 +239,10 @@ angular.module('sntRover')
                     $scope.currentSelectedRoom = {};
                 };
 
-                $scope.addListener('POLL_AUTO_ASSIGN_STATUS', function() {
+                $scope.addListener('POLL_N_DIARY_AUTO_ASSIGN_STATUS', function() {
                     diaryStatusInterval = $interval(diaryLockStatus, 2000);
                 });
-                $scope.addListener('STOP_AUTO_ASSIGN_STATUS_POLLING', function() {
+                $scope.addListener('STOP_N_DIARY_AUTO_ASSIGN_STATUS_POLLING', function() {
                     $interval.cancel(diaryStatusInterval);
                 });
 

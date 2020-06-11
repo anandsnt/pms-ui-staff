@@ -2991,6 +2991,7 @@ sntRover.controller('RVbillCardController',
 	};	
 
 	$scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data) {
+		$scope.guestCardData.contactInfo.email = data;
 		$scope.sendAutomaticEmails(data);
 	});
 

@@ -1,5 +1,5 @@
-angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryUtil', 'rvDiaryMetadata', '$vault', '$rootScope',
-        function($q, RVBaseWebSrv, rvBaseWebSrvV2, util, meta, $vault, $rootScope) {
+angular.module('sntRover').service('rvDiarySrv', ['$q', 'sntBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryUtil', 'rvDiaryMetadata', '$vault', '$rootScope',
+        function($q, sntBaseWebSrv, rvBaseWebSrvV2, util, meta, $vault, $rootScope) {
                 /* DATA STORE w/ set functions */
                 function STORE() {
                     if (!(this instanceof STORE)) {
@@ -1129,5 +1129,22 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     return deferred.promise;
                 };
 
+                /**
+                 * Fetch auto-assign status
+                 */
+                this.fetchAutoAssignStatus = function() {
+                    var url = 'api/auto_room_assign_processes/status';
+
+                    return sntBaseWebSrv.getJSON(url);
+                };
+
+                /**
+                 * Unlock Diary after auto-assign process
+                 */
+                this.unlockRoomDiary = function() {
+                    var url = 'api/auto_room_assign_processes/unlock_diary';
+
+                    return sntBaseWebSrv.postJSON(url);
+                };
             }]);
                 // ------------------------------------------------------------------
