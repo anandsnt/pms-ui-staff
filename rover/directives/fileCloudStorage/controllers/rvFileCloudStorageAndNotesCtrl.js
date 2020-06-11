@@ -1,5 +1,5 @@
-sntRover.controller('rvFileCloudStorageAndNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', '$controller',
-	function($scope, rvFileCloudStorageSrv, $controller) {
+sntRover.controller('rvFileCloudStorageAndNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', 'RVHotelDetailsSrv', '$controller',
+	function($scope, rvFileCloudStorageSrv, RVHotelDetailsSrv, $controller) {
 
 		$scope.screenModeChanged = function(selectedType) {
 			$scope.$broadcast('FETCH_' + selectedType);
@@ -8,7 +8,8 @@ sntRover.controller('rvFileCloudStorageAndNotesCtrl', ['$scope', 'rvFileCloudSto
 		(function() {
 			rvFileCloudStorageSrv.setCardType($scope.cardType);
 			$scope.cardData = {
-				notesViewOn: true
+				notesViewOn: true,
+				cloudType: RVHotelDetailsSrv.hotelDetails.cloud_storage_config.cloud_storage_type
 			};
 			$controller('rvCardNotesCtrl', {
 				$scope: $scope

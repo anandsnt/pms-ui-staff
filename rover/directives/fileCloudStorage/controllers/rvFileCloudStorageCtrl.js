@@ -29,6 +29,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 						});
 
 						file.is_selected = indexOffileInSelectedList !== -1;
+						file.full_content_type = angular.copy(file.content_type);
 						file.content_type = file.content_type ? retrieveFileType(file.content_type) : '';
 
 						$scope.cardData.fileTypes = _.union($scope.cardData.fileTypes, [file.content_type]);
@@ -51,7 +52,8 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			}
 		};
 
-		$scope.$on('FILE_UPLOADED', function(evt, file) {
+		$scope.$on('FILE_UPLOADED', function(evt, file) { 
+			console.log(file.base64.split(";base64,")[0]);
 			var newFile = {
 				"file_name": file.name,
 				"content_type": file.type,
@@ -146,15 +148,59 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 
 		$scope.$on('FILE_UPLOADED_DONE', $scope.fileUploadCompleted);
 
-		$scope.donwloadFiles = function(selectedFile) {
-			var fileList = selectedFile ? [selectedFile] : $scope.cardData.selectedFileList;
+	$scope.donwloadFiles = function(selectedFile) {
+		var fileList = selectedFile ? [selectedFile] : $scope.cardData.selectedFileList;
+		var downloadFilesCount = 0;
 
-			_.each(fileList, function(file) {
-				rvFileCloudStorageSrv.downLoadFile({
-					id: file.id
+		sntActivity.start('DOWNLOADING_FILES');
+		var zip = new JSZip();
+		var fileDownloadSuccess = function(fileData, file) {
+			downloadFilesCount++;
+			// if there is only one file, download as one, else combine and download as zip file
+			if (fileList.length === 1) {
+				var a = document.createElement("a");
+
+				a.href = "data:" + file.full_content_type + ";base64," + fileData.base64_data;
+				a.download = file.file_name;
+				a.click();
+				sntActivity.stop('DOWNLOADING_FILES');
+			} else {
+				zip.file(file.file_name, fileData.base64_data.split(',')[1], {
+					base64: true
 				});
-			});
+			}
+
+			console.log(downloadFilesCount + "---------" + fileList.length)
+
+			var fileNameMapping = {
+				'guest_card': 'GUEST',
+				'stay_card': 'RESERVATION'
+			};
+
+			if (fileList.length !== 1 && downloadFilesCount === fileList.length) {
+
+				zip.generateAsync({
+						type: "blob"
+					})
+					.then(function(blob) {
+						var fileName = (fileNameMapping[$scope.cardType] ?  fileNameMapping[$scope.cardType] :  $scope.cardType) + "_" + $scope.cardId + ".zip";
+
+						saveAs(blob, fileName);
+					});
+				sntActivity.stop('DOWNLOADING_FILES');
+			}
 		};
+
+		_.each(fileList, function(file) {
+			rvFileCloudStorageSrv.downLoadFile({
+				id: file.id
+			}).then(function(response) {
+				fileDownloadSuccess(response, file);
+			}, function() {
+				sntActivity.stop('DOWNLOADING_FILES');
+			});
+		});
+	};
 
 		$scope.deleteFiles = function(selectedFile) {
 			var fileList = selectedFile ? [selectedFile] : $scope.cardData.selectedFileList;

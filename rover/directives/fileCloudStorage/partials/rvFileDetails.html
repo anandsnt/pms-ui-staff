@@ -22,13 +22,17 @@
           <textarea class="file-title">{{selectedFile.file_name}}</textarea>
         </div>
         <!-- if there is a previe of the file, show this:-->
-        <div class="preview-file" ng-if="selectedFile.preview_url" style="position: relative;">
-          <img ng-src="{{selectedFile.preview_url}}" 
+        <div class="preview-file" ng-if="selectedFile.preview_url && cardData.cloudType !== 'DROP_BOX' || isImageAndHasThumbNail(selectedFile)" style="position: relative;">
+          <img ng-if="cardData.cloudType !== 'DROP_BOX' || isImageAndHasThumbNail(selectedFile)"
+               ng-src="{{selectedFile.preview_url}}" 
                img-error
                style="position: absolute;
-                                                        left: 50%;
-                                                        top: 50%;
-                                                        transform: translate(-50%, -50%);">
+                      left: 50%;
+                      top: 50%;
+                      max-height: 70%;
+                      max-width: 90%;
+                      transform: translate(-50%, -50%);">
+          <!-- <iframe src="{{selectedFile.preview_url}}" ng-if="cardData.cloudType === 'DROP_BOX'"></iframe> -->
           </div>
       </div>
       <div class="actions">
