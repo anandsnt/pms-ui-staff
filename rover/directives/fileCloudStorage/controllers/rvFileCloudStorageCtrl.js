@@ -10,6 +10,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			var contentTypeRemovingSlash = content_type.split("/")[1];
 			var contentTypeRemovingDot = contentTypeRemovingSlash.split(".")[contentTypeRemovingSlash.split(".").length - 1];
 			var finalContentType = contentTypeRemovingDot.split("-")[contentTypeRemovingDot.split("-").length - 1];
+			
 			finalContentType = finalContentType === 'powerpoint' ? 'ppt' : finalContentType;
 
 			return finalContentType;
@@ -61,7 +62,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 				}, 100);
 				return;
 			}
-			console.log(file.base64.split(";base64,")[0]);
+
 			var newFile = {
 				"file_name": file.name,
 				"content_type": file.type,
@@ -115,6 +116,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 					fetchFiles();
 				}
 			};
+
 			sntActivity.start('UPLOADING_FILES');
 			$scope.errorMessage = '';
 			_.each(newFileList, function(file) {
@@ -131,6 +133,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			sntActivity.start('UPLOADING_FILES');
 			$scope.errorMessage = '';
 			var params = angular.copy(newFileList[0]);
+
 			params.id = $scope.selectedFile.id;
 
 			var fileUploadSuccess = function() {
@@ -141,6 +144,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			};
 
 			var file = newFileList[0];
+
 			rvFileCloudStorageSrv.uploadFile(file).
 			then(fileUploadSuccess,
 				function() {
@@ -178,7 +182,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 				});
 			}
 
-			console.log(downloadFilesCount + "---------" + fileList.length)
+			console.log(downloadFilesCount + "---------" + fileList.length);
 
 			var fileNameMapping = {
 				'guest_card': 'GUEST',
@@ -225,6 +229,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 					fetchFiles();
 				}
 			};
+
 			_.each(fileList, function(file) {
 				rvFileCloudStorageSrv.deleteFile({
 					id: file.id
@@ -272,7 +277,6 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 		var presentationFormats = ['keynote', 'ppt', 'powerpoint'];
 
 		$scope.isImageAndHasThumbNail = function(file) {
-			var imageFormats = ['tif', 'tiff', 'bmp', 'jpg', 'jpeg', 'gif', 'png'];
 			var indexOfFileType = _.indexOf(imageFormats, file.content_type);
 
 			return indexOfFileType !== -1 && file.preview_url;
