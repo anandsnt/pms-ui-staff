@@ -1,7 +1,7 @@
 "ADD_TO_STAYCARD": "Add to Stay Card",
 "DELETE_POST": "Delete post",
 "NO_NOTES": "No Notes",
-"NO_NOTES_SUB": "Leave a Note for {{guestCardData.contactInfo.first_name}} {{guestCardData.contactInfo.last_name}}",
+"NO_NOTES_SUB": "Leave a Note for",
 "DROP_FILES_TO_UPLOAD": "Drop your file here to upload",
 "FILES": "Files",
 "FILES_SELECTED": " files selected",

@@ -6,7 +6,7 @@
 		<button id="modal-close" type="button" class="dark-title modal-close" ng-click="closeDialog();"><span class="icons icon-close"></button>
 			<div class="modal-header">
 				<h1>{{ showFiles ? 'Notes & Files' : 'Notes' }}</h1>
-				<strong>Room {{reservationData.reservation_card.room_number}}</strong>
+				<strong ng-if="reservationData.reservation_card.room_number">Room {{reservationData.reservation_card.room_number}}</strong>
 				<!-- if we enable users to manage files add:-->
 				<div class="switch" ng-if="showFiles">
 					<div class="switch-button full-width" ng-class="{ 'on' : cardData.notesViewOn}">
@@ -53,7 +53,7 @@
 					<div class="info">
 						<span class="icon-no-content icon-notes"></span>
 						<strong class="h1">No Notes</strong>
-						<span class="h2">Leave a Note for reservation #{{reservationData.reservation_card.room_number}}</span>
+						<!-- <span class="h2">Leave a Note for reservation #{{reservationData.reservation_card.room_number}}</span> -->
 					</div>
 				</div>
 			</div>

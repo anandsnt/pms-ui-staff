@@ -123,6 +123,7 @@ sntRover.controller('rvCardNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', 'rvCa
 			$scope.editingNote = null;
 			$scope.notes = [];
 			$scope.cardData.noteText = '';
+			$scope.noNotesText = $filter('translate')('NO_NOTES_SUB') + ' # ' + $scope.cardName;
 			// rvCardNotesSrv.setApiConfigs($scope.cardType, $scope.cardId);
 		}());
 	}

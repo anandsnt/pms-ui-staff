@@ -7,7 +7,7 @@ angular.module('sntRover').service('rvCardNotesSrv', ['$q', 'rvBaseWebSrvV2',
 
 			if (params.card_type === 'guest_card') {
 				service.baseApiURL = '/api/guest_details/' + params.card_id + '/notes';
-			} else if (params.card_type === 'company_ta_card') {
+			} else if (params.card_type === 'cota_card') {
 				service.baseApiURL = '/api/accounts/' + params.card_id;
 			}
 			var apiMapping = {
@@ -17,11 +17,11 @@ angular.module('sntRover').service('rvCardNotesSrv', ['$q', 'rvBaseWebSrvV2',
 					"update": service.baseApiURL + '/' + params.note_id,
 					"delete": service.baseApiURL + '/' + params.note_id
 				},
-				"company_ta_card": {
+				"cota_card": {
 					"fetch": service.baseApiURL + '/account_notes',
 					"create": service.baseApiURL + '/save_account_note',
 					"update": service.baseApiURL + '/update_account_note',
-					"delete": service.baseApiURL + '/delete_account_note'
+					"delete": service.baseApiURL + '/delete_account_note' + '?note_id=' + params.note_id
 				},
 				"stay_card": {
 					"fetch": '/api/reservations/' + params.reservation_id + '/notes',
