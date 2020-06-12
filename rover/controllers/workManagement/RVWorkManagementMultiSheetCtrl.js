@@ -1067,6 +1067,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				case 'CLEAN':
 				case 'INSPECTED':
 					return 'room green';
+				case 'DO_NOT_DISTURB':
+					return 'room purple';
 
 				default:
 					return 'room';

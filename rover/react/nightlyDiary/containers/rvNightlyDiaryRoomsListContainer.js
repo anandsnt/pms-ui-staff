@@ -18,6 +18,9 @@ let convertRoomsListReadyToComponent = (roomsList, selectedRoomId, state) => {
             case 'PICKUP' :
                 room.main_room_class += ' pickup';
                 break;
+            case 'DO_NOT_DISTURB' :
+                room.main_room_class += ' dnd';
+                break;
             default:
         }
         // For Inspected Only Hotel, Adding class for clean not-inspected case

@@ -75,6 +75,10 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 			if ($scope.roomDetails.current_hk_status === 'INSPECTED') {
 				return 'inspected';
 			}
+
+			if ($scope.roomDetails.current_hk_status === 'DO_NOT_DISTURB') {
+				return 'dnd';
+			}
 		};
 
 
