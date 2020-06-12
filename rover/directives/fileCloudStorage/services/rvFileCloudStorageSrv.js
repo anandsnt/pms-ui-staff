@@ -26,4 +26,9 @@ sntRover.service('rvFileCloudStorageSrv', ['$q', 'rvBaseWebSrvV2', function($q, 
         return rvBaseWebSrvV2.deleteJSON(url, params);
     };
 
+    service.updateFile = function(params) {
+        var url = '/api/file_attachments/' + params.id;
+
+        return rvBaseWebSrvV2.putJSON(url, params);
+    };
 }]);

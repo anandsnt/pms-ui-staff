@@ -124,6 +124,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 					newFileList = [];
 					$scope.cardData.newFile = {};
 					fetchFiles();
+					closePopupIfOpened();
 				}
 			};
 
@@ -143,20 +144,20 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 		$scope.fileReplaced = function() {
 			sntActivity.start('UPLOADING_FILES');
 			$scope.errorMessage = '';
-			var params = angular.copy(newFileList[0]);
-
-			params.id = $scope.selectedFile.id;
 
 			var fileUploadSuccess = function() {
 				sntActivity.stop('UPLOADING_FILES');
 				newFileList = [];
 				$scope.cardData.newFile = {};
-				$scope.deleteFiles($scope.selectedFile);
+				fetchFiles();
+				closePopupIfOpened();
 			};
 
-			var file = newFileList[0];
+			var params = angular.copy(newFileList[0]);
 
-			rvFileCloudStorageSrv.uploadFile(file).
+			params.id = $scope.selectedFile.id;
+
+			rvFileCloudStorageSrv.updateFile(params).
 			then(fileUploadSuccess,
 				function() {
 					sntActivity.stop('UPLOADING_FILES');
