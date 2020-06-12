@@ -28,7 +28,8 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			$scope.errorMessage = '';
 			sntActivity.start('FETCH_FILES');
 			rvFileCloudStorageSrv.fetchFiles({
-				card_id: $scope.cardId
+				card_id: $scope.cardId,
+				card_type: $scope.cardType
 			}).then(function(fileList) {
 					sntActivity.stop('FETCH_FILES');
 					$scope.cardData.fileTypes = [];
@@ -129,6 +130,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			sntActivity.start('UPLOADING_FILES');
 			$scope.errorMessage = '';
 			_.each(newFileList, function(file) {
+				file.card_type = $scope.cardType;
 				rvFileCloudStorageSrv.uploadFile(file).
 				then(fileUploadSuccess,
 					function() {

@@ -9,7 +9,6 @@ sntRover.controller('rvStayCardNotesAndFileCtrl', ['$scope', 'rvFileCloudStorage
 			var cardType = 'stay_card';
 			var cardId = $scope.reservationData.reservation_card.reservation_id;
 
-			rvFileCloudStorageSrv.setCardType(cardType);
 			$scope.cardId = cardId;
 			$scope.cardType = cardType;
 			$scope.cardData = {
