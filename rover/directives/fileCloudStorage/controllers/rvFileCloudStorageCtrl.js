@@ -14,6 +14,10 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			}, 0);
 		};
 
+		var imageFormats = ['tif', 'tiff', 'bmp', 'jpg', 'jpeg', 'gif', 'png'];
+		var sheetFormats = ['csv', 'numbers', 'xsls', 'sheet', 'excel'];
+		var presentationFormats = ['keynote', 'ppt', 'powerpoint'];
+
 		var retrieveFileType = function(content_type) {
 			var contentTypeRemovingSlash = content_type.split("/")[1];
 			var contentTypeRemovingDot = contentTypeRemovingSlash.split(".")[contentTypeRemovingSlash.split(".").length - 1];
@@ -282,10 +286,6 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 		$scope.closeFileDetailsPopup = function() {
 			closePopupIfOpened();
 		};
-
-		var imageFormats = ['tif', 'tiff', 'bmp', 'jpg', 'jpeg', 'gif', 'png'];
-		var sheetFormats = ['csv', 'numbers', 'xsls', 'sheet', 'excel'];
-		var presentationFormats = ['keynote', 'ppt', 'powerpoint'];
 
 		$scope.isImageAndHasThumbNail = function(file) {
 			var indexOfFileType = _.indexOf(imageFormats, file.content_type);

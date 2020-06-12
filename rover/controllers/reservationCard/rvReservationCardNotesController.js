@@ -133,6 +133,10 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
             ngDialog.close();
         };
 
+        $scope.$on('NOTES_COUNT_UPDATED', function(evt, notes) {
+            $scope.notesCount = notes.length;
+        });
+
         init();
     }
 ]);

@@ -3,21 +3,13 @@ angular.module('sntRover').service('rvCardNotesSrv', ['$q', 'rvBaseWebSrvV2',
 
 		var service = this;
 
-		service.cardType = '';
-		service.cardId = '';
-
-		service.setApiConfigs = function(cardType, cardId) {
-			service.cardType = cardType;
-			service.cardId = cardId;
-
-			if (cardType === 'guest_card') {
-				service.baseApiURL = '/api/guest_details/' + cardId + '/notes';
-			} else if (cardType === 'company_ta_card') {
-				service.baseApiURL = '/api/accounts/' + service.cardId;
-			}
-		};
-
 		var getApiURL = function(method, params) {
+
+			if (params.card_type === 'guest_card') {
+				service.baseApiURL = '/api/guest_details/' + params.card_id + '/notes';
+			} else if (params.card_type === 'company_ta_card') {
+				service.baseApiURL = '/api/accounts/' + params.card_id;
+			}
 			var apiMapping = {
 				"guest_card": {
 					"fetch": service.baseApiURL,
@@ -32,14 +24,14 @@ angular.module('sntRover').service('rvCardNotesSrv', ['$q', 'rvBaseWebSrvV2',
 					"delete": service.baseApiURL + '/delete_account_note'
 				},
 				"stay_card": {
-					"fetch": '/api/reservations/' + service.cardId + '/notes',
+					"fetch": '/api/reservations/' + params.reservation_id + '/notes',
 					"create": '/reservation_notes',
 					"update": '/reservation_notes/' + params.note_id,
 					"delete": '/reservation_notes/' + params.note_id
 				}
 			};
 
-			return apiMapping[service.cardType][method];
+			return apiMapping[params.card_type][method];
 		};
 
 		service.fetchNotes = function(params) {

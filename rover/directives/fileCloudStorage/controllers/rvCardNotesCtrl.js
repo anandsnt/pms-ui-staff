@@ -6,6 +6,7 @@ sntRover.controller('rvCardNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', 'rvCa
 		var generateApiParams = function(noteID) {
 			var params = {
 				card_id: $scope.cardId,
+				card_type: $scope.cardType,
 				note_id: noteID,
 				text: $scope.cardData.noteText, // used in guest details Apis
 				description: $scope.cardData.noteText // used in  TA and company note Apis
@@ -53,6 +54,7 @@ sntRover.controller('rvCardNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', 'rvCa
 						response.notes = processStayCardNotes(response.notes);
 					}
 					$scope.notes = response.notes;
+					$scope.$emit('NOTES_COUNT_UPDATED', $scope.notes);
 					$scope.refreshScroller('card_notes_scroller');
 				}
 			};
@@ -121,7 +123,7 @@ sntRover.controller('rvCardNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', 'rvCa
 			$scope.editingNote = null;
 			$scope.notes = [];
 			$scope.cardData.noteText = '';
-			rvCardNotesSrv.setApiConfigs($scope.cardType, $scope.cardId);
+			// rvCardNotesSrv.setApiConfigs($scope.cardType, $scope.cardId);
 		}());
 	}
 ]);
