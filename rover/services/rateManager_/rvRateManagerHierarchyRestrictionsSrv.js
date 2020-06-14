@@ -14,7 +14,9 @@ angular.module('sntRover').service('rvRateManagerHierarchyRestrictionsSrv', ['$q
             return BaseWebSrvV2.postJSON(roomTypeUrl, params);
         };
 
-        service.saveRateTypeRestrictions = () => {};
+        service.saveRateTypeRestrictions = () => {
+            return BaseWebSrvV2.postJSON(rateTypeUrl, params);
+        };
 
         service.saveRateRestrictions = () => {};
 
@@ -24,6 +26,10 @@ angular.module('sntRover').service('rvRateManagerHierarchyRestrictionsSrv', ['$q
 
         service.fetchAllRoomTypes = (params) => {
             return BaseWebSrvV2.getJSON('/api/room_types.json', params);
+        };
+
+        service.fetchAllRateTypes = (params) => {
+            return BaseWebSrvV2.getJSON('/api/rate_types/active', params);
         };
     }
 ]);

@@ -25,8 +25,8 @@ angular.module('sntRover')
                 const fetchSetOnData = () => {
                     const fetchSetOnSuccessCallback = ( response ) => {
                         $scope.errorMessage = '';
-                        $scope.searchObj.results = response.results;
-                        initialSetOnListData = angular.copy(response.results);
+                        $scope.searchObj.results = response.results || response;
+                        initialSetOnListData = angular.copy($scope.searchObj.results);
                     };
                     const fetchSetOnFailureCallback = (errorMessage) => {
                         $scope.errorMessage = errorMessage;
@@ -61,9 +61,14 @@ angular.module('sntRover')
                             $scope.searchObj.placeholder = 'Search by Room Name or Code';
                             apiMethod = hierarchySrv.fetchAllRoomTypes;
                             break;
-
+                        case 'RateType':
+                            $scope.searchObj.headerLabel = 'Set on Rate Type(s)';
+                            $scope.searchObj.noticeLabel = 'Applies to All Rate Types!';
+                            $scope.searchObj.placeholder = 'Search by Rate Type Name or Code';
+                            apiMethod = hierarchySrv.fetchAllRateTypes;
+                            break;
                         default:
-                        break;
+                            break;
                     }
 
                     fetchSetOnData();
