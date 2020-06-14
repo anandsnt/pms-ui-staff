@@ -38,10 +38,8 @@ sntRover.service('rvFileCloudStorageSrv', ['$q', 'rvBaseWebSrvV2', function($q, 
     };
 
     service.recordReservationActions = function(params) {
-        var url = '/api/reservation_actions';
+        var url = '/api/file_attachments/record_activity';
 
-        params.card_type = params.card_type === 'allotment' ? 'group' : params.card_type;
         return rvBaseWebSrvV2.postJSON(url, params);
-
     };
 }]);

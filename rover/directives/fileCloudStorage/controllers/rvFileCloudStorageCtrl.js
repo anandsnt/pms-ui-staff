@@ -37,14 +37,15 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 
 		var callApiToRecord = function(actionsType, actionDetails) {
 			// TODO: remove below condition when Action log apis are ready for guestcard
-			if ($scope.cardType !== 'stay_card') {
-				return;
-			}
+			// if ($scope.cardType !== 'stay_card') {
+			// 	return;
+			// }
 			var params = {
 				"id": $scope.cardId,
 				"application": 'ROVER',
 				"action_type": actionsType,
-				"details": [actionDetails]
+				"details": [actionDetails],
+				"card_type": $scope.cardType
 			};
 
 			var options = {
