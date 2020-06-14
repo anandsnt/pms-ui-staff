@@ -81,7 +81,7 @@
                                 Cancel
                             </button>
                             <!-- -- remove .grey and add .green if we can set the restriction -- -->
-                            <button class="button last-button" ng-class="{'hidden': (popUpView !== 'NEW' && popUpView !== 'EDIT'), 'grey disable-element': !validateForm(), 'green': validateForm(), 'small': !restrictionObj.isRepeatOnDates}" type="button" ng-click="setHouseHierarchyRestriction()">
+                            <button class="button last-button" ng-class="{'hidden': (popUpView !== 'NEW' && popUpView !== 'EDIT'), 'grey disable-element': !validateForm(), 'green': validateForm(), 'small': !restrictionObj.isRepeatOnDates}" type="button" ng-click="saveHierarchyRestriction()">
                                 {{getSetButtonLabel()}}
                             </button>
                         

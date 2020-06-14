@@ -8,8 +8,9 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 	'$filter',
 	'$timeout',
     'rvPermissionSrv',
-    'ngDialog',
-	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, RVHkRoomStatusSrv, $filter, $timeout, rvPermissionSrv, ngDialog) {
+	'ngDialog',
+	'rvUtilSrv',
+	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, RVHkRoomStatusSrv, $filter, $timeout, rvPermissionSrv, ngDialog, rvUtilSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -30,7 +31,16 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 		// keep ref to room details in local scope
 		var $_updateRoomDetails = $scope.$parent.updateRoomDetails;
 
+		var isHourly = rvUtilSrv.getDiaryMode() === 'FULL';
+
 		$scope.roomDetails = $scope.$parent.roomDetails;
+
+		// Remove the DND HK status for the below cases
+		if (!$rootScope.isStandAlone || isHourly || $scope.roomDetails.is_occupied !== 'true') {
+			$scope.roomDetails.hk_status_list = _.filter($scope.roomDetails.hk_status_list, function (item) {
+				return item.value !== 'DO_NOT_DISTURB';
+			});
+		}
 
 		$scope.taskDetails = $scope.roomDetails.task_details;
 		if ($scope.isTaskPresent()) {
@@ -117,6 +127,10 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 			}
 
 			if ( from === 'pickup' && $scope.roomDetails.current_hk_status === 'PICKUP' ) {
+				return true;
+			}
+
+			if ( from === 'dnd' && $scope.roomDetails.current_hk_status === 'DO_NOT_DISTURB' ) {
 				return true;
 			}
 
