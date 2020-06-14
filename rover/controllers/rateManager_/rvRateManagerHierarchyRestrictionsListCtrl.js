@@ -61,7 +61,7 @@ angular.module('sntRover')
                                 $scope.restrictionObj.noticeLabel = 'ALL RATES';
                                 $scope.restrictionObj.setOnCount = response.rates_count;
                                 // TODO : Remove while implementing ADD, EDIT stories
-                                $scope.header.disableNewRestriction = true;
+                                $scope.header.disableNewRestriction = false;
                                 $scope.restrictionObj.enableEditRestrictions = false;
                                 break;
                             default:
@@ -139,9 +139,8 @@ angular.module('sntRover')
                                 params.rate_ids = setOnIdList;
                                 apiMethod = hierarchySrv.saveRateRestrictions;
                                 break;
-
                             default:
-                            break;
+                                break;
                         }
                     }
                     

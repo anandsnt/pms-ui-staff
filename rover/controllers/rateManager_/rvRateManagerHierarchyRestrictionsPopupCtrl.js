@@ -155,9 +155,12 @@ angular.module('sntRover')
                             params.rate_type_ids = !$scope.restrictionObj.isSetOnAllActive ? $scope.restrictionObj.selectedSetOnIds : [];
                             apiMethod = hierarchySrv.saveRateTypeRestrictions;
                             break;
-
+                        case 'Rate':
+                            params.rate_ids = !$scope.restrictionObj.isSetOnAllActive ? $scope.restrictionObj.selectedSetOnIds : [];
+                            apiMethod = hierarchySrv.saveRateRestrictions;
+                            break;
                         default:
-                        break;
+                            break;
                     }
 
                     if ($scope.restrictionObj.isRepeatOnDates) {

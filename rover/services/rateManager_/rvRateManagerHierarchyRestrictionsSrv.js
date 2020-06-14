@@ -34,5 +34,9 @@ angular.module('sntRover').service('rvRateManagerHierarchyRestrictionsSrv', ['$q
         service.fetchAllRateTypes = (params) => {
             return BaseWebSrvV2.getJSON('/api/rate_types/active', params);
         };
+
+        service.fetchAllRates = (params) => {
+            return BaseWebSrvV2.getJSON('/api/rates', params);
+        };
     }
 ]);

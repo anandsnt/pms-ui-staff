@@ -9,6 +9,7 @@ angular.module('sntRover')
             $timeout) {
                 BaseCtrl.call(this, $scope);
                 let apiMethod = '';
+                let apiParams = {};
                 let initialSetOnListData = [];
 
                 const setscroller = () => {
@@ -32,11 +33,8 @@ angular.module('sntRover')
                         $scope.errorMessage = errorMessage;
                     };
 
-                    let params = {
-                        'exclude_pseudo': true
-                    };
                     let options = {
-                        params: params,
+                        params: apiParams,
                         onSuccess: fetchSetOnSuccessCallback,
                         failureCallBack: fetchSetOnFailureCallback
                     };
@@ -60,12 +58,30 @@ angular.module('sntRover')
                             $scope.searchObj.noticeLabel = 'Applies to All Room Types!';
                             $scope.searchObj.placeholder = 'Search by Room Name or Code';
                             apiMethod = hierarchySrv.fetchAllRoomTypes;
+                            // API: /api/room_types.json?exclude_pseudo=true&query=roomtype
+                            apiParams = {
+                                exclude_pseudo: true
+                            };
                             break;
                         case 'RateType':
                             $scope.searchObj.headerLabel = 'Set on Rate Type(s)';
                             $scope.searchObj.noticeLabel = 'Applies to All Rate Types!';
                             $scope.searchObj.placeholder = 'Search by Rate Type Name or Code';
                             apiMethod = hierarchySrv.fetchAllRateTypes;
+                            // API: /api/rate_types/active?query=group
+                            apiParams = {};
+                            break;
+                        case 'Rate':
+                            $scope.searchObj.headerLabel = 'Set on Rate(s)';
+                            $scope.searchObj.noticeLabel = 'Applies to All Rates!';
+                            $scope.searchObj.placeholder = 'Search by Rate Name or Code';
+                            apiMethod = hierarchySrv.fetchAllRates;
+                            // API: /api/rates?is_fully_configured=true&is_active=true&query=ratename&exclude_locked_restriction_id=5
+                            apiParams = {
+                                is_fully_configured: true,
+                                is_active: true,
+                                exclude_locked_restriction_id: ''
+                            };
                             break;
                         default:
                             break;
