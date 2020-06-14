@@ -45,7 +45,7 @@ angular.module('sntRover')
                                 $scope.restrictionObj.noticeLabel = 'ALL ROOM TYPES';
                                 $scope.restrictionObj.setOnCount = response.room_types_count;
                                 // TODO : Remove while implementing ADD, EDIT stories
-                                $scope.header.disableNewRestriction = true;
+                                $scope.header.disableNewRestriction = false;
                                 $scope.restrictionObj.enableEditRestrictions = false;
                                 break;
                             case 'RateType':
