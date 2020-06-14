@@ -125,7 +125,7 @@ angular.module('sntRover')
                                 break;
                             case 'RateType':
                                 params.rate_type_ids = setOnIdList;
-                                apiMethod = hierarchySrv.deleteRateTypeRestrictions;
+                                apiMethod = hierarchySrv.saveRoomTypeRestrictions;
                                 break;
 
                             default:
