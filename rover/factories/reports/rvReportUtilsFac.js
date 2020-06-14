@@ -2829,7 +2829,7 @@ angular.module('reportsModule')
              */
             factory.fillMarkets = function (filter, filterValues, reportName) {
                 var getSelectAllVal = (markets) => {
-                    var selectAll = reportName === reportNames['RESERVATIONS_BY_USER'];
+                    var selectAll = reportName === reportNames['RESERVATIONS_BY_USER'] || reportName === reportNames['OCCUPANCY_REVENUE_SUMMARY'];
 
                     if (filterValues && filterValues.market_ids) {
                         selectAll = markets.length === filterValues.market_ids.length;

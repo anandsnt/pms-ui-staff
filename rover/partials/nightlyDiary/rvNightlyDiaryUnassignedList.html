@@ -61,7 +61,7 @@
             - add .locked to #diary-nightly
             - add .auto-assigning-rooms on .diary-header-nightly 
         -->
-        <button type="button" class="button orange" ng-click="initiateAutoAssign()">
+        <button type="button" class="button orange" ng-click="initiateAutoAssign()" ng-class="{'grey disable-element': diaryData.isEditReservationMode}">
             Auto Assign Rooms
         </button>
     </div>

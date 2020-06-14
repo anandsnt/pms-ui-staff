@@ -275,7 +275,8 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 					"allotmentSummary": self.baseConfigurationSummary
 				}));
 			} else {
-				url = 'api/allotments/' + params.allotmentId;
+				var url = 'api/allotments/' + params.allotmentId;
+				
 				rvBaseWebSrvV2.getJSON(url).then(
 					function(data) {
 						if (data.rate === null) {

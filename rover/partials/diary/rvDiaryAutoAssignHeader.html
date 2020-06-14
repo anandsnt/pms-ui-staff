@@ -1,0 +1,17 @@
+<div class="entry auto-assign-rooms show-assign-rooms">
+    <div class="progress" ng-class="gridProps.autoAssignData.statusClass">
+        <div class="progress-icon"></div>
+        <div class="progress-data">
+            <h3>{{gridProps.autoAssignData.statusText}} ({{ gridProps.autoAssignData.processDate | date: 'd LLLL yyyy' }})</h3>
+            <div class="progress-description">
+                {{gridProps.autoAssignData.statusDescription}}
+            </div>
+        </div>
+        <div class="progress-actions">
+            <button type="button" class="button white with-icon only-icon" ng-if="gridProps.autoAssignData.status === 'pending'" ng-click="refreshAutoAssignStatus()">
+                <span class="icons icon-reset"></span>
+            </button>
+            <button type="button" class="button purple" ng-if="gridProps.autoAssignData.status !== 'pending' && gridProps.autoAssignData.status !== ''" ng-click="unlockRoomDiary()">Unlock Diary</button>
+        </div>
+    </div>
+</div>
