@@ -18,11 +18,48 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 		var sheetFormats = ['csv', 'numbers', 'xsls', 'sheet', 'excel'];
 		var presentationFormats = ['keynote', 'ppt', 'powerpoint'];
 
+
+		var addGuestDataToParams = function(params, guestData, key) {
+			if (guestData.length > 0) {
+				var newData = {
+					'key': key,
+					'new_value': ''
+				};
+				var guestNames = _.map(guestData, function(guest) {
+					return guest.first_name + ' ' + guest.last_name;
+				});
+				newData.new_value = guestNames.join(', ');
+				params.details.push(newData);
+			}
+			return params;
+		};
+
+
+		var callApiToRecord = function(actionsType, actionDetails) {
+			// TODO: remove below condition when Action log apis are ready for guestcard
+			if ($scope.cardType !== 'stay_card') {
+				return;
+			}
+			var params = {
+				"id": $scope.cardId,
+				"application": 'ROVER',
+				"action_type": actionsType,
+				"details": [actionDetails]
+			};
+
+			var options = {
+				params: params,
+				loader: 'NONE'
+			};
+
+			$scope.callAPI(rvFileCloudStorageSrv.recordReservationActions, options);
+		};
+
 		var retrieveFileType = function(content_type) {
 			var contentTypeRemovingSlash = content_type.split("/")[1];
 			var contentTypeRemovingDot = contentTypeRemovingSlash.split(".")[contentTypeRemovingSlash.split(".").length - 1];
 			var finalContentType = contentTypeRemovingDot.split("-")[contentTypeRemovingDot.split("-").length - 1];
-			
+
 			finalContentType = finalContentType === 'powerpoint' ? 'ppt' : finalContentType;
 
 			return finalContentType;
@@ -66,7 +103,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			}
 		};
 
-		$scope.$on('FILE_UPLOADED', function(evt, file) { 
+		$scope.$on('FILE_UPLOADED', function(evt, file) {
 			if (!$scope.cardData.hasUploadFilePermission) {
 				$timeout(function() {
 					$scope.errorMessage = [$filter('translate')('NO_FILE_UPLOAD_PERMISSION')];
@@ -125,6 +162,14 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 				// when all files are uploaded, load new file list
 				if (uploadedFileCount === newFileList.length) {
 					sntActivity.stop('UPLOADING_FILES');
+
+					callApiToRecord("FILES_UPLOADED", {
+						'key': 'File(s)',
+						'new_value': _.map(angular.copy(newFileList), function(file) {
+							return file.file_name;
+						}).join(', ')
+					});
+
 					newFileList = [];
 					$scope.cardData.newFile = {};
 					fetchFiles();
@@ -149,8 +194,15 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			sntActivity.start('UPLOADING_FILES');
 			$scope.errorMessage = '';
 
-			var fileUploadSuccess = function() {
+			var fileUpdateSuccess = function() {
 				sntActivity.stop('UPLOADING_FILES');
+				callApiToRecord("FILE_UPDATED", {
+					'key': 'File',
+					'new_value': _.map(angular.copy(newFileList), function(file) {
+						return file.file_name;
+					}).join(', '),
+					'old_value': $scope.selectedFile.file_name
+				});
 				newFileList = [];
 				$scope.cardData.newFile = {};
 				fetchFiles();
@@ -162,7 +214,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			params.id = $scope.selectedFile.id;
 
 			rvFileCloudStorageSrv.updateFile(params).
-			then(fileUploadSuccess,
+			then(fileUpdateSuccess,
 				function() {
 					sntActivity.stop('UPLOADING_FILES');
 					$scope.errorMessage = [$filter('translate')('FILE_UPLOADING_FAILED')];
@@ -176,59 +228,70 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 
 		$scope.$on('FILE_UPLOADED_DONE', $scope.fileUploadCompleted);
 
-	$scope.donwloadFiles = function(selectedFile) {
-		var fileList = selectedFile ? [selectedFile] : $scope.cardData.selectedFileList;
-		var downloadFilesCount = 0;
+		$scope.donwloadFiles = function(selectedFile) {
+			var fileList = selectedFile ? [selectedFile] : $scope.cardData.selectedFileList;
+			var downloadFilesCount = 0;
 
-		sntActivity.start('DOWNLOADING_FILES');
-		var zip = new JSZip();
-		var fileDownloadSuccess = function(fileData, file) {
-			downloadFilesCount++;
-			// if there is only one file, download as one, else combine and download as zip file
-			if (fileList.length === 1) {
-				var a = document.createElement("a");
+			sntActivity.start('DOWNLOADING_FILES');
+			var zip = new JSZip();
+			var recordDownloadActions = function() {
+				var actionParams = {
+					'key': 'File(s)',
+					'new_value': _.map(angular.copy(fileList), function(file) {
+						return file.file_name;
+					}).join(', ')
+				}
+				callApiToRecord("FILES_DOWNLOADED", actionParams);
+			};
+			var fileDownloadSuccess = function(fileData, file) {
+				downloadFilesCount++;
+				// if there is only one file, download as one, else combine and download as zip file
+				if (fileList.length === 1) {
+					var a = document.createElement("a");
 
-				a.href = "data:" + file.full_content_type + ";base64," + fileData.base64_data;
-				a.download = file.file_name;
-				a.click();
-				sntActivity.stop('DOWNLOADING_FILES');
-			} else {
-				zip.file(file.file_name, fileData.base64_data, {
-					base64: true
-				});
-			}
+					a.href = "data:" + file.full_content_type + ";base64," + fileData.base64_data;
+					a.download = file.file_name;
+					a.click();
+					sntActivity.stop('DOWNLOADING_FILES');
+					recordDownloadActions();
+				} else {
+					zip.file(file.file_name, fileData.base64_data, {
+						base64: true
+					});
+				}
 
-			console.log(downloadFilesCount + "---------" + fileList.length);
+				console.log(downloadFilesCount + "---------" + fileList.length);
 
-			var fileNameMapping = {
-				'guest_card': 'GUEST',
-				'stay_card': 'RESERVATION'
+				var fileNameMapping = {
+					'guest_card': 'GUEST',
+					'stay_card': 'RESERVATION'
+				};
+
+				if (fileList.length !== 1 && downloadFilesCount === fileList.length) {
+
+					zip.generateAsync({
+							type: "blob"
+						})
+						.then(function(blob) {
+							var fileName = (fileNameMapping[$scope.cardType] ? fileNameMapping[$scope.cardType] : $scope.cardType) + "_" + $scope.cardId + ".zip";
+
+							saveAs(blob, fileName);
+						});
+					sntActivity.stop('DOWNLOADING_FILES');
+					recordDownloadActions();
+				}
 			};
 
-			if (fileList.length !== 1 && downloadFilesCount === fileList.length) {
-
-				zip.generateAsync({
-						type: "blob"
-					})
-					.then(function(blob) {
-						var fileName = (fileNameMapping[$scope.cardType] ?  fileNameMapping[$scope.cardType] :  $scope.cardType) + "_" + $scope.cardId + ".zip";
-
-						saveAs(blob, fileName);
-					});
-				sntActivity.stop('DOWNLOADING_FILES');
-			}
-		};
-
-		_.each(fileList, function(file) {
-			rvFileCloudStorageSrv.downLoadFile({
-				id: file.id
-			}).then(function(response) {
-				fileDownloadSuccess(response, file);
-			}, function() {
-				sntActivity.stop('DOWNLOADING_FILES');
+			_.each(fileList, function(file) {
+				rvFileCloudStorageSrv.downLoadFile({
+					id: file.id
+				}).then(function(response) {
+					fileDownloadSuccess(response, file);
+				}, function() {
+					sntActivity.stop('DOWNLOADING_FILES');
+				});
 			});
-		});
-	};
+		};
 
 		$scope.deleteFiles = function(selectedFile) {
 			var fileList = selectedFile ? [selectedFile] : $scope.cardData.selectedFileList;
@@ -240,6 +303,12 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 				// when all files are uploaded, load new file list
 				if (deletedFilesCount === fileList.length) {
 					sntActivity.stop('DELETING_FILES');
+					callApiToRecord("FILES_DELETED", {
+						'key': 'File(s)',
+						'old_value': _.map(angular.copy(fileList), function(file) {
+							return file.file_name;
+						}).join(', ')
+					});
 					$scope.cardData.selectedFileList = [];
 					closePopupIfOpened();
 					fetchFiles();
