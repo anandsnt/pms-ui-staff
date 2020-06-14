@@ -9,12 +9,21 @@ sntRover.controller('rvCardNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', 'rvCa
 				card_type: $scope.cardType,
 				note_id: noteID,
 				text: $scope.cardData.noteText, // used in guest details Apis
-				description: $scope.cardData.noteText // used in  TA and company note Apis
+				description: $scope.cardData.noteText // used in  TA and company note Apis,
 			};
 
 			if ($scope.cardType === 'stay_card') {
 				delete params.card_id;
 				params.reservation_id = $scope.cardId;
+			}
+
+			if ($scope.cardType === 'group') {
+				params.group_id = params.card_id;
+				params.notes =  $scope.cardData.noteText;// create API
+				params.associated_id = params.card_id;// update API
+				params.associated_type =  "Group";// update API
+				params.id = params.note_id;// update API
+				params.text = params.notes;// update API
 			}
 
 			return params;
@@ -43,6 +52,25 @@ sntRover.controller('rvCardNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', 'rvCa
 			return notes;
 		};
 
+		var processGroupNotes = function(notes) {
+			_.each(notes, function(note) {
+				note.posted_user_image_url = note.user_image;
+				note.posted_user_first_name = note.username;
+				note.posted_user_last_name = '';
+				note.text = note.description;
+				note.time = note.posted_time;
+				note.date = note.posted_date;
+				note.id = note.note_id;
+			});
+			return notes;
+		};
+
+		$scope.sortByDate = function (note) {
+            var date = moment(note.date + ' ' + note.time, 'MM-DD-YYYY hh:mm A');
+
+            return date;
+        };
+
 		var fetchNotes = function() {
 			var options = {
 				params: generateApiParams(),
@@ -52,7 +80,10 @@ sntRover.controller('rvCardNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', 'rvCa
 					} else if ($scope.cardType === 'stay_card') {
 						response.notes = response.notes.reservation_notes;
 						response.notes = processStayCardNotes(response.notes);
+					} else if ($scope.cardType === 'group') {
+						response.notes = processGroupNotes(response.notes);
 					}
+
 					$scope.notes = response.notes;
 					$scope.$emit('NOTES_COUNT_UPDATED', $scope.notes);
 					$scope.refreshScroller('card_notes_scroller');

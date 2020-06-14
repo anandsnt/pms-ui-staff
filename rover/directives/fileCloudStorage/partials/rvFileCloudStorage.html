@@ -41,7 +41,7 @@
 			</div>
 			<div class="holder scrollable no-print" ng-iscroll="card_notes_scroller">
 				<ul class="notes wrapper" ng-show="notes.length">
-					<li ng-repeat="note in notes" ng-class="{'editing': (editingNote && note.id === editingNote.id)}"
+					<li ng-repeat="note in notes | orderBy: sortByDate: true" ng-class="{'editing': (editingNote && note.id === editingNote.id)}"
 						ng-click="clickedOnNote(note)">
 						<figure class="guest-image">
 							<img ng-if="note.posted_user_image_url===''" src="/assets/images/avatar-trans.png" alt="" />

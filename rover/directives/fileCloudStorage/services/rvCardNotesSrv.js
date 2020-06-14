@@ -28,6 +28,18 @@ angular.module('sntRover').service('rvCardNotesSrv', ['$q', 'rvBaseWebSrvV2',
 					"create": '/reservation_notes',
 					"update": '/reservation_notes/' + params.note_id,
 					"delete": '/reservation_notes/' + params.note_id
+				},
+				"group": {
+					"fetch": '/api/groups/' + params.card_id,
+					"create": '/api/groups/save_group_note',  //group_id: 55787, notes: "xdqd",
+					"update": '/api/notes/'+ params.note_id,//associated_id: 55787, associated_type: "Group",id: 37785, text: "deedw",
+					"delete": '/api/groups/delete_group_note?note_id='+ params.note_id
+				},
+				"allotment": {
+					"fetch": '/api/allotments/' + params.card_id,
+					"create": "/api/allotments/save_allotment_note",//allotment_id: 55788,notes: "swdwdwd",
+					"update": '/api/notes/' + params.note_id,
+					"delete": '/api/allotments/delete_allotment_note?note_id=' + params.note_id
 				}
 			};
 
