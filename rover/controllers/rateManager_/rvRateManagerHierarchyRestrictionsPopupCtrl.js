@@ -151,6 +151,10 @@ angular.module('sntRover')
                             params.room_type_ids = !$scope.restrictionObj.isSetOnAllActive ? $scope.restrictionObj.selectedSetOnIds : [];
                             apiMethod = hierarchySrv.saveRoomTypeRestrictions;
                             break;
+                        case 'RateType':
+                            params.rate_type_ids = !$scope.restrictionObj.isSetOnAllActive ? $scope.restrictionObj.selectedSetOnIds : [];
+                            apiMethod = hierarchySrv.saveRateTypeRestrictions;
+                            break;
 
                         default:
                         break;
