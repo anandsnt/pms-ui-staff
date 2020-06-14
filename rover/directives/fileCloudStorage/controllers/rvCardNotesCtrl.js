@@ -47,7 +47,7 @@ sntRover.controller('rvCardNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', 'rvCa
 			var options = {
 				params: generateApiParams(),
 				successCallBack: function(response) {
-					if ($scope.cardType === 'cota_card') {
+					if ($scope.cardType === 'account') {
 						response.notes = processCoTaNotes(response.notes);
 					} else if ($scope.cardType === 'stay_card') {
 						response.notes = response.notes.reservation_notes;
