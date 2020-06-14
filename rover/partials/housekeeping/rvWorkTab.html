@@ -44,6 +44,7 @@
             <div ng-if="!ooOsTitle && isStarted">
                 <strong class="h2">Work is in Progress.</strong>
             </div>
+                        
         </div>
 
         <div class="wrapper" ng-if="isStandAlone">
@@ -53,6 +54,8 @@
             <strong ng-if="!ooOsTitle && checkShow('dirty')" class="h2"> Room is <span class="red">Dirty</span>.</strong>
 
             <strong ng-if="!ooOsTitle && checkShow('pickup')" class="h2"> <span class="orange">Pickup</span> room.</strong> 
+
+            <strong ng-if="!ooOsTitle && checkShow('dnd')" class="h2"> Room is <span class="purple">Do not disturb</span>.</strong>
 
             <!-- Tasks & Assignment -->
             <div id="room-tasks" ng-if="isStandAlone && isTaskPresent()">

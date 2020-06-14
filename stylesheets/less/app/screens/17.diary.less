@@ -509,12 +509,217 @@
                 }
             }
         }
+
+        .show-assign-rooms {
+            .hide();
+        }
+
+        &.auto-assigning-rooms {
+            position: relative;
+            background: @gcard;
+            z-index: 130;
+            padding: 0;
+           
+
+            .entry:not(.show-assign-rooms) {
+                .hide();
+            }
+            
+            .show-assign-rooms:not(.filters) {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                .show();
+            }
+            
+     
+            .data,
+            .assign-room-types,
+            .assign-floors,
+            .actions {
+                flex-shrink: 0;
+            }
+    
+            .actions {
+                height: 100%;
+                width: 210px;
+                margin-left: 10px;
+                flex: 0 0 auto;
+                padding: 10px 0;
+                overflow: hidden;
+                #flexbox > .parent(row nowrap, '', center, '' );
+                .box-shadow(inset 2px 0px 0px rgba(0,0,0,0.2));
+    
+                .button {
+                    font-size: 14px;
+                    padding: 0 10px;
+                    margin-left: 10px;
+    
+                    &.blank {
+                        margin-left: 5px;
+                        padding: 0 15px;
+                        color: @white;
+                    }
+                }
+            }
+     
+    
+            .data,
+            .assign-room-types,
+            .assign-floors,
+            .actions,
+            .notice {
+                .hide();
+            }
+
+            .progress {
+                padding: 0 10px;
+                margin: 0;
+                width: 100%;
+                height: 100%;
+                background: #fcde45;
+                color: #866a00;
+                #flexbox > .parent(row nowrap, space-between, center, '');
+
+                .progress-icon {
+                    background-position: 3px -13536px;
+                    margin-right: 10px;
+                    .icons();
+                    .square(30px);
+                }
+
+                .progress-data {
+                    .calc-width( 100, 300 );
+                    
+                    h3 {
+                        font-size: 20px;
+                        font-weight: 600;
+                        line-height: 24px;
+                        .show();
+                        .nowrap();
+                    }
+
+                    .progress-description {
+                        margin: 0;
+                        font-size: 14px;
+                        text-transform: uppercase;
+                        line-height: 14px;
+                        .nowrap();
+
+                        strong {
+                            display: inline-block;
+                            vertical-align: middle;
+                            height: 15px;
+                            padding: 0 4px;
+                            line-height: 15px;
+
+                            &.red {
+                                background: @red;
+
+                                + .count-text {line-height: 16px;}
+                            }
+
+                            &.green {
+                                background: @green;
+
+                                + .count-text {line-height: 16px;}
+                            }
+                        }
+
+                        .count-text {
+                            line-height: 15px;
+                            display: inline-block;
+                            vertical-align: middle;
+                            height: 15px;
+                            margin-right: 5px;
+                        }
+                    }
+                }
+
+                .progress-actions {
+                    width: 260px;
+                    #flexbox > .parent(row nowrap, flex-end, center, '' );
+
+                    .button {
+                        padding: 0 15px;
+                        font-size: 14px;
+
+                        &:not(:last-child) {
+                            margin-right: 10px;
+                        }
+                    }
+                }
+
+                &.semi-completed,
+                &.failed {
+                    .progress-icon {
+                        background-position: 3px -7176px;
+                    }
+                }
+
+                &.completed,
+                &.failed,
+                &.semi-completed {
+                    color: white;
+                }
+
+                &.completed {
+                    background: @green;
+
+                    .progress-icon {
+                        background-position: 3px -7418px;
+                    }
+                }
+
+                &.failed {
+                    background: @red;
+                }
+
+                &.semi-completed {
+                    background: @blue;
+                }
+
+            }
+        
+        }
+    }
+   
+    .locked {
+        .diary-container {
+            &:after {
+                content:'';
+                position: absolute;
+                top: 0px;
+                left: 0;
+                background: fade(@black, 50);
+                z-index: 120;
+                width: 100%;
+                height: 100%;
+                .show();
+            }
+        }
     }
 
     .diary-container {
         position: relative;
         overflow: hidden;
         .calc-height(100, 60);
+
+        /* When Diary is Locked ***/
+        &.locked {
+            &:after {
+                content:'';
+                position: absolute;
+                top: 0px;
+                left: 0;
+                background: fade(@black, 50);
+                z-index: 120;
+                width: 100%;
+                height: 100%;
+                .show();
+            }
+        }
 
         /* Grid - Timeline ***/
         .diary-timeline {
@@ -815,6 +1020,12 @@
                 &.pickup { 
                     .number {
                         color: @logoPrimary;
+                    }
+                }
+
+                &.dnd {
+                    .number {
+                        color: @purple;
                     }
                 }
                 

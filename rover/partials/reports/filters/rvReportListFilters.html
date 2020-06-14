@@ -147,7 +147,7 @@
     </div>
 </div>
 
-<div class="entry date-range" ng-show="uiChosenReport.hasArrivalDateFilter">
+<div class="entry date-range" ng-show="uiChosenReport.hasArrivalDateFilter" ng-if="uiChosenReport.title !== 'Rate Adjustment Report'">
     <label>{{ uiChosenReport.hasArrivalDateFilter.description }} <span>(From)</span></label>
     <div class="has-datepicker">
         <button ng-show="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasArrivalDateFilter')" ng-class="{'visible': uiChosenReport.hasArrivalDateFilter.showRemove}" class="clear-query">
@@ -163,6 +163,23 @@
         </button>
         <input ng-show="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.untilArrivalDate" ng-change="dateChanged(uiChosenReport, 'hasArrivalDateFilter')" readonly>
         <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.untilArrivalDate" ng-change="dateChanged(uiChosenReport, 'hasArrivalDateFilter')" readonly>
+    </div>
+</div>
+
+<div class="entry date-range" ng-show="uiChosenReport.hasArrivalDateFilter" ng-if="uiChosenReport.title === 'Rate Adjustment Report'">
+    <label>{{ uiChosenReport.hasArrivalDateFilter.description }} <span>(From)</span></label>
+    <div class="has-datepicker">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasArrivalDateFilter')" ng-class="{'visible': uiChosenReport.hasArrivalDateFilter.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search">Clear query</span>
+        </button>
+        <input type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.fromArrivalDate" ng-change="dateChanged(uiChosenReport, 'hasArrivalDateFilter')" readonly>
+    </div>
+    <label>{{ uiChosenReport.hasArrivalDateFilter.description }} <span>(To)</span></label>
+    <div class="has-datepicker">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasArrivalDateFilter')" ng-class="{'visible': uiChosenReport.hasArrivalDateFilter.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search">Clear query</span>
+        </button>
+        <input type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.untilArrivalDate" ng-change="dateChanged(uiChosenReport, 'hasArrivalDateFilter')" readonly>
     </div>
 </div>
 

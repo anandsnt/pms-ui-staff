@@ -3,11 +3,9 @@ angular.module('sntRover')
     [
         '$scope',
         'RVNightlyDiarySrv',
-        '$timeout',
         function(
             $scope,
-            RVNightlyDiarySrv,
-            $timeout
+            RVNightlyDiarySrv
         ) {
             BaseCtrl.call(this, $scope);
             var initVariables = function() {
@@ -17,12 +15,12 @@ angular.module('sntRover')
                 $scope.showFloors = false;
                 $scope.selectedReservations = filterReservationIDs();
             }, clearFilters = function() {
-                if ($scope.selectedRoomTypes.length !== 0) {
+                if ($scope.selectedRoomTypes && $scope.selectedRoomTypes.length !== 0) {
                     $scope.selectedRoomTypes.forEach(function(roomTypeId) {
                         _.findWhere($scope.diaryData.filterList.roomType, {id: roomTypeId}).selected = false;
                     });
                 }
-                if ($scope.selectedFloors.length !== 0) {
+                if ($scope.selectedFloors && $scope.selectedFloors.length !== 0) {
                     $scope.selectedFloors.forEach(function(floorId) {
                         _.findWhere($scope.diaryData.filterList.floorList, {id: floorId}).selected = false;
                     });
@@ -72,7 +70,7 @@ angular.module('sntRover')
                 clearFilters();
                 initVariables();
                 $scope.diaryData.autoAssign = {
-                    showOverlay: false,
+                    showHeader: false,
                     isLocked: false,
                     status: '',
                     statusText: '',
@@ -95,8 +93,14 @@ angular.module('sntRover')
                 options = {
                     params: data,
                     successCallBack: function(response) {
-                        $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS', response);
-                        $timeout($scope.refreshAutoAssignStatus(), 500);
+                        clearFilters();
+                        initVariables();
+                        $scope.$emit('SET_AUTO_ASSIGN_STATUS', response);
+                    },
+                    failureCallBack: function(errorMessage) {
+                        if (errorMessage.httpStatus && errorMessage.httpStatus === 470) {
+                            $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS');
+                        }
                     }
                 };
 
@@ -107,13 +111,7 @@ angular.module('sntRover')
              * Function to fetch the auto assign status and reset the header
              */
             $scope.refreshAutoAssignStatus = function() {
-                var options = {
-                    successCallBack: function(response) {
-                        $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS', response);
-                    }
-                };
-
-                $scope.callAPI(RVNightlyDiarySrv.fetchAutoAssignStatus, options);
+                $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS');
             };
 
             /**
@@ -127,6 +125,11 @@ angular.module('sntRover')
                             $scope.cancelAutoAssign();
                             $scope.$emit('REFRESH_DIARY_SCREEN');
                             $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
+                        }
+                    },
+                    failureCallBack: function(errorMessage) {
+                        if (errorMessage.httpStatus && errorMessage.httpStatus === 470) {
+                            $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS');
                         }
                     }
                 };

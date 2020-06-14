@@ -2991,6 +2991,11 @@ sntRover.controller('RVbillCardController',
 	};	
 
 	$scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data) {
+		if ($scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type === "DB") {
+			$scope.contactInformation.address_details.email_address = data;
+		} else {
+			$scope.guestCardData.contactInfo.email = data;
+		}		
 		$scope.sendAutomaticEmails(data);
 	});
 

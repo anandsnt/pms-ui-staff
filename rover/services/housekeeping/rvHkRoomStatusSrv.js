@@ -597,6 +597,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 					room.roomStatusClass = 'pickup';
 					return;
 				}
+				
 			} else if (!isOOSorOOO) {
 				if ((room.hk_status.value === 'CLEAN' || room.hk_status.value === 'INSPECTED')) {
 					room.roomStatusClass = 'clean';
@@ -606,10 +607,16 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 					room.roomStatusClass = 'pickup';
 					return;
 				}
+				
 			}
 
 			if ((room.hk_status.value === 'DIRTY') && !isOOSorOOO) {
 				room.roomStatusClass = 'dirty';
+				return;
+			}
+
+			if (room.hk_status.value === 'DO_NOT_DISTURB') {
+				room.roomStatusClass = 'dnd';
 				return;
 			}
 

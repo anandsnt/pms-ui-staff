@@ -15,6 +15,9 @@ let getActiveHierarchyRestrictions = (state) => {
     if (state.isHierarchyRateRestrictionEnabled) {
         list.push('RATE');
     }
+    if (state.mode === RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
+      list.push('All room types');
+    }
 
 	return list;
 };

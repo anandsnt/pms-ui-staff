@@ -277,6 +277,7 @@ angular.module('sntRover')
 				$scope.screenData.hideChartData = false;
 				rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
 					$scope.screenData.analyticsDataUpdatedTime);
+				$scope.$emit('REFRESH_ANALTICS_SCROLLER');
 			};
 
 			var fetchPaceChartData = function() {

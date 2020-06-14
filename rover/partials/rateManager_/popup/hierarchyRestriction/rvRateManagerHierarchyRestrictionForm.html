@@ -71,58 +71,6 @@
                 </label> 
             </div>
         </div>
-        <div class="entry-group hidden">
-            <div class="entry full-width">
-                <label>Set on {Rate|Room} Type(s)</label>
-                <!-- Classes that can be added:
-                    - .selected - when we have selected rate/room types
-                    - .searching - when we are searching for new rates
-                -->
-                <div class="entry full-width autocomplete-search">
-                    <!-- add .hidden when apply to all is checked -->
-                    <div class="search">
-                        <button type="submit" name="submit" class="icons icon-search">Search</button>
-                        <input name="autocomplete-search" class="query" placeholder="Search by {Rate|Room} Name or Code" autocomplete="off" type="search">
-                    </div>
-                    <!-- Remove .hidden when apply to all is checked -->
-                    <div class="apply-on-all hidden">
-                        <div class="notice">
-                            Applies to All {Rate|Room} Types!
-                        </div>
-                    </div>
-
-                    <label class="checkbox autocomplete-checkbox">
-                        <span class="icon-form icon-checkbox"></span>
-                        <input type="checkbox" value="1"/>
-                        On All
-                    </label>
-
-                    <!-- This holds the results from the search -->
-                    <div class="scrollable">
-                        <div class="wrapper">
-                            <div class="card">
-                                <!-- Wrap letters with .highlight that are matched with the search term -->
-                                <span class="rate-name">Day Use</span>
-                            </div>
-                            <!-- ... repeat for each result -->
-                        </div>
-                    </div>
-                    <!-- This holds the selected results -->
-                    <div class="scrollable autocomplete-search-selected">
-                        <div class="card">
-                            <span class="rate-name"><strong>Day Use</strong></span>
-                            <!-- 
-                                on click, it will remove the card
-                                if the last one is removed, remove the class .selected from the autocomplete-search
-                            -->
-                            <button type="button" class="button remove-card">
-                                <span class="icons icon-remove-10"></span>
-                            </button>
-                        </div>
-                        <!-- ... repeat for each selected result -->
-                    </div>
-                </div>
-            </div>
-        </div>
+        <span ng-if="header.hierarchyType !== 'House'" rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionSearchSetOnDetails.html"></span>
     </div>
 </div>

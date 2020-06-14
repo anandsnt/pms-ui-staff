@@ -137,7 +137,8 @@
                         <span class="icons icon-suite" ng-show="room.is_suite">Suite Room</span>
                     </h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
                     <span class="room-type">{{::room.room_type.name}}</span>
-                    <span class="room-status {{ room.roomStatusClass }}">{{room.hk_status.value}}</span>
+                    <span class="room-status {{ room.roomStatusClass }}" ng-if="room.hk_status.value !== 'DO_NOT_DISTURB'">{{room.hk_status.value}}</span>
+                    <span class="room-status {{ room.roomStatusClass }}" ng-if="room.hk_status.value === 'DO_NOT_DISTURB'">{{ 'DO_NOT_DISTURB' | translate }}</span>
                 </div>
 
                 <!-- {reservation-status} classes here are used from reservation screens, so sometimes they might be different than the actual status -->
@@ -160,6 +161,7 @@
                 <span class="{{::room.assigned_staff.class}}" >{{::room.assigned_staff.name}}</span>
 
                 <div class="last-column">
+                    <span class="no-service" ng-if="::isStandAlone && (room.is_room_service_opted === false) ">No Service</span>
                     <!-- Show only if room is not in service -->
                     <span ng-if="::isStandAlone && room.ooOsTitle">
                         <span class="service-status" ng-if="::!isHourlyRateOn || hotelDiaryConfig.mode !== 'FULL'">

@@ -889,6 +889,10 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				return "no-number";
 			}
 
+			if (roomReadyStatus === 'DO_NOT_DISTURB') {
+				return 'dnd';
+			}
+
 			if (reservation_status === 'CHECKING_IN') {
 				if (roomReadyStatus !== '') {
 					if (fostatus === 'VACANT') {
@@ -912,6 +916,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 							case "DIRTY":
 								mappedStatus += " room-red";
 								break;
+							
 						}
 					} else {
 						mappedStatus += " room-red";

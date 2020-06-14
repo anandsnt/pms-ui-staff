@@ -64,9 +64,8 @@ angular.module('sntRover')
                                 $scope.header.disableNewRestriction = true;
                                 $scope.restrictionObj.enableEditRestrictions = false;
                                 break;
-
                             default:
-                            break;
+                                break;
                         }
                         $scope.popUpView = checkEmptyOrListView($scope.restrictionObj.listData);
                         refreshScroller();
@@ -110,6 +109,7 @@ angular.module('sntRover')
                             $scope.selectedRestriction.value = clickedItem[0].value;
                             $scope.selectedRestriction.setOnValuesList = clickedItem[0].set_on_values;
                         }
+                        $scope.restrictionObj.isRepeatOnDates = false;
                     }
                 };
 
@@ -123,13 +123,13 @@ angular.module('sntRover')
                         to_date: $scope.ngDialogData.date,
                         restrictions
                     };
-                    let apiMethod = hierarchySrv.deleteHouseRestrictions;
+                    let apiMethod = hierarchySrv.saveHouseRestrictions;
 
                     if (setOnIdList.length > 0) {
                         switch ($scope.ngDialogData.hierarchyLevel) {
                             case 'RoomType':
                                 params.room_type_ids = setOnIdList;
-                                apiMethod = hierarchySrv.deleteRoomTypeRestrictions;
+                                apiMethod = hierarchySrv.saveRoomTypeRestrictions;
                                 break;
                             case 'RateType':
                                 params.rate_type_ids = setOnIdList;
@@ -144,21 +144,24 @@ angular.module('sntRover')
                             break;
                         }
                     }
+                    
+                    if ($scope.restrictionObj.isRepeatOnDates) {
+                        let selectedWeekDays = hierarchyUtils.getSelectedWeekDays($scope.restrictionObj.daysList);
+
+                        if (selectedWeekDays.length > 0) {
+                            params.weekdays = selectedWeekDays;
+                        }
+                        params.to_date = $scope.restrictionObj.untilDate;
+                    }
 
                     const deleteSuccessCallback = () => {
-                        $scope.errorMessage = '';
                         fetchRestrictionList();
                         $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
                     };
 
-                    const deleteFailureCallback = (errorMessage) => {
-                        $scope.errorMessage = errorMessage;
-                    };
-
                     let options = {
                         params: params,
-                        successCallBack: deleteSuccessCallback,
-                        failureCallBack: deleteFailureCallback
+                        successCallBack: deleteSuccessCallback
                     };
 
                     $scope.callAPI(apiMethod, options);

@@ -82,7 +82,7 @@ angular.module('sntRover').service('rvAllotmentReservationsListSrv', ['$q', 'rvB
 			var deferred = $q.defer(),
 				allotment_id = params.id,
 				data = _.omit(params, 'id'),
-				url = '/api/allotments/' + allotment_id + "/room_types";
+				url = '/api/group_rooms/' + allotment_id ;
 
 
 			rvBaseWebSrvV2.getJSON(url, data).then(

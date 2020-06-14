@@ -1210,8 +1210,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		$scope.restrictIfOverbook = function(roomId, rateId, availability) {
 			var canOverbookHouse = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
 				canOverbookRoomType = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE'),
+				groupHouseBorrowPermission = rvPermissionSrv.getPermissionValue('GROUP_HOUSE_BORROW'),
 				roomCount = parseInt(TABS[$scope.viewState.currentTab].roomCount);
-
+				
 			if (typeof availability === 'undefined') {
 				throw new Error("availability cannot be undefined here");
 			}
@@ -1233,6 +1234,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 				// CICO-24923 TEMPORARY
 			}
+
+			if ( availability < roomCount && groupHouseBorrowPermission) {
+				return false;
+			}			
 
 			// CICO-53368 : If there is no Room Type Permission & availability <= 0, ie OverBooking - hide BOOK button.
 			if ( availability < roomCount && !canOverbookRoomType) {
