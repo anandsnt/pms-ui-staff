@@ -26,8 +26,8 @@
           <iframe ng-src="{{selectedFile.embed_url | trustAsResourceUrl}}"></iframe>
         </div>
 
-       <!--  <div class="preview-file" ng-if="(selectedFile.preview_url && cardData.cloudType !== 'DROP_BOX' || isImageAndHasThumbNail(selectedFile))" style="position: relative;">
-          <img ng-if="cardData.cloudType !== 'DROP_BOX' || isImageAndHasThumbNail(selectedFile)"
+       <div class="preview-file" ng-if="(selectedFile.preview_url && cardData.cloudType === 'DROP_BOX' && isImageAndHasThumbNail(selectedFile))" style="position: relative;">
+          <img ng-if="cardData.cloudType === 'DROP_BOX' && isImageAndHasThumbNail(selectedFile)"
                ng-src="{{selectedFile.preview_url}}" 
                img-error
                style="position: absolute;
@@ -36,8 +36,8 @@
                       max-height: 70%;
                       max-width: 90%;
                       transform: translate(-50%, -50%);"/>
-                  {{selectedFile.preview_url}}
-          </div> -->
+                  <!-- {{selectedFile.preview_url}} -->
+          </div>
       </div>
       <div class="actions">
         <input

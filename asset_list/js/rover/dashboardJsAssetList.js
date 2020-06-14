@@ -32,6 +32,7 @@ module.exports = {
                 jsLibRoot + 'd3/d3.v5.min.js',
 				jsLibRoot + 'd3/d3-scale.v3.min.js',
 				jsLibRoot + 'idle-timer.min.js',
+				jsLibRoot  + 'jsZip/jszip.min.js',
                 // Eliminate all spec files
                 '!**/*.spec.js'
 			],
