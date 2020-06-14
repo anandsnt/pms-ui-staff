@@ -122,11 +122,11 @@ angular.module('sntRover')
                             // check if the querystring is number or string
                             var result = 
                                 (
-                                    isNaN($scope.searchObj.query) &&
+                                    isNaN($scope.searchObj.query) && item.name &&
                                     item.name.toUpperCase().includes($scope.searchObj.query.toUpperCase())
                                 ) ||
                                 (
-                                    isNaN($scope.searchObj.query) &&
+                                    isNaN($scope.searchObj.query) && item.code &&
                                     item.code.toUpperCase().includes($scope.searchObj.query.toUpperCase())
                                 );
 
