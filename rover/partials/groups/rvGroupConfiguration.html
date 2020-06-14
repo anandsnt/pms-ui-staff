@@ -69,7 +69,7 @@
                     <li ng-class="{'ui-tabs-active': groupConfigData.activeTab == 'NOTES_AND_FILES', 'with-filters': isCloudStorageEnabledForCardType('group')}" ng-click="switchTabTo('NOTES_AND_FILES')"
                         ng-if="isCloudStorageEnabledForCardType('group')">
                         <a translate>NOTES_AND_FILES</a>
-                        <button type="button" ng-if="isCloudStorageEnabledForCardType('cota_card')" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Notes & Files" fs-toggle-class="fullscreen-card">
+                        <button type="button" ng-if="isCloudStorageEnabledForCardType('group')" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Notes & Files" fs-toggle-class="fullscreen-card">
                             Fullscreen
                         </button>
                     </li>

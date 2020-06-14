@@ -17,11 +17,12 @@ sntRover.controller('rvCardNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', 'rvCa
 				params.reservation_id = $scope.cardId;
 			}
 
-			if ($scope.cardType === 'group') {
+			if ($scope.cardType === 'group' || $scope.cardType === 'allotment') {
 				params.group_id = params.card_id;
+				params.allotment_id = params.card_id;
 				params.notes =  $scope.cardData.noteText;// create API
 				params.associated_id = params.card_id;// update API
-				params.associated_type =  "Group";// update API
+				params.associated_type =  $scope.cardType === 'group' ? "Group" : "Allotment";// update API
 				params.id = params.note_id;// update API
 				params.text = params.notes;// update API
 			}
@@ -80,7 +81,7 @@ sntRover.controller('rvCardNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', 'rvCa
 					} else if ($scope.cardType === 'stay_card') {
 						response.notes = response.notes.reservation_notes;
 						response.notes = processStayCardNotes(response.notes);
-					} else if ($scope.cardType === 'group') {
+					} else if ($scope.cardType === 'group' || $scope.cardType === 'allotment') {
 						response.notes = processGroupNotes(response.notes);
 					}
 
