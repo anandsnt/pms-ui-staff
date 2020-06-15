@@ -22,8 +22,8 @@
             <div ng-show="searchObj.isShowResults && !restrictionObj.isSetOnAllActive" class="scrollable" ng-iscroll="searchSetOnDetailsScroll">
                 <div class="wrapper">
                     <div class="card" ng-repeat="item in searchObj.results track by $index" ng-click="clickedOnResult(item)">
-                        <span ng-bind-html="getHighlightedHTML(item.name, searchObj.query)" class="rate-name"></span>
-                        <span ng-bind-html="getHighlightedHTML(item.code, searchObj.query)" class="rate-code"></span>
+                        <span ng-bind-html="escapeNull(item.name) | highlight:searchObj.query:false" class="rate-name"></span>
+                        <span ng-bind-html="escapeNull(item.code) | highlight:searchObj.query:false" class="rate-code"></span>
                     </div>
                 </div>
             </div>
