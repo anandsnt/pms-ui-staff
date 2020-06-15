@@ -85,6 +85,7 @@ angular.module('sntRover')
                     $scope.searchObj.selectedList.push(clickedItem);
                     $scope.searchObj.query = '';
                     initialSetOnListData = initialSetOnListData.filter((item) => item.id !== clickedItem.id);
+                    $scope.searchObj.results = initialSetOnListData;
                     updateSetOnIdList();
                     $scope.$emit('REFRESH_FORM_SCROLL');
                     $scope.searchObj.isShowResults = false;
