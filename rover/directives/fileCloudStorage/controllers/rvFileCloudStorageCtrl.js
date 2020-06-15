@@ -18,28 +18,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 		var sheetFormats = ['csv', 'numbers', 'xsls', 'sheet', 'excel'];
 		var presentationFormats = ['keynote', 'ppt', 'powerpoint'];
 
-
-		var addGuestDataToParams = function(params, guestData, key) {
-			if (guestData.length > 0) {
-				var newData = {
-					'key': key,
-					'new_value': ''
-				};
-				var guestNames = _.map(guestData, function(guest) {
-					return guest.first_name + ' ' + guest.last_name;
-				});
-				newData.new_value = guestNames.join(', ');
-				params.details.push(newData);
-			}
-			return params;
-		};
-
-
 		var callApiToRecord = function(actionsType, actionDetails) {
-			// TODO: remove below condition when Action log apis are ready for guestcard
-			// if ($scope.cardType !== 'stay_card') {
-			// 	return;
-			// }
 			var params = {
 				"id": $scope.cardId,
 				"application": 'ROVER',
@@ -119,7 +98,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 				"content_type": file.type,
 				"base64_data": file.base64 ? file.base64.split(";base64,")[1] : '',
 				"card_id": $scope.cardId,
-				"card_type": "guest_card"
+				"card_type": $scope.cardType
 			};
 
 			$scope.cardData.newFile = file;

@@ -31,13 +31,13 @@ angular.module('sntRover').service('rvCardNotesSrv', ['$q', 'rvBaseWebSrvV2',
 				},
 				"group": {
 					"fetch": '/api/groups/' + params.card_id,
-					"create": '/api/groups/save_group_note',  //group_id: 55787, notes: "xdqd",
-					"update": '/api/notes/'+ params.note_id,//associated_id: 55787, associated_type: "Group",id: 37785, text: "deedw",
-					"delete": '/api/groups/delete_group_note?note_id='+ params.note_id
+					"create": '/api/groups/save_group_note',
+					"update": '/api/notes/' + params.note_id,
+					"delete": '/api/groups/delete_group_note?note_id=' + params.note_id
 				},
 				"allotment": {
 					"fetch": '/api/allotments/' + params.card_id,
-					"create": "/api/allotments/save_allotment_note",//allotment_id: 55788,notes: "swdwdwd",
+					"create": "/api/allotments/save_allotment_note",
 					"update": '/api/notes/' + params.note_id,
 					"delete": '/api/allotments/delete_allotment_note?note_id=' + params.note_id
 				}
@@ -47,25 +47,25 @@ angular.module('sntRover').service('rvCardNotesSrv', ['$q', 'rvBaseWebSrvV2',
 		};
 
 		service.fetchNotes = function(params) {
-			var url =  getApiURL('fetch', params);
+			var url = getApiURL('fetch', params);
 
 			return rvBaseWebSrvV2.getJSON(url);
 		};
 
 		service.createNote = function(params) {
-			var url =  getApiURL('create', params);
+			var url = getApiURL('create', params);
 
 			return rvBaseWebSrvV2.postJSON(url, params);
 		};
 
 		service.updateNote = function(params) {
-			var url =  getApiURL('update', params);
+			var url = getApiURL('update', params);
 
 			return rvBaseWebSrvV2.putJSON(url, params);
 		};
 
 		service.deleteNote = function(params) {
-			var url =  getApiURL('delete', params);
+			var url = getApiURL('delete', params);
 
 			return rvBaseWebSrvV2.deleteJSON(url);
 		};
