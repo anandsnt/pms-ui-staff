@@ -21,12 +21,28 @@ angular.module('sntRover')
                     }, 500);
                 };
 
+                const processSearchListData = (response) => {
+                    let resultArray = response.results || response;
+
+                    if ($scope.popUpView === 'EDIT') {
+                        _.each(resultArray, function (resultArrayItem) {
+                            _.each($scope.selectedRestriction.setOnValuesList, function (setOnValuesListItem) {
+                                if (resultArrayItem.id === setOnValuesListItem.id) {
+                                    $scope.searchObj.selectedList.push(resultArrayItem);
+                                    resultArray = resultArray.filter((item) => item.id !== setOnValuesListItem.id);
+                                }
+                            });
+                        });
+                        $scope.restrictionObj.selectedSetOnIds = _.pluck($scope.searchObj.selectedList, 'id');
+                    }
+                    $scope.searchObj.results = resultArray;
+                    initialSetOnListData = angular.copy(resultArray);
+                };
+
                 // Fetch comeplete list for set on filter/search.
                 const fetchSetOnData = () => {
                     const fetchSetOnSuccessCallback = ( response ) => {
-                        $scope.errorMessage = '';
-                        $scope.searchObj.results = response.results;
-                        initialSetOnListData = angular.copy(response.results);
+                        processSearchListData(response);
                     };
                     const fetchSetOnFailureCallback = (errorMessage) => {
                         $scope.errorMessage = errorMessage;

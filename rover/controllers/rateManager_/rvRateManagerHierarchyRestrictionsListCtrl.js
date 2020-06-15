@@ -46,7 +46,7 @@ angular.module('sntRover')
                                 $scope.restrictionObj.noticeLabel = 'ALL ROOM TYPES';
                                 $scope.restrictionObj.setOnCount = response.room_types_count;
                                 $scope.header.disableNewRestriction = false;
-                                $scope.restrictionObj.enableEditRestrictions = false;
+                                $scope.restrictionObj.enableEditRestrictions = true;
                                 break;
 
                             default:
@@ -86,15 +86,23 @@ angular.module('sntRover')
                         $scope.selectedRestriction = _.find(hierarchyUtils.restrictionColorAndIconMapping, 
                                                             function(item) { return item.key  === key; }
                                                     );
+                        $scope.selectedRestriction.activeGroupList = [];
                         if (clickedItem.value) {
+                            // closed, closed_arrival and closed_departure.
                             $scope.selectedRestriction.value = null;
                             $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values || [];
+                            $scope.selectedRestriction.activeGroupList.push(clickedItem);
+                            $scope.selectedRestriction.activeGroupIndex = 0;
                         }
                         else {
+                            // min_length_of_stay, min_stay_through etc.
                             $scope.selectedRestriction.value = clickedItem[0].value;
                             $scope.selectedRestriction.setOnValuesList = clickedItem[0].set_on_values;
+                            $scope.selectedRestriction.activeGroupList = clickedItem;
+                            $scope.selectedRestriction.activeGroupIndex = index;
                         }
                         $scope.restrictionObj.isRepeatOnDates = false;
+                        $scope.$broadcast('INIT_SET_ON_SEARCH');
                     }
                 };
 
