@@ -1063,11 +1063,10 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
         };
 
-        /**
-         * Triggered when user selects a rate from the rates list.
-         * @returns {undefined}
-         */
-        $scope.onRateChange = function() {
+        // Update the rate for the group
+        $scope.updateRate = function (shouldUpdateExistingReservations) {
+            ngDialog.close();
+
             var summaryData = $scope.groupConfigData.summary,
                 uniqId = summaryData.uniqId,
                 rateId = uniqId && uniqId.split(':')[0],
@@ -1089,6 +1088,11 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 rate_id: rateId,
                 contract_id: contractId
             };
+
+            if (shouldUpdateExistingReservations) {
+                params.update_existing_reservations_rate = true;
+            }
+
             var options = {
                 successCallBack: onRateChangeSuccessCallBack,
                 failureCallBack: onRateChangeFailureCallBack,
@@ -1096,6 +1100,63 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             };
 
             $scope.callAPI(rvGroupConfigurationSrv.updateRate, options);
+        };
+        
+        // Alert the user during rate change, when there are in-house reservations
+        var showInhouseReservationExistsAlert = function () {
+            ngDialog.open({
+                template: '/assets/partials/groups/roomBlock/rvGroupInhouseReservationsExistsPopup.html',
+                scope: $scope,
+                className: '',
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
+
+        // Update rate to new and existing reservations
+        $scope.updateRateToNewAndExistingReservations = function () {
+            ngDialog.close();
+            if ($scope.groupConfigData.summary.total_checked_in_reservations > 0) {
+                showInhouseReservationExistsAlert();
+            } else {
+                $scope.updateRate(true);
+            }
+            
+        };
+
+        // Upate rate to new reservations only
+        $scope.updateRateToNewReservations = function () {
+            ngDialog.close();
+            $scope.updateRate(false);
+        };
+
+        // Show the popup when the rate is changed
+        var showRateChangePopup = function () {
+            $scope.isFromSummary = true;
+
+            ngDialog.open({
+                template: '/assets/partials/groups/roomBlock/rvGroupRoomBlockPickedupReservationsPopup.html',
+                scope: $scope,
+                className: '',
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
+
+        /**
+         * Triggered when user selects a rate from the rates list.
+         * @returns {undefined}
+         */
+        $scope.onRateChange = function() {
+            var summaryData = $scope.groupConfigData.summary,
+                uniqId = summaryData.uniqId;                
+
+            // If group is not yet created, discard the rate change
+            if (!summaryData.group_id || !uniqId) {
+                return false;
+            } 
+
+            showRateChangePopup();
         };
 
         $scope.cancelDemographicChanges = function() {

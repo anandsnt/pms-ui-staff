@@ -69,6 +69,7 @@ angular.module('sntRover')
                     $scope.restrictionStylePack = angular.copy(hierarchyUtils.restrictionColorAndIconMapping);
                     $scope.showRestrictionSelection = false;
                     $scope.$broadcast('INIT_SET_ON_SEARCH');
+                    $scope.restrictionObj.isRepeatOnDates = false;
                 };
 
                 var setRestrictionDataForPopup = () => {

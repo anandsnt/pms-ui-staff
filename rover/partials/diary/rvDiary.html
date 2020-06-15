@@ -5,7 +5,8 @@
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <form class="diary-header"
             ng-class="{'editing': gridProps.edit.active === true || gridProps.unassignedRoomList.isItemSelected === true,
-                    'unassigned': gridProps.unassignedRoomList.isItemSelected === true}">
+                    'unassigned': gridProps.unassignedRoomList.isItemSelected === true,
+                    'auto-assigning-rooms': gridProps.autoAssignData.lockUI}">
 
         <!-- Day or Night Use Diary -->
         <div class="entry switch switch-view" ng-hide="hideToggleMenu()">
@@ -155,6 +156,7 @@
                 <button type="button" class="button green" ng-click="editSave()" ng-if="showSaveChangesAfterEditing">Save Changes</button>
             </div>
         </div>
+        <div ng-include="'/assets/partials/diary/rvDiaryAutoAssignHeader.html'" include-replace></div>
         <!-- Filters -->
         <div class="entry filters">
             <button type="button" class="button white with-icon only-icon show-unassigned"
@@ -173,5 +175,5 @@
     <div ng-include="'/assets/partials/diary/rvDiaryUnAssignedList.html'" include-replace></div>
     
     <!-- Diary Content -->
-    <react-component id="component-wrapper" class="component-wrapper" name="DiaryContent"></react-component>
+    <react-component id="component-wrapper" class="component-wrapper" ng-class="{'locked': gridProps.autoAssignData.lockUI}" name="DiaryContent"></react-component>
 </section>

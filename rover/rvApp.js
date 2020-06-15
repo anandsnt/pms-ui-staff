@@ -414,7 +414,10 @@ sntRover.run([
 				$rootScope.$broadcast('setDiaryBackButton');
 			}
 			if (toState.name === 'rover.nightlyDiary') {
-				$rootScope.$broadcast('POLL_AUTO_ASSIGN_STATUS');
+				$rootScope.$broadcast('POLL_N_DIARY_AUTO_ASSIGN_STATUS');
+			}
+			if (toState.name === 'rover.diary' && $rootScope.hotelDiaryConfig.mode !== 'FULL') {
+				$rootScope.$broadcast('POLL_D_DIARY_AUTO_ASSIGN_STATUS');
 			}
 		});
 
@@ -447,7 +450,10 @@ sntRover.run([
 				$rootScope.setNextState = {};
 			}
 			if (fromState.name === 'rover.nightlyDiary') {
-				$rootScope.$broadcast('STOP_AUTO_ASSIGN_STATUS_POLLING');
+				$rootScope.$broadcast('STOP_N_DIARY_AUTO_ASSIGN_STATUS_POLLING');
+			}
+			if (fromState.name === 'rover.diary' && $rootScope.hotelDiaryConfig.mode !== 'FULL') {
+				$rootScope.$broadcast('STOP_D_DIARY_AUTO_ASSIGN_STATUS_POLLING');
 			}
 
 			$rootScope.diaryState.update(toState.name, fromState.name, fromParams);

@@ -565,12 +565,11 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			$scope.allotmentConfigData.summary.uniqId = summaryMemento.uniqId;
 		};
 
-		/**
-		 * [onRateChange description]
-		 * @return {undefined}
-		 */
-		$scope.onRateChange = function() {
-			var summaryData = $scope.allotmentConfigData.summary,
+		// Update the rate for the group
+        $scope.updateRate = function (shouldUpdateExistingReservations) {
+            ngDialog.close();
+
+            var summaryData = $scope.allotmentConfigData.summary,
 				uniqId = summaryData.uniqId,
 				rateId = uniqId && uniqId.split(':')[0],
 				contractId = uniqId && uniqId.split(':')[1];
@@ -587,6 +586,10 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				contract_id: contractId
 			};
 
+			if (shouldUpdateExistingReservations) {
+                params.update_existing_reservations_rate = true;
+            }
+
 			var options = {
 				successCallBack: onRateChangeSuccess,
 				failureCallBack: onRateChangeFailure,
@@ -594,6 +597,63 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			};
 
 			$scope.callAPI(rvAllotmentConfigurationSrv.updateRate, options);
+        };
+        
+        // Alert the user during rate change, when there are in-house reservations
+        var showInhouseReservationExistsAlert = function () {
+            ngDialog.open({
+                template: '/assets/partials/allotments/details/rvAllotmentInhouseReservationsExistsPopup.html',
+                scope: $scope,
+                className: '',
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
+
+        // Update rate to new and existing reservations
+        $scope.updateRateToNewAndExistingReservations = function () {
+            ngDialog.close();
+            if ($scope.allotmentConfigData.summary.total_checked_in_reservations > 0) {
+                showInhouseReservationExistsAlert();
+            } else {
+                $scope.updateRate(true);
+            }
+            
+        };
+
+        // Upate rate to new reservations only
+        $scope.updateRateToNewReservations = function () {
+            ngDialog.close();
+            $scope.updateRate(false);
+        };
+
+        // Show the popup when the rate is changed
+        var showRateChangePopup = function () {
+            $scope.isFromSummary = true;
+
+            ngDialog.open({
+                template: '/assets/partials/allotments/details/rvAllotmentRoomBlockPickedupReservationsPopup.html',
+                scope: $scope,
+                className: '',
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
+
+		/**
+		 * [onRateChange description]
+		 * @return {undefined}
+		 */
+		$scope.onRateChange = function() {
+			var summaryData = $scope.allotmentConfigData.summary,
+				uniqId = summaryData.uniqId;
+
+			// If group is not yet created, discard the rate change
+			if (!summaryData.allotment_id || !uniqId) {
+				return false;
+			}
+
+			showRateChangePopup();
 		};
 
 

@@ -94,6 +94,7 @@ angular.module('sntRover')
                             $scope.selectedRestriction.value = clickedItem[0].value;
                             $scope.selectedRestriction.setOnValuesList = clickedItem[0].set_on_values;
                         }
+                        $scope.restrictionObj.isRepeatOnDates = false;
                     }
                 };
 
