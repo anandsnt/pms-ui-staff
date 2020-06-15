@@ -51,14 +51,15 @@ angular.module('sntRover')
                         selectedList: [],
                         headerLabel: '',
                         noticeLabel: '',
-                        placeholder: ''
+                        placeholder: '',
+                        isShowResults: true
                     };
 
                     switch ($scope.ngDialogData.hierarchyLevel) {
                         case 'RoomType':
                             $scope.searchObj.headerLabel = 'Set on Room Type(s)';
                             $scope.searchObj.noticeLabel = 'Applies to All Room Types!';
-                            $scope.searchObj.placeholder = 'Search by Room Name or Code';
+                            $scope.searchObj.placeholder = 'Select or Search by Name/Code';
                             apiMethod = hierarchySrv.fetchAllRoomTypes;
                             break;
 
@@ -69,6 +70,7 @@ angular.module('sntRover')
                     fetchSetOnData();
                     setscroller();
                     refreshScroller();
+                    $scope.$emit('REFRESH_FORM_SCROLL');
                 };
 
                 const updateSetOnIdList = () => {
@@ -85,6 +87,7 @@ angular.module('sntRover')
                     initialSetOnListData = initialSetOnListData.filter((item) => item.id !== clickedItem.id);
                     updateSetOnIdList();
                     $scope.$emit('REFRESH_FORM_SCROLL');
+                    $scope.searchObj.isShowResults = false;
                 };
 
                 /*
@@ -129,7 +132,18 @@ angular.module('sntRover')
                         });
                         
                         $scope.searchObj.results = displayResults;
+                        $scope.searchObj.isShowResults = true;
                     }
+                };
+
+                $scope.showResults = () => {
+                    $scope.searchObj.isShowResults = true;
+                    $scope.$emit('REFRESH_FORM_SCROLL');
+                };
+
+                $scope.hideResults = () => {
+                    $scope.searchObj.isShowResults = false;
+                    $scope.$emit('REFRESH_FORM_SCROLL');
                 };
                 
                 init();
