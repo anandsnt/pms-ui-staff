@@ -30,6 +30,26 @@
                 </div>
             </div>
         </div>
+        <div class="find-rates" ng-show="!borrowForGroups && stateCheck.activeView == 'RATE'">
+            <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button> <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+            <input auto-complete id="find-rates" auto-options="rateAutoCompleteOptions" name="find-rates" type="text" placeholder="Find Rates" value="" autocomplete="off" ng-model="stateCheck.rateFilterText" ul-class="find-cards" />
+        </div>
+        <div class="select" ng-show="!borrowForGroups && stateCheck.activeView == 'ROOM_TYPE'">
+            <select convert-to-number ng-model="stateCheck.preferredType" ng-change="onRoomTypeChange($event)" ng-disabled="stateCheck.activeView == 'RATE' || stateCheck.activeView == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay && stateCheck.dateModeActiveDate != reservationData.arrivalDate) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'">
+                <option value="" translate ng-if="reservationData.tabs.length < 2">RESV_ALL_ROOMS</option>
+                <option value="" ng-if="viewState.currentTab >0 && !stateCheck.preferredType" class="placeholder">Select Room Type</option>
+                <option value="{{roomType.id}}" ng-repeat="roomType in otherData.roomTypes" ng-selected="roomType.id == stateCheck.preferredType" ng-hide="isRoomTypeSelected(roomType.id);">
+                    {{roomType.name}}
+                </option>
+            </select>
+        </div>
+        <div class="notice restrictions" ng-if="houseRestrictionArray && houseRestrictionArray.length !== 0 && stateCheck.showClosedRates">
+            <strong>House restrictions in affect: </strong>
+            <span ng-repeat="restriction in houseRestrictionArray"
+                class="restriction-icon {{restriction.restrictionIcon}} {{restriction.restrictionBgClass}}">
+                {{restriction.value}}
+            </span>
+        </div>
         <ul ng-hide="borrowForGroups">
             <li ng-class="{active: stateCheck.activeView == 'RECOMMENDED'}" ng-click="setActiveView('RECOMMENDED')"
                 >
@@ -42,20 +62,7 @@
                 {{'RESV_RATE'|translate}}
             </li>
         </ul>
-        <div class="find-rates" ng-show="!borrowForGroups && stateCheck.activeView == 'RATE'">
-            <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button> <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
-             <input auto-complete id="find-rates" auto-options="rateAutoCompleteOptions" name="find-rates" type="text" placeholder="Find Rates" value="" autocomplete="off" ng-model="stateCheck.rateFilterText" ul-class="find-cards" />
-        </div>
         <!-- ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay)" -->
-        <div class="select" ng-show="!borrowForGroups && stateCheck.activeView == 'ROOM_TYPE'">
-            <select convert-to-number ng-model="stateCheck.preferredType" ng-change="onRoomTypeChange($event)" ng-disabled="stateCheck.activeView == 'RATE' || stateCheck.activeView == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay && stateCheck.dateModeActiveDate != reservationData.arrivalDate) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'">
-                <option value="" translate ng-if="reservationData.tabs.length < 2">RESV_ALL_ROOMS</option>
-                <option value="" ng-if="viewState.currentTab >0 && !stateCheck.preferredType" class="placeholder">Select Room Type</option>
-                <option value="{{roomType.id}}" ng-repeat="roomType in otherData.roomTypes" ng-selected="roomType.id == stateCheck.preferredType" ng-hide="isRoomTypeSelected(roomType.id);">
-                    {{roomType.name}}
-                </option>
-            </select>
-        </div>
     </div>
     <div class="reservation-content rooms-and-rates-content no-content" ng-show="(stateCheck.activeView == 'ROOM_TYPE' && display.roomFirstGrid.length == 0) ||
         (stateCheck.activeView == 'RATE' && display.rateFirstGrid.length == 0) ||

@@ -111,6 +111,7 @@
     "NO":"No",
     "SHOW_STAY_DATES": "Show Stay Dates",
     "SHOW_CLOSED_RATES": "Show Closed Rates",
+    "SHOW_RESTRICTIONS": "Show Restrictions",
     "ONLY_AVAILABLE_ROOMS" : "Only Available Rooms",
     "SEARCH_WITH_RESTRICTIONS" : "Search With Restrictions",
     "VAR_OCCUPANCY": "Varying Occupancy per Stay Date",

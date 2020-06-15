@@ -1,6 +1,6 @@
 sntRover.controller('RVSelectRoomAndRateCtrl', [
-	'$rootScope', '$scope', 'areReservationAddonsAvailable', '$stateParams', 'rates', 'ratesMeta', '$timeout', '$state', 'RVReservationBaseSearchSrv', 'RVReservationStateService', 'RVReservationDataService', 'house', 'RVSelectRoomRateSrv', 'rvPermissionSrv', 'ngDialog', '$filter', 'RVRoomRatesSrv', 'rvGroupConfigurationSrv', 'rvAllotmentConfigurationSrv', 'dateFilter',
-	function($rootScope, $scope, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state, RVReservationBaseSearchSrv, RVReservationStateService, RVReservationDataService, house, RVSelectRoomRateSrv, rvPermissionSrv, ngDialog, $filter, RVRoomRatesSrv, rvGroupConfigurationSrv, rvAllotmentConfigurationSrv, dateFilter) {
+	'$rootScope', '$scope', 'areReservationAddonsAvailable', '$stateParams', 'rates', 'ratesMeta', '$timeout', '$state', 'RVReservationBaseSearchSrv', 'RVReservationStateService', 'RVReservationDataService', 'house', 'RVSelectRoomRateSrv', 'rvPermissionSrv', 'ngDialog', '$filter', 'RVRoomRatesSrv', 'rvGroupConfigurationSrv', 'rvAllotmentConfigurationSrv', 'dateFilter', 'houseRestrictions',
+	function($rootScope, $scope, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state, RVReservationBaseSearchSrv, RVReservationStateService, RVReservationDataService, house, RVSelectRoomRateSrv, rvPermissionSrv, ngDialog, $filter, RVRoomRatesSrv, rvGroupConfigurationSrv, rvAllotmentConfigurationSrv, dateFilter, houseRestrictions) {
 		BaseCtrl.call(this, $scope);
 		$scope.borrowForGroups = $stateParams.borrow_for_groups === 'true' ? true : false;
 
@@ -2361,7 +2361,42 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		   restrictionObject.restrictionIcon = getRestrictionIcon(restrictionKey);
 		});
 		$scope.legendRestrictionsArray = restrictionsArray;
+		$scope.houseRestrictionArray = [];
+		_.mapObject(houseRestrictions, function(value, key) {
+			var arg = '',
+				activeHouseRestriction = {};
 
+			switch(key) {
+				case 'closed':
+					arg = "CLOSED";
+					break;
+				case 'closed_arrival':
+					arg = "CLOSED_ARRIVAL";
+					break;
+				case 'closed_departure':
+					arg = "CLOSED_DEPARTURE";
+					break;
+				case 'min_length_of_stay':
+					arg = "MIN_STAY_LENGTH";
+					break;
+				case 'max_length_of_stay':
+					arg = "MAX_STAY_LENGTH";
+					break;
+				case 'min_stay_through':
+					arg = "MIN_STAY_THROUGH";
+					break;
+				case 'min_advanced_booking':
+					arg = "MIN_ADV_BOOKING";
+					break;
+				case 'max_advanced_booking':
+					arg = "MAX_ADV_BOOKING";
+					break;
+			}
+			activeHouseRestriction.value = typeof(value) === 'boolean' ? '' : value;
+			activeHouseRestriction.restrictionBgClass = "bg-" + getRestrictionClass(arg);
+			activeHouseRestriction.restrictionIcon = getRestrictionIcon(arg);
+			$scope.houseRestrictionArray.push(activeHouseRestriction);
+		});
 
         updateRateMetaOnLoad();
 

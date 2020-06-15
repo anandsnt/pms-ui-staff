@@ -184,6 +184,12 @@ angular.module('stayCardModule', [])
                         from_date: $stateParams.from_date,
                         to_date: $stateParams.to_date
                     });
+                },
+                houseRestrictions: function (RVReservationBaseSearchSrv, $stateParams) {
+                    return RVReservationBaseSearchSrv.fetchHouseRestrictions({
+                        from_date: $stateParams.from_date,
+                        to_date: $stateParams.to_date
+                    });
                 }
             }
         });
