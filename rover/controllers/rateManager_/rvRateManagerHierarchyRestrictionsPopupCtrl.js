@@ -90,7 +90,11 @@ angular.module('sntRover')
                 };
 
                 $scope.showPlaceholder = () => {
-                    return _.isEmpty($scope.selectedRestriction);
+                    return $scope.selectedRestriction.activeGroupList && $scope.selectedRestriction.activeGroupList.length === 0;
+                };
+
+                $scope.disableSelectBox = () => {
+                    return ($scope.popUpView === 'EDIT');
                 };
 
                 $scope.showNights = () => {
@@ -242,8 +246,8 @@ angular.module('sntRover')
                 };
                 // Handle click on '+' button in left sub list.
                 $scope.clickedOnAddNew = () => {
-                    //$scope.initiateNewRestrictionForm();
                     $scope.initiateNewRestrictionForm($scope.selectedRestriction.key);
+                    $scope.selectedRestriction.activeGroupIndex = null;
                 };
 
                 /*
@@ -251,13 +255,24 @@ angular.module('sntRover')
                  *  @params {Number | null} [index value of the clicked item]
                  */
                 $scope.clickedOnLeftRestrictionList = ( index ) => {
-                    if ($scope.selectedRestriction.activeGroupIndex !== null) {
-                        let clickedItem = $scope.restrictionObj.listData[$scope.selectedRestriction.activeGroupKey][index];
+                    let clickedItem = '';
 
+                    $scope.popUpView = 'EDIT';
+                    if ($scope.selectedRestriction.type === 'number') {
                         // min_length_of_stay, min_stay_through etc.
+                        clickedItem = $scope.restrictionObj.listData[$scope.selectedRestriction.activeGroupKey][index];
                         $scope.selectedRestriction.value = clickedItem.value;
                         $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values;
                         $scope.selectedRestriction.activeGroupIndex = index;
+                        $scope.restrictionObj.isRepeatOnDates = false;
+                        $scope.$broadcast('INIT_SET_ON_SEARCH');
+                    }
+                    else {
+                        // min_length_of_stay, min_stay_through etc.
+                        clickedItem = $scope.restrictionObj.listData[$scope.selectedRestriction.activeGroupKey];
+                        $scope.selectedRestriction.value = clickedItem.value;
+                        $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values;
+                        $scope.selectedRestriction.activeGroupIndex = 0;
                         $scope.restrictionObj.isRepeatOnDates = false;
                         $scope.$broadcast('INIT_SET_ON_SEARCH');
                     }

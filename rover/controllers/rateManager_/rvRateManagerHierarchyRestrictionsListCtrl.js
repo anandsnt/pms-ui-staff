@@ -93,12 +93,12 @@ angular.module('sntRover')
                             $scope.selectedRestriction.value = null;
                             $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values || [];
                             $scope.selectedRestriction.activeGroupList.push(clickedItem);
-                            $scope.selectedRestriction.activeGroupIndex = null;
+                            $scope.selectedRestriction.activeGroupIndex = 0;
                         }
                         else {
                             // min_length_of_stay, min_stay_through etc.
                             clickedItem = $scope.restrictionObj.listData[key][index];
-                            $scope.selectedRestriction.value = clickedItem.value;
+                            $scope.selectedRestriction.value = null;
                             $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values;
                             $scope.selectedRestriction.activeGroupList = $scope.restrictionObj.listData[key];
                             $scope.selectedRestriction.activeGroupIndex = index;

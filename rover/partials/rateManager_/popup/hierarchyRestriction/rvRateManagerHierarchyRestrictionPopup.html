@@ -4,7 +4,7 @@
         - restriction-view - When editing or setting a restriction
         - showing-dates - When showing Dates (right content)
     -->
-    <div class="rate-manager-modal rate-manager-hierarchy modal-content" ng-class="{'restriction-view': (popUpView === 'NEW' || popUpView === 'EDIT'), 'showing-dates': restrictionObj.isRepeatOnDates, 'with-restriction-list': (popUpView === 'EDIT' && header.hierarchyType !== 'House')}">
+    <div class="rate-manager-modal rate-manager-hierarchy modal-content" ng-class="{'restriction-view': (popUpView === 'NEW' || popUpView === 'EDIT'), 'showing-dates': restrictionObj.isRepeatOnDates, 'with-restriction-list': selectedRestriction.activeGroupList.length > 0}">
         <button class="modal-close dark-title" id="modal-close" type="button"><span class="icons icon-close" ng-click="closeDialog()"></span></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="modal-container">
@@ -28,7 +28,7 @@
                         <div class="wrapper">
                             <ul>
                                 <!-- if active add .active -->
-                                <li ng-repeat="restriction in selectedRestriction.activeGroupList" ng-class="{'active': (selectedRestriction.activeGroupIndex === null || selectedRestriction.activeGroupIndex === $index)}" ng-click="clickedOnLeftRestrictionList($index)">
+                                <li ng-repeat="restriction in selectedRestriction.activeGroupList" ng-class="{'active': selectedRestriction.activeGroupIndex === $index }" ng-click="clickedOnLeftRestrictionList($index)">
                                     <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
                                     <div class="{{'restriction-icon ' + selectedRestriction.bgClass + ' ' + selectedRestriction.iconClass}}">
                                         {{selectedRestriction.type === 'number' ? restriction.value : ''}}

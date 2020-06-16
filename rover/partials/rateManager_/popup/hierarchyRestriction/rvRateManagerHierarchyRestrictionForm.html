@@ -8,7 +8,7 @@
 
                 <!-- When setting a restriction -->
                 <!-- remove .placeholder when a restriction is choosen -->
-                <div class="faux-select" ng-class="{'placeholder': showPlaceholder(), 'disabled disable-element': (popUpView === 'EDIT')}" ng-click="toggleRestrictionSelection()">
+                <div class="faux-select" ng-class="{'placeholder': showPlaceholder(), 'disabled disable-element': disableSelectBox()}" ng-click="toggleRestrictionSelection()">
                     <div class="restriction-option" ng-if="showPlaceholder()">
                         <span class="restriction-icon"></span>    
                         <span class="restriction-title">Select a Restriction</span>
