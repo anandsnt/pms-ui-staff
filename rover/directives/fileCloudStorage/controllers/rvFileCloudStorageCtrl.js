@@ -220,7 +220,8 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 					'new_value': _.map(angular.copy(fileList), function(file) {
 						return file.file_name;
 					}).join(', ')
-				}
+				};
+
 				callApiToRecord("FILES_DOWNLOADED", actionParams);
 			};
 			var fileDownloadSuccess = function(fileData, file) {
