@@ -1067,6 +1067,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				case 'CLEAN':
 				case 'INSPECTED':
 					return 'room green';
+				case 'DO_NOT_DISTURB':
+					return 'room purple';
 
 				default:
 					return 'room';
@@ -1681,6 +1683,15 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
             };
 
             $scope.callAPI(RVWorkManagementSrv.executeAutoAssign, options);
+        };
+
+        // Hack to return custom label for DND status
+        $scope.getHKStatus = function (status) {
+            if (status === 'DO_NOT_DISTURB') {
+                return 'DND';
+            }
+
+            return status;
         };
 	}
 ]);

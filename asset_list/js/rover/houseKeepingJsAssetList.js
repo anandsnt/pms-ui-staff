@@ -8,6 +8,7 @@ module.exports = {
 				roverRoot + "controllers/workManagement/**/*.js",
 				roverRoot + "services/housekeeping/**/*.js",
 				roverRoot + "services/workManagement/**/*.js",
+				roverRoot + "services/util/rvUtilSrv.js",
 
                 // Eliminate all spec files
                 '!**/*.spec.js'

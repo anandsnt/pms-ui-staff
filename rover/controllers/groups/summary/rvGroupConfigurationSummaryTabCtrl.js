@@ -1072,17 +1072,6 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 rateId = uniqId && uniqId.split(':')[0],
                 contractId = uniqId && uniqId.split(':')[1];
 
-            /**
-             * Call the API only if the group is saved, else allow the group
-             * to be saved with the rate selected.
-             */
-            $scope.groupConfigData.summary.rate = rateId;
-            $scope.groupConfigData.summary.contract_id = contractId;
-
-            if (!summaryData.group_id || !uniqId) {
-                return false;
-            }
-
             var params = {
                 group_id: summaryData.group_id,
                 rate_id: rateId,
@@ -1149,7 +1138,13 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
          */
         $scope.onRateChange = function() {
             var summaryData = $scope.groupConfigData.summary,
-                uniqId = summaryData.uniqId;                
+                uniqId = summaryData.uniqId,
+                rateId = uniqId && uniqId.split(':')[0],
+                contractId = uniqId && uniqId.split(':')[1];
+                
+            
+            $scope.groupConfigData.summary.rate = rateId;
+            $scope.groupConfigData.summary.contract_id = contractId;
 
             // If group is not yet created, discard the rate change
             if (!summaryData.group_id || !uniqId) {
