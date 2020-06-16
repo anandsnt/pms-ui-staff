@@ -80,28 +80,31 @@ angular.module('sntRover')
                  */
                 $scope.clickedOnListItem = function(key, index) {
                     if ($scope.restrictionObj.enableEditRestrictions) {
-                        let clickedItem = index ? $scope.restrictionObj.listData[key][index] : $scope.restrictionObj.listData[key];
+                        let clickedItem = {};
 
                         $scope.popUpView = 'EDIT';
                         $scope.selectedRestriction = _.find(hierarchyUtils.restrictionColorAndIconMapping, 
                                                             function(item) { return item.key  === key; }
                                                     );
                         $scope.selectedRestriction.activeGroupList = [];
-                        if (clickedItem.value) {
+                        if (index === undefined) {
                             // closed, closed_arrival and closed_departure.
+                            clickedItem = $scope.restrictionObj.listData[key];
                             $scope.selectedRestriction.value = null;
                             $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values || [];
                             $scope.selectedRestriction.activeGroupList.push(clickedItem);
-                            $scope.selectedRestriction.activeGroupIndex = 0;
+                            $scope.selectedRestriction.activeGroupIndex = null;
                         }
                         else {
                             // min_length_of_stay, min_stay_through etc.
-                            $scope.selectedRestriction.value = clickedItem[0].value;
-                            $scope.selectedRestriction.setOnValuesList = clickedItem[0].set_on_values;
-                            $scope.selectedRestriction.activeGroupList = clickedItem;
+                            clickedItem = $scope.restrictionObj.listData[key][index];
+                            $scope.selectedRestriction.value = clickedItem.value;
+                            $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values;
+                            $scope.selectedRestriction.activeGroupList = $scope.restrictionObj.listData[key];
                             $scope.selectedRestriction.activeGroupIndex = index;
                         }
                         $scope.restrictionObj.isRepeatOnDates = false;
+                        $scope.selectedRestriction.activeGroupKey = key;
                         $scope.$broadcast('INIT_SET_ON_SEARCH');
                     }
                 };

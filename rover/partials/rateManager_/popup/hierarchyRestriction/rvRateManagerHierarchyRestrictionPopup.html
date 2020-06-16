@@ -23,12 +23,12 @@
             <div class="modal-body">
                 
                 <!-- selection list on the left for edit screen -->
-                <div class="restrictions-list" ng-class="{'hidden': popUpView !== 'EDIT'}">
+                <div class="restrictions-list" ng-show="selectedRestriction.activeGroupList.length > 0">
                     <div class="scrollable">
                         <div class="wrapper">
                             <ul>
                                 <!-- if active add .active -->
-                                <li ng-repeat="restriction in selectedRestriction.activeGroupList" ng-class="{'active': selectedRestriction.activeGroupIndex === $index}">
+                                <li ng-repeat="restriction in selectedRestriction.activeGroupList" ng-class="{'active': (selectedRestriction.activeGroupIndex === null || selectedRestriction.activeGroupIndex === $index)}" ng-click="clickedOnLeftRestrictionList($index)">
                                     <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
                                     <div class="{{'restriction-icon ' + selectedRestriction.bgClass + ' ' + selectedRestriction.iconClass}}">
                                         {{selectedRestriction.type === 'number' ? restriction.value : ''}}

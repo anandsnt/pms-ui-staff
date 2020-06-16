@@ -64,9 +64,18 @@ angular.module('sntRover')
                     $scope.popUpView = checkEmptyOrListView($scope.restrictionObj.listData);
                 };
 
-                $scope.initiateNewRestrictionForm = () => {
-                    // trigger Restriction setting window
-                    $scope.selectedRestriction = {};
+                $scope.initiateNewRestrictionForm = ( restrictionKey ) => {
+                    if (restrictionKey) {
+                        // Add New action from '+' icon from sub list.
+                        $scope.selectedRestriction = _.find(hierarchyUtils.restrictionColorAndIconMapping, 
+                                                                function(item) { return item.key  === restrictionKey; }
+                                                        );
+                        $scope.selectedRestriction.value = null;
+                    }
+                    else {
+                        $scope.selectedRestriction = {};
+                        $scope.selectedRestriction.activeGroupList = [];
+                    }
                     $scope.popUpView = 'NEW';
                     $scope.restrictionStylePack = angular.copy(hierarchyUtils.restrictionColorAndIconMapping);
                     $scope.showRestrictionSelection = false;
@@ -231,9 +240,27 @@ angular.module('sntRover')
                 $scope.clickedOnRemoveButton =  function() {
                     $scope.$broadcast('CLICKED_REMOVE_ON_DATES');
                 };
-
+                // Handle click on '+' button in left sub list.
                 $scope.clickedOnAddNew = () => {
-                    $scope.initiateNewRestrictionForm();
+                    //$scope.initiateNewRestrictionForm();
+                    $scope.initiateNewRestrictionForm($scope.selectedRestriction.key);
+                };
+
+                /*
+                 *  Handle click on left bar sub list items.
+                 *  @params {Number | null} [index value of the clicked item]
+                 */
+                $scope.clickedOnLeftRestrictionList = ( index ) => {
+                    if ($scope.selectedRestriction.activeGroupIndex !== null) {
+                        let clickedItem = $scope.restrictionObj.listData[$scope.selectedRestriction.activeGroupKey][index];
+
+                        // min_length_of_stay, min_stay_through etc.
+                        $scope.selectedRestriction.value = clickedItem.value;
+                        $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values;
+                        $scope.selectedRestriction.activeGroupIndex = index;
+                        $scope.restrictionObj.isRepeatOnDates = false;
+                        $scope.$broadcast('INIT_SET_ON_SEARCH');
+                    }
                 };
 
                 var initController = () => {
