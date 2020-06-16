@@ -22,7 +22,9 @@ angular.module('sntRover')
                 };
 
                 var refreshScroller = function() {
-                    $scope.refreshScroller('hierarchyPopupFormScroll');
+                    $timeout(function () {
+                        $scope.refreshScroller('hierarchyPopupFormScroll');
+                    }, 500);
                 };
 
                 const checkEmptyOrListView = function( listData ) {
