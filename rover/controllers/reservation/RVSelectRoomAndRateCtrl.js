@@ -2366,7 +2366,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			var arg = '',
 				activeHouseRestriction = {};
 
-			switch(key) {
+			switch (key) {
 				case 'closed':
 					arg = "CLOSED";
 					break;
