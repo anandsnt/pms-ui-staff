@@ -52,8 +52,9 @@ angular.module('sntRover')
                         headerLabel: '',
                         noticeLabel: '',
                         placeholder: '',
-                        isShowResults: true
+                        isShowResults: false
                     };
+                    $scope.restrictionObj.selectedSetOnIds = [];
 
                     switch ($scope.ngDialogData.hierarchyLevel) {
                         case 'RoomType':
@@ -133,8 +134,11 @@ angular.module('sntRover')
                         });
                         
                         $scope.searchObj.results = displayResults;
-                        $scope.searchObj.isShowResults = true;
                     }
+                    else {
+                        $scope.searchObj.results = initialSetOnListData;
+                    }
+                    $scope.searchObj.isShowResults = true;
                 };
 
                 $scope.showResults = () => {
