@@ -1684,5 +1684,14 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
             $scope.callAPI(RVWorkManagementSrv.executeAutoAssign, options);
         };
+
+        // Hack to return custom label for DND status
+        $scope.getHKStatus = function (status) {
+            if (status === 'DO_NOT_DISTURB') {
+                return 'DND';
+            }
+
+            return status;
+        };
 	}
 ]);
