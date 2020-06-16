@@ -4,7 +4,7 @@
         - restriction-view - When editing or setting a restriction
         - showing-dates - When showing Dates (right content)
     -->
-    <div class="rate-manager-modal rate-manager-hierarchy modal-content" ng-class="{'restriction-view': (popUpView === 'NEW' || popUpView === 'EDIT'), 'showing-dates': restrictionObj.isRepeatOnDates }">
+    <div class="rate-manager-modal rate-manager-hierarchy modal-content" ng-class="{'restriction-view': (popUpView === 'NEW' || popUpView === 'EDIT'), 'showing-dates': restrictionObj.isRepeatOnDates, 'with-restriction-list': (popUpView === 'EDIT' && header.hierarchyType !== 'House')}">
         <button class="modal-close dark-title" id="modal-close" type="button"><span class="icons icon-close" ng-click="closeDialog()"></span></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="modal-container">
@@ -28,16 +28,15 @@
                         <div class="wrapper">
                             <ul>
                                 <!-- if active add .active -->
-                                <li ng-repeat="restriction in restrictionStylePack" ng-class="{'active': restriction.value}">
+                                <li ng-repeat="restriction in selectedRestriction.activeGroupList" ng-class="{'active': selectedRestriction.activeGroupIndex === $index}">
                                     <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
-                                    <div class="{{'restriction-icon ' + restriction.bgClass + ' ' + restriction.iconClass}}">
-                                        {{restriction.value}}
+                                    <div class="{{'restriction-icon ' + selectedRestriction.bgClass + ' ' + selectedRestriction.iconClass}}">
+                                        {{selectedRestriction.type === 'number' ? restriction.value : ''}}
                                     </div>
                                 </li>
                                 <!-- ... repeat for each restriction -->
-
                                 <li>
-                                    <button type="button" class="add-new-button">+</button>
+                                    <button type="button" class="add-new-button" ng-click="clickedOnAddNew()">+</button>
                                 </li>
                             </ul>
                         </div>

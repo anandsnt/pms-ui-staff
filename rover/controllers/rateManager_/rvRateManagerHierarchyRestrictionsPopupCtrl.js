@@ -232,6 +232,10 @@ angular.module('sntRover')
                     $scope.$broadcast('CLICKED_REMOVE_ON_DATES');
                 };
 
+                $scope.clickedOnAddNew = () => {
+                    $scope.initiateNewRestrictionForm();
+                };
+
                 var initController = () => {
                     initializeScopeVariables();
                     setscroller();
