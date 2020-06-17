@@ -106,6 +106,13 @@ angular.module('sntRover')
                         $scope.restrictionObj.isRepeatOnDates = false;
                         $scope.selectedRestriction.activeGroupKey = key;
                         $scope.$broadcast('INIT_SET_ON_SEARCH');
+                        // Handle ON ALL checkbox selection.
+                        if (clickedItem.set_on_values.length === $scope.restrictionObj.setOnCount) {
+                            $scope.restrictionObj.isSetOnAllActive = true;
+                        }
+                        else {
+                            $scope.restrictionObj.isSetOnAllActive = false;
+                        }
                     }
                 };
 

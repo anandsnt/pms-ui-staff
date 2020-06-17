@@ -81,6 +81,7 @@ angular.module('sntRover')
                     $scope.showRestrictionSelection = false;
                     $scope.$broadcast('INIT_SET_ON_SEARCH');
                     $scope.restrictionObj.isRepeatOnDates = false;
+                    $scope.restrictionObj.isSetOnAllActive = false;
                 };
 
                 var setRestrictionDataForPopup = () => {
@@ -269,18 +270,17 @@ angular.module('sntRover')
                         $scope.selectedRestriction.value = clickedItem.value;
                         $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values;
                         $scope.selectedRestriction.activeGroupIndex = index;
-                        $scope.restrictionObj.isRepeatOnDates = false;
-                        $scope.$broadcast('INIT_SET_ON_SEARCH');
                     }
                     else {
                         // closed, closed_arrival and closed_departure.
                         clickedItem = $scope.restrictionObj.listData[$scope.selectedRestriction.activeGroupKey];
-                        $scope.selectedRestriction.value = clickedItem.value;
-                        $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values;
+                        $scope.selectedRestriction.value = null;
+                        $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values || [];
                         $scope.selectedRestriction.activeGroupIndex = 0;
-                        $scope.restrictionObj.isRepeatOnDates = false;
-                        $scope.$broadcast('INIT_SET_ON_SEARCH');
                     }
+                    $scope.restrictionObj.isRepeatOnDates = false;
+                    $scope.$broadcast('INIT_SET_ON_SEARCH');
+                    refreshScroller();
                 };
 
                 var initController = () => {
