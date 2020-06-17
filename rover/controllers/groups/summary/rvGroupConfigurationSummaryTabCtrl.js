@@ -1998,8 +1998,6 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
 
             $scope.computeSegment();
 
-
-
         }());
         
         $scope.onShoulderDateChange = function(fromOrToFlag) {
