@@ -72,6 +72,7 @@ angular.module('sntRover')
                     $scope.showRestrictionSelection = false;
                     $scope.$broadcast('INIT_SET_ON_SEARCH');
                     $scope.restrictionObj.isRepeatOnDates = false;
+                    $scope.restrictionObj.isSetOnAllActive = false;
                 };
 
                 var setRestrictionDataForPopup = () => {
