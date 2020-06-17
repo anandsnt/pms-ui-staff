@@ -651,9 +651,15 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			// If group is not yet created, discard the rate change
 			if (!summaryData.allotment_id || !uniqId) {
 				return false;
-			}
-
-			showRateChangePopup();
+            }
+            
+            // Show the popup only when room and rates are configured
+            if (summaryData.rooms_total > 0) {
+                showRateChangePopup();
+            } else {
+                $scope.updateRate(false); 
+            }
+			
 		};
 
 
@@ -1237,6 +1243,20 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
                $scope.$emit('SAVE_ALLOTMENT'); 
             }
         });
+
+        // Invoke when the rate change popup closes
+        $scope.closeRateChangePromptPopup = function () {
+            var uniqId = summaryMemento.uniqId,
+                rateId = uniqId && uniqId.split(':')[0],
+                contractId = uniqId && uniqId.split(':')[1];
+
+            $scope.allotmentSummaryData.summary.uniqId = uniqId;
+            $scope.allotmentSummaryData.summary.contract_id = contractId;
+            $scope.allotmentSummaryData.summary.rate = rateId; 
+
+            ngDialog.close();
+
+        };
 
 		/**
 		 * Function used to initialize summary view
