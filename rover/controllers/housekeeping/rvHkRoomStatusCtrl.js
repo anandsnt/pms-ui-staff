@@ -185,7 +185,13 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			allChosen: false,
 			hkStatusId: ''
 		};
-		$scope.hkStatusList = hkStatusList;
+        $scope.hkStatusList = hkStatusList;
+
+        // CICO-79078 - DND status is not required anywhere except the work tab
+        $scope.hkStatusList = _.filter($scope.hkStatusList, function (item) {
+            return item.value !== 'DO_NOT_DISTURB';
+        });
+
 		$scope.allRoomIDs   = fetchPayload.roomList['all_room_ids'];
 
 
