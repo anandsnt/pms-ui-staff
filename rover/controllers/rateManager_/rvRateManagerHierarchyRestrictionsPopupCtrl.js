@@ -90,11 +90,12 @@ angular.module('sntRover')
                 };
 
                 $scope.showPlaceholder = () => {
+                    return !$scope.selectedRestriction.type;
                     return $scope.selectedRestriction.activeGroupList && $scope.selectedRestriction.activeGroupList.length === 0;
                 };
 
                 $scope.disableSelectBox = () => {
-                    return ($scope.popUpView === 'EDIT');
+                    return ($scope.popUpView === 'EDIT' || ($scope.popUpView === 'NEW' && $scope.selectedRestriction.activeGroupList.length > 0));
                 };
 
                 $scope.showNights = () => {
@@ -113,6 +114,10 @@ angular.module('sntRover')
                     $scope.selectedRestriction = restriction;
                     $scope.toggleRestrictionSelection();
                     $scope.$broadcast('SCROLL_REFRESH_REPEAT_ON_DATES');
+                    // To fix issues from normal ADD and the new add from sub list.
+                    if ($scope.selectedRestriction.activeGroupList) {
+                        $scope.selectedRestriction.activeGroupList = [];
+                    }
                 };
 
                 // Check repeat on dates fields are not valid.
@@ -268,7 +273,7 @@ angular.module('sntRover')
                         $scope.$broadcast('INIT_SET_ON_SEARCH');
                     }
                     else {
-                        // min_length_of_stay, min_stay_through etc.
+                        // closed, closed_arrival and closed_departure.
                         clickedItem = $scope.restrictionObj.listData[$scope.selectedRestriction.activeGroupKey];
                         $scope.selectedRestriction.value = clickedItem.value;
                         $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values;

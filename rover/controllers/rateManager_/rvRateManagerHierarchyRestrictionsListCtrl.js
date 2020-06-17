@@ -87,21 +87,21 @@ angular.module('sntRover')
                                                             function(item) { return item.key  === key; }
                                                     );
                         $scope.selectedRestriction.activeGroupList = [];
-                        if (index === undefined) {
+                        if ($scope.selectedRestriction.type === 'number') {
+                            // min_length_of_stay, min_stay_through etc.
+                            clickedItem = $scope.restrictionObj.listData[key][index];
+                            $scope.selectedRestriction.value = clickedItem.value;
+                            $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values;
+                            $scope.selectedRestriction.activeGroupList = $scope.restrictionObj.listData[key];
+                            $scope.selectedRestriction.activeGroupIndex = index;
+                        }
+                        else {
                             // closed, closed_arrival and closed_departure.
                             clickedItem = $scope.restrictionObj.listData[key];
                             $scope.selectedRestriction.value = null;
                             $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values || [];
                             $scope.selectedRestriction.activeGroupList.push(clickedItem);
                             $scope.selectedRestriction.activeGroupIndex = 0;
-                        }
-                        else {
-                            // min_length_of_stay, min_stay_through etc.
-                            clickedItem = $scope.restrictionObj.listData[key][index];
-                            $scope.selectedRestriction.value = null;
-                            $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values;
-                            $scope.selectedRestriction.activeGroupList = $scope.restrictionObj.listData[key];
-                            $scope.selectedRestriction.activeGroupIndex = index;
                         }
                         $scope.restrictionObj.isRepeatOnDates = false;
                         $scope.selectedRestriction.activeGroupKey = key;
