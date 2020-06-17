@@ -63,6 +63,16 @@
                     <li click-touch="switchTabTo('ACTIVITY')" event-shall-pass="true" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACTIVITY'}">
                         <a>Activity Log</a>
                     </li>
+              <!--       <li click-touch="switchTabTo('NOTES_AND_FILES')" event-shall-pass="true" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'NOTES_AND_FILES'}">
+                        <a>Notes & Files</a>
+                    </li> -->
+                    <li ng-class="{'ui-tabs-active': groupConfigData.activeTab == 'NOTES_AND_FILES', 'with-filters': isCloudStorageEnabledForCardType('group')}" ng-click="switchTabTo('NOTES_AND_FILES')"
+                        ng-if="isCloudStorageEnabledForCardType('group')">
+                        <a translate>NOTES_AND_FILES</a>
+                        <button type="button" ng-if="isCloudStorageEnabledForCardType('group')" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Notes & Files" fs-toggle-class="fullscreen-card">
+                            Fullscreen
+                        </button>
+                    </li>
                 </ul>
                 <!-- Group Tab - Summary -->
                 <!-- SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY -->
@@ -86,7 +96,13 @@
                 </ng-include>   
                 <ng-include src="'/assets/partials/groups/activity/rvGroupConfigurationActivityTab.html'" 
                         ng-show="groupConfigData.activeTab == 'ACTIVITY'">
-                </ng-include>                                                            
+                </ng-include>
+                <form method="post" id="gc-notes" name="gc-notes" class="form inner-header card-tab notes-tab no-print"
+                    ng-if="groupConfigData.activeTab == 'NOTES_AND_FILES'">
+                    <div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
+                    <span ng-include="'/assets/partials/groups/notesAndFiles/rvGroupConfigurationNotesAndFiles.html'">
+                    </span>
+                </form>                                                            
             </div>
         </div>
     </div>

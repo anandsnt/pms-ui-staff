@@ -1,0 +1,45 @@
+<!-- Create scroll -->
+<div class="notes-files scrollable" ng-iscroll="card_file_list_scroller" style="height: 100%;" rv-drop-file drag-in-progress="cardData.dragInProgress">
+  <div class="wrapper">
+    <ng-include ng-if="cardData.group_files_by === 'FILE_TYPE' && !cardData.searchText"
+    src="'/assets/directives/fileCloudStorage/partials/rvGroupedFilesList.html'"></ng-include>
+    <!-- if grouping by file type, add .files-file-type -->
+    <ul class="files files-file-type" ng-if="cardData.group_files_by !== 'FILE_TYPE' || cardData.searchText">
+      
+      <li class="file"
+        ng-repeat="file in cardData.fileList | orderBy : sortFiles : cardData.sort_files_by === 'NEWLY_ADDED' | filter: cardData.searchText"
+        ng-class="{'selected': file.is_selected}">
+        <label class="checkbox inline"
+          ng-class="{'hidden': (!cardData.hasDeleteFilePermission && !cardData.hasDownloadFilePermission)}" >
+          <span class="icon-form icon-checkbox"
+          ng-class="{'checked': file.is_selected }"></span>
+          <input ng-model="file.is_selected" type="checkbox"
+          ng-change="fileSelectionChanged()"/>
+        </label>
+        <div class="file-container open-modal" ng-click="openFileDetails(file)">
+          <div class="file-image">
+            <div ng-if="!isImageAndHasThumbNail(file)" class="file-icon">
+              <span class="icons icon-document {{getIconClass(file.content_type)}}"></span>
+              <div class="file-type {{getContentTypeClass(file.content_type)}}">{{file.content_type}}</div>
+            </div>
+            <img ng-if="isImageAndHasThumbNail(file)" ng-src="{{file.preview_url}}"
+                 img-error/>
+          </div>
+          <h3 class="file-title">{{file.file_name}}</h3>
+          <div class="file-details">
+            <div class="file-author">{{file.user}}</div>
+            <div class="file-date">{{file.uploaded_at}}</div>
+          </div>
+        </div>
+      </li>
+      
+    </ul>
+  </div>
+  <!-- remove .hidden if dragging files -->
+  <div class="notes-files-drag" ng-class="{ 'hidden': (!cardData.dragInProgress && cardData.fileList.length !== 0) || cardData.firstFileFetch }">
+    <div class="notes-files-drag-content">
+      <span class="icon-upload"></span>
+      <p translate>DROP_FILES_TO_UPLOAD</p>
+    </div>
+  </div>
+</div>

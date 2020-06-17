@@ -1,0 +1,57 @@
+<div id="modal" class="modal-show" role="dialog">
+  <div id="edit-file" name="deposit-balance" class="modal-content file-edit">
+    <button id="modal-close" type="button" class="modal-close" ng-click="closeFileDetailsPopup();"><span class="icons icon-close invert"></button>
+      
+      <div class="modal-body">
+        <div class="file-info">
+          <!-- <span class="message h2">Edit File</span> -->
+          <div class="file-image">
+            <div class="file-icon">
+              <span class="icons icon-document {{getIconClass(selectedFile.content_type)}"></span>
+              <div class="file-type {{getContentTypeClass(selectedFile.content_type)}}">{{selectedFile.content_type}}</div>
+            </div>
+           <!--  <img ng-if="isImageAndHasThumbNail(selectedFile)"
+                 ng-src="{{selectedFile.preview_url}}"
+                 img-error
+                 /> -->
+          </div>
+          <div class="file-details">
+            <div class="file-author">{{selectedFile.user}}</div>
+            <div class="file-date">{{selectedFile.uploaded_at}}</div>
+          </div>
+          <textarea class="file-title disabled" disabled="">{{selectedFile.file_name}}</textarea>
+        </div>
+        <!-- if there is a previe of the file, show this:-->
+        <div class="preview-file" ng-if="selectedFile.embed_url" style="position: relative;">
+          <iframe ng-src="{{selectedFile.embed_url | trustAsResourceUrl}}"></iframe>
+        </div>
+
+       <div class="preview-file" ng-if="(selectedFile.preview_url && cardData.cloudType === 'DROP_BOX' && isImageAndHasThumbNail(selectedFile))" style="position: relative;">
+          <img ng-if="cardData.cloudType === 'DROP_BOX' && isImageAndHasThumbNail(selectedFile)"
+               ng-src="{{selectedFile.preview_url}}" 
+               img-error
+               style="position: absolute;
+                      left: 50%;
+                      top: 50%;
+                      max-height: 70%;
+                      max-width: 90%;
+                      transform: translate(-50%, -50%);"/>
+                  <!-- {{selectedFile.preview_url}} -->
+          </div>
+      </div>
+      <div class="actions">
+        <input
+           id="replace-file"
+           type="file" 
+           ng-model="cardData.selectedFile" 
+           accept="*" app-filereader 
+           ng-change="fileReplaced()"
+           class="hidden"/>
+        <button class="button blue" ng-click="replaceFile(selectedFile)" ng-if="cardData.hasUploadFilePermission">Replace File</button>
+        <button class="button purple" ng-click="donwloadFiles(selectedFile)" ng-if="cardData.hasDownloadFilePermission">Download File</button>
+        <button class="button red" ng-click="deleteFiles(selectedFile)" ng-if="cardData.hasDeleteFilePermission">Delete File</button>
+        <button class="button blank" ng-click="closeFileDetailsPopup()">Cancel</button>
+        <!-- <button class="button green" ng-click="updateFile(selectedFile)">Save Changes</button> -->
+      </div>
+    </div>
+  </div>

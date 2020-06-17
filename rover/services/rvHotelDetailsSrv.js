@@ -144,5 +144,16 @@ angular.module('sntRover').service('RVHotelDetailsSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
+        service.fetchCloudStorageConfig = function() {
+
+            var url = 'api/integrations/cloudFileAttachments/settings';
+
+            RVBaseWebSrvV2.getJSON(url).then(function(data) {
+                _.extend(service.hotelDetails, {
+                    cloud_storage_config: data
+                });
+            });
+        };
+
     }]
 );

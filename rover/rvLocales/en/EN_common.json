@@ -96,4 +96,6 @@
     "DOCUMENT_NUMBER": "Document Number",
     "PERSONAL_NUMBER": "Personal No.",
     "ID_EXPIRY": "ID Expiry",
-    "STATISTICS": "Statistics"
+    "STATISTICS": "Statistics",
+    "NOTES": "Notes",
+    "NOTES_AND_FILES": "Notes & files"
