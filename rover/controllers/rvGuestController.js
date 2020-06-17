@@ -921,29 +921,11 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.guestSearchIntiated = false;
                 $scope.searchedGuests = [];
                 $scope.$apply();
-                resetObject(previousSearchData, '');
                 $scope.$broadcast('guestSearchStopped');
             }
         };
 
-        var previousSearchData = {
-            'lastName': '',
-            'firstName': '',
-            'city': '',
-            'loyaltyNumber': '',
-            'email': ''
-        };
-
         var shouldSearch = function() {
-            if (previousSearchData.lastName === $scope.searchData.guestCard.guestLastName && previousSearchData.firstName === $scope.searchData.guestCard.guestFirstName && previousSearchData.city === $scope.searchData.guestCard.guestCity && previousSearchData.loyaltyNumber === $scope.searchData.guestCard.guestLoyaltyNumber && previousSearchData.email === $scope.searchData.guestCard.email) {
-                return false;
-            }
-            previousSearchData.lastName = $scope.searchData.guestCard.guestLastName;
-            previousSearchData.firstName = $scope.searchData.guestCard.guestFirstName;
-            previousSearchData.city = $scope.searchData.guestCard.guestCity;
-            previousSearchData.loyaltyNumber = $scope.searchData.guestCard.guestLoyaltyNumber;
-            previousSearchData.email = $scope.searchData.guestCard.email;
-
             return ($scope.searchData.guestCard.guestLastName.length >= 2 || $scope.searchData.guestCard.guestFirstName.length >= 1 || $scope.searchData.guestCard.guestCity !== '' || $scope.searchData.guestCard.guestLoyaltyNumber !== '' || $scope.searchData.guestCard.email !== '');
         };
 
