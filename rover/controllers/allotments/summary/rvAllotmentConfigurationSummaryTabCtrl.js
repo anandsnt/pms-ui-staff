@@ -573,12 +573,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				uniqId = summaryData.uniqId,
 				rateId = uniqId && uniqId.split(':')[0],
 				contractId = uniqId && uniqId.split(':')[1];
-
-			$scope.allotmentConfigData.summary.contract_id = contractId;
-			$scope.allotmentConfigData.summary.rate = rateId;
-			if (!summaryData.allotment_id || !uniqId) {
-				return false;
-			}
+			
 
 			var params = {
 				allotment_id: summaryData.allotment_id,
@@ -646,7 +641,12 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 */
 		$scope.onRateChange = function() {
 			var summaryData = $scope.allotmentConfigData.summary,
-				uniqId = summaryData.uniqId;
+				uniqId = summaryData.uniqId,
+				rateId = uniqId && uniqId.split(':')[0],
+				contractId = uniqId && uniqId.split(':')[1];
+
+			$scope.allotmentConfigData.summary.contract_id = contractId;
+			$scope.allotmentConfigData.summary.rate = rateId;
 
 			// If group is not yet created, discard the rate change
 			if (!summaryData.allotment_id || !uniqId) {

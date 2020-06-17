@@ -49,14 +49,16 @@ angular.module('sntRover')
                         selectedList: [],
                         headerLabel: '',
                         noticeLabel: '',
-                        placeholder: ''
+                        placeholder: '',
+                        isShowResults: false
                     };
+                    $scope.restrictionObj.selectedSetOnIds = [];
 
                     switch ($scope.ngDialogData.hierarchyLevel) {
                         case 'RoomType':
                             $scope.searchObj.headerLabel = 'Set on Room Type(s)';
                             $scope.searchObj.noticeLabel = 'Applies to All Room Types!';
-                            $scope.searchObj.placeholder = 'Search by Room Name or Code';
+                            $scope.searchObj.placeholder = 'Select or Search by Name/Code';
                             apiMethod = hierarchySrv.fetchAllRoomTypes;
                             // API: /api/room_types.json?exclude_pseudo=true&query=roomtype
                             apiParams = {
@@ -90,6 +92,7 @@ angular.module('sntRover')
                     fetchSetOnData();
                     setscroller();
                     refreshScroller();
+                    $scope.$emit('REFRESH_FORM_SCROLL');
                 };
 
                 const updateSetOnIdList = () => {
@@ -104,8 +107,10 @@ angular.module('sntRover')
                     $scope.searchObj.selectedList.push(clickedItem);
                     $scope.searchObj.query = '';
                     initialSetOnListData = initialSetOnListData.filter((item) => item.id !== clickedItem.id);
+                    $scope.searchObj.results = initialSetOnListData;
                     updateSetOnIdList();
                     $scope.$emit('REFRESH_FORM_SCROLL');
+                    $scope.searchObj.isShowResults = false;
                 };
 
                 /*
@@ -151,6 +156,20 @@ angular.module('sntRover')
                         
                         $scope.searchObj.results = displayResults;
                     }
+                    else {
+                        $scope.searchObj.results = initialSetOnListData;
+                    }
+                    $scope.searchObj.isShowResults = true;
+                };
+
+                $scope.showResults = () => {
+                    $scope.searchObj.isShowResults = true;
+                    $scope.$emit('REFRESH_FORM_SCROLL');
+                };
+
+                $scope.hideResults = () => {
+                    $scope.searchObj.isShowResults = false;
+                    $scope.$emit('REFRESH_FORM_SCROLL');
                 };
                 
                 init();
