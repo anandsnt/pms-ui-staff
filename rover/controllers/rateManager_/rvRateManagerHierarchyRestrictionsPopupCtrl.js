@@ -92,7 +92,6 @@ angular.module('sntRover')
 
                 $scope.showPlaceholder = () => {
                     return !$scope.selectedRestriction.type;
-                    return $scope.selectedRestriction.activeGroupList && $scope.selectedRestriction.activeGroupList.length === 0;
                 };
 
                 $scope.disableSelectBox = () => {
@@ -118,6 +117,7 @@ angular.module('sntRover')
                     // To fix issues from normal ADD and the new add from sub list.
                     if ($scope.selectedRestriction.activeGroupList) {
                         $scope.selectedRestriction.activeGroupList = [];
+                        $scope.selectedRestriction.value = null;
                     }
                 };
 
@@ -281,6 +281,13 @@ angular.module('sntRover')
                     $scope.restrictionObj.isRepeatOnDates = false;
                     $scope.$broadcast('INIT_SET_ON_SEARCH');
                     refreshScroller();
+                    // Handle ON ALL checkbox selection.
+                    if (clickedItem.set_on_values.length === $scope.restrictionObj.setOnCount) {
+                        $scope.restrictionObj.isSetOnAllActive = true;
+                    }
+                    else {
+                        $scope.restrictionObj.isSetOnAllActive = false;
+                    }
                 };
 
                 var initController = () => {

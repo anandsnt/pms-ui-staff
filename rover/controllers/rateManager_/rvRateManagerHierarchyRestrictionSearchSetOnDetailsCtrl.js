@@ -121,10 +121,10 @@ angular.module('sntRover')
                 // Handle ON ALL checkbox toggle.
                 $scope.clickedOnAllCheckBox = function() {
                     $scope.restrictionObj.isSetOnAllActive = !$scope.restrictionObj.isSetOnAllActive;
+                    $scope.$emit('REFRESH_FORM_SCROLL');
                     if ($scope.restrictionObj.isSetOnAllActive) {
                         $scope.restrictionObj.selectedSetOnIds = [];
                         $scope.searchObj.selectedList = [];
-                        $scope.$emit('REFRESH_FORM_SCROLL');
                     }
                 };
                 // Handle query entered on change event.
