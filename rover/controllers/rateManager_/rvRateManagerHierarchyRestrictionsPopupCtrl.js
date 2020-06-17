@@ -22,7 +22,9 @@ angular.module('sntRover')
                 };
 
                 var refreshScroller = function() {
-                    $scope.refreshScroller('hierarchyPopupFormScroll');
+                    $timeout(function () {
+                        $scope.refreshScroller('hierarchyPopupFormScroll');
+                    }, 500);
                 };
 
                 const checkEmptyOrListView = function( listData ) {
@@ -70,6 +72,7 @@ angular.module('sntRover')
                     $scope.showRestrictionSelection = false;
                     $scope.$broadcast('INIT_SET_ON_SEARCH');
                     $scope.restrictionObj.isRepeatOnDates = false;
+                    $scope.restrictionObj.isSetOnAllActive = false;
                 };
 
                 var setRestrictionDataForPopup = () => {

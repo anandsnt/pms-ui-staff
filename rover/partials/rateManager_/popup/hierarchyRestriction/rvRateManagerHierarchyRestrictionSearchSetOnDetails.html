@@ -1,10 +1,10 @@
 <div class="entry-group" ng-controller="rvRateManagerHierarchyRestrictionSearchSetOnDetailsCtrl">
     <div class="entry full-width">
         <label>{{searchObj.headerLabel}}</label>
-        <div class="entry full-width autocomplete-search" ng-class="{'selected': searchObj.selectedList.length > 0, 'searching': searchObj.query !== ''}">
+        <div class="entry full-width autocomplete-search" ng-class="{'selected': searchObj.selectedList.length > 0, 'searching': searchObj.isShowResults}">
             <div class="search" ng-hide="restrictionObj.isSetOnAllActive">
                 <button type="submit" name="submit" class="icons icon-search">Search</button>
-                <input ng-model="searchObj.query" ng-change="queryEntered()" name="autocomplete-search" class="query" placeholder="{{searchObj.placeholder}}" autocomplete="off" type="search">
+                <input ng-model="searchObj.query" ng-click="showResults()" ng-focus="showResults()" ng-blur="hideResults()" ng-change="queryEntered()" name="autocomplete-search" class="query" placeholder="{{searchObj.placeholder}}" autocomplete="off" type="search">
             </div>
             <div class="apply-on-all" ng-show="restrictionObj.isSetOnAllActive">
                 <div class="notice">
@@ -19,16 +19,17 @@
             </label>
 
             <!-- This holds the results from the search -->
-            <div ng-show="searchObj.query !== '' && !restrictionObj.isSetOnAllActive" class="scrollable" ng-iscroll="searchSetOnDetailsScroll">
+            <div ng-show="searchObj.isShowResults && !restrictionObj.isSetOnAllActive" class="scrollable" ng-iscroll="searchSetOnDetailsScroll">
                 <div class="wrapper">
-                    <div class="card" ng-repeat="item in searchObj.results" ng-click="clickedOnResult(item)">
-                        <span ng-bind-html="escapeNull(item.name)|highlight:searchObj.query:false" class="rate-name"></span>
+                    <div class="card" ng-repeat="item in searchObj.results track by $index" ng-click="clickedOnResult(item)">
+                        <span ng-bind-html="escapeNull(item.name) | highlight:searchObj.query:false" class="rate-name"></span>
+                        <span ng-bind-html="escapeNull(item.code) | highlight:searchObj.query:false" class="rate-code"></span>
                     </div>
                 </div>
             </div>
             <!-- This holds the selected results -->
-            <div ng-show="searchObj.query === '' && !restrictionObj.isSetOnAllActive" class="scrollable autocomplete-search-selected">
-                <div class="card" ng-repeat="item in searchObj.selectedList">
+            <div ng-show="!searchObj.isShowResults && !restrictionObj.isSetOnAllActive" class="scrollable autocomplete-search-selected">
+                <div class="card" ng-repeat="item in searchObj.selectedList track by $index">
                     <span class="rate-name"><strong>{{item.name}}</strong></span>
                     <button type="button" class="button remove-card" ng-click="clickedOnRemoveItem($index)">
                         <span class="icons icon-remove-10"></span>
