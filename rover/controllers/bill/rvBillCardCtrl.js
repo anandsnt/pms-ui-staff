@@ -827,7 +827,7 @@ sntRover.controller('RVbillCardController',
 					bill_number: response.data[0].to_bill_number,
 					total_amount: response.data[0].bill_amount
 				};
-			}			
+			}
 
 			var reservationStatus = $scope.reservationBillData.reservation_status;
 
@@ -1009,7 +1009,7 @@ sntRover.controller('RVbillCardController',
 			},
 		3000);
 	 });
-	 
+
 	$scope.addListener('STAY_ON_BILL', function() {
 		$scope.isMessagePopupDuringCheckout = false;
 		$scope.reservationBillData.reservation_status = "CHECKEDOUT";
@@ -2116,7 +2116,7 @@ sntRover.controller('RVbillCardController',
 	// To handle complete checkout button click
 	$scope.clickedCompleteCheckout = function() {
 		$scope.checkoutInProgress = true;
-		
+
 		$scope.findNextBillToReview();	// Verifying wheather any bill is remaing for reviewing.
 		if (!$scope.isAllBillsReviewed) {
 			$scope.checkoutInProgress = false;
@@ -2720,7 +2720,7 @@ sntRover.controller('RVbillCardController',
 				params: {"bill_id": $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id},
 				successCallBack: settleInvoiceSuccess
 			};
-	
+
 		$scope.callAPI(RVBillCardSrv.settleFinalInvoice, options);
 	};
 
@@ -2954,7 +2954,7 @@ sntRover.controller('RVbillCardController',
 			});
 		};
 		var options = {
-			params: {},
+			params: { 'reservation_id': $scope.reservationBillData.reservation_id },
 			successCallBack: onLanguageFetchSuccess,
 			failureCallBack: failureCallback
 		};
@@ -2988,7 +2988,7 @@ sntRover.controller('RVbillCardController',
 				$scope.isViaReviewProcess = false;
 				callBlackBoxAPI();
 			}
-	};	
+	};
 
 	$scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data) {
 		if ($scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type === "DB") {
@@ -3023,7 +3023,7 @@ sntRover.controller('RVbillCardController',
 		if ($rootScope.autoEmailPayReceipt || ($rootScope.autoEmailDepositInvoice && $scope.isDepositPayment)) {
 			$scope.autoTriggerPaymentReceiptActions();
 		}
-				
+
 	});
 
 	// To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617
@@ -3427,9 +3427,9 @@ sntRover.controller('RVbillCardController',
 
 	$scope.$on("COMPANY_ADDED", function() {
 		$scope.reservationBillData.bills[0].show_invoice_type_toggle = true;
-		
+
 	});
-	
+
 	/*
 	 * Open void bill popup
 	 */
