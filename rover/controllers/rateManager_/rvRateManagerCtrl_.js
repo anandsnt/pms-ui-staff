@@ -545,19 +545,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
     };
 
-    // Util method to get restriction value
-    var isHierarchyRestrictionNeeded = function() {
-        return $scope.hierarchyRestrictions.houseEnabled;
-    },
-    getRestrictionType = function() {
-        var value = null;
-
-        if ($scope.hierarchyRestrictions.houseEnabled) {
-            value = 'HOUSE';
-        }
-        return value;
-    };
-
     var getSingleRateRowDetailsAndUpdateCachedDataModel = (rateID) => {
         var fromDates = _.pluck(cachedRateAndRestrictionResponseData, 'fromDate').map(fromDate => tzIndependentDate(fromDate)),
             toDates = _.pluck(cachedRateAndRestrictionResponseData, 'toDate').map(toDate => tzIndependentDate(toDate)),
@@ -568,7 +555,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             from_date: fromDate,
             to_date: toDate,
             fetchRates: !cachedRateList.length,
-            fetchCommonRestrictions: true,
+            fetchCommonRestrictions: !isHierarchyActive(),
             'rate_ids[]': [rateID]
         };
 
@@ -579,9 +566,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             params['rate_type_ids[]'] = rateTypeIDs;
         }
 
-        if (isHierarchyRestrictionNeeded()) {
-            params.restrictionType = getRestrictionType();
-        }
         considerHierarchyRestrictions(params);
 
         var options = {
@@ -607,13 +591,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             from_date: fromDate,
             to_date: toDate,
             fetchRateTypes: !cachedRateTypeList.length,
-            fetchCommonRestrictions: true,
+            fetchCommonRestrictions: !isHierarchyActive(),
             'rate_type_ids[]': [rateTypeID]
         };
-
-        if (isHierarchyRestrictionNeeded()) {
-            params.restrictionType = getRestrictionType();
-        }
 
         var options = {
             params: params,
@@ -650,7 +630,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             to_date: formatDateForAPI(filterValues.toDate),
             order_id: filterValues.orderBySelectedValue,
             fetchRateTypes: !cachedRateTypeList.length,
-            fetchCommonRestrictions: true
+            fetchCommonRestrictions: !isHierarchyActive()
         };
 
         params['page'] = filterValues.allRateTypes.currentPage;
@@ -662,9 +642,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         if (rateTypeIDs.length) {
             params['rate_type_ids[]'] = rateTypeIDs;
         }
-        if (isHierarchyRestrictionNeeded()) {
-            params.restrictionType = getRestrictionType();
-        }
+
         considerHierarchyRestrictions(params);
 
         var options = {
@@ -861,12 +839,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             order_id: filterValues.orderBySelectedValue,
             'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id'),
             fetchRoomTypes: !cachedRoomTypeList.length,
-            fetchCommonRestrictions: true
+            fetchCommonRestrictions: !isHierarchyActive()
         };
 
-        if (isHierarchyRestrictionNeeded()) {
-            params.restrictionType = getRestrictionType();
-        }
         considerHierarchyRestrictions(params);
 
         var options = {
@@ -1272,8 +1247,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                         toDate: dates[dates.length - 1]
                     };
 
-                // if we haven't fetched common restriction, we've to use the cached response's common restriction
-                if (!_.has(response, 'commonRestrictions')) {
+                /**
+                 * if we haven't fetched common restriction it may be due to two reasons
+                 * 1. hierarchy restrictions is enabled and we fetch panelRestrictions instead of commonRestrictions
+                 * 2. it is expected to be cached, we've to use the cached response's common restriction
+                 */
+                if (!_.has(response, 'commonRestrictions') && !_.has(response, 'panelRestrictions')) {
                     let cachedData = _.findWhere(cachedRateAndRestrictionResponseData, dateParams);
 
                     if (cachedData && _.has(cachedData, 'response')) {
@@ -1536,7 +1515,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 return processForAllRates(dataFoundInCachedResponse.response)
             }
 
-            let fetchCommonRestrictions = true;
+            let fetchCommonRestrictions = !isHierarchyActive();
 
             var cachedRateAndRestrictionOfFromDateAndToDate = _.where(cachedRateAndRestrictionResponseData,
                 {
@@ -1575,10 +1554,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             params['page'] = filterValues.allRate.currentPage;
             params['per_page'] = paginationRatePerPage;
-
-            if (isHierarchyRestrictionNeeded()) {
-                params.restrictionType = getRestrictionType();
-            }
 
             var options = {
                 params: params,
@@ -1641,9 +1616,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 considerRateIDsInAllRestrictionStatusFetch: rateIDs.length > 0
             };
 
-            if (isHierarchyRestrictionNeeded()) {
-                params.restrictionType = getRestrictionType();
-            }
             var options = {
                 params,
                 onSuccess: onFetchMultipleRateRestrictionDetailsForRateCell,
@@ -1831,9 +1803,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRates: !cachedRateList.length
             };
 
-            if (isHierarchyRestrictionNeeded()) {
-                params.restrictionType = getRestrictionType();
-            }
             var options = {
                 params,
                 onSuccess: onFetchMultipleRateTypeRestrictionModeDetailsForPopup,
@@ -2011,10 +1980,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRoomTypes: !cachedRoomTypeList.length,
             };
 
-            if (isHierarchyRestrictionNeeded()) {
-                params.restrictionType = getRestrictionType();
-            }
-            
             var options = {
                 params,
                 onSuccess: onFetchMultipleRoomTypeRestrictionsDetailsForPopupSuccess,
@@ -2359,9 +2324,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchCommonRestrictions: true
             };
 
-            if (isHierarchyRestrictionNeeded()) {
-                params.restrictionType = getRestrictionType();
-            }
             considerHierarchyRestrictions(params);
 
             var options = {
