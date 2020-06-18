@@ -1,6 +1,9 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
 	<div class="modal-content alert wide">
-		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()">
+		<button id="modal-close" type="button" class="modal-close" ng-click="closeRateChangePromptPopup()" ng-if="isFromSummary">
+			<span class="icons icon-close invert"></span>
+		</button>
+		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()" ng-if="!isFromSummary">
 			<span class="icons icon-close invert"></span>
 		</button>
 
