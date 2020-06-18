@@ -1250,9 +1250,9 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
                 rateId = uniqId && uniqId.split(':')[0],
                 contractId = uniqId && uniqId.split(':')[1];
 
-            $scope.allotmentSummaryData.summary.uniqId = uniqId;
-            $scope.allotmentSummaryData.summary.contract_id = contractId;
-            $scope.allotmentSummaryData.summary.rate = rateId; 
+            $scope.allotmentConfigData.summary.uniqId = uniqId;
+            $scope.allotmentConfigData.summary.contract_id = contractId;
+            $scope.allotmentConfigData.summary.rate = rateId; 
 
             ngDialog.close();
 
