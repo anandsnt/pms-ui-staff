@@ -36,8 +36,8 @@
     </ul>
   </div>
   <!-- remove .hidden if dragging files -->
-  <div class="notes-files-drag" ng-class="{ 'hidden': (!cardData.dragInProgress && cardData.fileList.length !== 0) || cardData.firstFileFetch }">
-    <div class="notes-files-drag-content">
+  <div class="notes-files-drag" ng-class="{ 'hidden': !cardData.hasUploadFilePermission || (!cardData.dragInProgress && cardData.fileList.length !== 0) || cardData.firstFileFetch }">
+    <div class="notes-files-drag-content" ng-if="cardData.hasUploadFilePermission">
       <span class="icon-upload"></span>
       <p translate>DROP_FILES_TO_UPLOAD</p>
     </div>
