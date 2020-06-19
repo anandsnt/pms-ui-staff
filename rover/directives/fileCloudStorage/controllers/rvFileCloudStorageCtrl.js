@@ -156,8 +156,9 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 					closePopupIfOpened();
 				}
 			};
-
-			sntActivity.start('UPLOADING_FILES');
+			if (newFileList.length) {
+				sntActivity.start('UPLOADING_FILES');
+			}
 			$scope.errorMessage = '';
 			_.each(newFileList, function(file) {
 				file.card_type = $scope.cardType;
