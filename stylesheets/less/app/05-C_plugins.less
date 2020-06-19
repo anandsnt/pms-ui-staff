@@ -6838,6 +6838,242 @@
                     }
                 }
 
+                /* Update Room Status on Diaries **/
+                &.update-room-status-diary {
+                    padding: 0;
+                    .size(auto, 400px);
+
+                    .modal-header {
+                        height: 80px;
+                        padding: 20px 20px 15px 20px;
+                        color: @white;
+                        background: @grey3;
+                        .transition;
+                        .float;
+                         position: relative;
+                         z-index: 2;
+                         #flexbox > .parent(row, '', center, '');
+
+                        #modal-close {
+                            background: @grey3; 
+                        }
+            
+                        .icon-room {
+                            padding: 0px 0 0px 50px;
+                            overflow: hidden;
+                            height: 45px;
+                            background-size: 60px;
+                            background-position: 0px -2208px;
+                            .calc-width(100, 100);
+                            .show;
+                            .pull-left;
+            
+                            h1 {
+                                font-size: 30px;
+                                line-height: .8em;
+                                font-weight: 600;
+                                .nowrap();
+                            }
+            
+                            span {
+                                font-size: 18px;
+                                line-height: 1.1em;
+                                font-style: italic;
+                                .nowrap();
+                                .show;
+                            }
+
+                        }
+
+
+                        .datetime {
+                            font-size: 16px;
+                            text-align: right;
+                            line-height: 1;
+                        }
+
+                        &.clean,
+                        &.inspected,
+                        &.check-in { 
+                            background: @green; 
+
+                            #modal-close {
+                                background: @green; 
+                            }
+                        }
+            
+                        &.pickup { 
+                            background: @logoPrimary;
+                            
+                            #modal-close {
+                                background: @logoPrimary; 
+                            }
+                        }
+            
+                        &.dnd { 
+                            background: @purple; 
+
+                            #modal-close {
+                                background: @purple; 
+                            }
+                        }
+            
+                        &.dirty,
+                        &.check-out { 
+                            background: @red; 
+
+                            #modal-close {
+                                background: @red; 
+                            }
+                        }
+            
+                        &.inhouse { 
+                            background: @blue; 
+
+                            #modal-close {
+                                background: @blue; 
+                            }
+                        }
+                    }
+
+                    .modal-body {
+                        padding: 20px;
+                        .calc-height(100,80);
+
+                        .radio {
+                            line-height: 40px;
+                            font-size: 14px;
+                            text-transform: uppercase;
+
+                            .icon-form {
+                                top: 10px;
+                            }
+                        }
+
+                        .options {
+                            li {
+                                &:not(.active) {
+                                    font-weight: 400;
+                                }
+                            }
+                        }
+
+                        .float-label {
+                            .select {
+                                select {
+                                    font-size: 18px;
+                                }
+                            }
+                        }
+
+                        .row {
+                            &:not(last-child) {
+                                border: 0;
+                                margin-bottom: 0;
+                            }
+
+                            .entry {
+                                &:not(.full-width) {
+                                    .calc-width(50,5);
+                                }
+
+                                &.margin {
+                                    margin-right: 10px;
+                                }
+
+                                label {
+                                    font-size: 12px;
+                                    line-height: 12px;
+                                }
+
+                            
+                                .select {
+                                    select {
+                                        min-height: 40px;
+                                        line-height: 24px;
+                                        font-size: 16px;
+                                    }
+                                }
+                            }
+
+                            &#dates {
+                                .entry {
+                                    .entry-data {
+                                        height: 50px;
+                                        background-position: 90% 15px;
+
+                                        &:hover {
+                                            background-position: 90% -35px;
+                                        }
+    
+                                        input {
+                                            height: 50px;
+                                            min-height: 50px;
+                                        }
+    
+                                        .day {
+                                            top: 0;
+                                            left: 10px;
+                                            font-size: 36px;
+                                        }
+    
+                                        .month,
+                                        .year {
+                                            left: 60px;
+                                            font-size: 14px;
+                                            line-height: 14px;
+                                        }
+    
+                                        .year {
+                                            top: 25px;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .actions {
+                        .button {
+                            max-width: 240px;
+                            margin: 0 auto;
+
+                            &:not(:last-child) {
+                                margin-bottom: 10px;
+                            }
+                        }
+                    }
+
+                    &.extended {
+                        width: 480px;
+                        height: auto;
+
+                        .scrollable {
+                            height: auto;
+                            max-height: 280px;
+                        }
+
+                        .actions {
+                            margin-top: 0;
+                            .button {
+                                .show();
+
+                                
+                            }
+                        }
+
+                        .status-container {
+                            margin: 0 -20px;
+                            
+                            .float-label,
+                            .actions {
+                                .calc-width(100,40);
+                                margin-left: 20px;
+                            }
+                        }
+                    }
+                }
+
 
                 @media screen and (min-width:600px){
                     position: static;
