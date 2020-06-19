@@ -1224,7 +1224,8 @@ sntRover.controller('roverController', [
             if (cardType !== 'guest_card' && cardType !== 'stay_card') {
                 return false;
             }
-            return RVHotelDetailsSrv.hotelDetails.cloud_storage_config.enabled &&
+            return rvPermissionSrv.getPermissionValue('CLOUD_STORAGE_VIEW') &&
+                RVHotelDetailsSrv.hotelDetails.cloud_storage_config.enabled &&
                 RVHotelDetailsSrv.hotelDetails.cloud_storage_config &&
                 RVHotelDetailsSrv.hotelDetails.cloud_storage_config["enabled_" + cardType];
         };
