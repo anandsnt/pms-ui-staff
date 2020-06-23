@@ -499,8 +499,10 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
             $scope.allServiceStatus = [];
             // list of all possible maintainace reasons
             $scope.maintenanceReasonsList = [];
-            // list of all possible return status
-            $scope.returnStatusList = $scope.roomDetails.hk_status_list;
+            // list of all possible return status except DND
+            $scope.returnStatusList = _.reject($scope.roomDetails.hk_status_list, function (status) {
+                return status.value === 'DO_NOT_DISTURB';
+            });
             // param: update the new oo/os status
             // $scope.updateService.room_service_status_id serves as the model for the top dropdown
             $scope.hasPermissionPutRoomOOS = rvPermissionSrv.getPermissionValue('PUT_ROOM_OOO_OR_OOS');
