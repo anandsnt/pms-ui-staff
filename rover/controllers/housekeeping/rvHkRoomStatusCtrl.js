@@ -720,7 +720,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				end_time: "",
 				reason_id: $scope.updateServiceData.reason_id,
 				comment: $scope.updateServiceData.comments,
-				room_service_status_id: $scope.updateServiceData.room_service_status_id
+				room_service_status_id: $scope.updateServiceData.room_service_status_id,
+				return_status_id: $scope.updateServiceData.return_status_id
 			};
 
 			if ($scope.shouldShowTimeSelector()) {

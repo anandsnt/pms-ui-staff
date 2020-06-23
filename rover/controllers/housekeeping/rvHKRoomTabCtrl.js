@@ -103,7 +103,8 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
                     from_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
                     to_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
                     reason_id: '',
-                    comment: ''
+                    comment: '',
+                    return_status_id: ''
                 };
             } else {
                 $scope.invokeApi(RVHkRoomDetailsSrv.getRoomServiceStatus, {
@@ -476,6 +477,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 
             $scope.updateService.reason_id = dateHash[$scope.updateService.selected_date].maintenance_reason_id;
             $scope.updateService.comment = dateHash[$scope.updateService.selected_date].comments;
+            $scope.updateService.return_status_id = dateHash[$scope.updateService.selected_date].return_status_id;
 
             if ($scope.updateService.room_service_status_id !== $_inServiceId) {
                 updateDateRangeForOOO(dateHash);
@@ -497,6 +499,8 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
             $scope.allServiceStatus = [];
             // list of all possible maintainace reasons
             $scope.maintenanceReasonsList = [];
+            // list of all possible return status
+            $scope.returnStatusList = $scope.roomDetails.hk_status_list;
             // param: update the new oo/os status
             // $scope.updateService.room_service_status_id serves as the model for the top dropdown
             $scope.hasPermissionPutRoomOOS = rvPermissionSrv.getPermissionValue('PUT_ROOM_OOO_OR_OOS');
