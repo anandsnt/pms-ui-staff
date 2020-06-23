@@ -9,7 +9,7 @@
 
                     <!-- Add .disabled if cant be selected such as add-on with 'INCL' value or add-on for the first night -->
                     <!-- Add .item-active if selected -->
-                    <li class="block-item" ng-repeat="addon in addonsData.existingAddons" ng-click="selectPurchasedAddon(addon)" ng-class="{'disabled': addon.post_type !=='Entire Stay', 'item-active': addon.id === selectedPurchesedAddon.id}">
+                    <li class="block-item" ng-repeat="addon in addonsData.existingAddons" ng-click="selectPurchasedAddon(addon)" ng-class="{'disabled': addon.post_type !=='Nightly', 'item-active': addon.id === selectedPurchesedAddon.id}">
                          <div class="data">
                             <h3 class="enhancement-name">
                                 
@@ -25,20 +25,20 @@
                              </span>
                              <span class="enhancement-name" ng-show="addon.is_rate_addon && addon.is_inclusive">INCL</span>
                              <span ng-if="addon.amount_type ==='Adult'">
-                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type ==='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * reservationData.number_of_adults| number : 2}}</span>
-                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type !=='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * duration_of_stay * reservationData.number_of_adults| number : 2}}</span>
+                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type ==='Nightly'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * reservationData.number_of_adults| number : 2}}</span>
+                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type !=='Nightly'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * duration_of_stay * reservationData.number_of_adults| number : 2}}</span>
                             </span>
                              <span ng-if="addon.amount_type ==='Child'">
-                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type ==='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount*reservationData.number_of_children | number : 2}}</span>
-                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type !=='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * duration_of_stay*reservationData.number_of_children| number : 2}}</span>
+                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type ==='Nightly'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount*reservationData.number_of_children | number : 2}}</span>
+                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type !=='Nightly'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * duration_of_stay*reservationData.number_of_children| number : 2}}</span>
                             </span>
                             <span ng-if="addon.amount_type ==='Flat'">
-                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type ==='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount | number : 2}}</span>
-                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type !=='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * duration_of_stay| number : 2}}</span>
+                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type ==='Nightly'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount | number : 2}}</span>
+                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type !=='Nightly'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * duration_of_stay| number : 2}}</span>
                             </span>
                             <span ng-if="addon.amount_type ==='Person'">
-                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type ==='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount*(reservationData.number_of_children+reservationData.number_of_adults) | number : 2}}</span>
-                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type !=='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * duration_of_stay*(reservationData.number_of_children+reservationData.number_of_adults)| number : 2}}</span>
+                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type ==='Nightly'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount*(reservationData.number_of_children+reservationData.number_of_adults) | number : 2}}</span>
+                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type !=='Nightly'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * duration_of_stay*(reservationData.number_of_children+reservationData.number_of_adults)| number : 2}}</span>
                             </span>
                          </div>
                          <span class="price" ng-hide="addon.is_rate_addon && addon.is_inclusive">
