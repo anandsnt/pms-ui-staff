@@ -23,9 +23,12 @@
             <li ng-class="{'ui-tabs-active': current == 'activity-log'}" click-touch="guestCardTabSwitch('activity-log')">
                 <a>Activity Log</a>
             </li>
-            <li ng-if="isStandAlone" ng-class="{'ui-tabs-active': current == 'notes'}" ng-click="guestCardTabSwitch('notes')">
-                <a id="guest-credit"> {{ isCloudStorageEnabledForCardType('guest_card') ? 'Files & Notes' : 'Notes' }}</a>
-            </li>             
+            <li ng-if="isStandAlone" ng-class="{'ui-tabs-active': current == 'notes', 'with-filters': isCloudStorageEnabledForCardType('guest_card')}" ng-click="guestCardTabSwitch('notes')">
+                <a id="guest-credit">{{ isCloudStorageEnabledForCardType('guest_card') ? 'Files & Notes' : 'Notes' }}</a>
+                <button type="button" ng-if="isCloudStorageEnabledForCardType('guest_card')" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Notes & Files" fs-toggle-class="fullscreen-card">
+                    Fullscreen
+                </button>
+            </li>                 
         </ul>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
@@ -42,9 +45,12 @@
         <!-- Guest Card Tab 6 Activity Log-->
         <span ng-show="current == 'activity-log' && isStandAlone" ng-include="'/assets/partials/guestCard/guestCardActivityLog.html'"></span>
         <!-- Guest Card Tab 7 Notes-->
-        <span ng-if="current == 'notes' && isStandAlone" 
-              ng-include="'/assets/partials/guestCard/rvGuestCardNotesAndFiles.html'">
-        </span>
+        <form method="post" action="{action}" id="gc-notes" name="gc-notes" class="form inner-header card-tab notes-tab no-print"
+              ng-if="current == 'notes' && isStandAlone">
+            <div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
+            <span ng-include="'/assets/partials/guestCard/rvGuestCardNotesAndFiles.html'">
+            </span>
+        </form>
     </div>
 
     <!-- Guest Search -->
