@@ -22,7 +22,9 @@ angular.module('sntRover')
                 };
 
                 var refreshScroller = function() {
-                    $scope.refreshScroller('hierarchyPopupFormScroll');
+                    $timeout(function () {
+                        $scope.refreshScroller('hierarchyPopupFormScroll');
+                    }, 500);
                 };
 
                 const checkEmptyOrListView = function( listData ) {
@@ -50,7 +52,9 @@ angular.module('sntRover')
                         daysList: hierarchyUtils.repeatOnDatesList,
                         cellDate: $scope.ngDialogData.date,
                         untilDate: '',
-                        listData: $scope.ngDialogData.listData
+                        listData: $scope.ngDialogData.listData,
+                        selectedSetOnIds: [],
+                        isSetOnAllActive: false
                     };
                 },
                 initialiseFirstScreen = () => {
@@ -66,9 +70,12 @@ angular.module('sntRover')
                     $scope.popUpView = 'NEW';
                     $scope.restrictionStylePack = angular.copy(hierarchyUtils.restrictionColorAndIconMapping);
                     $scope.showRestrictionSelection = false;
+                    $scope.$broadcast('INIT_SET_ON_SEARCH');
+                    $scope.restrictionObj.isRepeatOnDates = false;
+                    $scope.restrictionObj.isSetOnAllActive = false;
                 };
 
-                var setHouseRestrictionDataForPopup = () => {
+                var setRestrictionDataForPopup = () => {
                     $scope.header.hierarchyType = $scope.ngDialogData.hierarchyLevel;
                     $scope.header.date = moment($scope.ngDialogData.date).format('dddd, MMMM DD');
                     $scope.header.disableNewRestriction = $rootScope.businessDate > $scope.ngDialogData.date;
@@ -96,15 +103,20 @@ angular.module('sntRover')
                     $scope.$broadcast('SCROLL_REFRESH_REPEAT_ON_DATES');
                 };
 
-                // Check repeat on dates fields are valid.
-                let isRepeatOnDatesValid = () => {
+                // Check repeat on dates fields are not valid.
+                const isRepeatOnDatesNotValid = () => {
                     return ($scope.restrictionObj && $scope.restrictionObj.isRepeatOnDates && $scope.restrictionObj.untilDate === '');
+                };
+                
+                // Check set on search field is not valid.
+                const isSetOnSelectFormNotValid = () => {
+                    return ($scope.ngDialogData.hierarchyLevel !== 'House' && !$scope.restrictionObj.isSetOnAllActive && $scope.restrictionObj.selectedSetOnIds.length === 0);
                 };
 
                 $scope.validateForm = () => {
                     var formValid;
 
-                    if ($scope.showPlaceholder() || isRepeatOnDatesValid()) {
+                    if ($scope.showPlaceholder() || isRepeatOnDatesNotValid() || isSetOnSelectFormNotValid()) {
                         formValid = false;
                     }
                     else {
@@ -122,48 +134,51 @@ angular.module('sntRover')
                     }
                     return formValid;
                 };
-
-                // Utility method to pick up selected week days for API.
-                let getSelectedWeekDays = function() {
-                    let weekDays = [];
-
-                    _.each($scope.restrictionObj.daysList, function( day ) {
-                        if (day.isChecked) {
-                            weekDays.push(day.value);
-                        }
-                    });
-
-                    return weekDays;
-                };
-
-                $scope.setHouseHierarchyRestriction = () => {
-                    var restrictions = {};
+                    
+                $scope.saveHierarchyRestriction = () => {
+                    let restrictions = {};
+                    let apiMethod = '';
 
                     restrictions[$scope.selectedRestriction.key] = $scope.selectedRestriction.type === 'number' ? Math.round($scope.selectedRestriction.value) : true;
-                    var params = {
+                    let params = {
                         from_date: $scope.ngDialogData.date,
                         to_date: $scope.ngDialogData.date,
                         restrictions 
-                    },
-                    houseRestrictionSuccessCallback = () => {
+                    };
+
+                    switch ($scope.ngDialogData.hierarchyLevel) {
+                        case 'House':
+                            apiMethod = hierarchySrv.saveHouseRestrictions;
+                            break;
+                        case 'RoomType':
+                            params.room_type_ids = !$scope.restrictionObj.isSetOnAllActive ? $scope.restrictionObj.selectedSetOnIds : [];
+                            apiMethod = hierarchySrv.saveRoomTypeRestrictions;
+                            break;
+
+                        default:
+                        break;
+                    }
+
+                    if ($scope.restrictionObj.isRepeatOnDates) {
+                        let selectedWeekDays = hierarchyUtils.getSelectedWeekDays($scope.restrictionObj.daysList);
+
+                        if (selectedWeekDays.length > 0) {
+                            params.weekdays = selectedWeekDays;
+                        }
+                        params.to_date = $scope.restrictionObj.untilDate;
+                    }
+
+                    const houseRestrictionSuccessCallback = () => {
                         $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
                         $scope.$broadcast('RELOAD_RESTRICTIONS_LIST');
-                    },
-                    options = {
+                    };
+
+                    let options = {
                         params: params,
                         onSuccess: houseRestrictionSuccessCallback
                     };
-                
-                    if ($scope.restrictionObj.isRepeatOnDates) {
-                        let selectedWeekDays = getSelectedWeekDays();
 
-                        if (selectedWeekDays.length > 0) {
-                            options.params.weekdays = selectedWeekDays;
-                        }
-                        options.params.to_date = $scope.restrictionObj.untilDate;
-                    }
-
-                    $scope.callAPI(hierarchySrv.saveHouseRestrictions, options);
+                    $scope.callAPI(apiMethod, options);
                 };
 
                 $scope.backToInitialScreen = () => {
@@ -194,27 +209,38 @@ angular.module('sntRover')
                 $scope.getSetButtonLabel = function() {
                     let label = 'Set';
 
+                    if ($scope.popUpView === 'EDIT') {
+                        label = 'Update';
+                    }
                     if ($scope.restrictionObj.isRepeatOnDates) {
                         label = 'Set on date(s)';
                     }
-
                     return label;
+                };
+
+                // Set the label name for Remove or Remove Dates button.
+                $scope.getRemoveButtonLabel = function() {
+                    let label = 'Remove';
+                    
+                    if ($scope.restrictionObj.isRepeatOnDates) {
+                        label = 'Remove on date(s)';
+                    }
+                    return label;
+                };
+
+                // Handle REMOVE button click
+                $scope.clickedOnRemoveButton =  function() {
+                    $scope.$broadcast('CLICKED_REMOVE_ON_DATES');
                 };
 
                 var initController = () => {
                     initializeScopeVariables();
                     setscroller();
                     refreshScroller();
-
-                    switch ($scope.ngDialogData.hierarchyLevel) {
-                        case 'House':
-                            setHouseRestrictionDataForPopup();
-                            break;
-
-                        default:
-                            break;
-                    }
+                    setRestrictionDataForPopup();
                 };
+
+                $scope.addListener('REFRESH_FORM_SCROLL', refreshScroller);
 
                 initController();
             }

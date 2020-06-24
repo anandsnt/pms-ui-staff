@@ -1,13 +1,20 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
 	<div class="modal-content alert wide">
-		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()">
+		<button id="modal-close" type="button" class="modal-close" ng-click="closeRateChangePromptPopup()" ng-if="isFromSummary">
+			<span class="icons icon-close invert"></span>
+		</button>
+		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()" ng-if="!isFromSummary">
 			<span class="icons icon-close invert"></span>
 		</button>
 
 		<span class="icons icon-popup-alert"></span>
-		<span class="message h2" translate>GROUP_CUSTOM_RATE_HAS_CHANGED</span>
+		<span class="message h2" ng-if="!isFromSummary" translate>GROUP_CUSTOM_RATE_HAS_CHANGED</span>
+		<span class="message h2" ng-if="isFromSummary" translate>RATE_HAS_CHANGED</span>
 
-		<button type="button" class="button green modal-close" ng-click="checkIfInhouseReservationsExists();" translate>APPLY_TO_NEW_AND_EXISTING_RESERVATIONS</button>
-		<button type="button" class="button blue modal-close" ng-click="updateRateToNewReservations();" translate>APPLY_TO_NEW_RESERVATIONS_ONLY</button>
+		<button type="button" class="button green modal-close" ng-click="checkIfInhouseReservationsExists();" ng-if="!isFromSummary"translate>APPLY_TO_NEW_AND_EXISTING_RESERVATIONS</button>
+		<button type="button" class="button blue modal-close" ng-click="updateRateToNewReservations();" ng-if="!isFromSummary" translate>APPLY_TO_NEW_RESERVATIONS_ONLY</button>
+
+		<button type="button" class="button green modal-close" ng-click="updateRateToNewAndExistingReservations();" ng-if="isFromSummary" translate>APPLY_TO_NEW_AND_EXISTING_RESERVATIONS</button>
+		<button type="button" class="button blue modal-close" ng-click="updateRateToNewReservations();" ng-if="isFromSummary" translate>APPLY_TO_NEW_RESERVATIONS_ONLY</button>
 	</div>
 </div>

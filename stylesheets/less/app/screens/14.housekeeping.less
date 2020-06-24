@@ -283,6 +283,8 @@
 
             &.pickup { background: @orange; }
 
+            &.dnd { background: @purple; }
+
             &.dirty,
             &.check-out { background: @red; }
 
@@ -353,6 +355,7 @@
                     .green { color: @green; }
                     .red { color: @red; }
                     .orange { color: @orange; }
+                    .purple { color: @purple; }
                 }
 
                 .button {
@@ -423,6 +426,8 @@
 
                     &.pickup { color: @orange; font-weight: 600;}
 
+                    &.dnd { color: @purple; font-weight: 600;}
+
                     &.dirty,
                     &.check-out { color: @red; font-weight: 600;}
 
@@ -474,6 +479,20 @@
                     .name {
                         line-height: 30px;
                         vertical-align: top;
+                    }
+
+                    .no-service {
+                        .notice();
+                        text-transform: uppercase;
+                        padding: 0 5px;
+                        font-size: 14px;
+                        height: 20px;
+                        height: 30px;
+                        display: inline-block;
+                        display: i;
+                        vertical-align: middle;
+                        font-weight: 600;
+                        line-height: 30px;
                     }
                 }
 
@@ -993,6 +1012,12 @@
             
             .room-content{
                 &.scrollable {
+
+                    h2 {
+                        #flexbox > .parent(column, '', center, '' );
+                        .name {margin: 10px 0;}
+                    }
+
 
                     &.report-content {
                         height: 100%;

@@ -13,7 +13,8 @@ sntRover
 				'CLEAN': 'clean',
 				'DIRTY': 'dirty',
                 'INSPECTED': 'inspected',
-                'PICKUP': 'pickup'
+				'PICKUP': 'pickup',
+				'DO_NOT_DISTURB': 'dnd'
 			}
 		},
 		room_type: {

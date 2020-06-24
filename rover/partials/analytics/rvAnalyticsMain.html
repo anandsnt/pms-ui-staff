@@ -1,6 +1,22 @@
-<div class="wrapper" id="wrapper" ng-if="!dashboardFilter.gridViewActive && dashboardFilter.displayMode === 'CHART_DETAILS'">
+
+<div class="wrapper" id="wrapper">
+    <!-- Chart list -->
+    <ul class="search-results" ng-show="dashboardFilter.displayMode === 'DASHBOARD_LIST'">
+        <li class="dashboard-analytics" ng-repeat="chart in availableChartsList"  ng-click="onClickOnChartTile(chart.fetchDataEvent)">
+            <div class="faux-anchor"> <!-- On click, opens the analtics -->
+                <div class="title">
+                    <h2>{{ ::chart.name | translate }}</h2>
+                    <em class="description">{{ ::chart.tileDescription | translate }}</em>
+                </div>
+                <span class="category">{{ ::chart.department | translate }}</span>                
+            </div>
+        </li>              
+    </ul>
+
     <!-- Chart -->
-    <div class="analytics-chart" ng-class="{ 'with-legend-left' : showLeftSideLegends(), 'with-legend-right' : showRightSideLegends() }">
+    <div ng-show="!dashboardFilter.gridViewActive && dashboardFilter.displayMode === 'CHART_DETAILS'"
+        class="analytics-chart" 
+        ng-class="{ 'with-legend-left' : showLeftSideLegends(), 'with-legend-right' : showRightSideLegends() }">
         <dl class="chart-legend legend-left" id="left-side-legend" ng-if="showLeftSideLegends()">
         </dl>
         <div id="dashboard-analytics-chart" class="chart-content" ng-class="{'pace-chart-style': dashboardFilter.selectedAnalyticsMenu === 'PACE' && screenData.isZoomedChart }">
@@ -144,33 +160,4 @@
         ()">
         </dl>
     </div>
-</div>
-<!-- <section id="dashboard" ng-if="dashboardFilter.displayMode === 'DASHBOARD_LIST'" class="content scrollable analytics analytics-summary" role="main"> 
-    <div class="wrapper">
-
-        <div class="dashboard-analytics-list">
-            <a  class="analytics-card" ng-repeat="chart in availableChartsList"  ng-click="onClickOnChartTile(chart.fetchDataEvent)">
-                <div class="analytics-card-content">
-                    <h2> {{ ::chart.name | translate }}</h2>
-                    <span class="analytics-card-type">{{ ::chart.department | translate }}</span>
-                    <p class="analytics-card-description">{{ ::chart.tileDescription | translate }}</p>
-                </div>
-            </a>
-         </div>
-    </div>
-</section> -->
-
-<div ng-show="dashboardFilter.displayMode === 'DASHBOARD_LIST'" class="wrapper">
-
-    <ul class="search-results">
-        <li class="dashboard-analytics" ng-repeat="chart in availableChartsList"  ng-click="onClickOnChartTile(chart.fetchDataEvent)">
-            <div class="faux-anchor"> <!-- On click, opens the analtics -->
-                <div class="title">
-                    <h2>{{ ::chart.name | translate }}</h2>
-                    <em class="description">{{ ::chart.tileDescription | translate }}</em>
-                </div>
-                <span class="category">{{ ::chart.department | translate }}</span>                
-            </div>
-        </li>              
-    </ul>
 </div>

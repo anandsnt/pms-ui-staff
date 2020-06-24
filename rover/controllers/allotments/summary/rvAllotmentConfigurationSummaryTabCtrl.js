@@ -565,6 +565,76 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			$scope.allotmentConfigData.summary.uniqId = summaryMemento.uniqId;
 		};
 
+		// Update the rate for the group
+        $scope.updateRate = function (shouldUpdateExistingReservations) {
+            ngDialog.close();
+
+            var summaryData = $scope.allotmentConfigData.summary,
+				uniqId = summaryData.uniqId,
+				rateId = uniqId && uniqId.split(':')[0],
+				contractId = uniqId && uniqId.split(':')[1];
+			
+
+			var params = {
+				allotment_id: summaryData.allotment_id,
+				rate_id: rateId,
+				contract_id: contractId
+			};
+
+			if (shouldUpdateExistingReservations) {
+                params.update_existing_reservations_rate = true;
+            }
+
+			var options = {
+				successCallBack: onRateChangeSuccess,
+				failureCallBack: onRateChangeFailure,
+				params: params
+			};
+
+			$scope.callAPI(rvAllotmentConfigurationSrv.updateRate, options);
+        };
+        
+        // Alert the user during rate change, when there are in-house reservations
+        var showInhouseReservationExistsAlert = function () {
+            ngDialog.open({
+                template: '/assets/partials/allotments/details/rvAllotmentInhouseReservationsExistsPopup.html',
+                scope: $scope,
+                className: '',
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
+
+        // Update rate to new and existing reservations
+        $scope.updateRateToNewAndExistingReservations = function () {
+            ngDialog.close();
+            if ($scope.allotmentConfigData.summary.total_checked_in_reservations > 0) {
+                showInhouseReservationExistsAlert();
+            } else {
+                $scope.updateRate(true);
+            }
+            
+        };
+
+        // Upate rate to new reservations only
+        $scope.updateRateToNewReservations = function () {
+            ngDialog.close();
+            $scope.updateRate(false);
+        };
+
+        // Show the popup when the rate is changed
+        var showRateChangePopup = function () {
+            $scope.isFromSummary = true;
+
+            ngDialog.open({
+                template: '/assets/partials/allotments/details/rvAllotmentRoomBlockPickedupReservationsPopup.html',
+                scope: $scope,
+                className: '',
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
+
 		/**
 		 * [onRateChange description]
 		 * @return {undefined}
@@ -577,23 +647,19 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 			$scope.allotmentConfigData.summary.contract_id = contractId;
 			$scope.allotmentConfigData.summary.rate = rateId;
+
+			// If group is not yet created, discard the rate change
 			if (!summaryData.allotment_id || !uniqId) {
 				return false;
-			}
-
-			var params = {
-				allotment_id: summaryData.allotment_id,
-				rate_id: rateId,
-				contract_id: contractId
-			};
-
-			var options = {
-				successCallBack: onRateChangeSuccess,
-				failureCallBack: onRateChangeFailure,
-				params: params
-			};
-
-			$scope.callAPI(rvAllotmentConfigurationSrv.updateRate, options);
+            }
+            
+            // Show the popup only when room and rates are configured
+            if (summaryData.rooms_total > 0) {
+                showRateChangePopup();
+            } else {
+                $scope.updateRate(false); 
+            }
+			
 		};
 
 
@@ -1068,13 +1134,15 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			if (activeTab !== 'SUMMARY') {
 				return;
 			}
-			$scope.$emit("FETCH_SUMMARY");
+			if (!$scope.isInAddMode()) {
+				$scope.$emit("FETCH_SUMMARY");
 
-			// we are resetting the API call in progress check variable
-			$scope.isUpdateInProgress = false;
+				// we are resetting the API call in progress check variable
+				$scope.isUpdateInProgress = false;
 
-			// we have to refresh this data on tab siwtch
-			$scope.computeSegment();
+				// we have to refresh this data on tab siwtch
+				$scope.computeSegment();
+			}
 		});
 
 		/**
@@ -1175,6 +1243,20 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
                $scope.$emit('SAVE_ALLOTMENT'); 
             }
         });
+
+        // Invoke when the rate change popup closes
+        $scope.closeRateChangePromptPopup = function () {
+            var uniqId = summaryMemento.uniqId,
+                rateId = uniqId && uniqId.split(':')[0],
+                contractId = uniqId && uniqId.split(':')[1];
+
+            $scope.allotmentConfigData.summary.uniqId = uniqId;
+            $scope.allotmentConfigData.summary.contract_id = contractId;
+            $scope.allotmentConfigData.summary.rate = rateId; 
+
+            ngDialog.close();
+
+        };
 
 		/**
 		 * Function used to initialize summary view
