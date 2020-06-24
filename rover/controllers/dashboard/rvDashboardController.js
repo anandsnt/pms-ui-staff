@@ -29,9 +29,6 @@ sntRover.controller('RVdashboardController',
                 $scope.statisticsData = dashBoarddata.dashboardStatistics;
                 $scope.lateCheckoutDetails = dashBoarddata.lateCheckoutDetails;
                 $rootScope.adminRole = $scope.userDetails.user_role;
-                // fetch settings and store in srv
-                RVHotelDetailsSrv.fetchCloudStorageConfig();
-
                 // update left nav bar
                 $scope.$emit("updateRoverLeftMenu", "dashboard");
                 $scope.$emit("closeDrawer");
