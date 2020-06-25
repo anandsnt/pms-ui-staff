@@ -1212,6 +1212,22 @@ angular.module('sntRover')
                 $scope.addListener('REFRESH_AUTO_ASSIGN_STATUS', diaryLockStatus);
 
                 /**
+                 * Show room status and service update popup
+                 * @param {Object} roomInfo room info
+                 * @return {void}
+                 */
+                var showRoomStatusAndServiceUpdatePopup = (roomInfo) => {
+                    ngDialog.open({
+                        template: '/assets/partials/diary/rvDiaryUpdateRoomStatusAndServicePopup.html',
+                        className: 'ngdialog-theme-default',
+                        closeByDocument: true,
+                        controller: 'rvDiaryRoomStatusAndServiceUpdatePopupCtrl',
+                        data: roomInfo,
+                        scope: $scope
+                    });
+                };  
+
+                /**
                  * utility method to pass callbacks from
                  * @return {Object} with callbacks
                  */
@@ -1225,7 +1241,8 @@ angular.module('sntRover')
                         clickedAssignRoom,
                         clickedMoveRoom,
                         clickedBookRoom,
-                        showOrHideSaveChangesButton
+                        showOrHideSaveChangesButton,
+                        showRoomStatusAndServiceUpdatePopup
                     };
                 };
 

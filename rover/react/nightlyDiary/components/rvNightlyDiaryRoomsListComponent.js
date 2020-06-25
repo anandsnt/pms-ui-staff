@@ -29,6 +29,15 @@ class NightlyDiaryRoomsListComponent extends React.Component {
     }
 
     /**
+     * Show the room status and service status update popup
+     * @param {Object} item - room object
+     * @return {void}
+     */
+    showRoomStatusUpdatePopup = (item) => {
+        this.props.showUpdateRoomStatusAndServicePopup(item);
+    }
+
+    /**
      * [renderRoom description]
      * @param {Object} item roomData
      * @param {Number} index item index on list
@@ -42,8 +51,8 @@ class NightlyDiaryRoomsListComponent extends React.Component {
             </span> : null;
 
         return (
-            <div className={item.main_room_class} key={index}>
-                <span className={item.room_class}>{item.room_no}</span>
+            <div className={item.main_room_class} key={index} >
+                <span className={item.room_class} onClick={() => this.showRoomStatusUpdatePopup(item)}>{item.room_no}</span>
                 <span className="room-type">{item.room_type_name}</span>
                 <div className="suites">
                     {/* Clickable suite icon, clicking will open a popup with list of suit components */}
