@@ -1,23 +1,25 @@
-sntRover.controller('RVArTransactionsPayCreditsController', 
-    ['$scope', 
-    'RVPaymentSrv', 
-    'ngDialog', 
-    '$rootScope', 
-    '$timeout', 
-    '$filter', 
-    'rvAccountTransactionsSrv', 
-    'rvPermissionSrv', 
+sntRover.controller('RVArTransactionsPayCreditsController',
+    ['$scope',
+    'RVPaymentSrv',
+    'ngDialog',
+    '$rootScope',
+    '$timeout',
+    '$filter',
+    'rvAccountTransactionsSrv',
+    'rvPermissionSrv',
     function($scope, RVPaymentSrv, ngDialog, $rootScope, $timeout, $filter, rvAccountTransactionsSrv, rvPermissionSrv) {
     BaseCtrl.call(this, $scope);
 
+    var defaultPaymentAmount = ($scope.passData.isRefundClick) ? ((-1) * parseFloat($scope.passData.payment.amount)).toFixed(2) : parseFloat($scope.arDataObj.unpaidAmount).toFixed(2),
+        defaultPaymentCurrencyAmount = ($scope.passData.isRefundClick) ? ((-1) * parseFloat($scope.passData.payment.amount)).toFixed(2) : parseFloat($scope.arDataObj.unpaidPaymentAmount).toFixed(2);
+
     $scope.feeData = {};
     $scope.selectedCC = {};
-
     $scope.saveData = {'paymentType': ''};
     $scope.billNumber = 1;
     $scope.renderData = {};
-    $scope.renderData.defaultPaymentAmount = ($scope.passData.isRefundClick) ? ((-1) * parseFloat($scope.passData.payment.amount)).toFixed(2) : parseFloat($scope.arDataObj.unpaidAmount).toFixed(2);
-    $scope.renderData.defaultPaymentCurrencyAmount = ($scope.passData.isRefundClick) ? ((-1) * parseFloat($scope.passData.payment.amount)).toFixed(2) : parseFloat($scope.arDataObj.unpaidPaymentAmount).toFixed(2);
+    $scope.renderData.defaultPaymentAmount = parseFloat(defaultPaymentAmount);
+    $scope.renderData.defaultPaymentCurrencyAmount = parseFloat(defaultPaymentCurrencyAmount);
     $scope.saveData.paymentType = ($scope.passData.isRefundClick) ? $scope.passData.payment.payment_type_value  : '';
     $scope.actionType = ($scope.passData.isRefundClick) ? "AR_REFUND_PAYMENT" : "AR_SUBMIT_PAYMENT";
     if ($scope.passData.isRefundClick && $scope.passData.payment.payment_type_value === "CC") {
@@ -35,8 +37,8 @@ sntRover.controller('RVArTransactionsPayCreditsController',
     /*
      * if no payment type is selected disable payment button
      */
-    $scope.disableMakePayment = function() {       
-        return $scope.saveData.paymentType.length;        
+    $scope.disableMakePayment = function() {
+        return $scope.saveData.paymentType.length;
     };
     $scope.handleCloseDialog = function() {
         $scope.$emit('HANDLE_MODAL_OPENED');
@@ -99,17 +101,17 @@ sntRover.controller('RVArTransactionsPayCreditsController',
             });
             $scope.arDataObj.totalAllocatedAmount = totalAllocatedAmount;
         }
-        $scope.arFlags.isPaymentSelected = true;   
-        $scope.arFlags.insufficientAmount = false; 
+        $scope.arFlags.isPaymentSelected = true;
+        $scope.arFlags.insufficientAmount = false;
         $scope.arDataObj.selectedInvoices = [];
 
         // Reload the ar transaction listing after payment
         if (data.allocatePaymentAfterPosting) {
-            $scope.$emit('REFRESH_BALANCE_LIST');            
+            $scope.$emit('REFRESH_BALANCE_LIST');
         } else {
             $scope.$emit('REFRESH_SELECTED_LIST');
         }
-        
+
     };
     /*
      * Failure call back of submitpayment
@@ -229,7 +231,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
 
                 });
             }
-            
+
         });
 
         $scope.saveData.payment_type_id = data.id;
@@ -244,11 +246,11 @@ sntRover.controller('RVArTransactionsPayCreditsController',
      * Checks whether the selected credit card btn needs to show or not
      */
     $scope.showSelectedCreditCardButton = function() {
-        return $scope.showCreditCardInfo && 
-            !$scope.showCCPage && 
-            ($scope.paymentGateway !== 'sixpayments' || $scope.isManual) 
-            && $scope.saveData.paymentType === 'CC' 
-            && !$scope.depositPaidSuccesFully;            
+        return $scope.showCreditCardInfo &&
+            !$scope.showCCPage &&
+            ($scope.paymentGateway !== 'sixpayments' || $scope.isManual)
+            && $scope.saveData.paymentType === 'CC'
+            && !$scope.depositPaidSuccesFully;
     };
     /*
      * Checks whether reference text is available for CC
@@ -257,7 +259,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         // call utils fn
         $scope.referenceTextAvailable = checkIfReferencetextAvailableForCC($scope.renderData.paymentTypes, $scope.defaultPaymentTypeCard);
     };
-    
+
     // Added for CICO-26730
     $scope.changeOnsiteCallIn = function() {
         $scope.showCCPage = !!$scope.isManual;
@@ -315,7 +317,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
             $scope.shouldShowMakePaymentButton = false;
         } else {
             $scope.shouldShowMakePaymentButton = true;
-        }  
+        }
 
     };
 }]);

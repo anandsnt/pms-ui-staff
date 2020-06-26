@@ -56,6 +56,7 @@ angular.module('sntRover').service('RVHotelDetailsSrv', ['$q', 'rvBaseWebSrvV2',
         };
 
         service.fetchHotelDetails = function () {
+            service.fetchCloudStorageConfig();
             var deferred = $q.defer(),
                 promises = [service.fetchUserHotels(), service.fetchHotelBusinessDate(), service.fetchHotelSettings()];
 
