@@ -1,5 +1,6 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
-    <div class="modal-content update-room-status update-room-status-diary" ng-class="{'extended': !isRoomStatusSectionActive()}">
+    <div class="modal-content form update-room-status update-room-status-diary"
+        ng-class="{'extended': !isRoomStatusSectionActive()}">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <!-- Add class 'extended' when showing Service Status tab -->
 
@@ -26,128 +27,141 @@
                 <em>{{todayDate | date: 'EEEE'}}</em>
             </div>
         </div>
+        <div class="modal-body">
 
-        <!-- Room / Service Status Toggle -->
-        <ul class="options">
-            <!-- if active, show #room-status -->
-            <li data-show="#room-status" ng-click="setActiveSection('room')" ng-class="{'active': isRoomStatusSectionActive()}">Room Status</li>
-            <!-- if active, show #service-status -->
-            <li data-show="#service-status" ng-click="setActiveSection('service')" ng-class="{'active': !isRoomStatusSectionActive()}">Service Status</li>
-        </ul>
+            <!-- Room / Service Status Toggle -->
+            <ul class="options">
+                <!-- if active, show #room-status -->
+                <li data-show="#room-status" ng-click="setActiveSection('room')"
+                    ng-class="{'active': isRoomStatusSectionActive()}">Room Status</li>
+                <!-- if active, show #service-status -->
+                <li data-show="#service-status" ng-click="setActiveSection('service')"
+                    ng-class="{'active': !isRoomStatusSectionActive()}">Service Status</li>
+            </ul>
 
-        <!-- Room Status Form -->
-        <div id="room-status" class="status-container" ng-if="isRoomStatusSectionActive()">
-            <div class="entry radio-check">
-                <label class="radio" for="{{status.id}}" ng-repeat="status in hkStatusList">
-                    <!-- Add class 'checked' if checked -->
-                    <span 
-                        class="icon-form icon-radio"
-                        ng-class="{ 'checked' : statusInfo.hkStatus == status.value }">
-                    </span> <!-- Add class 'checked' if checked -->
-                    <input name="room-status" id="{{status.id}}" value="{{ status.value }}" type="radio" ng-model="statusInfo.hkStatus" />
-                    {{status.description}}
-                </label>
-            </div>
-            <div class="actions">
-                <button type="button" class="button green" ng-click="updateRoomStatus(roomInfo.room_no)">Confirm Status</a>
-                <button type="button" id="cancel" class="button blank" ng-click="closeDialog()">Cancel</button>
-            </div>
-        </div>
-
-        <!-- Service Status Form -->
-        <div id="service-status" class="status-container" ng-if="!isRoomStatusSectionActive()">
-            <div class="entry float-label">
-                <div class="select">
-                    <label for="select-service-status" class="label">Service Status</label>
-                    <select 
-                        id="select-service-status"
-                        ng-change="statusChange()">
-                        <option ng-repeat="item in serviceList" value="{{item.id}}">{{item.description}}</option>
-                    </select>
+            <!-- Room Status Form -->
+            <div id="room-status" class="status-container" ng-if="isRoomStatusSectionActive()">
+                <div class="entry radio-check">
+                    <label class="radio" for="{{status.id}}" ng-repeat="status in hkStatusList">
+                        <!-- Add class 'checked' if checked -->
+                        <span class="icon-form icon-radio"
+                            ng-class="{ 'checked' : statusInfo.hkStatus == status.value }">
+                        </span> <!-- Add class 'checked' if checked -->
+                        <input name="room-status" id="{{status.id}}" value="{{ status.value }}" type="radio"
+                            ng-model="statusInfo.hkStatus" />
+                        {{status.description}}
+                    </label>
                 </div>
-            </div>
-            <!-- Add class 'hidden' if it is selected 'In Service'-->
-            <div id="status-details" class="scrollable">
-                <div class="wrapper room-service-status">
-                    <div id="dates" class="row">
-                        <div id="out-from" class="entry">
-                            <label id="room-out-from-label" for="room-out-from">From <span>today</span></label>
-                            <div class="entry-data">
-                                <input name="room-out-from"
-                                       id="room-out-from" 
-                                       type="text"
-                                       class="datepicker hasDatepicker" 
-                                       ui-date="fromDateOptions" 
-                                       ng-model="updateService.from_date" 
-                                       ui-date-format
-                                       readonly 
-                                       ng-disabled="showSaved" >
-                                <strong id="room-out-from-day" class="day">{from-day}</strong>
-                                <span id="room-out-from-month" class="month">{from-month}</span>
-                                <span id="room-out-from-year" class="year">{from-year}</span>
-                            </div>
-                            <!-- hide if in service -->
-                            <div class="select">
-                                <!-- remove .placeholder when a value is selected -->
-                                <select id="room-out-from-time" class="placeholder">
-                                    <option value="" selected="">From Time</option>
-                                    ... for each available time
-                                </select>
-                            </div>
-                        </div>
-                        <div id="out-to" class="entry">
-                            <label id="room-out-to-label" for="room-out-to">To <span>Tuesday</span></label>
-                            <div class="entry-data">
-                                <input name="room-out-to" id="room-out-to" type="text" class="datepicker hasDatepicker"
-                                    value="{to-date}" readonly="">
-                                <strong id="room-out-to-day" class="day">{to-day}</strong>
-                                <span id="room-out-to-month" class="month">{to-month}</span>
-                                <span id="room-out-to-year" class="year">{to-year}</span>
-                            </div>
-                            <!-- hide if in service -->
-                            <div class="select">
-                                <!-- remove .placeholder when a value is selected -->
-                                <select id="room-out-to-time" class="placeholder">
-                                    <option value="" selected="">To Time</option>
-                                    ... for each available time
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- hide if in service -->
-                    <div id="reason" class="row float" ng-hide="isRoomStatusSectionActive()">
-                        <div class="entry margin">
-                            <label for="reason">Room return status</label>
-                            <div class="select">
-                                <!-- remove .placeholder when a value is selected -->
-                                <select name="reason" id="reason" class="placeholder">
-                                    <option value="" selected="">Select</option>
-                                    
-                                </select>
-                            </div>
-                        </div>
-                        <div class="entry">
-                            <label for="reason">Reason</label>
-                            <div class="select">
-                                <!-- remove .placeholder when a value is selected -->
-                                <select name="reason" id="reason" class="placeholder">
-                                    <option value="" selected="">Select</option>
-                                    <option ng-repeat="item in maintenanceReasonsList" value="{{item.value}}">{{item.name}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="entry full-width">
-                            <label for="reason-comments">Comments <span>(optional)</span></label>
-                            <textarea name="reason-comments" id="reason-comments" rows="2"></textarea>
-                        </div>
-                    </div>
+                <div class="actions">
+                    <button type="button" class="button green" ng-click="updateRoomStatus(roomInfo.room_no)">Confirm
+                        Status</a>
+                        <button type="button" id="cancel" class="button blank" ng-click="closeDialog()">Cancel</button>
                 </div>
             </div>
 
-            <div class="actions">
-                <button type="button" class="button green">Confirm Status</button>
-                <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+            <!-- Service Status Form -->
+            <div id="service-status" class="status-container" ng-if="!isRoomStatusSectionActive()">
+                <div class="entry float-label">
+                    <div class="select">
+                        <label for="select-service-status" class="label">Service Status</label>
+                        <select 
+                            id="select-service-status" 
+                            ng-model="serviceStatusDetails.room_service_status_id"
+                            ng-options="item.id as item.description for item in serviceList" 
+                            ng-change="onServiceStatusChange()">
+                        </select>
+                    </div>
+                </div>
+                <!-- Add class 'hidden' if it is selected 'In Service'-->
+                <div id="status-details" class="scrollable" ng-iscroll="roomStatusServiceUpdateScroller">
+                    <div class="wrapper room-service-status">
+                        <div id="dates" class="row">
+                            <div id="out-from" class="entry">
+                                <label id="room-out-from-label" for="room-out-from">From <span>today</span></label>
+                                <div class="entry-data">
+                                    <input 
+                                        name="room-out-from"
+                                        id="room-out-from" 
+                                        type="text"
+                                        class="datepicker" 
+                                        ui-date="fromDateOptions"
+                                        ng-model="serviceStatusDetails.from_date" 
+                                        ui-date-format
+                                        >
+                                    <strong id="room-out-from-day" class="day">{{serviceStatusDetails.from_date | date:'dd' }}</strong>
+                                    <span id="room-out-from-month" class="month">{{serviceStatusDetails.from_date | date:'MMMM' }}</span>
+                                <span id="room-out-from-year" class="year">{{serviceStatusDetails.from_date | date:'yyyy' }}</span>
+                                </div>
+                                <!-- hide if in service -->
+                                <div class="select" ng-hide="isInService()">
+                                    <!-- remove .placeholder when a value is selected -->
+                                    <select id="room-out-from-time" class="placeholder" ng-show="shouldShowTimeSelector()" ng-model="serviceStatusDetails.begin_time">
+                                        <option value="" selected="">From Time</option>
+                                        <option value="{{timeSelector.value}}" ng-repeat="timeSelector in timeSelectorList" ng-selected="serviceStatusDetails.begin_time == timeSelector.value">{{timeSelector.text}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="out-to" class="entry">
+                                <label id="room-out-to-label" for="room-out-to">To <span>Tuesday</span></label>
+                                <div class="entry-data">
+                                    <input 
+                                        name="room-out-to"
+                                        id="room-out-to" 
+                                        type="text"
+                                        class="datepicker" 
+                                        ui-date="untilDateOptions" 
+                                        ng-model="serviceStatusDetails.to_date" 
+                                        ui-date-format >
+                                <strong id="room-out-to-day" class="day">{{serviceStatusDetails.to_date | date:'dd' }}</strong>
+                                <span id="room-out-to-month" class="month">{{serviceStatusDetails.to_date | date:'MMMM' }}</span>
+                                <span id="room-out-to-year" class="year">{{serviceStatusDetails.to_date | date:'yyyy' }}</span>
+                                </div>
+                                <!-- hide if in service -->
+                                <div class="select" ng-hide="isInService()">
+                                    <!-- remove .placeholder when a value is selected -->
+                                    <select id="room-out-to-time" class="placeholder" ng-show="shouldShowTimeSelector()" ng-model="serviceStatusDetails.end_time">
+                                        <option value="" selected="">To Time</option>
+                                        <option value="{{timeSelector.value}}" ng-repeat="timeSelector in timeSelectorList" ng-selected="serviceStatusDetails.end_time == timeSelector.value">{{timeSelector.text}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- hide if in service -->
+                        <div id="reason" class="row float" ng-hide="isRoomStatusSectionActive() || isInService()">
+                            <div class="entry margin">
+                                <label for="reason">Room return status</label>
+                                <div class="select">
+                                    <!-- remove .placeholder when a value is selected -->
+                                    <select name="reason" id="reason" class="placeholder">
+                                        <option value="" selected="">Select</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="entry">
+                                <label for="reason">Reason</label>
+                                <div class="select">
+                                    <!-- remove .placeholder when a value is selected -->
+                                    <select name="reason" id="reason" class="placeholder">
+                                        <option value="" selected="">Select</option>
+                                        <option ng-repeat="item in maintenanceReasonsList" value="{{item.value}}">
+                                            {{item.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="entry full-width">
+                                <label for="reason-comments">Comments <span>(optional)</span></label>
+                                <textarea name="reason-comments" id="reason-comments" rows="2"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="button" class="button green">Confirm Status</button>
+                    <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+                </div>
             </div>
         </div>
     </div>

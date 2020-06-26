@@ -4,9 +4,16 @@ angular.module('sntRover').controller('rvDiaryRoomStatusAndServiceUpdatePopupCtr
     'ngDialog',
     'RVHkRoomStatusSrv',
     'RVHkRoomDetailsSrv',
-    
-    function ($scope, $rootScope, ngDialog, RVHkRoomStatusSrv, RVHkRoomDetailsSrv) {
+    '$timeout',
+    '$filter',
+    'rvUtilSrv',
+    function ($scope, $rootScope, ngDialog, RVHkRoomStatusSrv, RVHkRoomDetailsSrv, $timeout, $filter, util) {
         BaseCtrl.call(this, $scope);
+
+        var ROOM_STATUS_SERVICE_UPDATE_SCROLLER = 'roomStatusServiceUpdateScroller',
+            INTERVAL_FOR_TIME_SELECTOR = 15,
+            HOUR_MODE = 12,
+            IN_SERVICE_ID = 1;
 
         // Closes the popup
         $scope.closeDialog = function () {
@@ -20,6 +27,12 @@ angular.module('sntRover').controller('rvDiaryRoomStatusAndServiceUpdatePopupCtr
          */
         $scope.setActiveSection = function (name) {
             $scope.currentActiveSection = name;
+            if (name === 'service') {
+                $timeout(function () {
+                    $scope.refreshScroller(ROOM_STATUS_SERVICE_UPDATE_SCROLLER);
+                }, 1000);
+            }
+            
         };
 
         /**
@@ -76,6 +89,7 @@ angular.module('sntRover').controller('rvDiaryRoomStatusAndServiceUpdatePopupCtr
                 $scope.callAPI(RVHkRoomDetailsSrv.fetchAllServiceStatus, {
                     onSuccess: function (data) {
                         $scope.serviceList = data;
+                        IN_SERVICE_ID = (_.find($scope.serviceList, {value: 'IN_SERVICE'})).id;
                     }
                 });
             
@@ -90,17 +104,71 @@ angular.module('sntRover').controller('rvDiaryRoomStatusAndServiceUpdatePopupCtr
                 
             },
             // Fetch room service info
-            fetchRoomServiceInfo = function () {
+            fetchRoomServiceInfo = function (selectedDate) {
                 $scope.callAPI(RVHkRoomDetailsSrv.getRoomServiceStatus, {
                     params: {
-                        room_id: $scope.roomInfo.id
-                        //from_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd')
+                        room_id: $scope.roomInfo.id,
+                        from_date: $filter('date')(selectedDate, 'yyyy-MM-dd')
                     },
                     onSuccess: function (data) {
                         $scope.serviceStatus = data.service_status;
+                        var selectedServiceData = $scope.serviceStatus[getApiFormattedDate(selectedDate)];
+
+                        $scope.serviceStatusDetails.room_service_status_id = selectedServiceData.id;
                     }
                 });
                 
+            },
+            // Set from and to date picker options
+            setDatePickerOptions = function () {
+                var setClass = function(day) {
+                        return [true, $scope.serviceStatus[$filter('date')(tzIndependentDate(day), 'yyyy-MM-dd')]
+                        && $scope.serviceStatus[$filter('date')(tzIndependentDate(day), 'yyyy-MM-dd')].id > 1 ? 'room-out' : ''];
+                    },
+                    datePickerCommon = {
+                        dateFormat: $rootScope.jqDateFormat,
+                        numberOfMonths: 1,
+                        changeYear: true,
+                        changeMonth: true,
+                        beforeShow: function(input, inst) {
+                            $('#ui-datepicker-div').addClass('reservation hide-arrow');
+                            $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+            
+                            setTimeout(function() {
+                                $('body').find('#ui-datepicker-overlay')
+                                    .on('click', function() {
+                                        $('#room-out-from').blur();
+                                        $('#room-out-to').blur();
+                                    });
+                            }, 100);
+                        },
+                        onClose: function(value) {
+                            $('#ui-datepicker-div').removeClass('reservation hide-arrow');
+                            $('#ui-datepicker-overlay').off('click').remove();
+                        }
+                    },
+                    adjustDates = function() {
+                        if (tzIndependentDate($scope.serviceStatusDetails.from_date) > tzIndependentDate($scope.serviceStatusDetails.to_date)) {
+                            $scope.serviceStatusDetails.to_date = $filter('date')(tzIndependentDate($scope.serviceStatusDetails.from_date), 'yyyy-MM-dd');
+                        }
+                        $scope.untilDateOptions.minDate = $filter('date')(tzIndependentDate($scope.serviceStatusDetails.from_date), $rootScope.dateFormat);
+                    };
+        
+                $scope.fromDateOptions = angular.extend({
+                    minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+                    onSelect: adjustDates,
+                    beforeShowDay: setClass
+                }, datePickerCommon);
+        
+                $scope.untilDateOptions = angular.extend({
+                    minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+                    onSelect: adjustDates,
+                    beforeShowDay: setClass                    
+                }, datePickerCommon);
+            },
+            // Get date in API date format
+            getApiFormattedDate = function(date) {
+                return $filter('date')(new tzIndependentDate(date), $rootScope.dateFormatForAPI);
             };
 
         // Checks whether the room tab is active or not
@@ -129,6 +197,21 @@ angular.module('sntRover').controller('rvDiaryRoomStatusAndServiceUpdatePopupCtr
             });
         };
 
+        // Checks if room is in-service
+        $scope.isInService = function () {
+            return $scope.serviceStatusDetails.room_service_status_id === IN_SERVICE_ID;
+        };
+
+        // Handler for service status change
+        $scope.onServiceStatusChange = function () {
+            $scope.refreshScroller(ROOM_STATUS_SERVICE_UPDATE_SCROLLER);
+        };
+
+        // Should show time selector fields
+        $scope.shouldShowTimeSelector = function() {
+            return ($rootScope.isHourlyRateOn || $rootScope.hotelDiaryConfig.mode === 'FULL') && !$scope.isInService();
+        };
+
         // Initialize the controller
         var init = function () {
             $scope.currentActiveSection = 'room';
@@ -138,15 +221,20 @@ angular.module('sntRover').controller('rvDiaryRoomStatusAndServiceUpdatePopupCtr
                 reason_id: '',
                 end_time: '',
                 begin_time: '',
-                room_service_status_id: ''
+                room_service_status_id: '',
+                from_date: tzIndependentDate($rootScope.businessDate),
+                to_date: tzIndependentDate($rootScope.businessDate)
             };
             $scope.statusInfo = {
                 hkStatus: $scope.roomInfo.hk_status
             };
             $scope.todayDate = tzIndependentDate($rootScope.businessDate);
+            setDatePickerOptions();
             fetchHkStatusAndServiceList();
             fetchMaintenenceReasons();
-            fetchRoomServiceInfo();
+            fetchRoomServiceInfo(tzIndependentDate($rootScope.businessDate));
+            $scope.setScroller(ROOM_STATUS_SERVICE_UPDATE_SCROLLER);
+            $scope.timeSelectorList = util.getListForTimeSelector (INTERVAL_FOR_TIME_SELECTOR, HOUR_MODE);            
             console.log($scope.ngDialogData);
         };
 

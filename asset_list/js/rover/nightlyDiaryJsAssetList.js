@@ -12,6 +12,7 @@ module.exports = {
                 roverRoot + "services/reservation/rvReservationSummarySrv.js",
                 roverRoot + "services/housekeeping/rvHkRoomStatusSrv.js",
                 roverRoot + "services/housekeeping/rvHkRoomDetailsSrv.js",
+                roverRoot + "services/util/rvUtilSrv.js",
                 roverRoot + "controllers/nightlyDiary/*.js",
                 roverRoot + "controllers/rvDiaryRoomStatusAndServiceUpdatePopupCtrl.js",
                 roverRoot + 'redux/nightlyDiary/**/*.js',
