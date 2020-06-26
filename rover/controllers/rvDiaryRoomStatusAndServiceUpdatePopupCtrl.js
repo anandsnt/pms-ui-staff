@@ -13,7 +13,8 @@ angular.module('sntRover').controller('rvDiaryRoomStatusAndServiceUpdatePopupCtr
         var ROOM_STATUS_SERVICE_UPDATE_SCROLLER = 'roomStatusServiceUpdateScroller',
             INTERVAL_FOR_TIME_SELECTOR = 15,
             HOUR_MODE = 12,
-            IN_SERVICE_ID = 1;
+            IN_SERVICE_ID = 1,
+            isHourly = util.getDiaryMode() === 'FULL';
 
         // Closes the popup
         $scope.closeDialog = function () {
@@ -83,6 +84,14 @@ angular.module('sntRover').controller('rvDiaryRoomStatusAndServiceUpdatePopupCtr
             $scope.callAPI(RVHkRoomStatusSrv.fetchHkStatusList, {
                 onSuccess: function (data) {
                     $scope.hkStatusList = data;
+                    // Do not show DND in the following cases. The DND settings is handled at the API side
+                    // so DND status won't be there in the list, if setting is turned off
+                    if (!$rootScope.isStandAlone || isHourly || !$scope.roomInfo.is_occupied) {
+                        $scope.hkStatusList = _.reject($scope.hkStatusList, function (item) {
+                            return item.value === 'DO_NOT_DISTURB';
+                        });
+                    }
+
                     $scope.returnStatusList = _.reject($scope.hkStatusList, function (item) {
                         return item.value === 'DO_NOT_DISTURB';
                     });
@@ -118,9 +127,9 @@ angular.module('sntRover').controller('rvDiaryRoomStatusAndServiceUpdatePopupCtr
                         var selectedServiceData = $scope.serviceStatus[getApiFormattedDate(selectedDate)];
                         
                         $scope.serviceStatusDetails.room_service_status_id = selectedServiceData.id;
-                        $scope.serviceStatusDetails.reason_id = selectedServiceData.maintenance_reason_id;
+                        $scope.serviceStatusDetails.reason_id = selectedServiceData.maintenance_reason_id || '';
                         $scope.serviceStatusDetails.comment = selectedServiceData.comments;
-                        $scope.serviceStatusDetails.return_status_id = selectedServiceData.return_status_id;
+                        $scope.serviceStatusDetails.return_status_id = selectedServiceData.return_status_id || '';
                         
                     }
                 });
@@ -261,7 +270,9 @@ angular.module('sntRover').controller('rvDiaryRoomStatusAndServiceUpdatePopupCtr
                 to_date: tzIndependentDate($rootScope.businessDate)
             };
             $scope.statusInfo = {
-                hkStatus: $scope.roomInfo.hk_status
+                hkStatus: $scope.roomInfo.hk_status,
+                // service_status - N, room_service_status - H
+                serviceStatus: $scope.roomInfo.service_status || $scope.roomInfo.room_service_status
             };
             $scope.todayDate = tzIndependentDate($rootScope.businessDate);
             setDatePickerOptions();

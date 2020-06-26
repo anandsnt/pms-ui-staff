@@ -1217,14 +1217,16 @@ angular.module('sntRover')
                  * @return {void}
                  */
                 var showRoomStatusAndServiceUpdatePopup = (roomInfo) => {
-                    ngDialog.open({
-                        template: '/assets/partials/diary/rvDiaryUpdateRoomStatusAndServicePopup.html',
-                        className: 'ngdialog-theme-default',
-                        closeByDocument: true,
-                        controller: 'rvDiaryRoomStatusAndServiceUpdatePopupCtrl',
-                        data: roomInfo,
-                        scope: $scope
-                    });
+                    if ($rootScope.isStandAlone) {
+                        ngDialog.open({
+                            template: '/assets/partials/diary/rvDiaryUpdateRoomStatusAndServicePopup.html',
+                            className: 'ngdialog-theme-default',
+                            closeByDocument: true,
+                            controller: 'rvDiaryRoomStatusAndServiceUpdatePopupCtrl',
+                            data: roomInfo,
+                            scope: $scope
+                        }); 
+                    }
                 };  
 
                 /**

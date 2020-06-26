@@ -14,7 +14,7 @@
         6. 'unavailable' when room is OOO / OOS / has web in progress
         7. 'dnd' - do not disturb
     -->
-        <div class="modal-header {{getClassNameByHkStatus(statusInfo.hkStatus, ngDialogData.service_status)}}">
+        <div class="modal-header {{getClassNameByHkStatus(statusInfo.hkStatus, statusInfo.serviceStatus)}}">
             <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span
                     class="icons icon-close invert"></span></button>
 

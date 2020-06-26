@@ -4,15 +4,20 @@ var Room = React.createClass({
 
 		return this.props.data[room_meta_status] !== nextProps.data[room_meta_status];
 	},
+	showRoomStatusUpdatePopup: function () {
+		this.props.showRoomStatusAndServiceUpdatePopup(this.props.data);
+	},
 	render: function() {
 		var props = this.props,
-			room_meta = props.meta.room;
+			room_meta = props.meta.room,
+			self = this;
 
 		return React.DOM.li({
 			className: 'room-title' + (!(props.data[room_meta.hk_status] === "") ? ' ' + this.props.data[room_meta.hk_status] : '')
 		},
 		React.DOM.span({
-			className: 'number'
+			className: 'number',
+			onClick: self.showRoomStatusUpdatePopup
 		}, props.data[room_meta.number]),
 		React.DOM.span({
 			className: 'type'

@@ -355,6 +355,24 @@ angular.module('sntRover')
                 correctTimeDate = util.correctTime(coming_date, propertyTime);
             }
 
+            /**
+             * Show room status and service update popup
+             * @param {Object} roomInfo room info
+             * @return {void}
+             */
+            $scope.showRoomStatusAndServiceUpdatePopup = (roomInfo) => {
+                if ($rootScope.isStandAlone) {
+                    ngDialog.open({
+                        template: '/assets/partials/diary/rvDiaryUpdateRoomStatusAndServicePopup.html',
+                        className: 'ngdialog-theme-default',
+                        closeByDocument: true,
+                        controller: 'rvDiaryRoomStatusAndServiceUpdatePopupCtrl',
+                        data: roomInfo,
+                        scope: $scope
+                    }); 
+                }
+            }; 
+
             /* --------------------------------------------------*/
             /* BEGIN CONFIGURATION
             /*--------------------------------------------------*/
@@ -2722,6 +2740,10 @@ angular.module('sntRover')
                 }
                 return hideToggleMenu;
             };
+
+            $scope.addListener('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function() {
+                $state.reload($state.current.name);
+            });
         }
     ]
 );
