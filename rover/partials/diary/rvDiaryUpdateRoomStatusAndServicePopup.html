@@ -133,9 +133,15 @@
                                 <label for="reason">Room return status</label>
                                 <div class="select">
                                     <!-- remove .placeholder when a value is selected -->
-                                    <select name="reason" id="reason" class="placeholder">
-                                        <option value="" selected="">Select</option>
-
+                                    <select 
+                                        name="reason" 
+                                        id="reason" 
+                                        class="placeholder"
+                                        ng-model="serviceStatusDetails.return_status_id"
+                                        convert-to-number>
+                                        <option value="">Select</option>
+                                        <option ng-repeat="item in returnStatusList" value="{{item.id}}">
+                                            {{item.value}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -143,7 +149,7 @@
                                 <label for="reason">Reason</label>
                                 <div class="select">
                                     <!-- remove .placeholder when a value is selected -->
-                                    <select name="reason" id="reason" class="placeholder">
+                                    <select name="reason" id="reason" class="placeholder" ng-model="serviceStatusDetails.reason_id" convert-to-number>
                                         <option value="" selected="">Select</option>
                                         <option ng-repeat="item in maintenanceReasonsList" value="{{item.value}}">
                                             {{item.name}}</option>
@@ -152,14 +158,14 @@
                             </div>
                             <div class="entry full-width">
                                 <label for="reason-comments">Comments <span>(optional)</span></label>
-                                <textarea name="reason-comments" id="reason-comments" rows="2"></textarea>
+                                <textarea name="reason-comments" id="reason-comments" rows="2" ng-model="serviceStatusDetails.comment"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="actions">
-                    <button type="button" class="button green">Confirm Status</button>
+                    <button type="button" class="button green" ng-click="updateServiceStatus()">Confirm Status</button>
                     <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
                 </div>
             </div>
