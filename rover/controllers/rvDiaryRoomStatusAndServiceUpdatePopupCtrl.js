@@ -146,7 +146,7 @@ angular.module('sntRover').controller('rvDiaryRoomStatusAndServiceUpdatePopupCtr
                         numberOfMonths: 1,
                         changeYear: true,
                         changeMonth: true,
-                        beforeShow: function (input, inst) {
+                        beforeShow: function (input) {
                             $('#ui-datepicker-div').addClass('reservation hide-arrow');
                             $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
 
@@ -158,9 +158,10 @@ angular.module('sntRover').controller('rvDiaryRoomStatusAndServiceUpdatePopupCtr
                                     });
                             }, 100);
                         },
-                        onClose: function (value) {
+                        onClose: function () {
                             $('#ui-datepicker-div').removeClass('reservation hide-arrow');
-                            $('#ui-datepicker-overlay').off('click').remove();
+                            $('#ui-datepicker-overlay').off('click').
+                            remove();
                         }
                     },
                     adjustDates = function () {
@@ -281,7 +282,6 @@ angular.module('sntRover').controller('rvDiaryRoomStatusAndServiceUpdatePopupCtr
             fetchRoomServiceInfo(tzIndependentDate($rootScope.businessDate));
             $scope.setScroller(ROOM_STATUS_SERVICE_UPDATE_SCROLLER);
             $scope.timeSelectorList = util.getListForTimeSelector(INTERVAL_FOR_TIME_SELECTOR, HOUR_MODE);
-            console.log($scope.ngDialogData);
         };
 
         init();

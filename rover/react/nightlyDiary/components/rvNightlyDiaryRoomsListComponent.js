@@ -33,7 +33,7 @@ class NightlyDiaryRoomsListComponent extends React.Component {
      * @param {Object} item - room object
      * @return {void}
      */
-    showRoomStatusUpdatePopup = (item) => {
+    showRoomStatusUpdatePopup(item) {
         this.props.showUpdateRoomStatusAndServicePopup(item);
     }
 
@@ -52,7 +52,7 @@ class NightlyDiaryRoomsListComponent extends React.Component {
 
         return (
             <div className={item.main_room_class} key={index} >
-                <span className={item.room_class} onClick={() => this.showRoomStatusUpdatePopup(item)}>{item.room_no}</span>
+                <span className={item.room_class} onClick={this.showRoomStatusUpdatePopup.bind(this, item)}>{item.room_no}</span>
                 <span className="room-type">{item.room_type_name}</span>
                 <div className="suites">
                     {/* Clickable suite icon, clicking will open a popup with list of suit components */}
