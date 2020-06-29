@@ -362,7 +362,7 @@ angular.module('sntRover')
              * @param {Object} roomInfo room info
              * @return {void}
              */
-            $scope.showRoomStatusAndServiceUpdatePopup = (roomInfo) => {
+            $scope.showRoomStatusAndServiceUpdatePopup = function(roomInfo) {
                 if ($rootScope.isStandAlone) {
                     ngDialog.open({
                         template: '/assets/partials/diary/rvDiaryUpdateRoomStatusAndServicePopup.html',
