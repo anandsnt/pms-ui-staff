@@ -1,6 +1,6 @@
 var Room = React.createClass({
 	shouldComponentUpdate: function(nextProps, nextState) {
-		var room_meta_status = this.props.meta.room.status;
+		var room_meta_status = this.props.meta.room.hk_status;
 
 		return this.props.data[room_meta_status] !== nextProps.data[room_meta_status];
 	},
