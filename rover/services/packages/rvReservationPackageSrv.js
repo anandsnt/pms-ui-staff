@@ -60,7 +60,7 @@ angular.module('sntRover').service('RVReservationPackageSrv', ['$http', '$q', 'r
 
 		addonItem.id = item.id;
 		addonItem.isBestSeller = item.bestseller;
-		addonItem.category = item.charge_group.name;
+		addonItem.category = item.charge_group ? item.charge_group.name : '';
 		addonItem.title = item.name;
 		addonItem.description = item.description;
 		addonItem.price = item.amount;
