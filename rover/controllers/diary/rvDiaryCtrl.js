@@ -21,6 +21,7 @@ angular.module('sntRover')
         'RVReservationSummarySrv',
         'baseSearchData',
         '$interval',
+        'sntActivity',
         function(
 			$scope,
 			$rootScope,
@@ -41,7 +42,8 @@ angular.module('sntRover')
 			$timeout,
 			RVReservationSummarySrv,
             baseSearchData,
-            $interval
+            $interval,
+            sntActivity
 		) {
             $scope.$emit('showLoader');
             BaseCtrl.call(this, $scope);
@@ -354,6 +356,24 @@ angular.module('sntRover')
 
                 correctTimeDate = util.correctTime(coming_date, propertyTime);
             }
+
+            /**
+             * Show room status and service update popup
+             * @param {Object} roomInfo room info
+             * @return {void}
+             */
+            $scope.showRoomStatusAndServiceUpdatePopup = (roomInfo) => {
+                if ($rootScope.isStandAlone) {
+                    ngDialog.open({
+                        template: '/assets/partials/diary/rvDiaryUpdateRoomStatusAndServicePopup.html',
+                        className: 'ngdialog-theme-default',
+                        closeByDocument: true,
+                        controller: 'rvDiaryRoomStatusAndServiceUpdatePopupCtrl',
+                        data: roomInfo,
+                        scope: $scope
+                    }); 
+                }
+            }; 
 
             /* --------------------------------------------------*/
             /* BEGIN CONFIGURATION
@@ -2722,6 +2742,43 @@ angular.module('sntRover')
                 }
                 return hideToggleMenu;
             };
+
+            // Refresh rooms and reservations
+            var refreshRoomsAndReservations = function () {
+                var onPayloadFetchSuccess = function (payload) {
+                    _.extend($scope, payload);
+                    $scope.data = $scope.room;
+                    $scope.stats = $scope.availability_count;
+                    angular.extend($scope.gridProps, { data: $scope.data });
+                    $scope.renderGrid();
+                    sntActivity.stop('LOAD_DIARY_DATA');
+                },
+                onCurrentTimeFetchSuccess = function (data) {
+                    sntActivity.start('LOAD_DIARY_DATA');
+                    var startDate = data.hotel_time.date;
+
+                    if ($stateParams.checkin_date) {
+                        startDate = $stateParams.checkin_date;
+                    }
+                    
+                    rvDiarySrv.load(rvDiarySrv.properDateTimeCreation(startDate), rvDiarySrv.ArrivalFromCreateReservation()).then(onPayloadFetchSuccess);
+                };
+            
+                var params;
+
+                if ($stateParams.checkin_date) {
+                    params = $stateParams.checkin_date;
+                }
+
+                $scope.callAPI(RVReservationBaseSearchSrv.fetchCurrentTime, {
+                    params: params,
+                    onSuccess: onCurrentTimeFetchSuccess
+                });
+            };
+
+            $scope.addListener('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function() {
+                refreshRoomsAndReservations();
+            });
         }
     ]
 );

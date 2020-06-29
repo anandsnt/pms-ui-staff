@@ -92,7 +92,8 @@ let convertRoomsListReadyToComponent = (roomsList, selectedRoomId, state) => {
 
 const mapStateToNightlyDiaryRoomsListContainerProps = (state) => ({
     roomListToComponent: convertRoomsListReadyToComponent(state.roomsList, state.selectedRoomId, state),
-    selectedRoomId: state.selectedRoomId
+    selectedRoomId: state.selectedRoomId,
+    showUpdateRoomStatusAndServicePopup: state.callBackFromAngular.showRoomStatusAndServiceUpdatePopup
 });
 
 const NightlyDiaryRoomsListContainer = connect(
