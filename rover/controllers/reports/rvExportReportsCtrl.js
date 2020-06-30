@@ -135,7 +135,15 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 return hasEmail || hasFTP || hasDropbox || hasGoogleDrive;
             };
 
-            return hasTimePeriod() && hasFrequency() && hasValidDistribution();
+            var isExtraChecksValid = function () {
+                var valid = true;
+
+                valid = $scope.isAdNotumExport ? !!$scope.scheduleParams.rate_code : true;
+
+                return valid;
+            }
+
+            return hasTimePeriod() && hasFrequency() && hasValidDistribution() && isExtraChecksValid();
         };
 
         var fillValidationErrors = function() {
@@ -151,6 +159,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ( ! $scope.emailList.length && !$scope.scheduleParams.selectedFtpRecipient && 
                 !$scope.scheduleParams.selectedCloudAccount ) {
                 $scope.createErrors.push('Emails/SFTP/Dropbox/Google Drive in distribution list');
+            }
+
+            if ($scope.isAdNotumExport && !$scope.scheduleParams.rate_code) {
+                $scope.createErrors.push('No Rate Code Selected'); 
             }
             
         };
