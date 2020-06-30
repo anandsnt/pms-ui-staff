@@ -283,8 +283,13 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             // fill sort_field and filters
             if ( $scope.scheduleParams.sort_field ) {
                 filter_values.sort_field = $scope.scheduleParams.sort_field;
-                params.filter_values = filter_values;
             }
+            _.each($scope.filters, function(filter, keyName) {
+                if (keyName === 'hasRateCode') {
+                    filter_values[reportParams['RATE_ID']] = $scope.scheduleParams.rate_code;
+                }
+            });
+            params.filter_values = filter_values;
 
             $scope.invokeApi( reportsSrv.createSchedule, params, success, failed );
         };
@@ -420,8 +425,13 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             // fill sort_field and filters
             if ( $scope.scheduleParams.sort_field ) {
                 filter_values.sort_field = $scope.scheduleParams.sort_field;
-                params.filter_values = filter_values;
             }
+            _.each($scope.filters, function(filter, keyName) {
+                if (keyName === 'hasRateCode') {
+                    filter_values[reportParams['RATE_ID']] = $scope.scheduleParams.rate_code;
+                }
+            });
+            params.filter_values = filter_values;
 
             $scope.invokeApi( reportsSrv.updateSchedule, params, success, failed );
         };
@@ -478,7 +488,18 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                     key: 'description'
                 }
             };
-
+            if (angular.isUndefined($scope.selectedEntityDetails.filters) || $scope.selectedEntityDetails.filters === null) {
+                $scope.selectedEntityDetails.filters = [];
+            }
+            if ( $scope.isAdNotumExport ) {       
+                var rateFilter = {
+                    description: 'RATE_CODE',
+                    value: 'RATE_CODE'
+                };
+                if (!_.find($scope.selectedEntityDetails.filters, rateFilter)) {
+                    $scope.selectedEntityDetails.filters.push(rateFilter);
+                }
+            }
             _.each($scope.selectedEntityDetails.filters, function(filter) {
                 var selected = false,
                     mustSend = false,
@@ -537,7 +558,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                     if ( $scope.selectedEntityDetails.report.description === 'Arriving Guests' || $scope.selectedEntityDetails.report.description === 'Departing Guests' ) {
                         $scope.filters.hasGeneralOptions.options.noSelectAll = true;
                     }
+                } else if (filter.value === 'RATE_CODE') {
+                    reportUtils.fillRateCodes($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.scheduleParams);
                 }
+
             });
 
             runDigestCycle();
@@ -599,7 +623,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Guest Details by Arrival Date': true,
                 'Cancellations by Arrival Date': true,
                 'Cancellations by Cancel Date': true,
-                'HESTA Switzerland': true
+                'HESTA Switzerland': true,
+                'Ad Notum - Rate of the Day Export': true
             };
 
             var forRunOnceOnly = {
@@ -671,7 +696,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Spain Barcelona Police Export': true,
                 'Cancellations by Arrival Date': true,
                 'Cancellations by Cancel Date': true,
-                'HESTA Switzerland': true
+                'HESTA Switzerland': true,
+                'Ad Notum - Rate of the Day Export': true
             };
 
             if ( forHourly[item.report.title] ) {
@@ -911,6 +937,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.scheduleParams.selectedCloudAccount = $scope.selectedEntityDetails.cloud_drive_id;
             } 
 
+            if ($scope.selectedEntityDetails.report.title === 'Ad Notum - Rate of the Day Export') {
+                $scope.isAdNotumExport = true;
+            }
+            
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOTS);
         };
 
@@ -1192,7 +1222,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         $scope.pickReport = function(item, index) {
             $scope.selectedEntityDetails = $scope.$parent.$parent.schedulableReports[index];
             $scope.isGuestBalanceReport = false;
-
+            $scope.isAdNotumExport = false;
             if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
                 $scope.selectedReport.active = false;
             }

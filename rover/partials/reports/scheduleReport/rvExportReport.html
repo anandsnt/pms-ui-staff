@@ -97,6 +97,17 @@
                 on-update="refreshSecondColumnScroll"
                 options="filters.hasGeneralOptions.options"></multi-option-selection>
 
+            <div class="entry" ng-show="filters.hasRateCode && filters.hasRateCode.data.length">
+                <label>Rate Code</label>
+                <div class="select">
+                    <select ng-model="scheduleParams.rate_code"
+                        ng-options="rate.id as rate.rate_code for rate in filters.hasRateCode.data" 
+                        iscroll-stop-propagation>
+                        <option value="">Rate Code</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="entry" ng-show="selectedEntityDetails.sort_fields.length">
                 <label>Sort By</label>
                 <div class="select">
