@@ -63,7 +63,7 @@
         </div>
     </div>
     <!-- Remove .hidden if showing files. Add .hidden if not showing files or selecting files -->
-    <div class="entry add-new" ng-class="{'hidden': cardData.selectedFileList.length !== 0 || cardData.notesViewOn || !cardData.hasUploadFilePermission}">
+    <div class="entry add-new" ng-class="{'hidden': cardData.selectedFileList.length !== 0 || cardData.notesViewOn || !cardData.hasUploadFilePermission}" ng-if="showAddFile()">
         <label for="add-new-file" class="add-new-button">
             <input id="add-new-file" 
                    type="file" 
