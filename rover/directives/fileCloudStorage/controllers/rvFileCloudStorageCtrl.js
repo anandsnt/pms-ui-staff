@@ -385,7 +385,6 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			} else {
 				rvFileCloudStorageSrv.activeCardType = angular.copy($scope.cardType);
 			}
-			console.log(rvFileCloudStorageSrv.activeCardType);
 
 			$scope.cardData.newFile = {
 				base64: '',
