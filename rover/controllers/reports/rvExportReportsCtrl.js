@@ -141,7 +141,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 valid = $scope.isAdNotumExport ? !!$scope.scheduleParams.rate_code : true;
 
                 return valid;
-            }
+            };
 
             return hasTimePeriod() && hasFrequency() && hasValidDistribution() && isExtraChecksValid();
         };
