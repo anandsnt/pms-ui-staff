@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout', 'RVCompanyCardSrv', 'rvCompanyCardContractsSrv', 'ngDialog', '$filter', '$stateParams', 'rvPermissionSrv',
-	function($scope, $rootScope, $timeout, RVCompanyCardSrv, rvCompanyCardContractsSrv, ngDialog, $filter, $stateParams, rvPermissionSrv) {
+angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout', 'RVCompanyCardSrv', 'rvCompanyCardContractsSrv', 'ngDialog', '$filter', '$stateParams', 'rvPermissionSrv', 'rvFileCloudStorageSrv',
+	function($scope, $rootScope, $timeout, RVCompanyCardSrv, rvCompanyCardContractsSrv, ngDialog, $filter, $stateParams, rvPermissionSrv, rvFileCloudStorageSrv) {
 
 		$scope.searchMode = true;
 		$scope.account_type = 'TRAVELAGENT';
@@ -288,6 +288,8 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 				$scope.$emit("saveContactInformation");
 				$rootScope.$broadcast("saveArAccount");
 			}
+
+			rvFileCloudStorageSrv.activeCardType = 'ACCOUNT_TRAVELAGENT';
 		};
 
 		/**
