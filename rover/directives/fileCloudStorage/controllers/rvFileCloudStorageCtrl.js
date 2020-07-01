@@ -372,7 +372,20 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			return contentTypeClass;
 		};
 
+		$scope.showAddFile = function() {
+			if ($scope.cardType === 'account') {
+				return rvFileCloudStorageSrv.activeCardType === ('ACCOUNT_' + $scope.accountType);
+			}
+			return rvFileCloudStorageSrv.activeCardType === $scope.cardType;
+		};
+
 		(function() {
+			if ($scope.cardType === 'account') {
+				rvFileCloudStorageSrv.activeCardType = ('ACCOUNT_' + $scope.accountType);
+			} else {
+				rvFileCloudStorageSrv.activeCardType = angular.copy($scope.cardType);
+			}
+
 			$scope.cardData.newFile = {
 				base64: '',
 				name: '',

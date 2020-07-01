@@ -1,6 +1,6 @@
 angular.module('sntRover').controller('guestCardController', [
-    '$scope', '$window', 'RVCompanyCardSrv', '$q', 'RVReservationAllCardsSrv', 'RVGuestCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state', 'rvAllotmentSrv', '$vault', 'rvPermissionSrv',
-    function($scope, $window, RVCompanyCardSrv, $q, RVReservationAllCardsSrv, RVGuestCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state, rvAllotmentSrv, $vault, rvPermissionSrv) {
+    '$scope', '$window', 'RVCompanyCardSrv', '$q', 'RVReservationAllCardsSrv', 'RVGuestCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state', 'rvAllotmentSrv', '$vault', 'rvPermissionSrv', 'rvFileCloudStorageSrv',
+    function($scope, $window, RVCompanyCardSrv, $q, RVReservationAllCardsSrv, RVGuestCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state, rvAllotmentSrv, $vault, rvPermissionSrv, rvFileCloudStorageSrv) {
         var resizableMinHeight = 90,
             resizableMaxHeight = $(window).height() - resizableMinHeight,
             DEBOUNCE_DELAY = 1500,
@@ -2182,6 +2182,7 @@ angular.module('sntRover').controller('guestCardController', [
                 // Call save if NOT 'AddNewCard' mode
                 $scope.$broadcast('saveContactInfo');
             }
+            rvFileCloudStorageSrv.activeCardType = 'guest_card';
         };
 
         // CICO-25249 - Catch error from staycard main controler - card replace API.
