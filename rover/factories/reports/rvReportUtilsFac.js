@@ -3263,7 +3263,7 @@ angular.module('reportsModule')
                     });
                 }
 
-                filter.hasReservationStatus = {
+                filter.hasHkReservationStatus = {
                     data: statusCopy,
                     options: {
                         selectAll: getSelectAllVal(statusCopy),
@@ -3580,6 +3580,151 @@ angular.module('reportsModule')
                         }
                     };
                     
+                });
+            };
+
+            factory.fillAddonGroups = function (filter, filterValues, reportName) {
+                var getSelectAllVal = (addOnGroups) => {
+                    var selectAll = true;
+
+                    if (filterValues && filterValues.addon_group_ids) {
+                        selectAll = addOnGroups.length === filterValues.addon_group_ids.length;
+                    } else if (filterValues && !filterValues.addon_group_ids) {
+                        selectAll = false;
+                    }
+                    return selectAll;
+                };
+
+                var getSelectAllValAddons = (addons) => {
+                    var selectAll = true;
+
+                    if (filterValues && filterValues.addon_ids) {
+                        var originalAddonGroupIds = filterValues.addon_ids,
+                            addonLength = 0;
+
+                        _.each(addons, function (ag) {
+                            if (originalAddonGroupIds.indexOf(ag.group_id) > -1) {
+                                addonLength = addonLength + ag.list_of_addons.length;
+                            }
+                        });
+                        selectAll = filterValues.addon_ids.length === addonLength;
+                    }
+
+                    return selectAll;
+                };
+
+                var flattenAddons = function (addons) {
+                    var data = [];
+
+                    _.each(addons, function (addon) {
+                        if (!addon.disabled) {
+                            _.each(addon.list_of_addons, function (la) {
+                                la.selected = false;
+                                if ((filterValues && !!filterValues.addon_ids && (filterValues.addon_ids.indexOf(la.addon_id) > -1)) || angular.isUndefined(filterValues)) {
+                                    la.selected = true;
+                                }
+                                data.push(la);
+                            });
+                        }
+                    });
+                    return data;
+                };
+
+                var fillAGAs = function(data, addonData) {
+                    var addonGroupsCopy = angular.copy(data),
+                        addonsCopy = angular.copy(addonData);
+
+                    if (filterValues && filterValues.addon_group_ids) {
+                        addonGroupsCopy = addonGroupsCopy.map(addonGroup => {
+                            addonGroup.selected = false;
+                            if (filterValues.addon_group_ids.indexOf(addonGroup.id) > -1) {
+                                addonGroup.selected = true;
+                            }
+                            return addonGroup;
+                        });
+                    } 
+                    filter.hasAddonGroups = {
+                        title: 'Addon Groups',
+                        data: addonGroupsCopy,
+                        options: {
+                            selectAll: getSelectAllVal(addonGroupsCopy),
+                            hasSearch: true,
+                            key: 'name'
+                        },
+                        affectsFilter: {
+                            name: 'hasAddons',
+                            process: function (filter, selectedItems) {
+                                _.each(filter.originalData, function (od) {
+                                    od.disabled = true;
+                                });
+                                _.each(filter.originalData, function (od) {
+                                    _.each(selectedItems, function (si) {
+                                        if (od.group_id === si.id) {
+                                            od.disabled = false;
+                                        }
+                                    });
+                                });
+                                filter.updateData();
+                            }
+                        }
+                    };
+                    filter.hasAddons = {
+                        data: flattenAddons(addonData),
+                        originalData: addonsCopy,
+                        options: {
+                            selectAll: getSelectAllValAddons(addonsCopy),
+                            hasSearch: true,
+                            key: 'addon_name'
+                        },
+                        updateData: function () {
+                            this.data = flattenAddons(this.originalData);
+                            this.options.selectAll = getSelectAllValAddons(addonsCopy);
+                        }
+                    };
+
+                };
+
+                reportsSubSrv.fetchChargeNAddonGroups({for_addon_forecast_report: reportName === 'Add-On Forecast'}).then(function (data) {
+                    reportsSubSrv.fetchAddons({ 'addon_group_ids': _.pluck(data, 'id') }).then( fillAGAs.bind(null, data));                   
+                });
+            };
+
+            factory.fillResStatus = function (filter, filterValues) {
+                var getSelectAllVal = (resStatus) => {
+                    var selectAll = true;
+
+                    if (filterValues && filterValues.status_ids) {
+                        selectAll = resStatus.length === filterValues.status_ids.length;
+                    } else if (angular.isDefined(filterValues) && !filterValues.status_ids) {
+                        selectAll = false;
+                    }
+
+                    return selectAll;
+                };
+
+                reportsSubSrv.fetchReservationStatus().then( function (data) {
+                    var resStatusCopy = angular.copy(data);
+
+                    if (filterValues && filterValues.status_ids) {
+                        resStatusCopy = resStatusCopy.map(resStatus => {
+                            resStatus.selected = false;
+
+                            if (filterValues.status_ids.indexOf(resStatus.id) > -1) {
+                                resStatus.selected = true;
+                            }
+                            return resStatus;
+                        });
+                    }  
+
+                    filter.hasReservationStatus = {
+                        data: resStatusCopy,
+                        options: {
+                            selectAll: getSelectAllVal(resStatusCopy),
+                            hasSearch: true,
+                            key: 'status',
+                            defaultValue: 'Select status'
+                        }
+                    };
                 });
             };
 

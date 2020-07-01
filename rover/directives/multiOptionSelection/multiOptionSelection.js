@@ -141,7 +141,7 @@ sntRover
 					}
 
 					if ( typeof $scope.affectsFilter == typeof {} ) {
-						var filterHolderObject = $scope.report || $scope.filterHolderObj;
+						var filterHolderObject = $scope.report || $scope.filterHolderObj || $scope.$parent.$parent.filters;
 
 						$scope.affectsFilter.process( filterHolderObject[$scope.affectsFilter.name], selectedItems );
 					}
