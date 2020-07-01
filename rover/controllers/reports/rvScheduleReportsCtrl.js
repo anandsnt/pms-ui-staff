@@ -838,6 +838,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     return sortField.value === 'TYPE';
                 });
             }
+            
         };
 
         // Get user list
@@ -942,6 +943,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     }
 
                     if (filter.value === 'ACCOUNT' || filter.value === 'GUEST') {
+                        selected = true;
+                    }
+
+                    if ($scope.selectedEntityDetails.report.title === reportNames['FORECAST_GUEST_GROUPS'] && filter.value === 'EXCLUDE_NON_GTD') {
                         selected = true;
                     }
 
