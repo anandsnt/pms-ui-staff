@@ -1581,7 +1581,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Rate Adjustment Report': true,
                 'Occupancy & Revenue Summary': true,
                 'Rooms OOO/OOS': true,
-                'Deposit Balance Summary': true
+                'Deposit Balance Summary': true,
+                'Forecast Guests & Groups': true
             };
 
             var forWeekly = {
@@ -1602,7 +1603,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Rate Adjustment Report': true,
                 'Occupancy & Revenue Summary': true,
                 'Rooms OOO/OOS': true,
-                'Deposit Balance Summary': true
+                'Deposit Balance Summary': true,
+                'Forecast Guests & Groups': true
             };
             var forMonthly = {
                 'Arrival': true,
@@ -1622,7 +1624,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Rate Adjustment Report': true,
                 'Occupancy & Revenue Summary': true,
                 'Rooms OOO/OOS': true,
-                'Deposit Balance Summary': true
+                'Deposit Balance Summary': true,
+                'Forecast Guests & Groups': true
             };
 
             var forHourly = {
@@ -1640,7 +1643,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Rate Adjustment Report': true,
                 'Occupancy & Revenue Summary': true,
                 'Rooms OOO/OOS': true,
-                'Deposit Balance Summary': true
+                'Deposit Balance Summary': true,
+                'Forecast Guests & Groups': true
             };
 
             if (forHourly[item.report.title]) {
