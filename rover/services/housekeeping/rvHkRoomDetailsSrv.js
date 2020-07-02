@@ -7,7 +7,9 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 	'$filter',
 	'$vault',
 	function($http, $q, rvBaseWebSrvV2, RVBaseWebSrv, $window, $filter, $vault) {
-        var service = this;
+		var service = this;
+		
+		var HTTP_STATUS_SUCCESS = 200;
 
 		var setRoomServiceInVault = function(options) {
 			var getValue = function(id) {
@@ -76,7 +78,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			}).then(function(res) {
 				var response = res.data;
 
-				if (response.status === "success") {
+				if (response.status === "success" || res.status === HTTP_STATUS_SUCCESS) {
 					deferred.resolve(response.data);
 				} else {
 					deferred.reject(response);

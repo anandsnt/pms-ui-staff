@@ -250,6 +250,7 @@ sntRover.controller('roverController', [
         $rootScope.isPromoActive = hotelDetails.is_promotion_active;
 
         $rootScope.maxStayLength = hotelDetails.max_stay_length;
+        $rootScope.useInspectedRoomStatus = hotelDetails.housekeeping.use_inspected;
 
         // set MLI Merchant Id
         try {

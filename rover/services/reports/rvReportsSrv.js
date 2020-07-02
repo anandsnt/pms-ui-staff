@@ -247,6 +247,9 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_OCTOBER',
                 'LAST_NOVEMBER',
                 'LAST_DECEMBER'
+            ],
+            'Ad Notum - Rate of the Day Export': [
+                'TODAY'
             ]
         };
 

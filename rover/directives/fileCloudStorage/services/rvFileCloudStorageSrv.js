@@ -42,4 +42,7 @@ sntRover.service('rvFileCloudStorageSrv', ['$q', 'rvBaseWebSrvV2', function($q, 
 
         return rvBaseWebSrvV2.postJSON(url, params);
     };
+
+    service.previousActiveCardType = '';
+    service.activeCardType = '';
 }]);

@@ -248,7 +248,8 @@ var DiaryContent = React.createClass({
 								onScrollLoadTriggerRight: scope.onScrollLoadTriggerRight,
 								onScrollLoadTriggerLeft: scope.onScrollLoadTriggerLeft,
 								completedRendering: scope.eventAfterRendering,
-								saveReservationOnDrop: scope.saveReservationOnDrop
+								saveReservationOnDrop: scope.saveReservationOnDrop,
+								showRoomStatusAndServiceUpdatePopup: scope.showRoomStatusAndServiceUpdatePopup
 							},
 							currentDragItem: props.currentDragItem,
 							currentResizeItem: props.currentResizeItem,
@@ -301,7 +302,8 @@ var DiaryContent = React.createClass({
 			filter: state.filter,
 			iscroll: state.iscroll,
 			__onGridScroll: self.__onGridScroll,
-			__onGridScrollEnd: self.__onGridScrollEnd
+			__onGridScrollEnd: self.__onGridScrollEnd,
+			showRoomStatusAndServiceUpdatePopup: state.angular_evt.showRoomStatusAndServiceUpdatePopup
 		}),
 		React.createElement( TimelinePanel, {
 			refs: 'timeline',

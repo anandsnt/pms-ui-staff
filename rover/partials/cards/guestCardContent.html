@@ -25,7 +25,7 @@
                 <a>Activity Log</a>
             </li>
             <li ng-if="isStandAlone" ng-class="{'ui-tabs-active': current == 'notes', 'with-filters': isCloudStorageEnabledForCardType('guest_card')}" ng-click="guestCardTabSwitch('notes')">
-                <a id="guest-credit">{{ isCloudStorageEnabledForCardType('guest_card') ? 'Files & Notes' : 'Notes' }}</a>
+                <a translate> {{ isCloudStorageEnabledForCardType('guest_card') ? 'NOTES_AND_FILES' : 'NOTES' }}</a>
                 <button type="button" ng-if="isCloudStorageEnabledForCardType('guest_card')" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Notes & Files" fs-toggle-class="fullscreen-card">
                     Fullscreen
                 </button>

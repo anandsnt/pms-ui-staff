@@ -3728,6 +3728,19 @@ angular.module('reportsModule')
                 });
             };
 
+            factory.fillRateCodes = function (filter, filterValues, params) {
+
+                if (filterValues && filterValues.rate_id) {
+                    params.rate_code = filterValues.rate_id;
+                }
+                reportsSubSrv.fetchRateCode().then(function (data) {
+                    filter.hasRateCode = {
+                        title: 'Rate Codes',
+                        data: data
+                    };
+                });
+            };
+
             return factory;
         }
     ]);

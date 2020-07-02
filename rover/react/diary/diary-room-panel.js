@@ -40,7 +40,8 @@ var RoomPanel = React.createClass({
 		React.createElement( Rooms, {
 			display: props.display,
 			meta: props.meta,
-			data: props.data
+			data: props.data,
+			showRoomStatusAndServiceUpdatePopup: props.showRoomStatusAndServiceUpdatePopup
 		}));
 	}
 });

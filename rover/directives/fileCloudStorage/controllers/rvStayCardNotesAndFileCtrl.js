@@ -5,7 +5,12 @@ sntRover.controller('rvStayCardNotesAndFileCtrl', ['$scope', 'rvFileCloudStorage
 			$scope.$broadcast('FETCH_' + selectedType);
 		};
 
+		$scope.$on('$destroy', function () {
+			rvFileCloudStorageSrv.activeCardType = angular.copy(rvFileCloudStorageSrv.previousActiveCardType);
+		});
+
 		(function() {
+			rvFileCloudStorageSrv.previousActiveCardType = angular.copy(rvFileCloudStorageSrv.activeCardType);
 			var cardType = 'stay_card';
 			var cardId = $scope.reservationData.reservation_card.reservation_id;
 
