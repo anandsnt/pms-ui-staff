@@ -387,6 +387,10 @@
                             z-index: -1;
                         }
                      }
+
+                    &.with-allowances {
+                        .calc-width( 100, 100);
+                    }
                 }
 
                 .wrapper {
@@ -528,6 +532,49 @@
                         }
                     }
                 }
+
+                .allowance {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    .toggle {
+                        color: @black;
+                        font-size: 12px;
+                        line-height: 16px;
+                        text-transform: uppercase;
+                        font-weight: 600;
+                        height: 50px;
+                        min-width: 60px;
+                        max-width: 120px;
+                        padding: 0 5px;
+                        cursor: pointer;
+                        background: @white;
+                       
+                        .clickable;
+                        .show;
+    
+                        .day {
+                            text-align: left;
+                            margin-top: 5px;
+                            .nowrap();
+                            .show;
+                        }
+
+                        .price {
+                            font-size: 16px;
+                            text-align: right;
+                            margin-top: 10px;
+                            .show;
+                        }
+
+                        &.active {
+                            height: 60px;
+                        
+                            #border-radius > .bottom(0);
+                            .box-shadow(1px 0 0 rgba(0,0,0,.15));
+                        }
+                    }
+                }
             }
 
             /* Detailed bill summary ***/
@@ -536,7 +583,11 @@
                 padding: 10px;
                 background: @white;
                 #border-radius > .rounded();
-                .show;                        
+                .show;
+
+                &.no-padding {
+                    padding: 0;
+                }                  
 
                 /* Stay charges ***/
                 .toggle {
@@ -655,6 +706,127 @@
                             font-size: 30px;
                             line-height: 24px;
                             font-weight: 300;
+                        }
+                    }
+
+                    tr:last-child {
+                        td { border-bottom: 0; }
+                    }
+                }
+
+                /* Allowances Details **/
+                .allowances-details {
+                    width: 100%;
+                    
+                    th {
+                        font-size: 12px;
+                        line-height: 30px;
+                        font-weight: 400;
+                        text-transform: uppercase;
+                        color: @grey3;
+                    }
+
+                    td {
+                        font-size: 18px;
+                        line-height: 30px;
+                        text-transform: uppercase;
+                        min-height: 30px;
+                        padding: 5px 0;
+                        border-bottom: 1px solid rgba(0,0,0,.1);
+                        width: 25%;
+                        vertical-align: top;
+
+                        &.date,
+                        &.amount {
+                            font-weight: 700;
+                        }
+
+                        &.date {
+                            border-bottom: 1px solid rgba(0,0,0,.15);;
+                        }
+
+                        &.last {
+                            border-bottom: 0;
+                        }
+
+                        &.column-allowance {
+                            position: relative;
+
+                            .icons {
+                                background-color: transparent;
+                                position: absolute;
+                                top: 0;
+                                bottom: 0;
+                                margin: auto;
+                                background-size: 100px;
+
+                                &.check-in {
+                                    background-position: 10px -465px;
+                                }
+
+                                &.check-out {
+                                    background-position: 10px -498px;
+                                }
+                            }
+
+                            &:not(:last-child) {
+                                .icons {
+                                    right: 0;
+                                }
+                            }
+
+                            &:last-child {
+                                .icons {
+                                    left: 0;
+                                }
+                            }
+                        }
+                    }
+
+                    th,
+                    td {
+                        padding-left: 10px;
+                        padding-right: 10px;
+                         
+
+                        &.date {
+                            width: 120px;
+                            text-align: right;
+                        }
+
+                        &.time {
+                            width: 90px;
+                        }
+
+                        &.charge-code {
+                            width: 95px;
+                        }
+
+                        &.amount {
+                            width: 140px;
+                            background: #efefef;
+                            text-align: center;
+                        }
+
+                        &.column-allowance {
+                            text-align: right;
+
+                            &:last-child {
+                                text-align: left;
+                                padding-left: 35px;
+                            }
+
+                            &:not(:last-child) {
+                                padding-right: 35px;
+                            }
+                        }
+                    }
+
+                    tr {
+                        &.last {
+                            td {
+                                border-bottom: 1px solid rgba(0,0,0,.15);;
+                            }
                         }
                     }
 
