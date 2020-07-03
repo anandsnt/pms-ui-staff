@@ -324,7 +324,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     groupByKey = reportParams['GROUP_BY_DATE'];
                 } else if ('USER' === $scope.scheduleParams.groupBy) {
                     groupByKey = reportParams['GROUP_BY_USER'];
-                } 
+                } else if ('ADDON' === $scope.scheduleParams.groupBy) {
+                    groupByKey = reportParams['ADDON_GROUP_BY'];
+                }
 
                 if (groupByKey) {
                     filter_values[groupByKey] = true;
@@ -612,7 +614,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     groupByKey = reportParams['GROUP_BY_DATE'];
                 } else if ('USER' === $scope.scheduleParams.groupBy) {
                     groupByKey = reportParams['GROUP_BY_USER'];
-                } 
+                } else if ('ADDON' === $scope.scheduleParams.groupBy) {
+                    groupByKey = reportParams['ADDON_GROUP_BY'];
+                }
                 
                 if (groupByKey) {
                     filter_values[groupByKey] = true;
@@ -812,7 +816,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         
         var groupByFields = {
             GROUP_BY_DATE: 'DATE',
-            GROUP_BY_USER: 'USER'
+            GROUP_BY_USER: 'USER',
+            GROUP_FIELD: 'ADDON'
         };
 
         var reportIconCls = {

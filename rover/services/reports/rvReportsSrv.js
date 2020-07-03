@@ -454,7 +454,6 @@ angular.module('sntRover').service('RVreportsSrv', [
             'Add-On Forecast': [
                 'TODAY',
                 'TOMORROW',
-                'TOMORROW',
                 'NEXT_SEVEN_DAYS',
                 'NEXT_TEN_DAYS',
                 'NEXT_THIRTY_DAYS'

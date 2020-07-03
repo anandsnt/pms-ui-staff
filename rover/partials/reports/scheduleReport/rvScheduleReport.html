@@ -147,9 +147,9 @@
 
             <multi-option-selection ng-show="filters.hasHouseKeepingStatus" label="Housekeeping Status" on-update="refreshSecondColumnScroll" data="filters.hasHouseKeepingStatus.data" options="filters.hasHouseKeepingStatus.options"></multi-option-selection>
            
-            <multi-option-selection ng-show="filters.hasAddonGroups" label="Add-On Group(s)" on-update="refreshSecondColumnScroll" report="uiChosenReport" data="filters.hasAddonGroups.data" options="filters.hasAddonGroups.options" affects-filter="filters.hasAddonGroups.affectsFilter"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasAddonGroups" label="Add-On Group(s)" on-update="refreshSecondColumnScroll" report="uiChosenReport" data="filters.hasAddonGroups.data" options="filters.hasAddonGroups.options" affects-filter="filters.hasAddonGroups.affectsFilter" filter-holder-obj="filters"></multi-option-selection>
 
-            <multi-option-selection ng-show="filters.hasAddons" label="Add-On(s)" on-update="refreshSecondColumnScroll" data="filters.hasAddons.data" options="filters.hasAddons.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasAddons" label="Add-On(s)" on-update="refreshSecondColumnScroll" data="filters.hasAddons.data" options="filters.hasAddons.options" filter-holder-obj="filters"></multi-option-selection>
             
             <div class="entry date-range" ng-show="isOccupancyRevenueSummaryReport">
                 <label>DAY USE</label>
