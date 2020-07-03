@@ -3583,6 +3583,13 @@ angular.module('reportsModule')
                 });
             };
 
+            /**
+             * Fill AddonGroups and addons
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @param {String} reportName - name of the report
+             * @return {void} 
+             */
             factory.fillAddonGroups = function (filter, filterValues, reportName) {
                 var getSelectAllVal = (addOnGroups) => {
                     var selectAll = true;
@@ -3689,6 +3696,12 @@ angular.module('reportsModule')
                 });
             };
 
+            /**
+             * Fill reservation statuses
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @return {void} 
+             */
             factory.fillResStatus = function (filter, filterValues) {
                 var getSelectAllVal = (resStatus) => {
                     var selectAll = true;
@@ -3728,6 +3741,12 @@ angular.module('reportsModule')
                 });
             };
 
+            /**
+             * Fill Rate codes
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @return {Object} params - params
+             */
             factory.fillRateCodes = function (filter, filterValues, params) {
 
                 if (filterValues && filterValues.rate_id) {
