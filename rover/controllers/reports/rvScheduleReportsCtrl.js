@@ -864,6 +864,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     return sortField.value === 'TYPE';
                 });
             }
+            
         };
 
         // Get user list
@@ -968,6 +969,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     }
 
                     if (filter.value === 'ACCOUNT' || filter.value === 'GUEST') {
+                        selected = true;
+                    }
+
+                    if ($scope.selectedEntityDetails.report.title === reportNames['FORECAST_GUEST_GROUPS'] && filter.value === 'EXCLUDE_NON_GTD') {
                         selected = true;
                     }
 
@@ -1612,7 +1617,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Occupancy & Revenue Summary': true,
                 'Rooms OOO/OOS': true,
                 'Deposit Balance Summary': true,
-                'Add-On Forecast': true
+                'Add-On Forecast': true,
+                'Forecast Guests & Groups': true
             };
 
             var forWeekly = {
@@ -1634,7 +1640,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Occupancy & Revenue Summary': true,
                 'Rooms OOO/OOS': true,
                 'Deposit Balance Summary': true,
-                'Add-On Forecast': true
+                'Add-On Forecast': true,
+                'Forecast Guests & Groups': true
             };
             var forMonthly = {
                 'Arrival': true,
@@ -1655,7 +1662,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Occupancy & Revenue Summary': true,
                 'Rooms OOO/OOS': true,
                 'Deposit Balance Summary': true,
-                'Add-On Forecast': true
+                'Add-On Forecast': true,
+                'Forecast Guests & Groups': true
             };
 
             var forHourly = {
@@ -1674,7 +1682,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Occupancy & Revenue Summary': true,
                 'Rooms OOO/OOS': true,
                 'Deposit Balance Summary': true,
-                'Add-On Forecast': true
+                'Add-On Forecast': true,
+                'Forecast Guests & Groups': true
             };
 
             if (forHourly[item.report.title]) {
