@@ -57,6 +57,13 @@
                     <li click-touch="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'ACTIVITY'}" event-shall-pass="true">
                         <a translate>ALLOTMENT_ACTIVITY</a>
                     </li>
+                    <li ng-class="{'ui-tabs-active': allotmentConfigData.activeTab == 'NOTES_AND_FILES', 'with-filters': isCloudStorageEnabledForCardType('group')}" ng-click="switchTabTo('NOTES_AND_FILES')"
+                        ng-if="isCloudStorageEnabledForCardType('group')">
+                        <a translate>NOTES_AND_FILES</a>
+                        <button type="button" ng-if="isCloudStorageEnabledForCardType('group')" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Notes & Files" fs-toggle-class="fullscreen-card">
+                            Fullscreen
+                        </button>
+                    </li>
                 </ul>
                 <!-- Allotment Tab - Summary -->
                 <!-- SUMMARY, DETAILS, RESERVATIONS, ACTIVITY -->
@@ -76,6 +83,12 @@
                 <ng-include src="'/assets/partials/allotments/activity/rvAllotmentActivityTab.html'"
                         ng-show="allotmentConfigData.activeTab == 'ACTIVITY'">
                 </ng-include>
+                <form method="post" id="gc-notes" name="gc-notes" class="form inner-header card-tab notes-tab no-print"
+                    ng-if="allotmentConfigData.activeTab == 'NOTES_AND_FILES'">
+                    <div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
+                    <span ng-include="'/assets/partials/allotments/notesAndFiles/rvAllotmentsConfigurationNotesAndFiles.html'">
+                    </span>
+                </form>   
             </div>
         </div>
     </div>

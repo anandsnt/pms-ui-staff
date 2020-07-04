@@ -58,7 +58,8 @@ module.exports = function(config) {
             '../shared/baseCtrl.js',
             './partials/**/*.html',
             '../shared/directives/restrictMinVal/restrictMinValDir.js',
-            '../shared/lib/js/sortable.js'
+            '../shared/lib/js/sortable.js',
+            './directives/fileCloudStorage/services/rvFileCloudStorageSrv.js'
         ],
 
         // preprocess matching files before serving them to the browser

@@ -72,6 +72,17 @@
                         </div>
                     </div>
                 </div>
+                <div id="return-status" class="row" ng-hide="inService || !isStandAlone">
+                    <div class="entry">
+                        <label for="return-status">Room return status</label>
+                        <div class="select">
+                            <select name="return-status" id="return-status" class ="placeholder" ng-model="updateService.return_status_id" ng-disabled="showSaved"
+                                    ng-options="item.id as item.value for item in returnStatusList">
+                                <option value="">Select</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div id="reason-div" class="row" ng-hide="inService">
                     <div class="entry">
                         <label for="reason">Reason</label>

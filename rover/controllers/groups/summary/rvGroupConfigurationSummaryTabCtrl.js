@@ -1129,6 +1129,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 className: '',
                 closeByDocument: false,
                 closeByEscape: false
+
             });
         };
 
@@ -1151,7 +1152,13 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 return false;
             } 
 
-            showRateChangePopup();
+            if (summaryData.rooms_total > 0) {
+                showRateChangePopup();
+            } else {
+                $scope.updateRate(false); 
+            }
+
+            
         };
 
         $scope.cancelDemographicChanges = function() {
@@ -2000,6 +2007,20 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             if (fromOrToFlag === "to") {
                 $scope.groupConfigData.summary.shoulder_to_date = $scope.setShoulderDatesInAPIFormat($scope.groupConfigData.summary.block_to, $scope.groupConfigData.summary.shoulder_to);
             }
+        };
+
+        // Invoke when the rate change popup closes
+        $scope.closeRateChangePromptPopup = function () {
+            var uniqId = summaryMemento.uniqId,
+                rateId = uniqId && uniqId.split(':')[0],
+                contractId = uniqId && uniqId.split(':')[1];
+
+            $scope.groupConfigData.summary.uniqId = uniqId;
+            $scope.groupConfigData.summary.contract_id = contractId;
+            $scope.groupConfigData.summary.rate = rateId; 
+
+            ngDialog.close();
+
         };
     }
 ]);

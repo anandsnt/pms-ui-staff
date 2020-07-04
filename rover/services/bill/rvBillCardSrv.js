@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVBillCardSrv', 
+angular.module('sntRover').service('RVBillCardSrv',
 	['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'sntBaseWebSrv',
 	function($http, $q, BaseWebSrvV2, RVBaseWebSrv, rvBaseWebSrvV2, sntBaseWebSrv) {
 
@@ -10,7 +10,7 @@ angular.module('sntRover').service('RVBillCardSrv',
 		    url = '/api/reservations/' + reservationId + '/bills_summary';
 
 			rvBaseWebSrvV2.getJSON(url).then(function(response) {
-				
+
 			   	deferred.resolve(response.data);
 			}, function(data) {
 			    deferred.reject(data);
@@ -40,7 +40,7 @@ angular.module('sntRover').service('RVBillCardSrv',
                 return that.fetchReservationBillData(reservationId).then(function(response) {
                     reservationBillData = response;
                 });
-            })           
+            })
             .then(function() {
             	billNumber = reservationBillData.bills[0].bill_id;
 				billIndex = parseInt(reservationBillData.bills[0].bill_number) - 1;
@@ -56,7 +56,7 @@ angular.module('sntRover').service('RVBillCardSrv',
 
 
 		return deferred.promise;
-	};	
+	};
 
 	this.fetchBillPrintData = function(params) {
 		var deferred = $q.defer();
@@ -269,7 +269,7 @@ angular.module('sntRover').service('RVBillCardSrv',
     this.fetchAdjustmentReasons = function() {
         var deferred = $q.defer(),
 			url = '/admin/force_adjustment_reasons';
-			
+
         BaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
@@ -389,11 +389,11 @@ angular.module('sntRover').service('RVBillCardSrv',
         return deferred.promise;
     };
 
-	this.fetchGuestLanguages = function() {
+	this.fetchGuestLanguages = function(params) {
 		var deferred = $q.defer();
 		var url = '/api/guest_languages';
 
-		rvBaseWebSrvV2.getJSON(url).then(function(data) {
+		rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
 			if (data.languages) {
 				data.languages = _.filter(data.languages, {
 					is_show_on_guest_card: true
@@ -419,7 +419,7 @@ angular.module('sntRover').service('RVBillCardSrv',
         return deferred.promise;
     };
 
-    // Generate folio number 
+    // Generate folio number
     this.generateFolioNumber = function(params) {
         var deferred = $q.defer(),
             url = '/api/bills/' + params.bill_id + '/generate_folio_number';
@@ -437,13 +437,13 @@ angular.module('sntRover').service('RVBillCardSrv',
         var deferred = $q.defer(),
             url = '/api/bills/' + params.bill_id + '/void_bill';
 
-        BaseWebSrvV2.postJSON(url, params.data).then(function(response) {        	
+        BaseWebSrvV2.postJSON(url, params.data).then(function(response) {
             deferred.resolve(response.data);
         }, function (data) {
             deferred.reject(data);
         });
         return deferred.promise;
-    };  
+    };
     // Final invoice
 	this.settleFinalInvoice = function(params) {
 		var deferred = $q.defer(),

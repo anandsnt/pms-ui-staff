@@ -75,8 +75,11 @@
                             <a translate>WALLET</a>
                             <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Wallet" fs-toggle-class="fullscreen-card">Fullscreen</button>                            
                         </li>
-                        <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-notes'}" ng-click="switchTabTo($event, 'cc-notes')">
-                            <a translate>Notes</a>
+                        <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-notes', 'with-filters': isCloudStorageEnabledForCardType('cota_card')}" ng-click="switchTabTo($event, 'cc-notes')">
+                            <a translate> {{ isCloudStorageEnabledForCardType('cota_card') ? 'NOTES_AND_FILES' : 'NOTES' }}</a>
+                            <button type="button" ng-if="isCloudStorageEnabledForCardType('cota_card')" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Notes & Files" fs-toggle-class="fullscreen-card">
+                                Fullscreen
+                            </button>
                         </li>
                         <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-commissions'}" ng-click="switchTabTo($event, 'cc-commissions')" ng-show="shouldShowCommissionsTab()">
                             <a translate>COMMISSIONS</a>
@@ -118,7 +121,12 @@
                     <!-- Company - Activity Log -->
                     <span ng-controller="RVCompanyCardActivityLogCtrl" ng-include="'/assets/partials/companyCard/activityLog/rvCompanyCardActivityLog.html'" ng-show="currentSelectedTab == 'cc-activity-log'"></span>
                     <!-- Company - Notes -->
-                    <span ng-include="'/assets/partials/companyCard/rvCompanyCardNotes.html'" ng-show="currentSelectedTab == 'cc-notes'"></span>
+                    <form method="post" id="gc-notes" name="gc-notes" class="form inner-header card-tab notes-tab no-print"
+                        ng-if="currentSelectedTab == 'cc-notes'">
+                        <div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
+                        <span ng-include="'/assets/partials/companyCard/rvCompanyTAFilesAndNotes.html'">
+                        </span>
+                    </form>
                     <!-- Company Card Tab 5 Resevations -->
                     <!-- <span ng-hide="true" ng-include="'/assets/partials/companyCard/rvCompanyCardReservations.html'"></span> -->
                 </div>

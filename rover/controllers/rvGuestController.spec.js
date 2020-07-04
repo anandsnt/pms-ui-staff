@@ -6,12 +6,13 @@ describe('guestCardController', function() {
         $state,
         RVContactInfoSrv,
         $q,
-        ngDialog;
+        ngDialog,
+        rvFileCloudStorageSrv;
 
     beforeEach(function() {
         module('sntRover');
         module('/assets/partials/cards/popups/detachCardsAPIWarningPopup.html');
-        inject(function(_$controller_, _$rootScope_, _$state_, _RVContactInfoSrv_, _$q_, _ngDialog_) {
+        inject(function(_$controller_, _$rootScope_, _$state_, _RVContactInfoSrv_, _$q_, _ngDialog_, _rvFileCloudStorageSrv_) {
 
             $controller = _$controller_;
             $rootScope = _$rootScope_;
@@ -20,6 +21,7 @@ describe('guestCardController', function() {
             RVContactInfoSrv = _RVContactInfoSrv_;
             $q = _$q_;
             ngDialog = _ngDialog_;
+            rvFileCloudStorageSrv = _rvFileCloudStorageSrv_;
 
             angular.extend($scope, {
                 'reservationDetails': {

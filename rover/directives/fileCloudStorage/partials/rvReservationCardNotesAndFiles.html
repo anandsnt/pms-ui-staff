@@ -1,0 +1,98 @@
+<!-- Add .show-files when showing files instead of notes -->
+<!-- Add .with-files if we are enabling users to manage files through this modal -->
+<div id="modal" class="modal-show" role="dialog">
+	<form method="post" action="post-note" id="notes" class="modal-content form staycard-notes" ng-controller="rvStayCardNotesAndFileCtrl" ng-class="{'show-files': !cardData.notesViewOn, 'with-files': showFiles}">
+		<!-- 	rv-file-cloud-storage card-type="stay_card" card-id="{{reservationData.reservation_card.reservation_id}}" show-files="isCloudStorageEnabledForCardType('stay_card')"> -->
+		<button id="modal-close" type="button" class="dark-title modal-close" ng-click="closeDialog();"><span class="icons icon-close"></button>
+			<div class="modal-header">
+				<h1>{{ showFiles ? 'Notes & Files' : 'Notes' }}</h1>
+				<strong ng-if="reservationData.reservation_card.room_number">Room {{reservationData.reservation_card.room_number}}</strong>
+				<!-- if we enable users to manage files add:-->
+				<div class="switch" ng-if="showFiles">
+					<div class="switch-button full-width" ng-class="{ 'on' : cardData.notesViewOn}">
+						<input id="modal-notes-switch" value="1" type="checkbox" ng-model="cardData.notesViewOn" ng-change="screenModeChanged(cardData.notesViewOn ? 'NOTES' : 'FILES')">
+						<label class="data-off">
+							<span class="value" translate>NOTES</span>
+							<span class="switch-icon" translate>FILES</span>
+						</label>
+						<label class="data-on">
+							<span class="switch-icon" translate>NOTES</span>
+							<span class="value" translate>FILES</span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<!-- If showing files, add .hidden -->
+			<div id="notes-list" class="scrollable" ng-show="cardData.notesViewOn" ng-iscroll="card_notes_scroller">
+				<!-- When there are notes -->
+				<ul class="notes wrapper" ng-show="notes.length">
+					<li ng-repeat="note in notes" ng-class="{'editing': (editingNote && note.id === editingNote.id)}"
+						ng-click="clickedOnNote(note)">
+						<figure class="guest-image">
+							<img ng-if="note.posted_user_image_url===''" src="/assets/images/avatar-trans.png" alt="" />
+							<img ng-if="note.posted_user_image_url!==''" ng-src="{{note.posted_user_image_url}}" alt="" />
+						</figure>
+						<div class="note-title">
+							<h4>{{note.posted_user_first_name}} {{note.posted_user_last_name}}</h4>
+							<time datetime="">
+							<span class="time">{{note.time}}</span>
+							<span class="date">{{formatDateForUI(note.date)}}</span>
+							</time>
+							<button type="button"
+							class="icons icon-trash"
+							ng-click="deleteCardNote($event, note.id)"
+							translate>
+							DELETE_POST
+							</button>
+						</div>
+						<p>{{note.text}}</p>
+					</li>
+				</ul>
+				<!-- When no notes:-->
+				<div class="no-content" ng-show="!notes.length">
+					<div class="info">
+						<span class="icon-no-content icon-notes"></span>
+						<strong class="h1">No Notes</strong>
+						<!-- <span class="h2">Leave a Note for reservation #{{reservationData.reservation_card.room_number}}</span> -->
+					</div>
+				</div>
+			</div>
+			<!-- If showing files, add .hidden -->
+			<div class="actions" ng-show="cardData.notesViewOn">
+				<textarea id="note-content" placeholder="Write a note" ng-model="cardData.noteText" rows="2"></textarea>
+				<div class="post">
+					<button type="button"
+					ng-click="createNewNote()"
+					class="button"
+					ng-class="{'brand-colors': cardData.noteText.trim()!=='', 'grey': cardData.noteText.trim()===''}"
+					ng-disabled="cardData.noteText.trim()===''"
+					ng-style="{'display':  editingNote === null ? 'block': 'none'}"
+					translate>
+					POST
+					</button>
+					<button type="button"
+					class="button brand-colors"
+					ng-class="{'brand-colors': cardData.noteText.trim()!=='', 'grey': cardData.noteText.trim()===''}"
+					ng-style="{'display':  editingNote !== null ? 'block': 'none'}"
+					ng-disabled="cardData.noteText.trim()===''"
+					ng-click="updateActiveNote()"
+					translate>
+					SAVE
+					</button>
+					<button type="button"
+					class="button blank"
+					ng-show="editingNote!==null"
+					ng-click="cancelEditMode()"
+					translate>
+					CANCEL
+					</button>
+				</div>
+			</div>
+			<!-- If showing files, remove .hidden -->
+			<ng-include src="'/assets/directives/fileCloudStorage/partials/rvFileCloudHeader.html'" ng-if="showFiles && !cardData.notesViewOn"></ng-include>
+			
+			<!-- If showing files, remove .hidden inside of this file on the scroller -->
+			<ng-include ng-show="!cardData.notesViewOn" src="'/assets/directives/fileCloudStorage/partials/rvFileCloudFiles.html'"></ng-include>
+			
+		</form>
+	</div>

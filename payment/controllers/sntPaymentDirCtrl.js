@@ -1079,7 +1079,11 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 var selectedPaymentType;
 
-                calculateFee(true);
+                if (isInitialLoad) {
+                    calculateFee(true);
+                } else {
+                    calculateFee();
+                }
 
                 selectedPaymentType = _.find($scope.paymentTypes, {
                     name: $scope.selectedPaymentType

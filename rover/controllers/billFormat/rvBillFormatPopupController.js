@@ -1,6 +1,6 @@
 sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter', 'RVBillCardSrv', 'RVContactInfoSrv', 'ngDialog', '$timeout', function($scope, $rootScope, $filter, RVBillCardSrv, RVContactInfoSrv, ngDialog, $timeout) {
 
-    
+
     var delay = 200,
         delayScreen = 500;
 
@@ -8,11 +8,11 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     $scope.isCompanyCardInvoice = true;
     $scope.disableCompanyCardInvoice = false;
     $scope.disableCompanyGuestToggle = false;
-    $scope.hideCompanyCardInvoiceToggle = true;    
-    $scope.billFormat.isInformationalInvoice = !$scope.shouldGenerateFinalInvoice 
-                                                && $scope.isSettledBill 
+    $scope.hideCompanyCardInvoiceToggle = true;
+    $scope.billFormat.isInformationalInvoice = !$scope.shouldGenerateFinalInvoice
+                                                && $scope.isSettledBill
                                                 && $scope.reservationBillData.is_bill_lock_enabled;
-    $scope.billFormat.isInformationalInvoiceDisabled = $scope.isSettledBill 
+    $scope.billFormat.isInformationalInvoiceDisabled = $scope.isSettledBill
                                                 && $scope.reservationBillData.is_bill_lock_enabled;
     /*
     *  Get the request params for bill settings info
@@ -48,7 +48,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
                 params.is_type = "Account";
                 if ($scope.accountConfigData) {
                     handleGenerateToggleWidgetVisibility($scope.accountConfigData.summary);
-                }                
+                }
             }
 
         }
@@ -61,7 +61,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     /*
      * To close dialog box
      */
-    $scope.closeDialog = function() {                
+    $scope.closeDialog = function() {
 
         $rootScope.modalOpened = false;
         $timeout(function() {
@@ -113,8 +113,13 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
      * @return {undefined}
      */
     var fetchGuestLanguages = function() {
+        var params = {};
+
+        if ($scope.reservationBillData && $scope.reservationBillData.reservation_id) {
+            params.reservation_id = $scope.reservationBillData.reservation_id;
+        }
       // call api
-      $scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, {},
+      $scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, params,
         successCallBackForLanguagesFetch);
     };
 
@@ -124,7 +129,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     var fetchBillSettingsInfo = function() {
         var params = getBillSettingsInfoRequestParams();
         var onBillSettingsInfoFetchSuccess = function(response) {
-            
+
             fetchGuestLanguages();
             /** CICO-38736
              *
@@ -137,7 +142,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             }
 
             $scope.data = response.data;
-            $scope.setEmailAddress();            
+            $scope.setEmailAddress();
         };
 
         $scope.invokeApi(RVBillCardSrv.getBillSettingsInfo, params, onBillSettingsInfoFetchSuccess);
@@ -173,16 +178,16 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
      */
     $scope.printBill = function() {
         var printRequest = getPrintEmailRequestParams();
-        
+
         $scope.$emit("UPDATE_INFORMATIONAL_INVOICE", $scope.billFormat.isInformationalInvoice);
         printRequest.bill_layout = $scope.data.default_bill_settings;
         printRequest.is_informational_invoice = $scope.billFormat.isInformationalInvoice;
         $scope.clickedPrint(printRequest);
     };
-    
+
     /*
      * click action Continue button
-     * 
+     *
      */
     $scope.clickedContinueButtonPrintOrEmail = function() {
         if ($scope.isClickedPrint) {
@@ -199,7 +204,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
             $scope.isClickedPrint = true;
             $scope.isInvoiceStepThreeActive = false;
-        
+
             $timeout(function() {
                 $scope.isInvoiceStepFourActive = true;
             }, delayScreen);
@@ -216,7 +221,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         emailRequest.is_informational_invoice = $scope.billFormat.isInformationalInvoice;
         $scope.clickedEmail(emailRequest);
     };
-    
+
     /*
     *  Function which get invoked when the email btn from bill format popup is clicked
     */
@@ -225,12 +230,12 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
             $scope.isClickedPrint = false;
             $scope.isInvoiceStepThreeActive = false;
-        
+
             $timeout(function() {
                 $scope.isInvoiceStepFourActive = true;
             }, delayScreen);
         } else {
-            $scope.sendEmail();            
+            $scope.sendEmail();
         }
     };
     /*
@@ -240,7 +245,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         $scope.isInvoiceStepOneActive = false;
         $timeout(function() {
             $scope.isInvoiceStepTwoActive  = true;
-        }, delayScreen);        
+        }, delayScreen);
     };
     /*
      * Clicked Proceed button
@@ -248,7 +253,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     $scope.clickedProceedButton = function() {
         $scope.isInvoiceStepTwoActive = false;
         $scope.isInvoiceStepFourActive = false;
-        
+
         $timeout(function() {
             $scope.isInvoiceStepThreeActive = true;
         }, delayScreen);
@@ -258,12 +263,12 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
      */
     $scope.clickedCancelButtonProceedScreen = function() {
         $scope.isInvoiceStepTwoActive = false;
-        
+
         $timeout(function() {
             $scope.isInvoiceStepOneActive = true;
         }, delayScreen);
     };
-    
+
     /*
      * Once print done show the popup of success message
      */
@@ -282,14 +287,14 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         var printButtonClass = "blue";
 
-        if (!$scope.billFormat.isInformationalInvoice 
-            && (parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].print_counter, 10) >= parseInt($scope.reservationBillData.no_of_original_invoices, 10) 
-                && $scope.roverObj.noReprintReEmailInvoice 
+        if (!$scope.billFormat.isInformationalInvoice
+            && (parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].print_counter, 10) >= parseInt($scope.reservationBillData.no_of_original_invoices, 10)
+                && $scope.roverObj.noReprintReEmailInvoice
                 && parseInt($scope.reservationBillData.no_of_original_invoices, 10) !== 0)) {
 
             printButtonClass = "grey";
         }
-        
+
         return printButtonClass;
     };
     /*
@@ -299,10 +304,10 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         var isPrintButtonDisabled = false;
 
-        if (!$scope.billFormat.isInformationalInvoice 
-            && (parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].print_counter, 10) >= parseInt($scope.reservationBillData.no_of_original_invoices, 10) 
-                && $scope.roverObj.noReprintReEmailInvoice 
-                && parseInt($scope.reservationBillData.no_of_original_invoices, 10) !== 0)) {   
+        if (!$scope.billFormat.isInformationalInvoice
+            && (parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].print_counter, 10) >= parseInt($scope.reservationBillData.no_of_original_invoices, 10)
+                && $scope.roverObj.noReprintReEmailInvoice
+                && parseInt($scope.reservationBillData.no_of_original_invoices, 10) !== 0)) {
 
             isPrintButtonDisabled = true;
         }
@@ -319,9 +324,9 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         if (!$scope.data.mailto_address) {
             emailButtonClass = "grey";
 
-        } else if (!$scope.billFormat.isInformationalInvoice 
-            && (parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].email_counter, 10) >= parseInt($scope.reservationBillData.no_of_original_emails, 10) 
-                && $scope.roverObj.noReprintReEmailInvoice 
+        } else if (!$scope.billFormat.isInformationalInvoice
+            && (parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].email_counter, 10) >= parseInt($scope.reservationBillData.no_of_original_emails, 10)
+                && $scope.roverObj.noReprintReEmailInvoice
                 && parseInt($scope.reservationBillData.no_of_original_invoices, 10) !== 0)) {
 
             emailButtonClass = "grey";
@@ -337,9 +342,9 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         if (!$scope.data.mailto_address) {
             isEmailButtonDisabled = true;
-        } else if (!$scope.billFormat.isInformationalInvoice 
-            && (parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].email_counter, 10) >= parseInt($scope.reservationBillData.no_of_original_emails, 10) 
-                && $scope.roverObj.noReprintReEmailInvoice 
+        } else if (!$scope.billFormat.isInformationalInvoice
+            && (parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].email_counter, 10) >= parseInt($scope.reservationBillData.no_of_original_emails, 10)
+                && $scope.roverObj.noReprintReEmailInvoice
                 && parseInt($scope.reservationBillData.no_of_original_invoices, 10) !== 0)) {
 
             isEmailButtonDisabled = true;
@@ -350,9 +355,9 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     $scope.clickedInformationalButton = function() {
         $scope.billFormat.isInformationalInvoice = true;
         $scope.isInvoiceStepOneActive = false;
-        
+
         $timeout(function() {
-            $scope.isInvoiceStepThreeActive = true;            
+            $scope.isInvoiceStepThreeActive = true;
         }, delayScreen);
     };
 
