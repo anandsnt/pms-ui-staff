@@ -72,7 +72,7 @@
             </div>
             <!-- Split payment -->
             <div class="entry split" ng-class="{active: splitBillEnabled }"
-                 ng-hide="depositPaidSuccesFully || defaultPaymentTypeOfBill === 'GIFT_CARD' || defaultPaymentTypeOfBill === 'DB' || !isStandAlone">
+                 ng-hide="depositPaidSuccesFully || defaultPaymentTypeOfBill === 'GIFT_CARD' || defaultPaymentTypeOfBill === 'DB' || !isStandAlone" ng-if="false">
 
                 <label class="checkbox inline" ng-class="{checked: splitBillEnabled }">
                     <span class="icon-form icon-checkbox" ng-class="{checked: splitBillEnabled }">

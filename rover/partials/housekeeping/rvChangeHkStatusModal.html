@@ -84,7 +84,18 @@
                             </select>
 	                        </div>
 	                    </div>
-                	</div>
+					</div>
+					<div id="return-status" class="row" ng-if="isStandAlone && updateServiceData.room_service_status_id != 1">
+						<div class="entry">
+							<label for="return-status">Room return status</label>
+							<div class="select">
+								<select name="return-status" id="return-status" class ="placeholder" ng-model="updateServiceData.return_status_id"
+										ng-options="item.id as item.value for item in hkStatusList">
+									<option value="">Select</option>
+								</select>
+							</div>
+						</div>
+					</div>
 	                <div id="reason" class="row" ng-if="updateServiceData.room_service_status_id != 1">
 	                    <div class="entry">
 	                        <label for="reason">Reason</label>

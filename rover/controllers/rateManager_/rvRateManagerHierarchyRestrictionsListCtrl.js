@@ -54,7 +54,7 @@ angular.module('sntRover')
                                 $scope.restrictionObj.setOnCount = response.rate_types_count;
                                 // TODO : Remove while implementing ADD, EDIT stories
                                 $scope.header.disableNewRestriction = false;
-                                $scope.restrictionObj.enableEditRestrictions = false;
+                                $scope.restrictionObj.enableEditRestrictions = true;
                                 break;
                             default:
                                 break;
@@ -87,21 +87,39 @@ angular.module('sntRover')
                  */
                 $scope.clickedOnListItem = function(key, index) {
                     if ($scope.restrictionObj.enableEditRestrictions) {
-                        let clickedItem = index ? $scope.restrictionObj.listData[key][index] : $scope.restrictionObj.listData[key];
+                        let clickedItem = {};
 
                         $scope.popUpView = 'EDIT';
                         $scope.selectedRestriction = _.find(hierarchyUtils.restrictionColorAndIconMapping, 
                                                             function(item) { return item.key  === key; }
                                                     );
-                        if (clickedItem.value) {
-                            $scope.selectedRestriction.value = null;
-                            $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values || [];
+                        $scope.selectedRestriction.activeGroupList = [];
+                        if ($scope.selectedRestriction.type === 'number') {
+                            // min_length_of_stay, min_stay_through etc.
+                            clickedItem = $scope.restrictionObj.listData[key][index];
+                            $scope.selectedRestriction.value = clickedItem.value;
+                            $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values;
+                            $scope.selectedRestriction.activeGroupList = $scope.restrictionObj.listData[key];
+                            $scope.selectedRestriction.activeGroupIndex = index;
                         }
                         else {
-                            $scope.selectedRestriction.value = clickedItem[0].value;
-                            $scope.selectedRestriction.setOnValuesList = clickedItem[0].set_on_values;
+                            // closed, closed_arrival and closed_departure.
+                            clickedItem = $scope.restrictionObj.listData[key];
+                            $scope.selectedRestriction.value = null;
+                            $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values || [];
+                            $scope.selectedRestriction.activeGroupList.push(clickedItem);
+                            $scope.selectedRestriction.activeGroupIndex = 0;
                         }
                         $scope.restrictionObj.isRepeatOnDates = false;
+                        $scope.selectedRestriction.activeGroupKey = key;
+                        $scope.$broadcast('INIT_SET_ON_SEARCH');
+                        // Handle ON ALL checkbox selection.
+                        if (clickedItem.set_on_values.length === $scope.restrictionObj.setOnCount) {
+                            $scope.restrictionObj.isSetOnAllActive = true;
+                        }
+                        else {
+                            $scope.restrictionObj.isSetOnAllActive = false;
+                        }
                     }
                 };
 

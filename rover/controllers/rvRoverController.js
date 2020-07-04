@@ -250,6 +250,7 @@ sntRover.controller('roverController', [
         $rootScope.isPromoActive = hotelDetails.is_promotion_active;
 
         $rootScope.maxStayLength = hotelDetails.max_stay_length;
+        $rootScope.useInspectedRoomStatus = hotelDetails.housekeeping.use_inspected;
 
         // set MLI Merchant Id
         try {
@@ -1217,6 +1218,13 @@ sntRover.controller('roverController', [
 
         $scope.broadcastFromRoot = function(eventIdentifier, payLoad) {
             $scope.$broadcast(eventIdentifier, payLoad);
+        };
+
+        $scope.isCloudStorageEnabledForCardType = function(cardType) {
+            return rvPermissionSrv.getPermissionValue('CLOUD_STORAGE_VIEW') &&
+                RVHotelDetailsSrv.hotelDetails.cloud_storage_config.enabled &&
+                RVHotelDetailsSrv.hotelDetails.cloud_storage_config &&
+                RVHotelDetailsSrv.hotelDetails.cloud_storage_config["enabled_" + cardType];
         };
 
         (function() {

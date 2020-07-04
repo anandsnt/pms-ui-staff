@@ -639,6 +639,19 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 				});
 			return deferred.promise;
 		};
+
+		this.updateCompanyCard = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/groups/' + params.id + '/update_company_card';
+
+            rvBaseWebSrvV2.postJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            return deferred.promise;
+        };
 	}
 
 

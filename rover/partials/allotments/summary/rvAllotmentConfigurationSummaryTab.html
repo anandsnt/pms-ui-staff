@@ -147,12 +147,12 @@
                 </a>
             </div>
             <!-- Notes -->
-            <strong class="h3 margin">Notes</strong>
-            <div class="entry full-width no-label with-notes">
+            <strong class="h3 margin" ng-if="!isCloudStorageEnabledForCardType('group')">Notes</strong>
+            <div class="entry full-width no-label with-notes" ng-if="!isCloudStorageEnabledForCardType('group')">
                 <textarea id="allotment-notes" ng-model="allotmentSummaryData.newNote" placeholder="Write a note" rows="2"></textarea>
                 <button type="button" class="button post" ng-class="{'brand-colors' : !isInAddMode() , 'grey' : isInAddMode()}" ng-click="saveAllotmentNote()">Post</button>
             </div>
-            <ul class="notes">
+            <ul class="notes" ng-if="!isCloudStorageEnabledForCardType('group')">
                 <li ng-repeat="note in allotmentConfigData.summary.notes">
                     <figure class="guest-image">
                         <img src="{{note.user_image}}" alt="" />

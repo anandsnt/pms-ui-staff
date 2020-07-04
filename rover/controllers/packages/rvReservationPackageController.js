@@ -74,7 +74,7 @@ sntRover.controller('RVReservationPackageController',
 				if (!postingRythm) {				
 					if (postType === 'WEEK' || postType === 'EVERY WEEK' || postType === 'WEEKLY' || postType === 'WEEKDAY' || postType === 'WEEKEND') {
 						postingRythm = 7;
-					} else if (postType === 'STAY' || postType === 'ENTIRE STAY') {
+					} else if (postType === 'STAY' || postType === 'NIGHTLY') {
 						postingRythm = 1;
 					} else if (postType === 'NIGHT' || postType === 'First Night' || postType === 'LAST_NIGHT' || postType === 'CUSTOM' || postType === 'POST ON LAST NIGHT') {
 						postingRythm = 0;
