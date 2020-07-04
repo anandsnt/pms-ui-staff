@@ -46,7 +46,7 @@ angular.module('sntRover')
                                 $scope.restrictionObj.setOnCount = response.room_types_count;
                                 // TODO : Remove while implementing ADD, EDIT stories
                                 $scope.header.disableNewRestriction = false;
-                                $scope.restrictionObj.enableEditRestrictions = false;
+                                $scope.restrictionObj.enableEditRestrictions = true;
                                 break;
                             case 'RateType':
                                 $scope.restrictionObj.listData = response.rate_type[0].restrictions;
@@ -54,7 +54,7 @@ angular.module('sntRover')
                                 $scope.restrictionObj.setOnCount = response.rate_types_count;
                                 // TODO : Remove while implementing ADD, EDIT stories
                                 $scope.header.disableNewRestriction = false;
-                                $scope.restrictionObj.enableEditRestrictions = true;
+                                $scope.restrictionObj.enableEditRestrictions = false;
                                 break;
                             default:
                                 break;
