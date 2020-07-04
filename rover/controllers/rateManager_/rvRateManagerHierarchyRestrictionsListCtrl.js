@@ -54,7 +54,7 @@ angular.module('sntRover')
                                 $scope.restrictionObj.setOnCount = response.rate_types_count;
                                 // TODO : Remove while implementing ADD, EDIT stories
                                 $scope.header.disableNewRestriction = false;
-                                $scope.restrictionObj.enableEditRestrictions = false;
+                                $scope.restrictionObj.enableEditRestrictions = true;
                                 break;
                             default:
                                 break;
