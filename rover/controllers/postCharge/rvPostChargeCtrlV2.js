@@ -601,7 +601,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
 				var updateParam = data;
 
-				var taxExemptTypeId = $scope.groupConfigData.summary.tax_exempt_type_id,
+				var taxExemptTypeId = $scope.groupConfigData ? $scope.groupConfigData.summary.tax_exempt_type_id : '',
 					groupTaxExemptChargeCodeList = [],
 					isChargeCodeInTaxExempt = false;
 
