@@ -125,12 +125,16 @@ angular.module('sntRover').controller('rvDiaryRoomStatusAndServiceUpdatePopupCtr
                     },
                     onSuccess: function (data) {
                         angular.extend($scope.serviceStatus, data.service_status);
-                        var selectedServiceData = $scope.serviceStatus[getApiFormattedDate(tzIndependentDate($rootScope.businessDate))];
+
+                        // Set the default value only for the first time popup loads
+                        if (!instance) {
+                            var selectedServiceData = $scope.serviceStatus[getApiFormattedDate(tzIndependentDate($rootScope.businessDate))];
                         
-                        $scope.serviceStatusDetails.room_service_status_id = selectedServiceData.id;
-                        $scope.serviceStatusDetails.reason_id = selectedServiceData.maintenance_reason_id || '';
-                        $scope.serviceStatusDetails.comment = selectedServiceData.comments;
-                        $scope.serviceStatusDetails.return_status_id = selectedServiceData.return_status_id || '';
+                            $scope.serviceStatusDetails.room_service_status_id = selectedServiceData.id;
+                            $scope.serviceStatusDetails.reason_id = selectedServiceData.maintenance_reason_id || '';
+                            $scope.serviceStatusDetails.comment = selectedServiceData.comments;
+                            $scope.serviceStatusDetails.return_status_id = selectedServiceData.return_status_id || '';
+                        }
 
                         if (!angular.isUndefined(instance) && instance.id) {
                             $('#' + instance.id).datepicker('refresh');
