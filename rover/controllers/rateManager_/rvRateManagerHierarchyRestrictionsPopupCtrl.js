@@ -252,7 +252,10 @@ angular.module('sntRover')
                     }
                     return label;
                 };
-
+                // Check whether Remove button needed to disable.
+                $scope.disableRemoveButton = function() {
+                    return isRepeatOnDatesNotValid();
+                };
                 // Handle REMOVE button click
                 $scope.clickedOnRemoveButton =  function() {
                     $scope.$broadcast('CLICKED_REMOVE_ON_DATES');
