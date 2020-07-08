@@ -1189,6 +1189,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var success = function(data) {
                 $scope.selectedEntityDetails = data;
                 $scope.isGuestBalanceReport = false;
+                $scope.isAdNotumExport = false;
 
                 if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
                     $scope.selectedSchedule.active = false;
