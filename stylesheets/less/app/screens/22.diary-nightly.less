@@ -1005,18 +1005,26 @@
     }
 
     .room-number {
+        cursor: pointer;
         position: absolute;
         top: 0;
-        right: 5px;
+        right: 0;
         font-size: 18px;
         line-height: 28px;
         font-weight: 600;
         text-align: right;
-        padding-left: 10px;
-        background-color: @white;
-        background: linear-gradient(90deg, fade(@white, 0) 0%, @white 10px, @white 100%);          
+        padding: 0 5px 0 10px;
+        box-shadow: -1px 0 1px rgba(0,0,0,.1);
+        background-color: @grey1;
+        cursor: pointer;
+        height: 100%;
+        .transition();
         .nowrap();
         .show();
+
+        &:hover {
+            box-shadow: -2px 0 2px rgba(0,0,0,.2);
+        }
     }
 
     .room-type {

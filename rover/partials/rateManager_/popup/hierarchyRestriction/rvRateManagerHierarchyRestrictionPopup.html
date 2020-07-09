@@ -61,7 +61,7 @@
                             <button class="button blank" type="button" ng-click="closeDialog()" ng-class="{'hidden': popUpView === 'NEW' || popUpView === 'EDIT'}">
                                 Close window
                             </button>
-                            <button ng-show="popUpView === 'EDIT'" class="button red first-button" ng-class="{'small': !restrictionObj.isRepeatOnDates}" type="button" ng-click="clickedOnRemoveButton()">
+                            <button ng-show="popUpView === 'EDIT'" class="button red first-button" ng-class="{'small': !restrictionObj.isRepeatOnDates, 'grey disable-element': disableRemoveButton()}" type="button" ng-click="clickedOnRemoveButton()">
                                 {{getRemoveButtonLabel()}}
                             </button>
                             <button class="button blank" ng-class="{'hidden': (popUpView !== 'NEW' && popUpView !== 'EDIT')}" type="button" ng-click="backToInitialScreen()">

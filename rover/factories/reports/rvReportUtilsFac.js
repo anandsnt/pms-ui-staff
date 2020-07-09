@@ -3722,7 +3722,7 @@ angular.module('reportsModule')
                         resStatusCopy = resStatusCopy.map(resStatus => {
                             resStatus.selected = false;
 
-                            if (filterValues.status_ids.indexOf(resStatus.id) > -1) {
+                            if (filterValues.status_ids.indexOf(resStatus.id.toString()) > -1) {
                                 resStatus.selected = true;
                             }
                             return resStatus;

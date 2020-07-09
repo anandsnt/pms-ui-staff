@@ -403,7 +403,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                 } else if (keyName === 'hasReservationStatus') {
                     key = reportParams['RESERVATION_STATUS'];
-                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+                    var statuses = _.pluck(_.where(filter.data, { selected: true }), 'id');
+
+                    statuses = statuses.map(id => id.toString());
+                    filter_values[key] = statuses;
 
                 } else if (keyName === 'hasFloorList') {
                     key = reportParams['FLOOR'];
@@ -682,7 +685,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                 } else if (keyName === 'hasReservationStatus') {
                     key = reportParams['RESERVATION_STATUS'];
-                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+                    var statuses = _.pluck(_.where(filter.data, { selected: true }), 'id');
+
+                    statuses = statuses.map(id => id.toString());
+                    filter_values[key] = statuses;
 
                 } else if (keyName === 'hasFloorList') {
                     key = reportParams['FLOOR'];
@@ -1912,7 +1918,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     selectedEntity.report.title === reportNames['ROOMS_OOO_OOS'] || 
                     selectedEntity.report.title === reportNames['DEPOSIT_SUMMARY'] || 
                     selectedEntity.report.title === reportNames['OCCUPANCY_REVENUE_SUMMARY'] ||
-                    selectedEntity.report.title === reportNames['ADDON_FORECAST'])) {
+                    selectedEntity.report.title === reportNames['ADDON_FORECAST'] || 
+                    selectedEntity.report.title === reportNames['FORECAST_GUEST_GROUPS'])) {
 
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) {
                     return object.value === 'CSV';
@@ -1939,7 +1946,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['ROOMS_OOO_OOS'] || 
                 selectedEntity.report.title === reportNames['DEPOSIT_SUMMARY'] ||
                 selectedEntity.report.title === reportNames['OCCUPANCY_REVENUE_SUMMARY'] ||
-                selectedEntity.report.title === reportNames['ADDON_FORECAST']);
+                selectedEntity.report.title === reportNames['ADDON_FORECAST'] || 
+                selectedEntity.report.title === reportNames['FORECAST_GUEST_GROUPS']);
 
         };
 
