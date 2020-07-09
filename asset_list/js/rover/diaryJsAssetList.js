@@ -12,7 +12,11 @@ module.exports = {
 				roverRoot + "services/reservation/rvReservationSummarySrv.js",
 				roverRoot + "services/rateManager/rmFilterOptionsSrv.js",
 				roverRoot + "services/payment/rvGuestPaymentSrv.js",
+				roverRoot + "services/housekeeping/rvHkRoomStatusSrv.js",
+                roverRoot + "services/housekeeping/rvHkRoomDetailsSrv.js",
+                roverRoot + "services/util/rvUtilSrv.js",
 				roverRoot + "controllers/diary/**/*.js",
+				roverRoot + "controllers/rvDiaryRoomStatusAndServiceUpdatePopupCtrl.js",
 				//please dont change the order
 				diaryViewRoot + "util.js",
 				diaryViewRoot + "diary-toggle.js",

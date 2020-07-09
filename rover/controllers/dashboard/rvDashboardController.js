@@ -29,7 +29,6 @@ sntRover.controller('RVdashboardController',
                 $scope.statisticsData = dashBoarddata.dashboardStatistics;
                 $scope.lateCheckoutDetails = dashBoarddata.lateCheckoutDetails;
                 $rootScope.adminRole = $scope.userDetails.user_role;
-
                 // update left nav bar
                 $scope.$emit("updateRoverLeftMenu", "dashboard");
                 $scope.$emit("closeDrawer");

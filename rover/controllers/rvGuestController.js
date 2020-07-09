@@ -1,6 +1,6 @@
 angular.module('sntRover').controller('guestCardController', [
-    '$scope', '$window', 'RVCompanyCardSrv', '$q', 'RVReservationAllCardsSrv', 'RVGuestCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state', 'rvAllotmentSrv', '$vault', 'rvPermissionSrv',
-    function($scope, $window, RVCompanyCardSrv, $q, RVReservationAllCardsSrv, RVGuestCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state, rvAllotmentSrv, $vault, rvPermissionSrv) {
+    '$scope', '$window', 'RVCompanyCardSrv', '$q', 'RVReservationAllCardsSrv', 'RVGuestCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state', 'rvAllotmentSrv', '$vault', 'rvPermissionSrv', 'rvFileCloudStorageSrv',
+    function($scope, $window, RVCompanyCardSrv, $q, RVReservationAllCardsSrv, RVGuestCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state, rvAllotmentSrv, $vault, rvPermissionSrv, rvFileCloudStorageSrv) {
         var resizableMinHeight = 90,
             resizableMaxHeight = $(window).height() - resizableMinHeight,
             DEBOUNCE_DELAY = 1500,
@@ -921,29 +921,11 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.guestSearchIntiated = false;
                 $scope.searchedGuests = [];
                 $scope.$apply();
-                resetObject(previousSearchData, '');
                 $scope.$broadcast('guestSearchStopped');
             }
         };
 
-        var previousSearchData = {
-            'lastName': '',
-            'firstName': '',
-            'city': '',
-            'loyaltyNumber': '',
-            'email': ''
-        };
-
         var shouldSearch = function() {
-            if (previousSearchData.lastName === $scope.searchData.guestCard.guestLastName && previousSearchData.firstName === $scope.searchData.guestCard.guestFirstName && previousSearchData.city === $scope.searchData.guestCard.guestCity && previousSearchData.loyaltyNumber === $scope.searchData.guestCard.guestLoyaltyNumber && previousSearchData.email === $scope.searchData.guestCard.email) {
-                return false;
-            }
-            previousSearchData.lastName = $scope.searchData.guestCard.guestLastName;
-            previousSearchData.firstName = $scope.searchData.guestCard.guestFirstName;
-            previousSearchData.city = $scope.searchData.guestCard.guestCity;
-            previousSearchData.loyaltyNumber = $scope.searchData.guestCard.guestLoyaltyNumber;
-            previousSearchData.email = $scope.searchData.guestCard.email;
-
             return ($scope.searchData.guestCard.guestLastName.length >= 2 || $scope.searchData.guestCard.guestFirstName.length >= 1 || $scope.searchData.guestCard.guestCity !== '' || $scope.searchData.guestCard.guestLoyaltyNumber !== '' || $scope.searchData.guestCard.email !== '');
         };
 
@@ -2200,6 +2182,7 @@ angular.module('sntRover').controller('guestCardController', [
                 // Call save if NOT 'AddNewCard' mode
                 $scope.$broadcast('saveContactInfo');
             }
+            rvFileCloudStorageSrv.activeCardType = 'guest_card';
         };
 
         // CICO-25249 - Catch error from staycard main controler - card replace API.

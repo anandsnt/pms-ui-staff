@@ -15,18 +15,18 @@
                 <!-- if addon type is person multiplification factor will be (addon_count*number of days*(adult_count+child_count))-->
 
                 <span>
-                    <span class="count" ng-hide="addon.post_type ==='Entire Stay'"> ({{addon.addon_count}})</span> 
+                    <span class="count" ng-hide="addon.post_type ==='Nightly'"> ({{addon.addon_count}})</span> 
                 </span>
 
                
                 <span class="base" ng-hide="addon.is_inclusive">at {{currencySymbol}}{{addon.amount | number : 2}} / {{addon.amount_type.value}} 
                     <span ng-show="addon.post_type.description ==='First Night'">per stay</span>
-                    <span ng-show="addon.post_type.description ==='Entire Stay'"> per night</span>
+                    <span ng-show="addon.post_type.description ==='Nightly'"> per night</span>
                 </span>
                 <!-- price updated as per QA comment 30593 -->
                  <span>
-                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type ==='Entire Stay'">{{currencySymbol}}{{addon.amount * addon.addon_count | number : 2}}</span>
-                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type !=='Entire Stay'">{{currencySymbol}}{{addon.amount * addon.addon_count | number : 2}}</span>
+                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type ==='Nightly'">{{currencySymbol}}{{addon.amount * addon.addon_count | number : 2}}</span>
+                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type !=='Nightly'">{{currencySymbol}}{{addon.amount * addon.addon_count | number : 2}}</span>
                 </span>
                      
                

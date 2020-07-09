@@ -1,0 +1,67 @@
+<div class="notes-container">
+	<div class="entry">
+		<textarea ng-model="cardData.noteText" placeholder="Write a note" rows="4"></textarea>
+		<label class="checkbox inline" ng-hide="true">
+			<span class="icon-form icon-checkbox"></span>
+			<input value="{value}" type="checkbox">
+			{{ 'ADD_TO_STAYCARD' | translate }}
+		</label>
+		<button type="button"
+				ng-click="createNewNote()"
+				class="button"
+				ng-class="{'brand-colors': cardData.noteText.trim()!=='', 'grey': cardData.noteText.trim()===''}"
+				ng-disabled="cardData.noteText.trim()===''"
+				ng-style="{'display':  editingNote === null ? 'block': 'none'}"
+				translate>
+				POST
+		</button>
+		<button type="button"
+				class="button brand-colors"
+				ng-class="{'brand-colors': cardData.noteText.trim()!=='', 'grey': cardData.noteText.trim()===''}"
+				ng-style="{'display':  editingNote !== null ? 'block': 'none'}"
+				ng-disabled="cardData.noteText.trim()===''"
+				ng-click="updateActiveNote()"
+				translate>
+				SAVE
+		</button>
+		<button type="button"
+				class="button blank"
+				ng-show="editingNote!==null"
+				ng-click="cancelEditMode()"
+				translate>
+				CANCEL
+		</button>
+	</div>
+	<div class="holder scrollable no-print" ng-iscroll="card_notes_scroller">
+		<ul class="notes wrapper" ng-show="notes.length">
+			<li ng-repeat="note in notes" ng-class="{'editing': (editingNote && note.id === editingNote.id)}"
+				ng-click="clickedOnNote(note)">
+				<figure class="guest-image">
+					<img ng-if="note.posted_user_image_url===''" src="/assets/images/avatar-trans.png" alt="" />
+					<img ng-if="note.posted_user_image_url!==''" ng-src="{{note.posted_user_image_url}}" alt="" />
+				</figure>
+				<div class="note-title">
+					<h4>{{note.posted_user_first_name}} {{note.posted_user_last_name}}</h4>
+					<time datetime="">
+					<span class="time">{{note.time}}</span>
+					<span class="date">{{formatDateForUI(note.date)}}</span>
+					</time>
+					<button type="button"
+					class="icons icon-trash"
+					ng-click="deleteCardNote($event, note.id)"
+					translate>
+					DELETE_POST
+					</button>
+				</div>
+				<p>{{note.text}}</p>
+			</li>
+		</ul>
+		<div class="no-content" ng-show="!notes.length">
+			<div class="info">
+				<span class="icon-no-content icon-notes"></span>
+				<strong class="h1" translate>NO_NOTES</strong>
+				<span class="h2" translate>NO_NOTES_SUB</span>
+			</div>
+		</div>
+	</div>
+</div>
