@@ -2744,40 +2744,24 @@ angular.module('sntRover')
             };
 
             // Refresh rooms and reservations
-            var refreshRoomsAndReservations = function () {
-                var onPayloadFetchSuccess = function (payload) {
-                    _.extend($scope, payload);
-                    $scope.data = $scope.room;
-                    $scope.stats = $scope.availability_count;
-                    angular.extend($scope.gridProps, { data: $scope.data });
-                    $scope.renderGrid();
-                    sntActivity.stop('LOAD_DIARY_DATA');
-                },
-                onCurrentTimeFetchSuccess = function (data) {
-                    sntActivity.start('LOAD_DIARY_DATA');
-                    var startDate = data.hotel_time.date;
+            var refreshDiary = function () {
+                var props = $scope.gridProps,
+                    filter = props.filter,
+                    arrival_ms = filter.arrival_date.getTime(),
+                    time_set;
 
-                    if ($stateParams.checkin_date) {
-                        startDate = $stateParams.checkin_date;
-                    }
-                    
-                    rvDiarySrv.load(rvDiarySrv.properDateTimeCreation(startDate), rvDiarySrv.ArrivalFromCreateReservation()).then(onPayloadFetchSuccess);
-                };
-            
-                var params;
+                $scope.$emit('hideLoader');
 
-                if ($stateParams.checkin_date) {
-                    params = $stateParams.checkin_date;
-                }
+                time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
+                $scope.gridProps.display = util.deepCopy(time_set.display);
+                callDiaryAPIsAgainstNewDate(time_set.toStartDate(), time_set.toEndDate());
 
-                $scope.callAPI(RVReservationBaseSearchSrv.fetchCurrentTime, {
-                    params: params,
-                    onSuccess: onCurrentTimeFetchSuccess
-                });
+                $scope.gridProps.unassignedRoomList.reset();
             };
 
+            // Refresh the diary
             $scope.addListener('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function() {
-                refreshRoomsAndReservations();
+                refreshDiary();
             });
         }
     ]
