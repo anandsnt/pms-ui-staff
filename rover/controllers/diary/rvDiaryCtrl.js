@@ -2747,14 +2747,14 @@ angular.module('sntRover')
             var refreshDiary = function () {
                 var props = $scope.gridProps,
                     filter = props.filter,
-                    arrival_ms = filter.arrival_date.getTime(),
-                    time_set;
+                    arrivalms = filter.arrival_date.getTime(),
+                    timeSet;
 
                 $scope.$emit('hideLoader');
 
-                time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
-                $scope.gridProps.display = util.deepCopy(time_set.display);
-                callDiaryAPIsAgainstNewDate(time_set.toStartDate(), time_set.toEndDate());
+                timeSet = util.gridTimeComponents(arrivalms, 48, util.deepCopy($scope.gridProps.display));
+                $scope.gridProps.display = util.deepCopy(timeSet.display);
+                callDiaryAPIsAgainstNewDate(timeSet.toStartDate(), timeSet.toEndDate());
 
                 $scope.gridProps.unassignedRoomList.reset();
             };
