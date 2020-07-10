@@ -190,11 +190,11 @@
 
 <!-- Guest/Account Deposit Balance Summary Report -->
 <ul ng-if="isThisReport( 'DEPOSIT_SUMMARY' )" class="totals">
-    <li ng-hide="appliedFilter.guestOrAccount == 'Account'">Total Guest<span><span ng-bind-html="summaryCounts.total_guest_deposit_balance | sntCurrency:this:null:true"></span></li>
+    <li ng-hide="appliedFilter.guestOrAccount == 'Account'">Total Guest<span><span class="currency">{{summaryCounts.total_guest_deposit_balance | number: 2 }}</span></span></li>
     <!-- Hide if not showing Guest -->
-    <li ng-hide="appliedFilter.guestOrAccount == 'Guest'">Total Account<span><span ng-bind-html="summaryCounts.total_group_deposit_balance | sntCurrency:this:null:true"></span></li>
+    <li ng-hide="appliedFilter.guestOrAccount == 'Guest'">Total Account<span><span class="currency">{{summaryCounts.total_group_deposit_balance | number: 2 }}</span></span></li>
     <!-- Hide if not showing Group -->
-    <li>Total Deposit Balance<span class="green"><span ng-bind-html="summaryCounts.total_deposit_balance | sntCurrency:this:null:true"></span></li>
+    <li>Total Deposit Balance<span class="green"><span class="currency">{{summaryCounts.total_deposit_balance | number: 2 }}</span></span></li>
 </ul>
 
 <!-- Guest/Account Deposit Balance Summary Report -->
