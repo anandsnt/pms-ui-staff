@@ -50,11 +50,16 @@ sntRover.controller('roverController', [
             $translate.use('EN');
         }
 
-        // CICO-39623 : Setting up app theme.
+        var isIpad = navigator.userAgent.match(/iPad/i) != null;
+
         if (!!hotelDetails.selected_theme && hotelDetails.selected_theme.value !== 'ORANGE') {
             var appTheme = 'theme-' + (hotelDetails.selected_theme.value).toLowerCase();
 
-            document.getElementsByTagName('html')[0].setAttribute('class', appTheme);
+            var htmlClasses = isIpad ? (appTheme + ' ' + 'is-ipad') : appTheme;
+
+            document.getElementsByTagName('html')[0].setAttribute('class', htmlClasses);
+        } else if (isIpad) {
+            document.getElementsByTagName('html')[0].setAttribute('class', 'is-ipad');
         }
 
         /*
