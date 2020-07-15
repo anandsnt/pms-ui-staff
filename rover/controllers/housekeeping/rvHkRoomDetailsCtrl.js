@@ -199,6 +199,20 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 				$scope.roomDetails.is_late_checkout);
 		};
 
+		// Refresh the room status
+		var refreshRoomDetails = function () {
+			$scope.callAPI(RVHkRoomDetailsSrv.fetch, {
+				params: $stateParams.id,
+				onSuccess: function(data) {
+					$scope.roomDetails = data;
+				}
+			});
+		};
+
+		$scope.addListener('REFRESH_ROOM_STATUS', function () {
+			refreshRoomDetails();
+		});
+
 		init(roomDetailsData);
 	}
 ]);

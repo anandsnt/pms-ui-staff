@@ -20,7 +20,7 @@
                 <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Wallet" fs-toggle-class="fullscreen-card">Fullscreen</button>                            
             </li>
             <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-notes'}" ng-click="switchTabTo($event, 'cc-notes')">
-                <a translate>Notes</a>
+                <a translate> {{ isCloudStorageEnabledForCardType('cota_card') ? 'NOTES_AND_FILES' : 'NOTES' }}</a>     
             </li>
             <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-ar-accounts'}" ng-click="switchTabTo($event, 'cc-ar-accounts')" ng-show="contactInformation.account_details.accounts_receivable_number || isArTabAvailable">
                 <a ng-class="{'error': !arAccountDetails.is_allow_direct_debit}" translate>AR_ACCOUNT</a>
@@ -51,8 +51,12 @@
         <!-- Company - Activity Log -->
         <span ng-controller="RVCompanyCardActivityLogCtrl" ng-include="'/assets/partials/companyCard/activityLog/rvCompanyCardActivityLog.html'" ng-show="currentSelectedTab == 'cc-activity-log'"></span>
         <!-- Company - Notes -->
-        <span ng-include="'/assets/partials/companyCard/rvCompanyCardNotes.html'" ng-show="currentSelectedTab == 'cc-notes'"></span>
-        <!-- Company - Resevations -->
+        <form method="post" id="gc-notes" name="gc-notes" class="form inner-header card-tab notes-tab no-print"
+                ng-if="currentSelectedTab == 'cc-notes'">
+                <div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
+                <span ng-include="'/assets/partials/companyCard/rvCompanyTAFilesAndNotes.html'">
+                </span>
+        </form>
         <!-- <span ng-hide="true" ng-include="'/assets/partials/companyCard/rvCompanyCardReservations.html'"></span>    -->           
     </div>
 

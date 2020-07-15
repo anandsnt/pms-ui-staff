@@ -4,7 +4,7 @@
         - restriction-view - When editing or setting a restriction
         - showing-dates - When showing Dates (right content)
     -->
-    <div class="rate-manager-modal rate-manager-hierarchy modal-content" ng-class="{'restriction-view': (popUpView === 'NEW' || popUpView === 'EDIT'), 'showing-dates': restrictionObj.isRepeatOnDates }">
+    <div class="rate-manager-modal rate-manager-hierarchy modal-content" ng-class="{'restriction-view': (popUpView === 'NEW' || popUpView === 'EDIT'), 'showing-dates': restrictionObj.isRepeatOnDates, 'with-restriction-list': (header.hierarchyType !== 'House' && selectedRestriction.activeGroupList.length > 0)}">
         <button class="modal-close dark-title" id="modal-close" type="button"><span class="icons icon-close" ng-click="closeDialog()"></span></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="modal-container">
@@ -13,7 +13,6 @@
                     <h2 class="h1">
                         {{header.date}}
                     </h2>
-                    <!-- Add .yellow when showing House Restrictions-->
                     <em ng-class="{'yellow': header.hierarchyType === 'House'}">{{header.hierarchyType}} restrictions</em>
                 </div>
                 <div class="modal-header-right">
@@ -21,23 +20,17 @@
                 </div>
             </div>                
             <div class="modal-body">
-                
-                <!-- selection list on the left for edit screen -->
-                <div class="restrictions-list" ng-class="{'hidden': popUpView !== 'EDIT'}">
+                <div class="restrictions-list" ng-show="(header.hierarchyType !== 'House' && selectedRestriction.activeGroupList.length > 0)">
                     <div class="scrollable">
                         <div class="wrapper">
                             <ul>
-                                <!-- if active add .active -->
-                                <li ng-repeat="restriction in restrictionStylePack" ng-class="{'active': restriction.value}">
-                                    <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
-                                    <div class="{{'restriction-icon ' + restriction.bgClass + ' ' + restriction.iconClass}}">
-                                        {{restriction.value}}
+                                <li ng-repeat="restriction in selectedRestriction.activeGroupList" ng-class="{'active': selectedRestriction.activeGroupIndex === $index }" ng-click="clickedOnLeftRestrictionList($index)">
+                                    <div class="{{'restriction-icon ' + selectedRestriction.bgClass + ' ' + selectedRestriction.iconClass}}">
+                                        {{selectedRestriction.type === 'number' ? restriction.value : ''}}
                                     </div>
                                 </li>
-                                <!-- ... repeat for each restriction -->
-
                                 <li>
-                                    <button type="button" class="add-new-button">+</button>
+                                    <button type="button" class="add-new-button" ng-click="clickedOnAddNew()">+</button>
                                 </li>
                             </ul>
                         </div>
@@ -45,7 +38,6 @@
                 </div>
 
                 <div class="restriction-content">
-                
                     <div class="content-middle">
                         <span ng-show="popUpView === 'EMPTY'"
                         rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsEmpty.html">
@@ -58,7 +50,6 @@
                         </span>
                     </div>
 
-                    <!-- hiding as this will be implemented in another story -->
                     <div class="content-right">
                         <span ng-show="popUpView === 'NEW' || popUpView === 'EDIT'"
                         rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsRepeatOnDates.html">
@@ -66,61 +57,19 @@
                     </div>
 
                     <div class="footer">
-                        <!-- Add .with-remove-button when we also have the remove button (example: on edit screens)-->
                         <div class="actions" ng-class="{'with-remove-button': popUpView === 'EDIT'}">
-
-                            <!-- On initial screen -->
                             <button class="button blank" type="button" ng-click="closeDialog()" ng-class="{'hidden': popUpView === 'NEW' || popUpView === 'EDIT'}">
                                 Close window
                             </button>
-                            <button ng-show="popUpView === 'EDIT'" class="button red first-button" ng-class="{'small': !restrictionObj.isRepeatOnDates}" type="button" ng-click="clickedOnRemoveButton()">
+                            <button ng-show="popUpView === 'EDIT'" class="button red first-button" ng-class="{'small': !restrictionObj.isRepeatOnDates, 'grey disable-element': disableRemoveButton()}" type="button" ng-click="clickedOnRemoveButton()">
                                 {{getRemoveButtonLabel()}}
                             </button>
-                            <!-- On set restriction screen without dates -- -->
                             <button class="button blank" ng-class="{'hidden': (popUpView !== 'NEW' && popUpView !== 'EDIT')}" type="button" ng-click="backToInitialScreen()">
                                 Cancel
                             </button>
-                            <!-- -- remove .grey and add .green if we can set the restriction -- -->
                             <button class="button last-button" ng-class="{'hidden': (popUpView !== 'NEW' && popUpView !== 'EDIT'), 'grey disable-element': !validateForm(), 'green': validateForm(), 'small': !restrictionObj.isRepeatOnDates}" type="button" ng-click="saveHierarchyRestriction()">
                                 {{getSetButtonLabel()}}
                             </button>
-                        
-
-                            <!-- On set restriction screen with dates --
-                                <button class="button blank" type="button">
-                                    Cancel
-                                </button>
-                                -- remove .grey and add .green if we can set the restriction --
-                                <button class="button grey" type="button">
-                                    Set on Date(s)
-                                </button>
-                            -->
-
-                            <!-- On edit restriction screen without dates (.with-remove-buttons on .actions) --
-                                <button class="button small red first-button" type="button">
-                                    Remove
-                                </button>
-                                <button class="button blank" type="button">
-                                    Cancel
-                                </button>
-                            
-                                <button class="button small green last-button" type="button">
-                                Update
-                                </button>
-                            -->
-
-                            <!-- On edit restriction screen with dates (.with-remove-buttons on .actions) --
-                                <button class="button red first-button" type="button">
-                                    Remove on Date(s)
-                                </button>
-                                <button class="button blank" type="button">
-                                    Cancel
-                                </button>
-                            
-                                <button class="button green last-button" type="button">
-                                Set on Date(s)
-                                </button>
-                            -->
                         </div>
                     </div>
                 </div>

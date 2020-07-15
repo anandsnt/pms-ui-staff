@@ -9,7 +9,8 @@ var Rooms = React.createClass({
 		_.map(props.data, function(room) {
 			return React.createElement( Room, {
 				meta: props.meta,
-				data: room
+				data: room,
+				showRoomStatusAndServiceUpdatePopup: props.showRoomStatusAndServiceUpdatePopup
 			});
 		}));
 	}
