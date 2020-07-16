@@ -758,14 +758,14 @@
                                 top: 0;
                                 bottom: 0;
                                 margin: auto;
-                                background-size: 100px;
+                                background-size: 100px !important;
 
                                 &.check-in {
-                                    background-position: 10px -465px;
+                                    background-position: 10px -465px !important; // overwrite # specificity
                                 }
 
                                 &.check-out {
-                                    background-position: 10px -498px;
+                                    background-position: 10px -498px !important; // overwrite # specificity
                                 }
                             }
 
