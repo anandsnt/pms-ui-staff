@@ -1244,14 +1244,16 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     dateParams = {
                         fromDate: dates[0],
                         toDate: dates[dates.length - 1]
-                    };
+                    },
+                    hasCommonRestrictions = _.has(response, 'commonRestrictions'),
+                    hasPanelRestrictions = _.has(response, 'panelRestrictions');
 
                 /**
                  * if we haven't fetched common restriction it may be due to two reasons
                  * 1. hierarchy restrictions is enabled and we fetch panelRestrictions instead of commonRestrictions
                  * 2. it is expected to be cached, we've to use the cached response's common restriction
                  */
-                if (!_.has(response, 'commonRestrictions') && !_.has(response, 'panelRestrictions')) {
+                if (!hasCommonRestrictions && !hasPanelRestrictions) {
                     let cachedData = _.findWhere(cachedRateAndRestrictionResponseData, dateParams);
 
                     if (cachedData && _.has(cachedData, 'response')) {
