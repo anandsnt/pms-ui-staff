@@ -1208,16 +1208,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             runDigestCycle();
         };
-        
-        // Method to verify whether response not having commonRestrictions and panelRestrictions details.
-        const checkRestrictionDetailsNotExist = (response) => {
-            /**
-             * if we haven't fetched common restriction it may be due to two reasons
-             * 1. hierarchy restrictions is enabled and we fetch panelRestrictions instead of commonRestrictions
-             * 2. it is expected to be cached, we've to use the cached response's common restriction
-             */
-            return !_.has(response, 'commonRestrictions') && !_.has(response, 'panelRestrictions');
-        };
 
         /*
          * when the daily rates success
@@ -1255,8 +1245,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                         fromDate: dates[0],
                         toDate: dates[dates.length - 1]
                     };
-                
-                if (checkRestrictionDetailsNotExist(response)) {
+
+                /**
+                 * if we haven't fetched common restriction it may be due to two reasons
+                 * 1. hierarchy restrictions is enabled and we fetch panelRestrictions instead of commonRestrictions
+                 * 2. it is expected to be cached, we've to use the cached response's common restriction
+                 */
+                if (!_.has(response, 'commonRestrictions') && !_.has(response, 'panelRestrictions')) {
                     let cachedData = _.findWhere(cachedRateAndRestrictionResponseData, dateParams);
 
                     if (cachedData && _.has(cachedData, 'response')) {
