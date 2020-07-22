@@ -1256,7 +1256,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 if (!hasCommonRestrictions && !hasPanelRestrictions) {
                     let cachedData = _.findWhere(cachedRateAndRestrictionResponseData, dateParams);
 
-                    if (cachedData && _.has(cachedData, 'response')) {
+                    if (_.has(cachedData, 'response')) {
                         response.commonRestrictions = cachedData.response.commonRestrictions;
                     }
                     else {
