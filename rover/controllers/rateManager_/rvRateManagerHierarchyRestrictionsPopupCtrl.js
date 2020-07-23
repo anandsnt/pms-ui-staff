@@ -95,7 +95,7 @@ angular.module('sntRover')
                 };
 
                 $scope.disableSelectBox = () => {
-                    return ($scope.popUpView === 'EDIT' || ($scope.popUpView === 'NEW' && $scope.selectedRestriction.activeGroupList.length > 0));
+                    return ($scope.popUpView === 'EDIT' || ($scope.popUpView === 'NEW' && $scope.selectedRestriction.activeGroupList && $scope.selectedRestriction.activeGroupList.length > 0));
                 };
 
                 $scope.showNights = () => {
@@ -128,7 +128,7 @@ angular.module('sntRover')
                 
                 // Check set on search field is not valid.
                 const isSetOnSelectFormNotValid = () => {
-                    return ($scope.ngDialogData.hierarchyLevel !== 'House' && !$scope.restrictionObj.isSetOnAllActive && $scope.restrictionObj.selectedSetOnIds.length === 0);
+                    return ($scope.ngDialogData.hierarchyLevel !== 'House' && !$scope.restrictionObj.isSetOnAllActive && $scope.restrictionObj.selectedSetOnIds && $scope.restrictionObj.selectedSetOnIds.length === 0);
                 };
 
                 $scope.validateForm = () => {
@@ -172,6 +172,10 @@ angular.module('sntRover')
                         case 'RoomType':
                             params.room_type_ids = !$scope.restrictionObj.isSetOnAllActive ? $scope.restrictionObj.selectedSetOnIds : [];
                             apiMethod = hierarchySrv.saveRoomTypeRestrictions;
+                            break;
+                        case 'RateType':
+                            params.rate_type_ids = !$scope.restrictionObj.isSetOnAllActive ? $scope.restrictionObj.selectedSetOnIds : [];
+                            apiMethod = hierarchySrv.saveRateTypeRestrictions;
                             break;
 
                         default:

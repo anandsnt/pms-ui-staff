@@ -40,17 +40,20 @@ angular.module('sntRover')
                                 $scope.restrictionObj.setOnCount = 0;
                                 $scope.restrictionObj.enableEditRestrictions = true;
                                 break;
-                                
                             case 'RoomType':
                                 $scope.restrictionObj.listData = response.room_type[0].restrictions;
                                 $scope.restrictionObj.noticeLabel = 'ALL ROOM TYPES';
                                 $scope.restrictionObj.setOnCount = response.room_types_count;
-                                $scope.header.disableNewRestriction = false;
                                 $scope.restrictionObj.enableEditRestrictions = true;
                                 break;
-
+                            case 'RateType':
+                                $scope.restrictionObj.listData = response.rate_type[0].restrictions;
+                                $scope.restrictionObj.noticeLabel = 'ALL RATE TYPES';
+                                $scope.restrictionObj.setOnCount = response.rate_types_count;
+                                $scope.restrictionObj.enableEditRestrictions = true;
+                                break;
                             default:
-                            break;
+                                break;
                         }
                         $scope.popUpView = checkEmptyOrListView($scope.restrictionObj.listData);
                         refreshScroller();
@@ -107,7 +110,7 @@ angular.module('sntRover')
                         $scope.selectedRestriction.activeGroupKey = key;
                         $scope.$broadcast('INIT_SET_ON_SEARCH');
                         // Handle ON ALL checkbox selection.
-                        if (clickedItem.set_on_values.length === $scope.restrictionObj.setOnCount) {
+                        if (clickedItem.set_on_values && (clickedItem.set_on_values.length === $scope.restrictionObj.setOnCount)) {
                             $scope.restrictionObj.isSetOnAllActive = true;
                         }
                         else {
@@ -133,6 +136,10 @@ angular.module('sntRover')
                             case 'RoomType':
                                 params.room_type_ids = setOnIdList;
                                 apiMethod = hierarchySrv.saveRoomTypeRestrictions;
+                                break;
+                            case 'RateType':
+                                params.rate_type_ids = setOnIdList;
+                                apiMethod = hierarchySrv.saveRateTypeRestrictions;
                                 break;
 
                             default:

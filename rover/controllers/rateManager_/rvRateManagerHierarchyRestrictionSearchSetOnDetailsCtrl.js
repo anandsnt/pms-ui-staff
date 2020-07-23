@@ -79,9 +79,14 @@ angular.module('sntRover')
                             $scope.searchObj.placeholder = 'Select or Search by Name/Code';
                             apiMethod = hierarchySrv.fetchAllRoomTypes;
                             break;
-
+                        case 'RateType':
+                            $scope.searchObj.headerLabel = 'Set on Rate Type(s)';
+                            $scope.searchObj.noticeLabel = 'Applies to All Rate Types!';
+                            $scope.searchObj.placeholder = 'Search by Rate Type Name or Code';
+                            apiMethod = hierarchySrv.fetchAllRateTypes;
+                            break;
                         default:
-                        break;
+                            break;
                     }
 
                     fetchSetOnData();
@@ -138,11 +143,11 @@ angular.module('sntRover')
                             // check if the querystring is number or string
                             var result = 
                                 (
-                                    isNaN($scope.searchObj.query) &&
+                                    isNaN($scope.searchObj.query) && item.name &&
                                     item.name.toUpperCase().includes($scope.searchObj.query.toUpperCase())
                                 ) ||
                                 (
-                                    isNaN($scope.searchObj.query) &&
+                                    isNaN($scope.searchObj.query) && item.code &&
                                     item.code.toUpperCase().includes($scope.searchObj.query.toUpperCase())
                                 );
 
