@@ -1,12 +1,14 @@
 angular.module('sntRover')
     .controller('rvRateManagerHierarchyRestrictionsListCtrl', [
         '$scope',
+        '$rootScope',
         'rvRateManagerHierarchyRestrictionsSrv',
         'rvRateManagerUtilitySrv',
         '$timeout',
         'rvRateManagerEventConstants',
         function(
             $scope,
+            $rootScope,
             hierarchySrv,
             hierarchyUtils,
             $timeout,
@@ -84,38 +86,40 @@ angular.module('sntRover')
                  *  @param {Number | null} [ index of clicked item in 'min_length_of_stay', 'max_length_of_stay' etc.]
                  */
                 $scope.clickedOnListItem = function(key, index) {
-                    let clickedItem = {};
+                    if (!$scope.isPastDate()) {
+                        let clickedItem = {};
 
-                    $scope.popUpView = 'EDIT';
-                    $scope.selectedRestriction = _.find(hierarchyUtils.restrictionColorAndIconMapping, 
-                                                        function(item) { return item.key  === key; }
-                                                );
-                    $scope.selectedRestriction.activeGroupList = [];
-                    if ($scope.selectedRestriction.type === 'number') {
-                        // min_length_of_stay, min_stay_through etc.
-                        clickedItem = $scope.restrictionObj.listData[key][index];
-                        $scope.selectedRestriction.value = clickedItem.value;
-                        $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values;
-                        $scope.selectedRestriction.activeGroupList = $scope.restrictionObj.listData[key];
-                        $scope.selectedRestriction.activeGroupIndex = index;
-                    }
-                    else {
-                        // closed, closed_arrival and closed_departure.
-                        clickedItem = $scope.restrictionObj.listData[key];
-                        $scope.selectedRestriction.value = null;
-                        $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values || [];
-                        $scope.selectedRestriction.activeGroupList.push(clickedItem);
-                        $scope.selectedRestriction.activeGroupIndex = 0;
-                    }
-                    $scope.restrictionObj.isRepeatOnDates = false;
-                    $scope.selectedRestriction.activeGroupKey = key;
-                    $scope.$broadcast('INIT_SET_ON_SEARCH');
-                    // Handle ON ALL checkbox selection.
-                    if (clickedItem.set_on_values.length === $scope.restrictionObj.setOnCount) {
-                        $scope.restrictionObj.isSetOnAllActive = true;
-                    }
-                    else {
-                        $scope.restrictionObj.isSetOnAllActive = false;
+                        $scope.popUpView = 'EDIT';
+                        $scope.selectedRestriction = _.find(hierarchyUtils.restrictionColorAndIconMapping, 
+                                                            function(item) { return item.key  === key; }
+                                                    );
+                        $scope.selectedRestriction.activeGroupList = [];
+                        if ($scope.selectedRestriction.type === 'number') {
+                            // min_length_of_stay, min_stay_through etc.
+                            clickedItem = $scope.restrictionObj.listData[key][index];
+                            $scope.selectedRestriction.value = clickedItem.value;
+                            $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values;
+                            $scope.selectedRestriction.activeGroupList = $scope.restrictionObj.listData[key];
+                            $scope.selectedRestriction.activeGroupIndex = index;
+                        }
+                        else {
+                            // closed, closed_arrival and closed_departure.
+                            clickedItem = $scope.restrictionObj.listData[key];
+                            $scope.selectedRestriction.value = null;
+                            $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values || [];
+                            $scope.selectedRestriction.activeGroupList.push(clickedItem);
+                            $scope.selectedRestriction.activeGroupIndex = 0;
+                        }
+                        $scope.restrictionObj.isRepeatOnDates = false;
+                        $scope.selectedRestriction.activeGroupKey = key;
+                        $scope.$broadcast('INIT_SET_ON_SEARCH');
+                        // Handle ON ALL checkbox selection.
+                        if (clickedItem.set_on_values.length === $scope.restrictionObj.setOnCount) {
+                            $scope.restrictionObj.isSetOnAllActive = true;
+                        }
+                        else {
+                            $scope.restrictionObj.isSetOnAllActive = false;
+                        }
                     }
                 };
 
@@ -187,6 +191,10 @@ angular.module('sntRover')
                         setOnIdList = _.pluck(setOnValuesList, 'id');
                     }
                     callRemoveAPI(restrictions, setOnIdList);
+                };
+                // Check the popup date is past.
+                $scope.isPastDate = () => {
+                    return $rootScope.businessDate > $scope.ngDialogData.date;
                 };
 
                 // Process Remove action on EDIT screen.
