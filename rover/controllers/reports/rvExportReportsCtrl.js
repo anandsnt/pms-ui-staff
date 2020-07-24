@@ -459,6 +459,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             SHOW_GUESTS: 'SHOW_GUESTS',
             VIP_ONLY: 'VIP_ONLY',
             HAS_VEHICLE_REG_NO: 'HAS_VEHICLE_REG_NO',
+            SHOW_PHONE_NUMBER: 'SHOW_PHONE_NUMBER',
             // this filter for few reports could also be listed
             // under SHOW and not OPTIONS
             INCLUDE_DUE_OUT: 'INCLUDE_DUE_OUT',
@@ -1189,6 +1190,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var success = function(data) {
                 $scope.selectedEntityDetails = data;
                 $scope.isGuestBalanceReport = false;
+                $scope.isAdNotumExport = false;
 
                 if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
                     $scope.selectedSchedule.active = false;

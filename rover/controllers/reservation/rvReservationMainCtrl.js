@@ -1214,13 +1214,19 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                         "rateAvg": response.data.rate_per_night,
                         "rateTotal": response.data.total_rate,
                         "taxInformation": response.data.tax_details,
-                        "addons": response.data.addons
+                        "addons": response.data.addons,
+                        "total_stay_cost": response.data.total_stay_cost,
+                        "total_tax": response.data.total_tax
                     };
 
                 $scope.reservationData.rooms[key] = Object.assign($scope.reservationData.rooms[key], targetObject);
+                $scope.reservationData.totalStayCost = _.reduce($scope.reservationData.rooms, function(memo, roomData) {
+                    return memo + roomData.total_stay_cost;
+                }, 0);
+                $scope.reservationData.totalTax = _.reduce($scope.reservationData.rooms, function(memo, roomData) {
+                    return memo + roomData.total_tax;
+                }, 0);
 
-                $scope.reservationData.totalStayCost = parseFloat(response.data.total_stay_cost);
-                $scope.reservationData.totalTax = parseFloat(response.data.total_tax);
                 $scope.$broadcast("REFRESH_SCROLL_SUMMARY");
             },
             params = {

@@ -419,6 +419,12 @@ sntRover.factory('RVReportParserFac', [
                 return check;
             };
 
+            var checkPhoneNumber = function(item) {
+                var check = !!item['phone_number'];
+
+                return check;
+            };
+
             var checkAddOns = function(item) {
                 var check = (!!item['add_ons'] && !!item['add_ons'].length) || !!item['addon_details'];
 
@@ -501,6 +507,14 @@ sntRover.factory('RVReportParserFac', [
                             vehicle_registration_number: angular.copy( makeCopy['vehicle_registration_number'] )
                         });
                     }
+
+                    if ( checkPhoneNumber(makeCopy) ) {
+                        angular.extend(guestData, {
+                            isGuestData: true,
+                            phone_number: angular.copy( makeCopy['phone_number'] )
+                        });
+                    }
+
                     if ( checkAddOns(makeCopy) ) {
                         angular.extend(guestData, {
                             isGuestData: true,

@@ -287,7 +287,8 @@ angular.module('reportsModule')
                 'INCLUDE_ADDON_REVENUE': true,
                 'INCLUDE_ACTIONS': true,
                 'INCLUDE_LEDGER_DATA': true,
-                'HAS_VEHICLE_REG_NO': true
+                'HAS_VEHICLE_REG_NO': true,
+                'SHOW_PHONE_NUMBER': true
             };
 
             var __excludeFilterNames = {
@@ -3722,7 +3723,7 @@ angular.module('reportsModule')
                         resStatusCopy = resStatusCopy.map(resStatus => {
                             resStatus.selected = false;
 
-                            if (filterValues.status_ids.indexOf(resStatus.id) > -1) {
+                            if (filterValues.status_ids.indexOf(resStatus.id.toString()) > -1) {
                                 resStatus.selected = true;
                             }
                             return resStatus;

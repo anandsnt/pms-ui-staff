@@ -345,6 +345,8 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
                     to_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd')
                 };
                 $scope.updateCalendar();
+
+                $scope.$emit('REFRESH_ROOM_STATUS');
             };
 
             // update the dates to backend system format

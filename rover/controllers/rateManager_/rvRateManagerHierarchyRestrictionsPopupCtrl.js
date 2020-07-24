@@ -161,6 +161,7 @@ angular.module('sntRover')
                     let params = {
                         from_date: $scope.ngDialogData.date,
                         to_date: $scope.ngDialogData.date,
+                        associate_multiple: $scope.ngDialogData.hierarchyLevel !== 'House',
                         restrictions 
                     };
 
