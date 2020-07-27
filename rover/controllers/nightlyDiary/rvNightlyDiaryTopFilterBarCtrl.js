@@ -261,7 +261,7 @@ angular.module('sntRover')
 
             // If iPad ( width < 1280 ) , we will hide side bars if we click on current active button.
             // For other resoltions ( > 1280 ) we will toggle bw/n UNASSIGNED_RESERVATIONLIST , Filter bar.
-            if (screen.width < 1280 && $scope.diaryData.rightFilter === activeTab) {
+            if (window.innerWidth < 1280 && $scope.diaryData.rightFilter === activeTab) {
                 $scope.diaryData.rightFilter = '';
             }
             else if ( $scope.diaryData.rightFilter !== activeTab ) {
@@ -389,6 +389,22 @@ angular.module('sntRover')
             if (bookRoomViewFilter.fromDate === bookRoomViewFilter.toDate) {
                 bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration(null, bookRoomViewFilter.departureTime, TIME_OFFSET * -1);
             }
+        };
+        // Check whether Reservation Filter button needed to be active.
+        $scope.checkForResFilterActiveClass = function() {
+            /*
+             *  If screen width is between 1280 and 1599 and no filter is choosed on screen,
+             *  We will activate RESERVATION_FILTER as default.
+             */
+            if (window.innerWidth >= 1280 && window.innerWidth <= 1599 && $scope.diaryData.rightFilter === '') {
+                $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
+            }
+
+            return (window.innerWidth > 1599 || $scope.diaryData.rightFilter === 'RESERVATION_FILTER');
+        };
+        // Check whether Unasigned Reservation button needed to be active.
+        $scope.checkForUnassignedResActiveClass = function() {
+            return (window.innerWidth > 1599 || $scope.diaryData.rightFilter === 'UNASSIGNED_RESERVATION');
         };
 
         init();
