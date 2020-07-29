@@ -12,10 +12,10 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
         };
 
         // CICO-77044 - for rate only
-        service.processRateRestrictionResponse = function(response) {
+        service.processRateRestrictionResponse = function(response, isForPopup) {
             _.each(response, function( item ) {
                 _.each(item.rates, function( rate ) {
-                    rate.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(rate.restrictions, rate.locked_restrictions);
+                    rate.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(rate.restrictions, rate.locked_restrictions, isForPopup);
                 });
             });
 

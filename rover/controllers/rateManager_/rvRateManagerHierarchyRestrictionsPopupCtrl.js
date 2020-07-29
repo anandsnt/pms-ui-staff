@@ -95,7 +95,7 @@ angular.module('sntRover')
                 };
 
                 $scope.disableSelectBox = () => {
-                    return ($scope.popUpView === 'EDIT' || ($scope.popUpView === 'NEW' && $scope.selectedRestriction.activeGroupList.length > 0));
+                    return ($scope.popUpView === 'EDIT' || ($scope.popUpView === 'NEW' && $scope.selectedRestriction.activeGroupList && $scope.selectedRestriction.activeGroupList.length > 0));
                 };
 
                 $scope.showNights = () => {
