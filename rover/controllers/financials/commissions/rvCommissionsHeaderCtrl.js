@@ -55,7 +55,7 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
     };
 
     $scope.isValidEmail = function() {
-        return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test($scope.filterData.receipientEmail));
+        return (/^[_a-z0-9]+(.[_a-z0-9]+)@[a-z0-9-]+(.[a-z0-9-]+)(.[a-z]{2,3})$/.test($scope.filterData.receipientEmail));
     };
 
     $scope.exportCommisions = function() {
