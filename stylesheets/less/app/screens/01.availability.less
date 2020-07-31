@@ -202,7 +202,7 @@
 
                 col {
                     width: 120px;
-                    &.grid-col { width: 55px; }
+                    &.grid-col { width: 95px; }
                 }
 
                 .grid-col {
@@ -244,20 +244,24 @@
                         &.heading { font-size: 16px; }
                     }
 
-                    td { width: 55px; }
+                    td { width: 95px; }
 
-                    .button,
-                    .inner {
-                        font-size: 18px;
-
-                        &.unavailable { color: @red; }
-                        &.disabled { color: @grey2; }
-                        &.warning { background-color: rgba(248, 230, 230, .8); }
+                    .rate-value {
+                        font-size: 16px;
+                        line-height: 1;
+                        height: 50px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        word-break: break-word;
+                        padding: 0 5px;
                     }
 
                     .button {
-                        font-weight: 400;
-                        font-style: italic;
+                        &:not(.rate-value) {
+                            font-weight: 400;
+                            font-style: italic;
+                        }
                     }
 
                     .inner {
