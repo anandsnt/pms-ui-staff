@@ -76,7 +76,7 @@
             <label for="bill-layout">Bill Layout</label>
             <div class="select">
                 <select id="bill-layout" ng-model="data.default_bill_settings">
-                    <option ng-repeat="item in data.bill_settings_options" value="{{item.value}}" ng-selected="item.value == data.default_bill_settings">{{item.name}}</option>
+                    <option ng-repeat="item in data.bill_settings_options" value="{{item.value}}" ng-selected="item.value == data.default_bill_settings" ng-if="item.type !== 'BILLING_GROUP'">{{item.name}}</option>
                 </select>
             </div>
         </div>
