@@ -82,7 +82,7 @@ angular.module('sntRover')
                         case 'RateType':
                             $scope.searchObj.headerLabel = 'Set on Rate Type(s)';
                             $scope.searchObj.noticeLabel = 'Applies to All Rate Types!';
-                            $scope.searchObj.placeholder = 'Search by Rate Type Name or Code';
+                            $scope.searchObj.placeholder = 'Select or Search by Rate Type Name';
                             apiMethod = hierarchySrv.fetchAllRateTypes;
                             break;
                         default:
