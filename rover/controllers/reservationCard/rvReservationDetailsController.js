@@ -1076,7 +1076,7 @@ sntRover.controller('reservationDetailsController',
 			};
 
 			if (($scope.reservationParentData.checkinTime.hh !== '' && $scope.reservationParentData.checkinTime.mm !== '') || ($scope.reservationParentData.checkoutTime.hh !== '' && $scope.reservationParentData.checkoutTime.mm !== '') || ($scope.reservationParentData.checkinTime.hh === '' && $scope.reservationParentData.checkinTime.mm === '') || ($scope.reservationParentData.checkoutTime.hh === '' && $scope.reservationParentData.checkoutTime.mm === '')) {
-				var postData = $scope.computeReservationDataforUpdate();
+				var postData = $scope.computeReservationDataforUpdate(true);
 				// CICO-11705
 
 				postData.reservationId = $scope.reservationParentData.reservationId;
