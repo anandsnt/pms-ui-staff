@@ -1049,6 +1049,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                     case reportParamsConst['NO_NATIONALITY']:       
                     case reportParamsConst['DUE_OUT_DEPARTURES']:
                     case reportParamsConst['HAS_VEHICLE_REG_NO']:
+                    case reportParamsConst['SHOW_PHONE_NUMBER']:
                         self.processOptions(value, key, processedFilter);
                         break;
                     case reportParamsConst['SHOW_DELETED_CHARGES']:

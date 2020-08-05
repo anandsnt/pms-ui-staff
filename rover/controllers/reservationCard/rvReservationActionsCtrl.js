@@ -1276,7 +1276,7 @@ sntRover.controller('reservationActionsController', [
             $scope.allowOverbook = hasOverBookHousePermission && hasOverBookRoomTypePermission;
         };
 
-        var promptReinstate = function(isAvailable, isSuite) {
+        var promptReinstate = function(isAvailable, isSuite, isRoomTypeInRate) {
             setAllowOverbookflag();
             ngDialog.open({
                 template: '/assets/partials/reservation/alerts/rvReinstate.html',
@@ -1284,7 +1284,8 @@ sntRover.controller('reservationActionsController', [
                 scope: $scope,
                 data: JSON.stringify({
                     isAvailable: isAvailable,
-                    isSuite: isSuite
+                    isSuite: isSuite,
+                    isRoomTypeInRate: isRoomTypeInRate
                 })
             });
         };
@@ -1334,7 +1335,7 @@ sntRover.controller('reservationActionsController', [
                 // Handle Success
                 function(response) {
                     $scope.$emit('hideLoader');
-                    promptReinstate(response.is_available, response.is_suite_room);
+                    promptReinstate(response.is_available, response.is_suite_room, response.is_room_type_in_rate);
                 },
                 // Handle Failure
                 function(errorMessage) {
