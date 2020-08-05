@@ -2361,37 +2361,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		   restrictionObject.restrictionIcon = getRestrictionIcon(restrictionKey);
 		});
 		$scope.legendRestrictionsArray = restrictionsArray;
+		
 		$scope.houseRestrictionArray = [];
 		_.mapObject(houseRestrictions, function(value, key) {
-			var arg = '',
+			var arg = getRestrictionMapping(key),
 				activeHouseRestriction = {};
 
-			switch (key) {
-				case 'closed':
-					arg = "CLOSED";
-					break;
-				case 'closed_arrival':
-					arg = "CLOSED_ARRIVAL";
-					break;
-				case 'closed_departure':
-					arg = "CLOSED_DEPARTURE";
-					break;
-				case 'min_length_of_stay':
-					arg = "MIN_STAY_LENGTH";
-					break;
-				case 'max_length_of_stay':
-					arg = "MAX_STAY_LENGTH";
-					break;
-				case 'min_stay_through':
-					arg = "MIN_STAY_THROUGH";
-					break;
-				case 'min_advanced_booking':
-					arg = "MIN_ADV_BOOKING";
-					break;
-				case 'max_advanced_booking':
-					arg = "MAX_ADV_BOOKING";
-					break;
-			}
 			activeHouseRestriction.value = typeof(value) === 'boolean' ? '' : value;
 			activeHouseRestriction.restrictionBgClass = "bg-" + getRestrictionClass(arg);
 			activeHouseRestriction.restrictionIcon = getRestrictionIcon(arg);

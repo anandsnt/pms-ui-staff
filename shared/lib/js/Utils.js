@@ -264,7 +264,6 @@ var getMappedRoomStatusColor = function(reservationStatus, roomReadyStatus, foSt
     return reservationRoomStatusClass;
 };
 
-
 var restrictionCssClasses = {
     "CLOSED" : "red",
     "CLOSED_ARRIVAL" : "red",
@@ -279,10 +278,12 @@ var restrictionCssClasses = {
     "LEVELS" : "",
     "INVALID_PROMO" : "",
     "HOUSE_FULL" : ""
-    };
-function getRestrictionClass(restriction){
+};
+
+function getRestrictionClass(restriction) {
     return restrictionCssClasses[restriction];
 };
+
 var restrictionIcons = {
     "CLOSED" : "icon-cross",
     "CLOSED_ARRIVAL" : "icon-block",
@@ -297,20 +298,36 @@ var restrictionIcons = {
     "LEVELS" : "",
     "INVALID_PROMO" : "",
     "HOUSE_FULL" : ""
-    };
-function getRestrictionIcon(restriction){
+};
+
+function getRestrictionIcon(restriction) {
     return restrictionIcons[restriction];
+};
+
+var restrictionKeyMapping = {
+    'closed': ['CLOSED'],
+    'closed_arrival': ['CLOSED_ARRIVAL'],
+    'closed_departure': ['CLOSED_DEPARTURE'],
+    'min_length_of_stay': ['MIN_STAY_LENGTH'],
+    'max_length_of_stay': ['MAX_STAY_LENGTH'],
+    'min_stay_through': ['MIN_STAY_THROUGH'],
+    'min_advanced_booking': ['MIN_ADV_BOOKING'],
+    'max_advanced_booking': ['MAX_ADV_BOOKING']
+};
+
+function getRestrictionMapping (key) {
+    return restrictionKeyMapping[key][0];
 };
 
 var serviceStatus = {
     "IN_SERVICE" : "IN SERVICE",
     "OUT_OF_SERVICE" : "OUT OF SERVICE",
     "OUT_OF_ORDER" : "OUT OF ORDER"
-    };
-function getServiceStatusValue(service_status){
-    return serviceStatus[service_status];
 };
 
+function getServiceStatusValue(service_status) {
+    return serviceStatus[service_status];
+};
 
 var reservationStatusClassesDiary = {
     "RESERVED" : "check-in",
@@ -321,8 +338,9 @@ var reservationStatusClassesDiary = {
     "PRE_CHECKIN" : "pre-check-in",
     "CHECKING_OUT" : "check-out",
     "CHECKING_IN": "check-in"
-    };
-function getReservationStatusClass(status){
+};
+
+function getReservationStatusClass(status) {
     return reservationStatusClassesDiary[status];
 };
 
@@ -334,7 +352,7 @@ var avatharImgs = {
     '': 'avatar-trans.png',
 };
 
-function getAvatharUrl(title){
+function getAvatharUrl(title) {
     //function to get avathar image url by giving title
     title = $.trim(title).toLowerCase().split('.')[0];
     try{
@@ -358,7 +376,7 @@ var creditCardTypes = {
       "VISA": 'VA'
 };
 
-function getCreditCardType(cardBrand){
+function getCreditCardType(cardBrand) {
     var card = (typeof cardBrand  ==="undefined") ? "":cardBrand.toUpperCase();
     var cardArray = ['AX','DC','DS','JCB','MC','VA'];
     return (cardArray.indexOf(card) != -1 ) ? card : (typeof creditCardTypes[card]!='undefined') ? creditCardTypes[card] : 'credit-card';
@@ -377,21 +395,18 @@ var sixCreditCardTypes = {
       "MV": 'MC'
 };
 
-function getSixCreditCardType(cardCode){
+function getSixCreditCardType(cardCode) {
     var card = cardCode.toUpperCase();
     return ( !!sixCreditCardTypes[card] ? sixCreditCardTypes[card] : card );
 }
 
-
-
 /**
 * utils function convert any number to number with two decimal points.
 */
-function precisionTwo(value){
+function precisionTwo(value) {
     var parsed = value === '' || value === null || typeof value === 'undefined' ? '': parseFloat(value).toFixed(2);
     return parsed;
 }
-
 
 /*
  * Please use this to get create date for a dayString.
@@ -447,7 +462,7 @@ Date.prototype.clone = function() {
 * param2 {Date Object}
 * return Array of Date Objects
 */
-var getDatesBetweenTwoDates = function(fromDate, toDate){
+var getDatesBetweenTwoDates = function(fromDate, toDate) {
     var datesBetween = [];
 
     while(fromDate <= toDate){
@@ -459,7 +474,7 @@ var getDatesBetweenTwoDates = function(fromDate, toDate){
 }
 
 
-function getWeekDayName(dayIndexInWeek, minLetterCount){
+function getWeekDayName(dayIndexInWeek, minLetterCount) {
     if(typeof minLetterCount === 'undefined'){
         minLetterCount = 0;
     }
@@ -476,7 +491,7 @@ function getWeekDayName(dayIndexInWeek, minLetterCount){
     return n.substr(0, minLetterCount);
 }
 
-function getTextWidth(text){
+function getTextWidth(text) {
         // create a dummy span, we'll use this to measure text.
         var tester = $('<span>'),
 
@@ -516,7 +531,7 @@ function getTextWidth(text){
  * firstDate{date object} will be the first data
  * Second date{date object} will be the second date
  */
-var getNumberOfDaysBetweenTwoDates = function(firstDate, secondDate){
+var getNumberOfDaysBetweenTwoDates = function(firstDate, secondDate) {
     var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
     //Get the number of days between initial day of diary grid and arrival date
     var noOfDaysBtwFirstDateAndSecondDate = Math.abs((secondDate.getTime() - firstDate.getTime()) / (oneDay));
@@ -526,7 +541,7 @@ var getNumberOfDaysBetweenTwoDates = function(firstDate, secondDate){
 
 //function that converts a null value to a desired string.
 //if no replace value is passed, it returns an empty string
-var escapeNull = function(value, replaceWith){
+var escapeNull = function(value, replaceWith) {
     var newValue = "";
     if((typeof replaceWith != "undefined") && (replaceWith != null)){
         newValue = replaceWith;
@@ -568,7 +583,7 @@ var getJqDateFormat = function(dateFormat) {
  * @param {string} time string in format 'HH:MM' may contain blanks
  * @returns {object} converted time array
  */
-var tConvert = function(time){
+var tConvert = function(time) {
 	if(time == '' || time == undefined){
 		return {};
 	}
