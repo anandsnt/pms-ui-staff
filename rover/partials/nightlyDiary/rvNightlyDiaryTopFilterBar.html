@@ -76,14 +76,14 @@
 
     <!-- Show / Hide Filters -->
     <div class="entry filters" ng-class="{'show-one': diaryData.showBookFilterPanel }">
-        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'UNASSIGNED_RESERVATION', 'hidden': diaryData.showBookFilterPanel, 'show-unassigned': (diaryData.isReservationSelected && !diaryData.isMoveRoomViewActive)}" ng-click="toggleFilter('UNASSIGNED_RESERVATION')" >
+        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : checkForUnassignedResActiveClass(), 'hidden': diaryData.showBookFilterPanel, 'show-unassigned': (diaryData.isReservationSelected && !diaryData.isMoveRoomViewActive)}" ng-click="toggleFilter('UNASSIGNED_RESERVATION')">
             <span class="count">{{diaryData.unassignedReservationList.reservations.length}}</span>
-            <span class="icons icon-filter-room" ng-class="{'active': diaryData.rightFilter === 'UNASSIGNED_RESERVATION' }"></span>
+            <span class="icons icon-filter-room" ng-class="{'active': checkForUnassignedResActiveClass() }"></span>
         </button>
-        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'RESERVATION_FILTER', 'show-unassigned': (diaryData.isReservationSelected && !diaryData.isMoveRoomViewActive)}" ng-click="toggleFilter('RESERVATION_FILTER')">
+        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : checkForResFilterActiveClass(), 'show-unassigned': (diaryData.isReservationSelected && !diaryData.isMoveRoomViewActive)}" ng-click="toggleFilter('RESERVATION_FILTER')">
             <span class="count" ng-if="!diaryData.isReservationSelected">{{diaryData.selectedRoomCount + diaryData.selectedFloorCount + diaryData.selectedRoomFeaturesCount}}</span>
             <span class="count" ng-if="diaryData.isReservationSelected">{{diaryData.roomAssignmentFilters.count}}</span>
-            <span class="icons icon-filter" ng-class="{'active': diaryData.rightFilter === 'RESERVATION_FILTER' }"></span>
+            <span class="icons icon-filter" ng-class="{'active': checkForResFilterActiveClass() }"></span>
         </button>
         <!-- Refresh -->
         <button type="button" class="button white with-icon only-icon" ng-click="clickedResetButton()">
