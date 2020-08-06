@@ -153,6 +153,7 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
          *  @return {Boolean}
          */
         service.checkLockedRestriction = function(lockedRestrictions, key) {
+            key = key.toLowerCase();
             var isPresent = false;
 
             if (lockedRestrictions.length > 0) {
@@ -167,7 +168,7 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
          *  @param [Object] [input value as key value pair]
          *  @return [Array] [output - converted values into array structure]
          */
-        service.generateOldGetApiResponseFormat = function( input, lockedRestrictions) {
+        service.generateOldGetApiResponseFormat = function(input, lockedRestrictions, isForPopup) {
             var output = [],
                 key = '',
                 value = '', 
@@ -177,16 +178,30 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
                 value = input[key];
                 obj = {};
 
-                if (value) {
+                if (typeof(value) === "boolean" && value) {
+                    // closed, closed_arrival, closed_departure - these will always have a boolean value assigned.
                     obj.status = 'ON';
                     obj.restriction_type_id = service.restrictionKeyToCodeMapping[key][0];
-                    obj.is_on_rate = lockedRestrictions ? service.checkLockedRestriction(lockedRestrictions, service.restrictionKeyToCodeMapping[key][2]) : false;
-                    if (typeof(value) === "boolean") {
-                        obj.days = null;
-                    }
-                    else if (typeof(value) === "number") {
-                        obj.days = value;
-                    }
+                    obj.is_on_rate = false;
+                    obj.days = null;
+                    output.push(obj);
+                }
+                else if (typeof(value) === "number") {
+                    // min_length_of_stay, max_length_of_stay, min_stay_through, min_advanced_booking, max_advanced_booking
+                    obj.status = value !== null ? 'ON' : '';
+                    obj.restriction_type_id = service.restrictionKeyToCodeMapping[key][0];
+                    obj.is_on_rate = lockedRestrictions ? service.checkLockedRestriction(lockedRestrictions, service.restrictionKeyToCodeMapping[key][1]) : false;
+                    obj.days = value;
+                    output.push(obj);
+                }
+                else if (isForPopup && value === null) {
+                    // Inorder to disable locked restrictions (values set from admin screen)
+                    // we need to include all restrictions even that has null value.
+                    // Include - min_length_of_stay, max_length_of_stay, min_stay_through, min_advanced_booking, max_advanced_booking
+                    obj.status = '';
+                    obj.restriction_type_id = service.restrictionKeyToCodeMapping[key][0];
+                    obj.is_on_rate = lockedRestrictions ? service.checkLockedRestriction(lockedRestrictions, service.restrictionKeyToCodeMapping[key][1]) : false;
+                    obj.days = null;
                     output.push(obj);
                 }
             }
@@ -211,7 +226,7 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
                 if (typeof(restrictionData) === "object" && !_.isEmpty(restrictionData)) {
                     obj.status = 'ON';
                     obj.restriction_type_id = service.restrictionKeyToCodeMapping[key][0];
-                    obj.is_on_rate = lockedRestrictions ? service.checkLockedRestriction(lockedRestrictions, service.restrictionKeyToCodeMapping[key][2]) : false;
+                    obj.is_on_rate = lockedRestrictions ? service.checkLockedRestriction(lockedRestrictions, service.restrictionKeyToCodeMapping[key][1]) : false;
                     if (restrictionData.length === undefined) {
                         obj.days = null;
                     }

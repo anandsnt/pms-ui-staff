@@ -31,7 +31,6 @@ const rvRateManagerRightSideContainerUtils = function() {
 		return newDateList;
 	};
 
-
 	/**
 	 * convert data coming from reducer to props for restriction only displaying
 	 * @param  {array} listingData
