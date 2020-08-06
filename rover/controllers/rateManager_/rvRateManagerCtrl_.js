@@ -1526,7 +1526,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 });
 
             cachedRateAndRestrictionOfFromDateAndToDate.map(cachedRateAndRestriction => {
-                if (cachedRateAndRestriction.response.commonRestrictions.length) {
+                if (cachedRateAndRestriction.response.commonRestrictions && cachedRateAndRestriction.response.commonRestrictions.length) {
                     fetchCommonRestrictions = false;
                 }
             });
