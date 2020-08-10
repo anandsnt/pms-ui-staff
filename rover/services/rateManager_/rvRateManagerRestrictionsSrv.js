@@ -82,26 +82,15 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
 
         // Handle GET api while loading RM with various filters in House Level ( Frozen Panel).
         // Handle GET api, for individual cell click & popup in House Level ( Frozen Panel).
-        service.formatRestrictionsData = function(restrcionsList, params) {
+        service.formatRestrictionsData = function(restrictionsList, params) {
 			// CICO-76813 : New API for hierarchyRestrictions
-            if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
-                _.each(restrcionsList, function( item ) {
-                    item.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(item.restrictions);
-                });
-            } else if (params.forPanel) {
-                _.each(restrcionsList, function( item ) {
+            if (params.forPanel) {
+                _.each(restrictionsList, function( item ) {
                     item.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormatForPanel(item.restrictions);
                 });
             }
 
-            return restrcionsList;
-        };
-
-        // Handle GET api while loading RM with various filters in House Level ( Frozen Panel).
-        service.getURLforCommonRestrictions = function() {
-			var url = '/api/daily_rates/all_restrictions';
-
-            return url;
+            return restrictionsList;
         };
 
         // CICO-76337 rateType restrictions API
@@ -128,10 +117,7 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
 			var url = '/api/daily_rates/all_restriction_statuses';
 
             // CICO-76813 : New API for hierarchyRestrictions
-            if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
-                url = '/api/restrictions/house';
-            }
-            else if (params.hierarchialRateTypeRestrictionRequired) {
+            if (params.hierarchialRateTypeRestrictionRequired) {
                 url = '/api/restrictions/rate_types';
             }
             else if (params.hierarchialRoomTypeRestrictionRequired) {

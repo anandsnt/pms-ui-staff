@@ -287,7 +287,8 @@ angular.module('reportsModule')
                 'INCLUDE_ADDON_REVENUE': true,
                 'INCLUDE_ACTIONS': true,
                 'INCLUDE_LEDGER_DATA': true,
-                'HAS_VEHICLE_REG_NO': true
+                'HAS_VEHICLE_REG_NO': true,
+                'SHOW_PHONE_NUMBER': true
             };
 
             var __excludeFilterNames = {
