@@ -94,6 +94,7 @@ angular.module('sntRover')
                                                             function(item) { return item.key  === key; }
                                                     );
                         $scope.selectedRestriction.activeGroupList = [];
+                        $scope.selectedRestriction.id = hierarchyUtils.restrictionKeyToCodeMapping[$scope.selectedRestriction.key][0];
                         if ($scope.selectedRestriction.type === 'number') {
                             // min_length_of_stay, min_stay_through etc.
                             clickedItem = $scope.restrictionObj.listData[key][index];

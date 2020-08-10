@@ -98,7 +98,7 @@ angular.module('sntRover')
                             apiParams = {
                                 is_fully_configured: true,
                                 is_active: true,
-                                exclude_locked_restriction_id: ''
+                                exclude_locked_restriction_id: $scope.selectedRestriction.type === 'number' ? $scope.selectedRestriction.id : ''
                             };
                             break;
                         default:
@@ -187,8 +187,6 @@ angular.module('sntRover')
                     $scope.searchObj.isShowResults = false;
                     $scope.$emit('REFRESH_FORM_SCROLL');
                 };
-                
-                init();
 
                 $scope.addListener('INIT_SET_ON_SEARCH', init);
             }
