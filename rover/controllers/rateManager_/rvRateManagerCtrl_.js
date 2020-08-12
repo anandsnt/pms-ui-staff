@@ -489,14 +489,16 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             });
 
             // common restricitons
-            cachedRateAndRestriction.response.commonRestrictions.map(commonRestriction => {
-                let date = tzIndependentDate(commonRestriction.date);
-                let isDateBetweenMinAndMax = (fromDate <= date && date <= toDate);
+            if (commonRestrictions) {
+                cachedRateAndRestriction.response.commonRestrictions.map(commonRestriction => {
+                    let date = tzIndependentDate(commonRestriction.date);
+                    let isDateBetweenMinAndMax = (fromDate <= date && date <= toDate);
 
-                if (isDateBetweenMinAndMax) {
-                   commonRestriction.restrictions = dateBasedCommonRestrictions[commonRestriction.date].restrictions
-                }
-            });
+                    if (isDateBetweenMinAndMax) {
+                        commonRestriction.restrictions = dateBasedCommonRestrictions[commonRestriction.date].restrictions;
+                    }
+                });
+            }
 
         });
 
