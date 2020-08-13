@@ -140,7 +140,11 @@
 
 						<!-- Bill Summary -->
 						<div class="bill-summary-wrapper">
-							<div id="bill-days-new" class="scrollable" ng-iscroll="billDays" ng-iscroll-delay="50">
+							<div id="bill-days-new"
+								 class="scrollable"
+								 ng-iscroll="billDays" 
+								 ng-iscroll-delay="50"
+								 ng-class="{'with-allowances': reservationBillData.allowances && reservationBillData.allowances.show_allowances}">
 								<ul class="wrapper" style="width: {{billData.billDaysWidth}}px;">
 									<li class="add-new">
 										<button type="button" class="button with-icon brand-colors" click-touch="clickedAddCharge(billData.bill_number)" ng-disabled="!billData.is_active" ng-class="{ 'overlay' : !billData.is_active }">
@@ -202,6 +206,17 @@
 									</li>
 								</ul>
 							</div>
+
+							<!-- Allowance -->
+							<div class="allowance" 
+							ng-if="reservationBillData.bills[currentActiveBill].allowance_data">
+		                        <a ng-click="showAllowanceDetails(currentActiveBill)" class="toggle">
+		                            <span class="day" translate>
+		                            	ALLOWANCES
+		                            </span>
+		                            <span class="price">{{ currencySymbol }}&nbsp;{{ reservationBillData.bills[currentActiveBill].allowance_data.amount }}</span>
+		                        </a>
+                    		</div>
 
 							<!-- Bill Summary Details - Stay Dates -->
 							<div class="summary-expanded" ng-class="{'hidden': $index != dayRates}" ng-repeat="billItem in billData.days">
@@ -284,6 +299,56 @@
 									</tbody>
 								</table>
 							</div>
+						</div>
+
+						<!-- Allowances -->
+						<div id="bill{{currentActiveBill}}-allowance"
+							class="summary-expanded no-padding"
+							ng-class="{'hidden': selectedAllowanceReference !== currentActiveBill}">
+							<table class="allowances-details">
+								<thead>
+									<tr>
+										<th class="date" translate>DATE</th>
+										<th class="time" translate>TIME</th>
+										<th class="charge-code" translate>CHARGE_CODE</th>
+										<th class="column-allowance" translate>ALLOWANCE</th>
+										<th class="amount" translate>AMOUNT</th>
+										<th class="column-allowance" translate>CONSUMED</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="allowanceEntry in reservationBillData.bills[currentActiveBill].allowance_data.allowance_entries" 
+										ng-class="{'last': $index !== reservationBillData.bills[currentActiveBill].allowance_data.allowance_entries.length -1  &&
+										$index === allowanceEntry.entriesForTheDate.length - 1}">
+										<!-- If this date is the last date we are showing add .last -->
+										<td rowspan="{{allowanceEntry.entriesForTheDate.length}}"
+											class="date" ng-if="allowanceEntry.entriesForTheDate[0] === allowanceEntry"
+											ng-class="{'last': $index !== reservationBillData.bills[currentActiveBill].allowance_data.allowance_entries.length -1  &&
+											$index === allowanceEntry.entriesForTheDate.length - 1}">
+											{{ allowanceEntry.date }}
+										</td>
+										<td class="time">
+											{{ allowanceEntry.time }}
+										</td>
+										<td class="charge-code">
+											{{ allowanceEntry.charge_code }}
+										</td>
+										<td class="column-allowance" ng-if="allowanceEntry.type === 'CONSUMED'">
+										</td>
+										<td class="column-allowance" ng-if="allowanceEntry.type !== 'CONSUMED'">
+											{{ allowanceEntry.description }} <span class="icons time check-in rotate-down"></span>
+										</td>
+										<td class="amount">
+											<span class="currency">{{ currencySymbol }}</span>{{ allowanceEntry.amount | number:2 }}
+										</td>
+										<td class="column-allowance" ng-if="allowanceEntry.type !== 'CONSUMED'">
+										</td>
+										<td class="column-allowance" ng-if="allowanceEntry.type === 'CONSUMED'">
+											{{ allowanceEntry.description }} <span class="icons time {{ allowanceEntry.amount > 0 ? 'check-in' : 'check-out' }} rotate-up"></span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 
 						<!-- Invoice -->
