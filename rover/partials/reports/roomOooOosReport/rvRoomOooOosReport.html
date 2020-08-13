@@ -25,7 +25,10 @@
                     </th>
                     <th class="cell-80">
                         <span>Status</span>
-                    </th>
+					</th>
+					<th class="cell-110">
+						<span>Return Status</span>
+					</th>
                     <th class="cell-110">
                         <span class="sort"
                         	ng-class="{ 'sorting-asc' : isAsc(3), 'sorting-desc': isDesc(3) }"
@@ -62,6 +65,7 @@
 					</td>
 					<td ng-show="'OUT_OF_ORDER' === each.status">OOO</td>
 					<td ng-show="'OUT_OF_SERVICE' === each.status">OOS</td>
+					<td>{{each.return_hk_status}}</td>
 					<td>{{ each.start_date | date:dateFormat }}</td>
 					<td>{{ each.end_date | date:dateFormat }}</td>
 					<td>{{ each.reason || '' }}</td>
