@@ -71,6 +71,7 @@ angular.module('sntRover')
                                                                 function(item) { return item.key  === restrictionKey; }
                                                         );
                         $scope.selectedRestriction.value = null;
+                        $scope.selectedRestriction.id = hierarchyUtils.restrictionKeyToCodeMapping[$scope.selectedRestriction.key][0];
                     }
                     else {
                         $scope.selectedRestriction = {};
@@ -112,12 +113,16 @@ angular.module('sntRover')
                         $scope.selectedRestriction.value = null;
                     }
                     $scope.selectedRestriction = restriction;
+                    $scope.selectedRestriction.id = hierarchyUtils.restrictionKeyToCodeMapping[$scope.selectedRestriction.key][0];
                     $scope.toggleRestrictionSelection();
                     $scope.$broadcast('SCROLL_REFRESH_REPEAT_ON_DATES');
                     // To fix issues from normal ADD and the new add from sub list.
                     if ($scope.selectedRestriction.activeGroupList) {
                         $scope.selectedRestriction.activeGroupList = [];
                         $scope.selectedRestriction.value = null;
+                    }
+                    if ($scope.ngDialogData.hierarchyLevel === 'Rate') {
+                        $scope.$broadcast('INIT_SET_ON_SEARCH');
                     }
                 };
 
@@ -177,9 +182,12 @@ angular.module('sntRover')
                             params.rate_type_ids = !$scope.restrictionObj.isSetOnAllActive ? $scope.restrictionObj.selectedSetOnIds : [];
                             apiMethod = hierarchySrv.saveRateTypeRestrictions;
                             break;
-
+                        case 'Rate':
+                            params.rate_ids = !$scope.restrictionObj.isSetOnAllActive ? $scope.restrictionObj.selectedSetOnIds : [];
+                            apiMethod = hierarchySrv.saveRateRestrictions;
+                            break;
                         default:
-                        break;
+                            break;
                     }
 
                     if ($scope.restrictionObj.isRepeatOnDates) {

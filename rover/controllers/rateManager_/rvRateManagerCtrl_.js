@@ -994,6 +994,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             date: date,
             hierarchyLevel: 'Rate'
         };
+
+        callHierarchyRestrictionPopup(data);
     };
 
     const clickedOnHierarchyHouseCell = ({rateIDs, date}) => {
