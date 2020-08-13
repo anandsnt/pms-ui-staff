@@ -774,7 +774,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             roomTypeRestrictionSummary: createRestrictionList(dates, (panelRestrictions && panelRestrictions.roomTypeRestrictions)),
             rateTypeRestrictionSummary: createRestrictionList(dates, (panelRestrictions && panelRestrictions.rateTypeRestrictions)),
             rateRestrictionSummary: createRestrictionList(dates, (panelRestrictions && panelRestrictions.rateRestrictions)),
-            allRoomTypeSummary: createRestrictionList(dates, commonRestrictions)
+            allRoomTypeSummary: commonRestrictions ? createRestrictionList(dates, commonRestrictions) : []
         }];
 
         return restrictionSummary;
@@ -1515,13 +1515,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     toDate: formatDateForAPI(filterValues.toDate),
                     page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage
                 });
-            // if data already in cache
-
-            if (dataFoundInCachedResponse) {
-                return processForAllRates(dataFoundInCachedResponse.response)
-            }
 
             let fetchCommonRestrictions = !isHierarchyActive();
+            
+            // if data already in cache
+            if (fetchCommonRestrictions && dataFoundInCachedResponse) {
+                return processForAllRates(dataFoundInCachedResponse.response)
+            }
 
             var cachedRateAndRestrictionOfFromDateAndToDate = _.where(cachedRateAndRestrictionResponseData,
                 {
