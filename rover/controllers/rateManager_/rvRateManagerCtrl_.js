@@ -489,14 +489,16 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             });
 
             // common restricitons
-            cachedRateAndRestriction.response.commonRestrictions.map(commonRestriction => {
-                let date = tzIndependentDate(commonRestriction.date);
-                let isDateBetweenMinAndMax = (fromDate <= date && date <= toDate);
+            if (commonRestrictions) {
+                cachedRateAndRestriction.response.commonRestrictions.map(commonRestriction => {
+                    let date = tzIndependentDate(commonRestriction.date);
+                    let isDateBetweenMinAndMax = (fromDate <= date && date <= toDate);
 
-                if (isDateBetweenMinAndMax) {
-                   commonRestriction.restrictions = dateBasedCommonRestrictions[commonRestriction.date].restrictions
-                }
-            });
+                    if (isDateBetweenMinAndMax) {
+                        commonRestriction.restrictions = dateBasedCommonRestrictions[commonRestriction.date].restrictions;
+                    }
+                });
+            }
 
         });
 
@@ -772,7 +774,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             roomTypeRestrictionSummary: createRestrictionList(dates, (panelRestrictions && panelRestrictions.roomTypeRestrictions)),
             rateTypeRestrictionSummary: createRestrictionList(dates, (panelRestrictions && panelRestrictions.rateTypeRestrictions)),
             rateRestrictionSummary: createRestrictionList(dates, (panelRestrictions && panelRestrictions.rateRestrictions)),
-            allRoomTypeSummary: createRestrictionList(dates, commonRestrictions)
+            allRoomTypeSummary: commonRestrictions ? createRestrictionList(dates, commonRestrictions) : []
         }];
 
         return restrictionSummary;
@@ -992,6 +994,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             date: date,
             hierarchyLevel: 'Rate'
         };
+
+        callHierarchyRestrictionPopup(data);
     };
 
     const clickedOnHierarchyHouseCell = ({rateIDs, date}) => {
@@ -1511,13 +1515,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     toDate: formatDateForAPI(filterValues.toDate),
                     page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage
                 });
-            // if data already in cache
-
-            if (dataFoundInCachedResponse) {
-                return processForAllRates(dataFoundInCachedResponse.response)
-            }
 
             let fetchCommonRestrictions = !isHierarchyActive();
+            
+            // if data already in cache
+            if (fetchCommonRestrictions && dataFoundInCachedResponse) {
+                return processForAllRates(dataFoundInCachedResponse.response)
+            }
 
             var cachedRateAndRestrictionOfFromDateAndToDate = _.where(cachedRateAndRestrictionResponseData,
                 {
@@ -1526,7 +1530,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 });
 
             cachedRateAndRestrictionOfFromDateAndToDate.map(cachedRateAndRestriction => {
-                if (cachedRateAndRestriction.response.commonRestrictions.length) {
+                if (cachedRateAndRestriction.response.commonRestrictions && cachedRateAndRestriction.response.commonRestrictions.length) {
                     fetchCommonRestrictions = false;
                 }
             });
