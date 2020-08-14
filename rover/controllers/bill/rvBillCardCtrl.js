@@ -2761,7 +2761,8 @@ sntRover.controller('RVbillCardController',
 					return copyCount;
 				},
 				printDataFetchSuccess = function(successData) {
-					var copyCount = "",
+                    var copyCount = "",
+                        copyLabel = "",
 						arInvoiceNumberActivatedDate = moment(successData.print_ar_invoice_number_activated_at, "YYYY-MM-DD"),
 						arTransactionDate = moment(successData.ar_transaction_date, "YYYY-MM-DD"),
 						dateDifference = arTransactionDate.diff(arInvoiceNumberActivatedDate, 'days');
@@ -2782,7 +2783,7 @@ sntRover.controller('RVbillCardController',
 						successData.invoiceLabel = successData.translation.information_invoice;
 					}
 					else if (successData.no_of_original_invoices === null && !$scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
-						successData.invoiceLabel = successData.translation.invoice;
+						successData.invoiceLabel = successData.guest_bill_invoice_label || successData.translation.invoice;
 					}
 					else if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
 						if ((successData.no_of_original_invoices === null || parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices))) {
@@ -2795,12 +2796,13 @@ sntRover.controller('RVbillCardController',
 					}
 					else if (parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices))
 					{
-						successData.invoiceLabel = successData.translation.invoice;
+						successData.invoiceLabel = successData.guest_bill_invoice_label || successData.translation.invoice;
 					}
 					else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
 					{
-						copyCount = getCopyCount(successData);
-						successData.invoiceLabel = successData.translation.copy_of_invoice.replace("#count", copyCount);
+                        copyCount = getCopyCount(successData);
+                        copyLabel = successData.guest_bill_invoice_copy_label || successData.translation.copy_of_invoice;
+						successData.invoiceLabel = copyLabel.replace("#count", copyCount);
 					}
 
 					$scope.printData = successData;
