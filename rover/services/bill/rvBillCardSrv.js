@@ -40,6 +40,19 @@ angular.module('sntRover').service('RVBillCardSrv',
 						return allowance.date === entry.date;
 					});
 					entry.amount = entry.amount ? parseFloat(entry.amount) : entry.amount;
+
+					if (billData.total_fees && billData.total_fees.length && billData.total_fees[0].fees_details) {
+						// take actual charge code description from allowance data and include it in bill data
+						_.each(billData.total_fees[0].fees_details, function(feeDetail) {
+							if (feeDetail.id === entry.id) {
+								_.each(feeDetail.description, function(description) {
+									description.fees_desc = entry.description;
+								});
+								feeDetail.reference_text = '';
+								feeDetail.is_description_edited = false;
+							}
+						});
+					}
 				});
 
 				billData.allowance_data = response.allowance_data;
