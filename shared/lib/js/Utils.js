@@ -269,10 +269,14 @@ var restrictionCssClasses = {
     "CLOSED_ARRIVAL" : "red",
     "CLOSED_DEPARTURE" : "red",
     "MIN_STAY_LENGTH" : "blue",
+    "MIN_LENGTH_OF_STAY": "blue",
     "MAX_STAY_LENGTH" : "blue-dark",//no need of colors for some restriction -CICO-28657 - check HTML
+    "MAX_LENGTH_OF_STAY": "blue-dark",
     "MIN_STAY_THROUGH" : "violet",
     "MIN_ADV_BOOKING" : "green",
+    "MIN_ADVANCED_BOOKING": "green",
     "MAX_ADV_BOOKING" : "orange",
+    "MAX_ADVANCED_BOOKING": "orange",
     "DEPOSIT_REQUESTED" : "",
     "CANCEL_PENALTIES" : "",
     "LEVELS" : "",
@@ -302,21 +306,6 @@ var restrictionIcons = {
 
 function getRestrictionIcon(restriction) {
     return restrictionIcons[restriction];
-};
-
-var restrictionKeyMapping = {
-    'closed': ['CLOSED'],
-    'closed_arrival': ['CLOSED_ARRIVAL'],
-    'closed_departure': ['CLOSED_DEPARTURE'],
-    'min_length_of_stay': ['MIN_STAY_LENGTH'],
-    'max_length_of_stay': ['MAX_STAY_LENGTH'],
-    'min_stay_through': ['MIN_STAY_THROUGH'],
-    'min_advanced_booking': ['MIN_ADV_BOOKING'],
-    'max_advanced_booking': ['MAX_ADV_BOOKING']
-};
-
-function getRestrictionMapping (key) {
-    return restrictionKeyMapping[key][0];
 };
 
 var serviceStatus = {
