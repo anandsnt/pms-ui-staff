@@ -276,36 +276,20 @@ var restrictionCssClasses = {
     "MIN_ADV_BOOKING" : "green",
     "MIN_ADVANCED_BOOKING": "green",
     "MAX_ADV_BOOKING" : "orange",
-    "MAX_ADVANCED_BOOKING": "orange",
-    "DEPOSIT_REQUESTED" : "",
-    "CANCEL_PENALTIES" : "",
-    "LEVELS" : "",
-    "INVALID_PROMO" : "",
-    "HOUSE_FULL" : ""
+    "MAX_ADVANCED_BOOKING": "orange"
 };
 
 function getRestrictionClass(restriction) {
-    return restrictionCssClasses[restriction];
+    return restrictionCssClasses[restriction] || '';
 };
 
 var restrictionIcons = {
     "CLOSED" : "icon-cross",
-    "CLOSED_ARRIVAL" : "icon-block",
-    "CLOSED_DEPARTURE" : "",
-    "MIN_STAY_LENGTH" : "",
-    "MAX_STAY_LENGTH" : "",
-    "MIN_STAY_THROUGH" : "",
-    "MIN_ADV_BOOKING" : "",
-    "MAX_ADV_BOOKING" : "",
-    "DEPOSIT_REQUESTED" : "",
-    "CANCEL_PENALTIES" : "",
-    "LEVELS" : "",
-    "INVALID_PROMO" : "",
-    "HOUSE_FULL" : ""
+    "CLOSED_ARRIVAL" : "icon-block"
 };
 
 function getRestrictionIcon(restriction) {
-    return restrictionIcons[restriction];
+    return restrictionIcons[restriction] || '';
 };
 
 var serviceStatus = {

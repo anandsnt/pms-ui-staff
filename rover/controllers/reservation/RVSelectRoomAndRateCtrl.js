@@ -2357,7 +2357,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		   var restrictionKey = (restrictionObject.key).toUpperCase();
 
 		   restrictionObject.restrictionBgClass = "bg-" + getRestrictionClass(restrictionKey);
-		   restrictionObject.restrictionIcon = getRestrictionIcon(restrictionKey) ? getRestrictionIcon(restrictionKey) : '';
+		   restrictionObject.restrictionIcon = getRestrictionIcon(restrictionKey);
 		});
 		$scope.legendRestrictionsArray = restrictionsArray;
 		
@@ -2368,7 +2368,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 			activeHouseRestriction.value = typeof(value) === 'boolean' ? '' : value;
 			activeHouseRestriction.restrictionBgClass = "bg-" + getRestrictionClass(restrictionKey);
-			activeHouseRestriction.restrictionIcon = getRestrictionIcon(restrictionKey) ? getRestrictionIcon(restrictionKey) : '';
+			activeHouseRestriction.restrictionIcon = getRestrictionIcon(restrictionKey);
 			$scope.houseRestrictionArray.push(activeHouseRestriction);
 		});
 
