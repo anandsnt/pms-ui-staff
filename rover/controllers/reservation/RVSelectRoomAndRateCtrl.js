@@ -2363,7 +2363,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		
 		$scope.houseRestrictionArray = [];
 		_.mapObject(houseRestrictions, function(value, key) {
-			var restrictionKey = (restrictionObject.key).toUpperCase(),
+			var restrictionKey = key.toUpperCase(),
 				activeHouseRestriction = {};
 
 			activeHouseRestriction.value = typeof(value) === 'boolean' ? '' : value;
