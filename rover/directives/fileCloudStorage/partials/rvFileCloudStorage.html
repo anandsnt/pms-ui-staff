@@ -60,7 +60,7 @@
 							DELETE_POST
 							</button>
 						</div>
-						<p>{{note.text}}</p>
+						<p ng-bind-html="note.text"></p>
 					</li>
 				</ul>
 				<div class="no-content" ng-show="!notes.length">
