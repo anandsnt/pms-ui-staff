@@ -185,11 +185,18 @@ angular.module('stayCardModule', [])
                         to_date: $stateParams.to_date
                     });
                 },
-                houseRestrictions: function (RVReservationBaseSearchSrv, $stateParams) {
-                    return RVReservationBaseSearchSrv.fetchHouseRestrictions({
-                        from_date: $stateParams.from_date,
-                        to_date: $stateParams.to_date
-                    });
+                houseRestrictions: function (Toggles, RVReservationBaseSearchSrv, $stateParams) {
+                    var isHerarchyRestrictionEnabled = ( Toggles.isEnabled('hierarchical_house_restrictions') || 
+                                                Toggles.isEnabled('hierarchical_room_type_restrictions') ||
+                                                Toggles.isEnabled('hierarchical_rate_type_restrictions') ||
+                                                Toggles.isEnabled('hierarchical_rate_restrictions') );
+
+                    if (isHerarchyRestrictionEnabled) {
+                        return RVReservationBaseSearchSrv.fetchHouseRestrictions({
+                            from_date: $stateParams.from_date,
+                            to_date: $stateParams.to_date
+                        });
+                    }
                 }
             }
         });
