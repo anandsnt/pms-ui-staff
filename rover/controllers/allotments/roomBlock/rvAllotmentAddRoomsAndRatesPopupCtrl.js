@@ -76,7 +76,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 
 			// adding currency symbol to best available rate
 			$scope.selectedRoomTypeAndRates = _.map($scope.selectedRoomTypeAndRates, function(row) {
-				row.best_available_rate_amount = ((row.rate_currency && row.rate_currency !== null ? row.rate_currency : $rootScope.currencySymbol) +
+				row.best_available_rate_amount = ((row.rate_currency ? row.rate_currency : $rootScope.currencySymbol) +
 					row.best_available_rate_amount);
 				return row;
 			});
@@ -88,8 +88,8 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 		 * @return {[type]}              [description]
 		 */
 		$scope.changeBestAvailableRate = function(row) {
-			var roomType = _.findWhere($scope.roomTypes, {
-				"room_type_id": row.room_type_id
+			var roomType = _.find($scope.roomTypes, function (roomInfo) {
+				return roomInfo.room_type_id == row.room_type_id;
 			});
 
 			if (roomType) {
