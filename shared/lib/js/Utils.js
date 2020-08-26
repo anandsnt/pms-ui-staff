@@ -267,7 +267,9 @@ var getMappedRoomStatusColor = function(reservationStatus, roomReadyStatus, foSt
 var restrictionCssClasses = {
     "CLOSED" : "red",
     "CLOSED_ARRIVAL" : "red",
+    "CLOSED_ARRIVAL_RESTRICTION" : "red",
     "CLOSED_DEPARTURE" : "red",
+    "CLOSED_DEPARTURE_RESTRICTION": "red",
     "MIN_STAY_LENGTH" : "blue",
     "MIN_LENGTH_OF_STAY": "blue",
     "MAX_STAY_LENGTH" : "blue-dark",//no need of colors for some restriction -CICO-28657 - check HTML
@@ -285,7 +287,8 @@ function getRestrictionClass(restriction) {
 
 var restrictionIcons = {
     "CLOSED" : "icon-cross",
-    "CLOSED_ARRIVAL" : "icon-block"
+    "CLOSED_ARRIVAL" : "icon-block",
+    "CLOSED_ARRIVAL_RESTRICTION": "icon-block"
 };
 
 function getRestrictionIcon(restriction) {
