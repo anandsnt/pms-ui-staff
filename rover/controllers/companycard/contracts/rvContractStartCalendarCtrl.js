@@ -36,11 +36,15 @@ sntRover.controller('rvContractStartCalendarCtrl', ['$rootScope', '$scope', 'ngD
 
 				if ($scope.contractData.mode === 'ADD') {
 					$scope.addData.startDate = beginDate.format('YYYY-MM-DD');
-					$scope.addData.endDate = endDate.format('YYYY-MM-DD');
+					if (!$scope.addData.endDate || ($scope.addData.startDate >= $scope.addData.endDate)) {
+						$scope.addData.endDate = endDate.format('YYYY-MM-DD');
+					}
 				}
 				else if ($scope.contractData.mode === 'EDIT') {
 					$scope.contractData.editData.begin_date = beginDate.format('YYYY-MM-DD');
-					$scope.contractData.editData.end_date = endDate.format('YYYY-MM-DD');
+					if ($scope.contractData.editData.begin_date >= $scope.contractData.editData.end_date) {
+						$scope.contractData.editData.end_date = endDate.format('YYYY-MM-DD');
+					}
 				}
 
 				ngDialog.close();

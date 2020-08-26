@@ -474,7 +474,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                     .then(data => {
 
                         if (params.hierarchialRateRestrictionRequired) {
-                            var processedData = rvRateManagerRestrictionsSrv.processRateRestrictionResponse(data.results);
+                            var processedData = rvRateManagerRestrictionsSrv.processRateRestrictionResponse(data.results, true);
                                 
                             response.restrictionsWithStatus = [{
                                 date: data.results[0].date,

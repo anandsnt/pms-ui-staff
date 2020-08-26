@@ -1625,7 +1625,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Rooms OOO/OOS': true,
                 'Deposit Balance Summary': true,
                 'Add-On Forecast': true,
-                'Forecast Guests & Groups': true
+                'Forecast Guests & Groups': true,
+                'Market Segment Statistics Report': true
             };
 
             var forWeekly = {
@@ -1920,7 +1921,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     selectedEntity.report.title === reportNames['DEPOSIT_SUMMARY'] || 
                     selectedEntity.report.title === reportNames['OCCUPANCY_REVENUE_SUMMARY'] ||
                     selectedEntity.report.title === reportNames['ADDON_FORECAST'] || 
-                    selectedEntity.report.title === reportNames['FORECAST_GUEST_GROUPS'])) {
+                    selectedEntity.report.title === reportNames['FORECAST_GUEST_GROUPS'] ||
+                    selectedEntity.report.title === reportNames['MARKET_SEGMENT_STAT_REPORT'])) {
 
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) {
                     return object.value === 'CSV';
@@ -1948,7 +1950,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['DEPOSIT_SUMMARY'] ||
                 selectedEntity.report.title === reportNames['OCCUPANCY_REVENUE_SUMMARY'] ||
                 selectedEntity.report.title === reportNames['ADDON_FORECAST'] || 
-                selectedEntity.report.title === reportNames['FORECAST_GUEST_GROUPS']);
+                selectedEntity.report.title === reportNames['FORECAST_GUEST_GROUPS'] || 
+                selectedEntity.report.title === reportNames['MARKET_SEGMENT_STAT_REPORT']);
 
         };
 

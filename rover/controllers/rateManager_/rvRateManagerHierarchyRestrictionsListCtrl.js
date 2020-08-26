@@ -1,12 +1,14 @@
 angular.module('sntRover')
     .controller('rvRateManagerHierarchyRestrictionsListCtrl', [
         '$scope',
+        '$rootScope',
         'rvRateManagerHierarchyRestrictionsSrv',
         'rvRateManagerUtilitySrv',
         '$timeout',
         'rvRateManagerEventConstants',
         function(
             $scope,
+            $rootScope,
             hierarchySrv,
             hierarchyUtils,
             $timeout,
@@ -38,19 +40,21 @@ angular.module('sntRover')
                                 $scope.restrictionObj.listData = response.house[0].restrictions;
                                 $scope.restrictionObj.noticeLabel = '';
                                 $scope.restrictionObj.setOnCount = 0;
-                                $scope.restrictionObj.enableEditRestrictions = true;
                                 break;
                             case 'RoomType':
                                 $scope.restrictionObj.listData = response.room_type[0].restrictions;
                                 $scope.restrictionObj.noticeLabel = 'ALL ROOM TYPES';
                                 $scope.restrictionObj.setOnCount = response.room_types_count;
-                                $scope.restrictionObj.enableEditRestrictions = true;
                                 break;
                             case 'RateType':
                                 $scope.restrictionObj.listData = response.rate_type[0].restrictions;
                                 $scope.restrictionObj.noticeLabel = 'ALL RATE TYPES';
                                 $scope.restrictionObj.setOnCount = response.rate_types_count;
-                                $scope.restrictionObj.enableEditRestrictions = true;
+                                break;
+                            case 'Rate':
+                                $scope.restrictionObj.listData = response.rate[0].restrictions;
+                                $scope.restrictionObj.noticeLabel = 'ALL RATES';
+                                $scope.restrictionObj.setOnCount = response.rates_count;
                                 break;
                             default:
                                 break;
@@ -82,7 +86,7 @@ angular.module('sntRover')
                  *  @param {Number | null} [ index of clicked item in 'min_length_of_stay', 'max_length_of_stay' etc.]
                  */
                 $scope.clickedOnListItem = function(key, index) {
-                    if ($scope.restrictionObj.enableEditRestrictions) {
+                    if (!$scope.isPastDate()) {
                         let clickedItem = {};
 
                         $scope.popUpView = 'EDIT';
@@ -90,6 +94,7 @@ angular.module('sntRover')
                                                             function(item) { return item.key  === key; }
                                                     );
                         $scope.selectedRestriction.activeGroupList = [];
+                        $scope.selectedRestriction.id = hierarchyUtils.restrictionKeyToCodeMapping[$scope.selectedRestriction.key][0];
                         if ($scope.selectedRestriction.type === 'number') {
                             // min_length_of_stay, min_stay_through etc.
                             clickedItem = $scope.restrictionObj.listData[key][index];
@@ -110,7 +115,7 @@ angular.module('sntRover')
                         $scope.selectedRestriction.activeGroupKey = key;
                         $scope.$broadcast('INIT_SET_ON_SEARCH');
                         // Handle ON ALL checkbox selection.
-                        if (clickedItem.set_on_values && (clickedItem.set_on_values.length === $scope.restrictionObj.setOnCount)) {
+                        if (clickedItem.set_on_values.length === $scope.restrictionObj.setOnCount) {
                             $scope.restrictionObj.isSetOnAllActive = true;
                         }
                         else {
@@ -141,9 +146,12 @@ angular.module('sntRover')
                                 params.rate_type_ids = setOnIdList;
                                 apiMethod = hierarchySrv.saveRateTypeRestrictions;
                                 break;
-
+                            case 'Rate':
+                                params.rate_ids = setOnIdList;
+                                apiMethod = hierarchySrv.saveRateRestrictions;
+                                break;
                             default:
-                            break;
+                                break;
                         }
                     }
                     
@@ -184,6 +192,10 @@ angular.module('sntRover')
                         setOnIdList = _.pluck(setOnValuesList, 'id');
                     }
                     callRemoveAPI(restrictions, setOnIdList);
+                };
+                // Check the popup date is past.
+                $scope.isPastDate = () => {
+                    return $rootScope.businessDate > $scope.ngDialogData.date;
                 };
 
                 // Process Remove action on EDIT screen.

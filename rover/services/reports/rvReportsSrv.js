@@ -466,6 +466,9 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'NEXT_SEVEN_DAYS',
                 'NEXT_TEN_DAYS',
                 'NEXT_THIRTY_DAYS'
+            ],
+            'Market Segment Statistics Report': [
+                'YESTERDAY'
             ]
         };
 

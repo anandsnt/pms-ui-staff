@@ -10,7 +10,7 @@
         <div class="wrapper">
             <ul>
                 <li ng-if="restrictionObj.listData.closed">
-                    <div class="restriction-item" ng-click="clickedOnListItem('closed')">
+                    <div class="restriction-item" ng-class="{'disable-element': isPastDate()}" ng-click="clickedOnListItem('closed')">
                         <div class="data">
                             <span class="restriction-icon bg-red icon-cross">
                             </span>
@@ -24,13 +24,13 @@
                             <div class="notice">{{restrictionObj.noticeLabel}}</div>
                         </div>
                     </div>
-                    <button type="button" class="button white remove-restriction">
+                    <button type="button" class="button white remove-restriction" ng-class="{'overlay': isPastDate()}">
                         <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed', false, restrictionObj.listData.closed.set_on_values)"></span>
                     </button>
                 </li>
 
                 <li ng-if="restrictionObj.listData.closed_arrival">
-                    <div class="restriction-item" ng-click="clickedOnListItem('closed_arrival')">
+                    <div class="restriction-item" ng-class="{'disable-element': isPastDate()}" ng-click="clickedOnListItem('closed_arrival')">
                         <div class="data">
                             <span class="restriction-icon bg-red icon-block">
                             </span>
@@ -44,13 +44,13 @@
                             <div class="notice">{{restrictionObj.noticeLabel}}</div>
                         </div>
                     </div>
-                    <button type="button" class="button white remove-restriction">
+                    <button type="button" class="button white remove-restriction" ng-class="{'overlay': isPastDate()}">
                         <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed_arrival', false, restrictionObj.listData.closed_arrival.set_on_values)"></span>
                     </button>
                 </li>
 
                 <li ng-if="restrictionObj.listData.closed_departure">
-                    <div class="restriction-item" ng-click="clickedOnListItem('closed_departure')">
+                    <div class="restriction-item" ng-class="{'disable-element': isPastDate()}" ng-click="clickedOnListItem('closed_departure')">
                         <div class="data">
                             <span class="restriction-icon bg-red">
                             </span>
@@ -64,13 +64,13 @@
                             <div class="notice">{{restrictionObj.noticeLabel}}</div>
                         </div>
                     </div>
-                    <button type="button" class="button white remove-restriction">
+                    <button type="button" class="button white remove-restriction" ng-class="{'overlay': isPastDate()}">
                         <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed_departure', false, restrictionObj.listData.closed_departure.set_on_values)"></span>
                     </button>
                 </li>
 
                 <li ng-class="{'grouped': restrictionObj.listData.min_length_of_stay.length > 1, 'first': $first, 'last': $last}" ng-if="restrictionObj.listData.min_length_of_stay" ng-repeat="restriction in restrictionObj.listData.min_length_of_stay">
-                    <div class="restriction-item" ng-click="clickedOnListItem('min_length_of_stay', $index)">
+                    <div class="restriction-item" ng-class="{'disable-element': isPastDate()}" ng-click="clickedOnListItem('min_length_of_stay', $index)">
                         <div class="data">
                             <span class="restriction-icon bg-blue">
                                 {{restriction.value}}
@@ -85,13 +85,13 @@
                             <div class="notice">{{restrictionObj.noticeLabel}}</div>
                         </div>
                     </div>
-                    <button type="button" class="button white remove-restriction">
+                    <button type="button" class="button white remove-restriction" ng-class="{'overlay': isPastDate()}">
                         <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_length_of_stay', null, restriction.set_on_values)"></span>
                     </button>
                 </li>
 
                 <li ng-class="{'grouped': restrictionObj.listData.max_length_of_stay.length > 1, 'first': $first, 'last': $last}" ng-if="restrictionObj.listData.max_length_of_stay" ng-repeat="restriction in restrictionObj.listData.max_length_of_stay">
-                    <div class="restriction-item" ng-click="clickedOnListItem('max_length_of_stay', $index)">
+                    <div class="restriction-item" ng-class="{'disable-element': isPastDate()}" ng-click="clickedOnListItem('max_length_of_stay', $index)">
                         <div class="data">
                             <span class="restriction-icon bg-blue-dark">
                                 {{restriction.value}}
@@ -106,13 +106,13 @@
                             <div class="notice">{{restrictionObj.noticeLabel}}</div>
                         </div>
                     </div>
-                    <button type="button" class="button white remove-restriction">
+                    <button type="button" class="button white remove-restriction" ng-class="{'overlay': isPastDate()}">
                         <span class="icons icon-remove-40" ng-click="clickedOnRemove('max_length_of_stay', null, restriction.set_on_values)"></span>
                     </button>
                 </li>
 
                 <li ng-class="{'grouped': restrictionObj.listData.min_stay_through.length > 1, 'first': $first, 'last': $last}" ng-if="restrictionObj.listData.min_stay_through" ng-repeat="restriction in restrictionObj.listData.min_stay_through">
-                    <div class="restriction-item" ng-click="clickedOnListItem('min_stay_through', $index)">
+                    <div class="restriction-item" ng-class="{'disable-element': isPastDate()}" ng-click="clickedOnListItem('min_stay_through', $index)">
                         <div class="data">
                             <span class="restriction-icon bg-violet">
                                 {{restriction.value}}
@@ -127,13 +127,13 @@
                             <div class="notice">{{restrictionObj.noticeLabel}}</div>
                         </div>
                     </div>
-                    <button type="button" class="button white remove-restriction">
+                    <button type="button" class="button white remove-restriction" ng-class="{'overlay': isPastDate()}">
                         <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_stay_through', null, restriction.set_on_values)"></span>
                     </button>
                 </li>
 
                 <li ng-class="{'grouped': restrictionObj.listData.min_advanced_booking.length > 1, 'first': $first, 'last': $last}" ng-if="restrictionObj.listData.min_advanced_booking" ng-repeat="restriction in restrictionObj.listData.min_advanced_booking">
-                    <div class="restriction-item" ng-click="clickedOnListItem('min_advanced_booking', $index)">
+                    <div class="restriction-item" ng-class="{'disable-element': isPastDate()}" ng-click="clickedOnListItem('min_advanced_booking', $index)">
                         <div class="data">
                             <span class="restriction-icon bg-green">
                                 {{restriction.value}}
@@ -148,13 +148,13 @@
                             <div class="notice">{{restrictionObj.noticeLabel}}</div>
                         </div>
                     </div>
-                    <button type="button" class="button white remove-restriction">
+                    <button type="button" class="button white remove-restriction" ng-class="{'overlay': isPastDate()}">
                         <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_advanced_booking', null, restriction.set_on_values)"></span>
                     </button>
                 </li>
 
                 <li ng-class="{'grouped': restrictionObj.listData.max_advanced_booking.length > 1, 'first': $first, 'last': $last}" ng-if="restrictionObj.listData.max_advanced_booking" ng-repeat="restriction in restrictionObj.listData.max_advanced_booking">
-                    <div class="restriction-item" ng-click="clickedOnListItem('max_advanced_booking', $index)">
+                    <div class="restriction-item" ng-class="{'disable-element': isPastDate()}" ng-click="clickedOnListItem('max_advanced_booking', $index)">
                         <div class="data">
                             <span class="restriction-icon bg-orange">
                                 {{restriction.value}}
@@ -169,7 +169,7 @@
                             <div class="notice">{{restrictionObj.noticeLabel}}</div>
                         </div>
                     </div>
-                    <button type="button" class="button white remove-restriction">
+                    <button type="button" class="button white remove-restriction" ng-class="{'overlay': isPastDate()}">
                         <span class="icons icon-remove-40" ng-click="clickedOnRemove('max_advanced_booking', null, restriction.set_on_values)"></span>
                     </button>
                 </li>

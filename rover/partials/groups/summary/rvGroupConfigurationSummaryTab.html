@@ -84,7 +84,7 @@
                         <!-- <strong>*</strong> -->
                     </label>
                     <div class="select">
-                        <select ng-disabled="isShoulderDateDisabled" ng-model="groupConfigData.summary.shoulder_from" ng-change="onShoulderDateChange('from')"> <!-- Add attr 'disabled' when L100 is pressed. Remove when L102 or L103 is pressed -->
+                        <select ng-disabled="shouldDisableShoulderFrom()" ng-model="groupConfigData.summary.shoulder_from" ng-change="onShoulderDateChange('from')"> <!-- Add attr 'disabled' when L100 is pressed. Remove when L102 or L103 is pressed -->
                             <option value="0">0</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -108,7 +108,7 @@
                     <!-- If new group, add class "datepicker" -->
                     <input id="group-block-to" class="datepicker" type="text" ui-date="toDateOptions" rv-set-textbox-value listen-this="groupConfigData.summary.block_to|date:dateFormat" readonly ng-class="{'not-selected': !groupConfigData.summary.block_to}" />
                     <div class="select">
-                        <select ng-disabled="isShoulderDateDisabled" ng-model="groupConfigData.summary.shoulder_to" ng-change="onShoulderDateChange('to')"> <!-- Add attr 'disabled' when L100 is pressed. Remove when L102 or L103 is pressed -->
+                        <select ng-disabled="shouldDisableShoulderTo()" ng-model="groupConfigData.summary.shoulder_to" ng-change="onShoulderDateChange('to')"> <!-- Add attr 'disabled' when L100 is pressed. Remove when L102 or L103 is pressed -->
                             <option value="0">0</option>
                             <option value="1">1</option>
                             <option value="2">2</option>

@@ -424,13 +424,44 @@ sntRover.controller('RVInvoiceSearchController',
 				finalInvoiceSettlement(data, true);
 			} else {
 				var getCopyCount = function(successData) {
-						var copyCount = "";
+                        var copyCount = '';                            
 
 						if (successData.is_copy_counter) {
 							copyCount = parseInt(successData.print_counter, 10) - parseInt(successData.no_of_original_invoices, 10);					
 						}
 						return copyCount;
-					},
+                    },
+                    /**
+                     * Get invoice label
+                     * @param {Object} printData print data
+                     * @param {Boolean} isGuestBill is guest bill or not
+                     * @return {String} invoice label
+                    */
+                    getInvoiceLabel = function (printData, isGuestBill) {
+                      var invoiceLabel = printData.translation.invoice;
+
+                      if (isGuestBill) {
+                        invoiceLabel = printData.guest_bill_invoice_label || printData.translation.invoice;
+                      }
+
+                      return invoiceLabel;
+                    },
+                    /**
+                     * Get invoice copy label
+                     * @param {Object} printData print data
+                     * @param {Boolean} isGuestBill is guest bill or not
+                     * @return {String} invoice label
+                     */
+                    getInvoiceCopyLabel = function (printData, isGuestBill) {
+                        var invoiceLabel = printData.translation.copy_of_invoice;
+
+                        if (isGuestBill) {
+                            invoiceLabel = printData.guest_bill_invoice_copy_label || printData.translation.copy_of_invoice;
+                        }
+
+                        return invoiceLabel;
+                    },
+
 					printDataFetchSuccess = function(successData) {
 						var copyCount = "",
 							arInvoiceNumberActivatedDate = moment(successData.print_ar_invoice_number_activated_at, "YYYY-MM-DD"),
@@ -449,7 +480,7 @@ sntRover.controller('RVInvoiceSearchController',
 							successData.invoiceLabel = successData.translation.information_invoice;
 						}
 						else if (successData.no_of_original_invoices === null && !successData.is_void_bill) {
-							successData.invoiceLabel = successData.translation.invoice;
+                            successData.invoiceLabel = getInvoiceLabel(successData, $scope.invoiceSearchFlags.isClickedReservation);
 						} 
 						else if (successData.is_void_bill) {
 							if ((successData.no_of_original_invoices === null || parseInt(successData.print_counter, 10) <= parseInt(successData.no_of_original_invoices, 10))) {
@@ -465,7 +496,7 @@ sntRover.controller('RVInvoiceSearchController',
 							|| (!$scope.reservationBillData.is_bill_lock_enabled 
 								&& parseInt(successData.print_counter, 10) <= parseInt(successData.no_of_original_invoices, 10))) 
 						{
-							successData.invoiceLabel = successData.translation.invoice;
+							successData.invoiceLabel = getInvoiceLabel(successData, $scope.invoiceSearchFlags.isClickedReservation);
 						} 
 						else if (($scope.reservationBillData.is_bill_lock_enabled 
 							&& parseInt(successData.print_counter, 10) > parseInt(successData.no_of_original_invoices, 10))
@@ -477,7 +508,7 @@ sntRover.controller('RVInvoiceSearchController',
 							if (successData.is_copy_counter) {
 								copyCount = parseInt(successData.print_counter, 10) - parseInt(successData.no_of_original_invoices, 10);					
 							}
-							successData.invoiceLabel = successData.translation.copy_of_invoice.replace("#count", copyCount);
+							successData.invoiceLabel = getInvoiceCopyLabel(successData, $scope.invoiceSearchFlags.isClickedReservation).replace("#count", copyCount);
 						}
 						
 						$scope.printData = successData;						
