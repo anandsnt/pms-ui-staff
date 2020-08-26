@@ -2369,10 +2369,18 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					activeHouseRestriction = {},
 					restrictionClass = getRestrictionClass(restrictionKey);
 
-				activeHouseRestriction.value = typeof(value) === 'boolean' ? '' : value;
-				activeHouseRestriction.restrictionBgClass = (restrictionClass !== '') ? ("bg-" + restrictionClass) : restrictionClass;
-				activeHouseRestriction.restrictionIcon = getRestrictionIcon(restrictionKey);
-				$scope.houseRestrictionArray.push(activeHouseRestriction);
+				if (typeof(value) === 'boolean' && value) {
+					activeHouseRestriction.value = '';
+					activeHouseRestriction.restrictionBgClass = (restrictionClass !== '') ? ("bg-" + restrictionClass) : restrictionClass;
+					activeHouseRestriction.restrictionIcon = getRestrictionIcon(restrictionKey);
+					$scope.houseRestrictionArray.push(activeHouseRestriction);
+				}
+				else if (typeof(value) === 'number') {
+					activeHouseRestriction.value = value;
+					activeHouseRestriction.restrictionBgClass = (restrictionClass !== '') ? ("bg-" + restrictionClass) : restrictionClass;
+					activeHouseRestriction.restrictionIcon = getRestrictionIcon(restrictionKey);
+					$scope.houseRestrictionArray.push(activeHouseRestriction);
+				}
 			});
 		}
 
