@@ -44,7 +44,7 @@
             </select>
         </div>
         <div class="notice restrictions" ng-if="houseRestrictionArray && houseRestrictionArray.length !== 0 && stateCheck.showClosedRates">
-            <strong>House restrictions in affect: </strong>
+            <strong>House restrictions in effect: </strong>
             <span ng-repeat="restriction in houseRestrictionArray"
                 class="restriction-icon {{restriction.restrictionIcon}} {{restriction.restrictionBgClass}}">
                 {{restriction.value}}
