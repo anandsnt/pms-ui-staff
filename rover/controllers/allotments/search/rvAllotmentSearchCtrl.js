@@ -344,7 +344,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
         /**
          * Pagination things
          */
-        var setInitialPaginationAndAPIThings = function() {
+        var setInitialPaginationValues = function() {
             // pagination
             $scope.perPage = rvAllotmentSrv.DEFAULT_PER_PAGE;
             $scope.start = 1;
@@ -464,7 +464,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
             setScrollerForMe();
 
             // pagination  & API things
-            setInitialPaginationAndAPIThings();
+            setInitialPaginationValues();
 
             configurePagination();
 
