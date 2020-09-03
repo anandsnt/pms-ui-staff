@@ -3761,6 +3761,106 @@ angular.module('reportsModule')
                 });
             };
 
+            /**
+             * Fill Aging balances
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @return {void} set filter values
+             */
+            factory.fillAgingBalances = function (filter, filterValues) {
+                var ageBuckets = [
+                        { id: "0to30", status: "0-30 DAYS"},
+                        { id: "31to60", status: "31-60 DAYS"},
+                        { id: "61to90", status: "61-90 DAYS"},
+                        { id: "91to120", status: "91-120 DAYS"},
+                        { id: "120plus", status: "120+ DAYS" }
+                    ],
+                
+                    getSelectAllVal = (ages) => {
+                        var selectAll = true;
+
+                        if (filterValues && filterValues.age_buckets) {
+                            selectAll = ages.length === filterValues.age_buckets.length;
+                        } else if (angular.isDefined(filterValues) && !filterValues.age_buckets) {
+                            selectAll = false;
+                        }
+
+                        return selectAll;
+                    },
+                    data = angular.copy(ageBuckets);
+
+                if (filterValues && filterValues.age_buckets) {
+                    data = data.map(age => {
+                        age.selected = false;
+
+                        if (filterValues.age_buckets.indexOf(age.id) > -1) {
+                            age.selected = true;
+                        }
+                        return age;
+                    });
+                }
+
+                filter.hasIncludeAgingBalance = {
+                    data: data,
+                    options: {
+                        hasSearch: false,
+                        selectAll: getSelectAllVal(data),
+                        key: 'status',
+                        defaultValue: 'Select Aging Balance'
+                    }
+                };
+               
+            };
+
+            /**
+             * Fill account names
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @return {void} set filter values
+             */
+            factory.fillAccountNames = function (filter, filterValues) {
+                var getSelectAllVal = (accounts) => {
+                    var selectAll = false;
+
+                    if (filterValues && filterValues.account_ids) {
+                        selectAll = accounts.length === filterValues.account_ids.length;
+                    } else if (angular.isDefined(filterValues) && !filterValues.account_ids) {
+                        selectAll = false;
+                    }
+
+                    return selectAll;
+                };
+
+                reportsSubSrv.fetchAccounts().then( function (data) {
+                    var accounts = angular.copy(data);
+
+                    if (filterValues && filterValues.account_ids) {
+                        accounts = accounts.map(account => {
+                            accounts.selected = false;
+
+                            if (filterValues.account_ids.indexOf(account.id) > -1) {
+                                account.selected = true;
+                            }
+                            return account;
+                        });
+                    }  
+                    filter.hasAccountSearch = {
+                        data: accounts,
+                        options: {
+                            selectAll: getSelectAllVal(accounts),
+                            hasSearch: true,
+                            key: 'account_name',
+                            defaultValue: 'Select Accounts'
+                        }
+                    };
+                
+                    
+                });
+               
+            };
+
+
+
             return factory;
         }
     ]);

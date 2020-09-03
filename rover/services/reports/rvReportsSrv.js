@@ -469,6 +469,9 @@ angular.module('sntRover').service('RVreportsSrv', [
             ],
             'Market Segment Statistics Report': [
                 'YESTERDAY'
+            ],
+            'A/R Aging': [
+                'YESTERDAY'
             ]
         };
 
