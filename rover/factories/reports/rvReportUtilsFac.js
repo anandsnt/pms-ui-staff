@@ -3859,8 +3859,6 @@ angular.module('reportsModule')
                
             };
 
-
-
             return factory;
         }
     ]);
