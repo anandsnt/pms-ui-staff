@@ -469,6 +469,31 @@ angular.module('sntRover').service('RVreportsSrv', [
             ],
             'Market Segment Statistics Report': [
                 'YESTERDAY'
+            ],
+            'A/R Aging': [
+                'YESTERDAY'
+            ],
+            'Complimentary Room Report': [
+                'TODAY',
+                'TOMORROW',
+                'YESTERDAY',
+                'LAST_WEEK',
+                'LAST_SEVEN_DAYS',
+                'LAST_THIRTY_DAYS',
+                'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER',
+                'CURRENT_MONTH'
             ]
         };
 
