@@ -112,7 +112,7 @@ var CurrencyInfoMappings = {
 */
 var isAnyMatch = function(val, arr){
     var ret = false;
-    for(var i=0, j= arr.length ; i<j ; i++){
+    for(var i=0, j= arr.length ; i<j ; i++) {
         if(arr[i] === val){
             ret = true;
             break;
@@ -130,7 +130,7 @@ var getCurrencySign = function(currencyCode) {
 * @param {object} is the object to be checked
 */
 function isEmpty(obj) {
-    return Object.keys(obj).length === 0;
+    return _.isEmpty(obj);
 }
 
 /**
