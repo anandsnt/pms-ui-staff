@@ -105,6 +105,9 @@ angular.module('sntRover').service('RVreportsSrv', [
             'GOBD Export': [
                 'DATE_RANGE'
             ],
+            'GOBD Admin Charge Code Actions Export': [
+                'DATE_RANGE'
+            ],
             'Clairvoyix Stays Export': [
                 'YESTERDAY',
                 'ALL'
@@ -496,7 +499,6 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'CURRENT_MONTH',
                 'NEXT_SEVEN_DAYS',
                 'NEXT_THIRTY_DAYS'
-
             ]
         };
 

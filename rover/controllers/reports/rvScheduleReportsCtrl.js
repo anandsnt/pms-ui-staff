@@ -450,6 +450,12 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 } else if (keyName === 'hasAddons') {
                     key = reportParams['ADDONS_IDS'];
                     filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'addon_id');
+                } else if (keyName === 'hasIncludeAgingBalance') {
+                    key = reportParams['AGING_BALANCE'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+                } else if (keyName === 'hasAccountSearch') {
+                    key = reportParams['ACCOUNT_SEARCH'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
                 } else {
                     _.each(filter.data, function(each) {
                         if (each.selected) {
@@ -750,6 +756,12 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     key = reportParams['ADDONS_IDS'];
                     filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'addon_id');
 
+                } else if (keyName === 'hasIncludeAgingBalance') {
+                    key = reportParams['AGING_BALANCE'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+                } else if (keyName === 'hasAccountSearch') {
+                    key = reportParams['ACCOUNT_SEARCH'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
                 } else {
                     _.each(filter.data, function(each) {
                         if (each.selected) {
@@ -1091,6 +1103,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 } else if (filter.value === 'INCLUDE_DAY_USE') {
                     $scope.filters.hasDayUseFilter = true;
                     $scope.filters.include_day_use = false;
+                } else if (filter.value === 'AGING_BALANCE') {
+                    reportUtils.fillAgingBalances($scope.filters, $scope.selectedEntityDetails.filter_values);
+                } else if (filter.value === 'ACCOUNT_NAME') {
+                    reportUtils.fillAccountNames($scope.filters, $scope.selectedEntityDetails.filter_values); 
                 }
             });
 
@@ -1966,6 +1982,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['MARKET_SEGMENT_STAT_REPORT'] || 
                 selectedEntity.report.title === reportNames['A/R_AGING'] || 
                 selectedEntity.report.title === reportNames['COMPLIMENTARY_ROOM_REPORT']);
+
         };
 
         // Listener for creating new report schedule
