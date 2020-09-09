@@ -3734,7 +3734,7 @@ angular.module('reportsModule')
                         data: resStatusCopy,
                         options: {
                             selectAll: getSelectAllVal(resStatusCopy),
-                            hasSearch: true,
+                            hasSearch: false,
                             key: 'status',
                             defaultValue: 'Select status'
                         }

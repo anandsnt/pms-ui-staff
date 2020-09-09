@@ -832,7 +832,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             CREDIT: 'CREDIT',
             DEBIT: 'DEBIT',
             AR_NUMBER: 'AR_NUMBER',
-            ACCOUNT_NAME: 'ACCOUNT_NAME'
+            ACCOUNT_NAME: 'ACCOUNT_NAME',
+            GUEST_NAME: 'GUEST_NAME'
         };
         
         var groupByFields = {
@@ -1035,7 +1036,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     reportUtils.fillBookingOrigins($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
                 } else if (filter.value === 'RESERVATION_STATUS' && $scope.selectedEntityDetails.report.title === reportNames['ROOM_STATUS_REPORT']) {
                     reportUtils.fillReservationStatus($scope.filters, $scope.selectedEntityDetails.filter_values);
-                } else if (filter.value === 'RESERVATION_STATUS' && $scope.selectedEntityDetails.report.title === reportNames['ADDON_FORECAST']) {
+                } else if (filter.value === 'RESERVATION_STATUS' && ($scope.selectedEntityDetails.report.title === reportNames['ADDON_FORECAST'] || $scope.selectedEntityDetails.report.title === reportNames['COMPLIMENTARY_ROOM_REPORT'] )) {
                     reportUtils.fillResStatus($scope.filters, $scope.selectedEntityDetails.filter_values);
                 } else if (filter.value === 'FLOOR') {
                     reportUtils.fillFloors($scope.filters, $scope.selectedEntityDetails.filter_values);
@@ -1645,7 +1646,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Add-On Forecast': true,
                 'Forecast Guests & Groups': true,
                 'Market Segment Statistics Report': true,
-                'A/R Aging': true
+                'A/R Aging': true,
+                'Complimentary Room Report': true
             };
 
             var forWeekly = {
@@ -1669,7 +1671,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Deposit Balance Summary': true,
                 'Add-On Forecast': true,
                 'Forecast Guests & Groups': true,
-                'A/R Aging': true
+                'A/R Aging': true,
+                'Complimentary Room Report': true
             };
             var forMonthly = {
                 'Arrival': true,
@@ -1692,7 +1695,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Deposit Balance Summary': true,
                 'Add-On Forecast': true,
                 'Forecast Guests & Groups': true,
-                'A/R Aging': true
+                'A/R Aging': true,
+                'Complimentary Room Report': true
             };
 
             var forHourly = {
@@ -1713,7 +1717,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Deposit Balance Summary': true,
                 'Add-On Forecast': true,
                 'Forecast Guests & Groups': true,
-                'A/R Aging': true
+                'A/R Aging': true,
+                'Complimentary Room Report': true
             };
 
             if (forHourly[item.report.title]) {
@@ -1945,8 +1950,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     selectedEntity.report.title === reportNames['ADDON_FORECAST'] || 
                     selectedEntity.report.title === reportNames['FORECAST_GUEST_GROUPS'] ||
                     selectedEntity.report.title === reportNames['MARKET_SEGMENT_STAT_REPORT'] || 
-                    selectedEntity.report.title === reportNames['A/R_AGING'])) {
-
+                    selectedEntity.report.title === reportNames['A/R_AGING'] || 
+                    selectedEntity.report.title === reportNames['COMPLIMENTARY_ROOM_REPORT'])) {
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) {
                     return object.value === 'CSV';
                 });
@@ -1975,7 +1980,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['ADDON_FORECAST'] || 
                 selectedEntity.report.title === reportNames['FORECAST_GUEST_GROUPS'] || 
                 selectedEntity.report.title === reportNames['MARKET_SEGMENT_STAT_REPORT'] || 
-                selectedEntity.report.title === reportNames['A/R_AGING']);
+                selectedEntity.report.title === reportNames['A/R_AGING'] || 
+                selectedEntity.report.title === reportNames['COMPLIMENTARY_ROOM_REPORT']);
 
         };
 
