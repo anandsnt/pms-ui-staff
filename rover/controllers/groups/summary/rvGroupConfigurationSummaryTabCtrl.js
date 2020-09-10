@@ -163,7 +163,9 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         var failureCallBackOfEarlierArrivalDateChange = function(error) {
             $scope.errorMessage = error;
             $scope.groupConfigData.summary.block_from = summaryMemento.block_from;
-            $scope.emit('hideLoader');
+            $scope.groupConfigData.summary.shoulder_from_date = summaryMemento.shoulder_from_date;
+            $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
+            $scope.$emit('hideLoader');
         };
 
         /**
@@ -192,7 +194,9 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         var failureCallBackOfLaterArrivalDateChange = function(errorMessage) {
             $scope.errorMessage = errorMessage;
             $scope.groupConfigData.summary.block_from = summaryMemento.block_from;
-            $scope.emit('hideLoader');
+            $scope.groupConfigData.summary.shoulder_from_date = summaryMemento.shoulder_from_date;
+            $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
+            $scope.$emit('hideLoader');
         };
 
         /**
@@ -233,7 +237,9 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         var failureCallBackOfEarlierDepartureDateChange = function(errorMessage) {
             $scope.errorMessage = errorMessage;
             $scope.groupConfigData.summary.block_to = summaryMemento.block_to;
-            $scope.emit('hideLoader');
+            $scope.groupConfigData.summary.shoulder_to_date = summaryMemento.shoulder_to_date;
+            $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
+            $scope.$emit('hideLoader');
         };
 
         /**
@@ -271,7 +277,9 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         var failureCallBackOfLaterDepartureDateChange = function(errorMessage) {
             $scope.errorMessage = errorMessage;
             $scope.groupConfigData.summary.block_to = summaryMemento.block_to;
-            $scope.emit('hideLoader');
+            $scope.groupConfigData.summary.shoulder_to_date = summaryMemento.shoulder_to_date;
+            $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
+            $scope.$emit('hideLoader');
         };
 
         /**
@@ -2124,5 +2132,9 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         $scope.shouldDisableShoulderTo = function () {
             return $scope.isShoulderDateDisabled || (new tzIndependentDate($scope.groupConfigData.summary.block_to) < new tzIndependentDate($rootScope.businessDate));
         };
+
+        $scope.$on('DATE_CHANGE_FAILED', function() {
+            fetchApplicableRates();
+        });
     }
 ]);
