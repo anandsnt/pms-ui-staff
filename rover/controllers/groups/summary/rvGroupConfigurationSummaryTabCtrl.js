@@ -2133,7 +2133,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             return $scope.isShoulderDateDisabled || (new tzIndependentDate($scope.groupConfigData.summary.block_to) < new tzIndependentDate($rootScope.businessDate));
         };
 
-        $scope.$on('DATE_CHANGE_FAILED', function() {
+        $scope.addListener('DATE_CHANGE_FAILED', function() {
             fetchApplicableRates();
         });
     }
