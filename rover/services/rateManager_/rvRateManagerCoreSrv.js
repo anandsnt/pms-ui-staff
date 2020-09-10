@@ -133,6 +133,12 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             return this.getJSON(url, params);
         };
 
+        service.fetchActiveRestrictionsList = (params) => {
+            var url = '/api/restriction_types';
+
+            return this.getJSON(url, params);
+        };
+
         service.fetchSingleRateDetailsAndRoomTypes = (params) => {
             var promises = [],
                 roomTypes = [],

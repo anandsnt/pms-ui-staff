@@ -12,7 +12,7 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
                 type: 'boolean',
                 value: null
             },
-            {
+            {   
                 title: 'CLOSED TO ARRIVAL',
                 iconClass: 'icon-block',
                 bgClass: 'bg-red',
@@ -327,6 +327,27 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
             });
 
             return weekDays;
+        };
+
+        /*  
+         *  Utility method to map active restrictions from admin side with the RestrictionColorAndIconMapping list.
+         *  When a restriction marked as OFF from admin side, it should not shown in set restriction list to choose it.
+         * 
+         *  @param {Array} [ activeRestrictionsList - all restriction from admin side with activated flag ]
+         *  @return {Array} [ filtered RestrictionColorAndIconMapping list ]
+         */
+        service.getActiveRestrictionColorAndIconMapping = function( activeRestrictionsList ) {
+            var activeRestrictionColorAndIconMapping = [];
+
+            _.each(activeRestrictionsList, function(activeItemObj) {
+                _.each(service.restrictionColorAndIconMapping, function(iconMappingObj, index) {
+                    if ((activeItemObj.id === service.restrictionKeyToCodeMapping[service.restrictionColorAndIconMapping[index].key][0]) && activeItemObj.activated) {
+                        activeRestrictionColorAndIconMapping.push(iconMappingObj);
+                    }
+                });
+            });
+
+            return activeRestrictionColorAndIconMapping;
         };
     }
 ]);
