@@ -1036,6 +1036,21 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 closeByEscape: false
             });
         };
+        
+        /*
+         *  CICO-80327: To show the waring popup for addon overbooked info.
+         *  @param {Array} [addonsList]
+         */
+        var showAddonOverbookedWarningPopup = function( addonsList ) {
+            $scope.addonNames = addonsList.join(", ");
+            ngDialog.open({
+                template: '/assets/partials/groups/summary/warnAddonOverBooked.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
 
         var onRateChangeSuccessCallBack = function(response) {
             $scope.$emit('hideLoader');
@@ -1053,6 +1068,9 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 summaryMemento.uniqId = $scope.groupConfigData.summary.uniqId;
                 // fetch summary once rate is changed - as per CICO-31812 comments
                 $scope.$emit('FETCH_SUMMARY');
+                if (response.overbooked_addons.length > 0) {
+                    showAddonOverbookedWarningPopup(response.overbooked_addons);
+                }
             }
         };
 

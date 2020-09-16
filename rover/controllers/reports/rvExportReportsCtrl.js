@@ -661,6 +661,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Nationality Export - France': true,
                 'Criterion Hospitality CC Export': true,
                 'GOBD Export': true,
+                'GOBD Admin Charge Code Actions Export': true,
                 'Cancellations by Arrival Date': true,
                 'Cancellations by Cancel Date': true,
                 'HESTA Switzerland': true
@@ -868,7 +869,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
              * Export Calender Options
              * max date is business date
              */
-            if ($scope.selectedEntityDetails.report.title === 'Cancellations by Arrival Date' || 
+            if ($scope.selectedEntityDetails.report.title === 'Cancellations by Arrival Date' ||
                     $scope.selectedEntityDetails.report.title === 'Cancellations by Cancel Date' ||
                     $scope.selectedEntityDetails.report.title === 'Guest Details by Arrival Date' ) {
                 $scope.exportFromCalenderOptions = angular.extend({
@@ -878,7 +879,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                         $scope.exportCalenderToOptions.minDate = value;
                     }
                 }, datePickerCommon);
-            } else if ($scope.selectedEntityDetails.report.title !== 'GOBD Export') {
+            } else if ($scope.selectedEntityDetails.report.title !== 'GOBD Export' &&
+                       $scope.selectedEntityDetails.report.title !== 'GOBD Admin Charge Code Actions Export') {
                 $scope.exportFromCalenderOptions = angular.extend({
                     maxDate: tzIndependentDate(businessDateMinusOne),
                     minDate: tzIndependentDate(null),
@@ -899,7 +901,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             
             $scope.scheduleParams.from_date = (exportDate === null) ? null : reportUtils.processDate(exportDate).today;
 
-            if ($scope.selectedEntityDetails.report.title === 'GOBD Export') {
+            if ($scope.selectedEntityDetails.report.title === 'GOBD Export' ||
+                $scope.selectedEntityDetails.report.title === 'GOBD Admin Charge Code Actions Export') {
                 if (exportDate === null) {
                     exportDate = businessDateMinusNinety;
                 }
@@ -907,8 +910,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                     maxDate: tzIndependentDate(todayDate),
                     minDate: tzIndependentDate(exportDate)
                 }, datePickerCommon);
-            } else if ($scope.selectedEntityDetails.report.title === 'Cancellations by Arrival Date' || 
-                        $scope.selectedEntityDetails.report.title === 'Cancellations by Cancel Date') {
+            } else if ($scope.selectedEntityDetails.report.title === 'Cancellations by Arrival Date' ||
+                       $scope.selectedEntityDetails.report.title === 'Cancellations by Cancel Date') {
                 $scope.exportCalenderToOptions = angular.extend({
                     maxDate: null,
                     minDate: null
@@ -1441,9 +1444,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 if (dateFieldObject.id === $scope.scheduleParams.time_period_id) {
                     return true;
                 }
-            } else if ($scope.selectedEntityDetails.report.title === 'GOBD Export' || 
-                        $scope.selectedEntityDetails.report.title === 'Cancellations by Arrival Date' || 
-                        $scope.selectedEntityDetails.report.title === 'Cancellations by Cancel Date' ) {
+            } else if ($scope.selectedEntityDetails.report.title === 'GOBD Export' ||
+                       $scope.selectedEntityDetails.report.title === 'GOBD Admin Charge Code Actions Export' ||
+                       $scope.selectedEntityDetails.report.title === 'Cancellations by Arrival Date' ||
+                       $scope.selectedEntityDetails.report.title === 'Cancellations by Cancel Date' ) {
                             
                 var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
                     function(item) {
@@ -1467,9 +1471,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 if (dateFieldObject.id === $scope.scheduleParams.time_period_id) {
                     return true;
                 }
-            } else if ($scope.selectedEntityDetails.report.title === 'GOBD Export' || 
-                        $scope.selectedEntityDetails.report.title === 'Cancellations by Arrival Date' || 
-                        $scope.selectedEntityDetails.report.title === 'Cancellations by Cancel Date') {
+            } else if ($scope.selectedEntityDetails.report.title === 'GOBD Export' ||
+                       $scope.selectedEntityDetails.report.title === 'GOBD Admin Charge Code Actions Export' ||
+                       $scope.selectedEntityDetails.report.title === 'Cancellations by Arrival Date' ||
+                       $scope.selectedEntityDetails.report.title === 'Cancellations by Cancel Date') {
 
                 var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
                     function(item) {
