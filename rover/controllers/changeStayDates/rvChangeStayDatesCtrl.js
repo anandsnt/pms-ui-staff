@@ -994,7 +994,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
                 if (extendThrough || ((thisDate.getTime() >= checkinDate.getTime()) && (thisDate.getTime() <= checkoutDate.getTime()))) {
                     events.push(calEvt);
                     $scope.stayDetails.validDays.push(this);
-                } else if (!skipAddingLastDate && !firstUnavailableDate) {
+                } else if (!skipAddingLastDate && !firstUnavailableDate && (thisDate.getTime() > checkoutDate.getTime())) {
                     firstUnavailableDate = calEvt;
                 }
                 
