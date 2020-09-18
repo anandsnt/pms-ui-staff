@@ -155,7 +155,7 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	*/
 	$scope.changedAvailabilityDataParams = function() {
 		$timeout(function() {
-			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityDetails, $scope.getDateParams(), successCallbackOfAvailabilityFetch, fetchApiFailed);
+			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityAndBestAvailableRates, $scope.getDateParams(), successCallbackOfAvailabilityFetch, fetchApiFailed);
 		}, 0);
 
 	};
