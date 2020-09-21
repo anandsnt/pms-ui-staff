@@ -67,14 +67,6 @@ angular.module('sntRover')
                 }
             };
 
-            var hasAdditionalData = function () {
-                return !! $scope.data.additionalData;
-            };
-
-            var hasBestAvailabilityRate = function () {
-                return hasAdditionalData() && !! $scope.data.additionalData.bestAvailabilityRate;
-            };
-
             /** 
              * This is a higher order function that will generate funtion for the purpose
              * 
