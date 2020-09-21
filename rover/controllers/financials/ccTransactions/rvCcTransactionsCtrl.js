@@ -5,12 +5,14 @@ sntRover.controller('RVccTransactionsController', ['$scope', '$filter', '$stateP
 	$scope.$emit('HeaderChanged', $filter('translate')('MENU_CC_TRANSACTIONS'));
 	$scope.setTitle($filter('translate')('MENU_CC_TRANSACTIONS'));
     $scope.$emit("updateRoverLeftMenu", "ccTransactions");
-    
-	$scope.data = {};
-    $scope.data.activeTab = 0;
-    $scope.data.transactionDate = $rootScope.businessDate;
-    $scope.data.paymentData = {};
-    $scope.data.authData = {};
+	
+	var init = function() {
+		$scope.data = {};
+		$scope.data.activeTab = 0;
+		$scope.data.transactionDate = $rootScope.businessDate;
+		$scope.data.paymentData = {};
+		$scope.data.authData = {};
+	};
 
 	// Handling TransactionDate date picker click
 	$scope.clickedTransactionDate = function() {
@@ -45,7 +47,7 @@ sntRover.controller('RVccTransactionsController', ['$scope', '$filter', '$stateP
     // Handle Tab switch
     $scope.activatedTab = function(index) {
     	$scope.data.activeTab = index;
-    	$scope.$emit('mainTabSwiched');
+    	$scope.$broadcast('mainTabSwiched');
     	$scope.$broadcast('CLOSEPRINTBOX');
     };
 
@@ -62,9 +64,16 @@ sntRover.controller('RVccTransactionsController', ['$scope', '$filter', '$stateP
     	return hasAnyElements;
     };
 
-
 	$scope.hasPermissionToSubmitCCBatch = function() {
 		return rvPermissionSrv.getPermissionValue('SUBMIT_CC_BATCH');
 	};
+
+	if ($stateParams.isRefresh) {
+		init();
+	}
+	else {
+		// Restrore the data when coming back from stay card.
+		$scope.data = RVccTransactionsSrv.getCache();
+	}
 
 }]);

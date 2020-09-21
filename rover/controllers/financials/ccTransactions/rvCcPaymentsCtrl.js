@@ -1,4 +1,4 @@
-sntRover.controller('RVccPaymentsController', ['$scope', '$filter', '$stateParams', 'ngDialog', '$rootScope', 'RVccTransactionsSrv', '$timeout', function($scope, $filter, $stateParams, ngDialog, $rootScope, RVccTransactionsSrv, $timeout) {
+sntRover.controller('RVccPaymentsController', ['$scope', '$filter', '$stateParams', 'ngDialog', '$rootScope', 'RVccTransactionsSrv', '$timeout', '$state', function($scope, $filter, $stateParams, ngDialog, $rootScope, RVccTransactionsSrv, $timeout, $state) {
 
 	BaseCtrl.call(this, $scope);
 
@@ -25,7 +25,13 @@ sntRover.controller('RVccPaymentsController', ['$scope', '$filter', '$stateParam
 		$scope.invokeApi(RVccTransactionsSrv.fetchPayments, { "date": $scope.data.transactionDate }, successCallBackFetchPaymentData);
 	};
 
-	initPaymentData();
+	// Do not call fetch payment API, if we are coming back from Stay Card.
+	if ($stateParams.isRefresh || ($scope.previousState && $scope.previousState.name !== "rover.reservation.staycard.reservationcard.reservationdetails")) {
+		initPaymentData();
+	}
+	else {
+		refreshPaymentScroll();
+	}
 
 	// Handle change transaction date
     $scope.$on('transactionDateChanged', function() {
@@ -73,6 +79,20 @@ sntRover.controller('RVccPaymentsController', ['$scope', '$filter', '$stateParam
 		if ($scope.data.activeTab === 0) {
 			refreshPaymentScroll();
 		}
-    });
+	});
+
+	/*
+	 * 	Method to go to stay card.
+	 *	@params {Number} [reservation id]
+	 *	@params {String} [reservation no or confirmation no]
+	 */
+	$scope.gotoStayCard = function(reservationId, confirmationId) {
+		RVccTransactionsSrv.updateCache($scope.data);
+		$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+			id: reservationId,
+			confirmationId: confirmationId,
+			isrefresh: true
+		});
+	};
 
 }]);
