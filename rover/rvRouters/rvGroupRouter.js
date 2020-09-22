@@ -22,6 +22,9 @@ angular.module('groupModule', [])
         $stateProvider.state('rover.groups.search', {
             url: '/search',
             templateUrl: '/assets/partials/groups/search/rvGroupSearch.html',
+            params: {
+                origin: ''
+            },
             controller: 'rvGroupSearchCtrl',
             resolve: {
                 // to tackle from coming admin app to rover, see the injection in next resolve function

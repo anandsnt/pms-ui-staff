@@ -1520,6 +1520,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             } else if ( 'ACCOUNT' === $scope.groupConfigData.activeTab ) {
                 $scope.$broadcast( 'UPDATE_ACCOUNT_SUMMARY' );
             }
+            if (resolvedBackBtn.name === 'rover.groups.search') {
+                resolvedBackBtn.param.origin = 'BACK_TO_GROUP_SEARCH_LIST';
+            }
 
             $state.go( resolvedBackBtn.name, resolvedBackBtn.param );
         };
