@@ -95,7 +95,7 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 			});
 
 			var managerCharts = [{
-				name: 'Room Perfomance',
+				name: 'Room Performance',
 				department: 'GENERAL',
 				fetchDataEvent: 'GET_MANAGER_PERFOMANCE',
 				tileDescription: 'MANAGER_PERFOMANCE_DESC'
