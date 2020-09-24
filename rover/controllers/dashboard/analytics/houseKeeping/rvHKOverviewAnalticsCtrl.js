@@ -153,7 +153,7 @@ angular.module('sntRover')
                         .attr("y", -20)
                         .attr("dy", ".35em")
                         .attr("class", "chart-area-label")
-                        .text("Perfomed");
+                        .text("Performed");
 
                     svg.append("text")
                         .attr("x", xScale(maxValueInBotheDirections / 4))
