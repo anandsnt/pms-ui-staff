@@ -945,18 +945,19 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		 * @return {Promise}
 		 */
 		this.fetchAvailabilityAndBestAvailableRates = function (params) {
-			var deferred = $q.defer(),
-				promises = [];
+			var deferred = $q.defer();				
 
-			promises.push(that.fetchAvailabilityDetails(params));
-			promises.push(that.fetchBARs(params));
+			that.fetchAvailabilityDetails(params).then(function() {
+				that.fetchBARs(params).then(function() {
+					deferred.resolve();
+				}, function (error) {
+					deferred.reject(error);
+				});
 
-			$q.all(promises).then(function () {
-				deferred.resolve(true);
-			}, function (errorMessage) {
-				deferred.reject(errorMessage);
+			}, function (error) {
+				deferred.reject(error);
 			});
-
+			
 			return deferred.promise;
 
 		};
