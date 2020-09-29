@@ -600,22 +600,33 @@
         }
 
         .balance {
-            position: relative;
-            text-align: right; 
-            padding: 10px 0;
+            padding: 10px 20px;
             margin-bottom: 10px;
-            border-bottom: 1px solid rgba(0,0,0,.1); 
+            background-color: rgba(0,0,0,.05);
+            border-radius: 3px;
 
-            .label { 
-                position: absolute;
-                top: 10px;
-                left: 0;
-                text-align: left;
-                line-height: 30px; 
+            .label {
+                line-height: 1;
+                float: none;
+                margin: 0;
+                color: rgba(0,0,0,.4);
             }
-            
-            .red { color: @red; }
-            .green { color: @green; }
+
+            .red {
+                color: @red;
+            }
+
+            .green {
+                color: @green;
+            }
+
+            &.background-red {
+                background-color: fade(@red, 10);
+            }
+
+            &.background-green  {
+                background-color: fade(@green, 10);
+            }
         }
 
         .button { 
@@ -1434,7 +1445,7 @@
     display: -webkit-inline-box;
 }
 
-.accompany-guest-wrapper, {
+.accompany-guest-wrapper {
     height:100%;
     overflow:visible;
     width: 100% !important;
