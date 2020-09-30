@@ -238,6 +238,16 @@ angular.module('sntRover')
 
                 return deferred.promise;
             };
+
+            // add the print orientation before printing
+            var addPrintOrientation = function() {
+                $( 'head' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
+            };
+
+            // add the print orientation after printing
+            var removePrintOrientation = function() {
+                $( '#print-orientation' ).remove();
+            };
             
             // Listener hash to catch each events
             var listeners = {};
@@ -248,9 +258,11 @@ angular.module('sntRover')
                         closeDelay = 1000;
 
                     $( '#loading' ).addClass( 'ng-hide' );
+                    addPrintOrientation();
 
                     var onPrintCompletion = function() {
                         $timeout(closeAllSections, closeDelay);
+                        removePrintOrientation();
                     };
 
                     $timeout(function () {
