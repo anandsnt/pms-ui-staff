@@ -33,4 +33,14 @@ angular.module('sntRover').service('RVccTransactionsSrv', ['$http', '$q', 'BaseW
         return deferred.promise;
     };
 
+    // CICO-81462: Methods to update cached cc transaction data.
+    that.updateCache = function(data) {
+        that.ccTransactionData = data;
+    };
+
+    // CICO-81462 : Methods to fetch cached cc transaction data.
+    that.getCache = function() {
+        return that.ccTransactionData;
+    };
+
 }]);
