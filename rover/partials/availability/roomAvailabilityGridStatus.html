@@ -56,7 +56,7 @@
                     <th class="heading rows-toggle" scope="row" ng-class="{'active' : toggleStatusOf.bar }"
                         ng-click="toggleBar()">
                         BAR</th> <!-- Toggle visibiliy when this is clicked -->
-                    <td ng-repeat="bar in data.additionalData.bestAvailabilityRate track by $index">
+                    <td ng-repeat="bar in data.bestAvailabilityRates track by $index">
                         <div class="inner">
                             <span class="rate-value" ng-if="bar == 'C'">C</span>
                             <span class="rate-value" ng-if="bar != 'C'"> {{bar | currency:currencySymbol:2}}</span>

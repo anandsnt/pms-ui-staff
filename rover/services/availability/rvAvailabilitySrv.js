@@ -493,17 +493,11 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		rvBaseWebSrvV2.getJSON(url, payLoad).then(function(response) {
 			var BARs = [];
 
-			if (!that.data.gridData.additionalData) {
-                that.data.gridData.additionalData = {};
-            }
-
 			_.each(response.dates, function(day) {
 				BARs.push((null == day.amount) ? 'C' : day.amount);
 			});
 
-			_.extend(that.data.gridData.additionalData, {
-				'bestAvailabilityRate': BARs
-			});
+			that.data.gridData.bestAvailabilityRates = BARs;
 
 			deferred.resolve(BARs);
 
