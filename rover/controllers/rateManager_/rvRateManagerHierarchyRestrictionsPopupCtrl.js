@@ -72,13 +72,14 @@ angular.module('sntRover')
                                                         );
                         $scope.selectedRestriction.value = null;
                         $scope.selectedRestriction.id = hierarchyUtils.restrictionKeyToCodeMapping[$scope.selectedRestriction.key][0];
+                        $scope.restrictionStylePack = angular.copy(hierarchyUtils.restrictionColorAndIconMapping);
                     }
                     else {
                         $scope.selectedRestriction = {};
                         $scope.selectedRestriction.activeGroupList = [];
+                        $scope.restrictionStylePack = hierarchyUtils.getActiveRestrictionColorAndIconMapping($scope.activeRestrictionsList);
                     }
                     $scope.popUpView = 'NEW';
-                    $scope.restrictionStylePack = angular.copy(hierarchyUtils.restrictionColorAndIconMapping);
                     $scope.showRestrictionSelection = false;
                     $scope.$broadcast('INIT_SET_ON_SEARCH');
                     $scope.restrictionObj.isRepeatOnDates = false;
