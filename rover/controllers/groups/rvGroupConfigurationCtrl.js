@@ -506,6 +506,13 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 });
             };
 
+            // Trigger the date change failed event
+            var triggerDateChangeFailedEvent = function () {
+                $timeout(function () {
+                    $scope.$broadcast('DATE_CHANGE_FAILED');
+                }, 500);
+            };
+
             /**
              * [failureCallBackOfMoveDatesAPI description]
              * @param  {[type]} errorMessage [description]
@@ -536,6 +543,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         default:
                             $scope.errorMessage = error;
                             lastFailureCallback (error);
+                            triggerDateChangeFailedEvent();
                             break;
                     }
                 }
@@ -543,6 +551,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 else {
                     $scope.errorMessage = error;
                     lastFailureCallback (error);
+                    triggerDateChangeFailedEvent();                    
                 }
             };
 
