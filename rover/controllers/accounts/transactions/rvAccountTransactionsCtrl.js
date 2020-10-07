@@ -42,40 +42,100 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var that = this;
 
 		$scope.perPage = 50;
+		$scope.maxNoOfDaysToShow = 15;
 		$scope.businessDate = $rootScope.businessDate;
-
 		$scope.isFromBillCard = false;
 
+		/*
+		 *	Method to process the days list visibility after new date choosen from date picker.
+		 *	Update visble days tiles on screen based on the selectedDate.
+		 * 	@param {String} [selectedDate - selected date which have transactions exist]
+		 */
+		var processDaysListToSetActive = function( selectedDate ) {
+			var daysList = $scope.transactionsDetails.bills[$scope.currentActiveBill].days,
+				selectedDateObj = _.find(daysList, function(day) { return day.date === selectedDate; });
+
+			// If the tile for the selected date is not visible in the screen,
+			// we need to re-render entire days list with new order.
+			if (!selectedDateObj.show) {
+				var counter = 0,
+					dayFound = false;
+
+				angular.forEach(daysList, function(day) {
+					// Searching for the selectedDate exist in the list.
+					if (day.date === selectedDate) {
+						dayFound = true;
+					}
+					// Making days visible from the selectedDate upto maxNoOfDaysToShow count.
+					if (dayFound && (counter < $scope.maxNoOfDaysToShow)) {
+						day.show = true;
+						counter ++;
+					}
+					else {
+						day.show = false;
+					}
+				});
+			}
+			$scope.transactionsDetails.bills[$scope.currentActiveBill].activeDate = selectedDate;
+		};
+
+		var initDaysListForRecentDayActive = function() {
+			var bill = $scope.transactionsDetails.bills[$scope.currentActiveBill],
+				daysCount = bill.days.length;
+
+			if (daysCount > 0 && daysCount <= $scope.maxNoOfDaysToShow) {
+				angular.forEach(bill.days, function(day) {
+					day.show = true;
+				});
+			}
+			else if (daysCount > 0) {
+				angular.forEach(bill.days, function(day, index) {
+					day.show = index >= daysCount - $scope.maxNoOfDaysToShow;
+				});
+			}
+		};
+
 		// Success callback for transaction fetch API.
-		var onBillTransactionFetchSuccess = function(data) {
+		var onBillTransactionFetchSuccess = function(data, selectedDate) {
+			if (data.transactions.length > 0) {
+				$scope.errorMessage = '';
+				var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
 
-			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+				activebillTab.transactions = [];
+				_.each(data.transactions, function(item) {
 
-			activebillTab.transactions = [];
-			_.each(data.transactions, function(item) {
+					item.description = (item.card_number !== null && item.card_number !== '') ? item.description + "-" + item.card_number : item.description;
+				});
+				activebillTab.transactions = data.transactions;
+				activebillTab.total_count  = data.total_count;
 
-				item.description = (item.card_number !== null && item.card_number !== '') ? item.description + "-" + item.card_number : item.description;
-			});
- 			activebillTab.transactions = data.transactions;
- 			activebillTab.total_count  = data.total_count;
+				refreshRegContentScroller();
 
- 			refreshRegContentScroller();
+				angular.forEach(activebillTab.transactions, function(feesValue, feesKey) {
+					feesValue.billValue 	= activebillTab.bill_number; // Bill value append with bill details
+					feesValue.oldBillValue 	= activebillTab.bill_number; // oldBillValue used to identify the old billnumber
+				});
 
- 			angular.forEach(activebillTab.transactions, function(feesValue, feesKey) {
-				feesValue.billValue 	= activebillTab.bill_number; // Bill value append with bill details
-				feesValue.oldBillValue 	= activebillTab.bill_number; // oldBillValue used to identify the old billnumber
-			});
+				setChargeCodesSelectedStatus(false);
+				$timeout(function () {
+					$scope.$broadcast('updatePagination', activebillTab.bill_number );
+				}, 1000);
 
-			setChargeCodesSelectedStatus(false);
-			$timeout(function () {
-				$scope.$broadcast('updatePagination', activebillTab.bill_number );
-			}, 1000);
-			$scope.$emit('hideLoader');
+				// Callback while selecting date via Date Picker.
+				if (selectedDate) {
+					processDaysListToSetActive(selectedDate);
+				}
+				else {
+					initDaysListForRecentDayActive();
+				}
+			}
+			else {
+				$scope.errorMessage = ['The date selected has no transactions, please select a new date'];
+			}
 		};
 
 		// Failure callback for transaction fetch API.
 		var onBillTransactionFetchFailure = function(errorMessage) {
-			$scope.$emit('hideLoader');
 			$scope.errorMessage = errorMessage;
 		};
 
@@ -83,14 +143,14 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * API calling method to get the bill transaction details
 		 * @return - undefined
 		 */
-		var getBillTransactionDetails = function( pageNo ) {
+		var getBillTransactionDetails = function( pageNo, selectedDate ) {
 			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
 
 			activebillTab.page_no = pageNo || 1;
 			
 			var params = {
 				'bill_id': activebillTab.bill_id,
-				'date': activebillTab.activeDate,
+				'date': selectedDate ? selectedDate : activebillTab.activeDate,
 				'page': activebillTab.page_no,
 				'per_page': $scope.perPage
 			};
@@ -98,6 +158,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			var options = {
 				successCallBack: onBillTransactionFetchSuccess,
 				failureCallBack: onBillTransactionFetchFailure,
+				successCallBackParameters: selectedDate,
 				params: params
 			};
 
@@ -147,10 +208,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				var billTabsData = $scope.transactionsDetails.bills,
 					chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
 
-				chargeCodesId = [];
 				_.each(chargeCodes, function(chargeCode) {
-				  chargeCode.isSelected = bool;
-				  chargeCodesId.push(chargeCode.id);
+					chargeCode.isSelected = bool;
 				});
 				$scope.transactionsDetails.isAllChargeCodeSelected = bool;
 		};
@@ -371,16 +430,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				if ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation) {
 					requestControlDigitsFromBlackBox();
 				}
-				
 			} 
 			if (currentActiveBill.balance_amount === "0.0") {
-
 				if ($scope.shouldGenerateFolioNumber) {
 					that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.balance_amount, currentActiveBill.is_folio_number_exists, $scope.currentActiveBill);
 				}
 			}
 
-			configSummaryDateFlags();
 			loadDefaultBillDateData();
 			$scope.shouldGenerateFolioNumber = false;
 
@@ -567,6 +623,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 */
 		$scope.setActiveBill = function(billIndex) {
 			$scope.currentActiveBill = billIndex;
+			var bill = $scope.transactionsDetails.bills[billIndex];
+
+			bill.activeDate = bill.days.length > 0 ? _.last(bill.days).date : null;
 			loadDefaultBillDateData();
 		};
 
@@ -1349,8 +1408,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var loadDefaultBillDateData = function() {
 			var activebillTab 	= $scope.transactionsDetails.bills[$scope.currentActiveBill];
 
-			// Load the data only if an active date is present and there is no data already fetched.
-			if (!!activebillTab.activeDate && activebillTab.transactions.length === 0 ) {
+			// Load the data only if an active date is present.
+			if (!!activebillTab.activeDate && activebillTab.days.length > 0) {
 				// CICO-51236 : Set pagination value for bills.
 				$timeout(function() {
 					activebillTab.pageOptions = {
@@ -1374,67 +1433,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			}, 500);
 		};
 
-		// Handle the summary day shift functionality.
-		$scope.summaryDateBtnGroup = {
-			showCount: 5,
-			next: function(billData) {
-				var length = billData.days.length - 1;
-
-				if (billData.currentActive < length) {
-					billData.currentActive ++;
-					billData.days[billData.currentActive].isShown = true;
-					billData.days[billData.currentActive - this.showCount].isShown = false;
-					if (billData.currentActive === length) {
-						billData.disableNext = true;
-					}
-					billData.disablePrev = false;
-				}
-			},
-			prev: function(billData) {
-				if (billData.currentActive >= this.showCount) {
-					billData.days[billData.currentActive].isShown = false;
-					billData.days[billData.currentActive - this.showCount].isShown = true;
-					if (billData.currentActive === this.showCount) {
-						billData.disablePrev = true;
-					}
-					billData.currentActive --;
-					billData.disableNext = false;
-				}
-			}
-		};
-
-		/**
-		 * Function to populate date isShown data
-		 * @param {array} bills array
-		 */
-		var configSummaryDateFlags = function() {
-			var showCount = $scope.summaryDateBtnGroup.showCount,
-				bills = $scope.transactionsDetails.bills;
-
-			angular.forEach(bills, function(bill, key) {
-				var i = 0,
-				dateCount = bill.days.length;
-
-				if (dateCount > showCount) {
-					bill.disablePrev = false;
-					while (i < (dateCount - showCount)) {
-						bill.days[i].isShown = false;
-						i++;
-					}
-				}
-				else {
-					bill.disablePrev = true;
-				}
-				while (i < dateCount) {
-					bill.days[i].isShown = true;
-					i++;
-				}
-				bill.currentActive 	= (dateCount - 1);
-				bill.disableNext 	= true;
-				bill.activeDate 	= (dateCount > 0) ? bill.days[dateCount - 1].date : null;
-			});
-		};
-
 		/*
 		 *	Handle each summary day click - load the day transaction.
 		 *	@param {String} current selected date.
@@ -1444,7 +1442,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
 
 			activebillTab.activeDate = date;
-			getBillTransactionDetails();
+			getBillTransactionDetails(null, date);
 		};
 
 		/*
@@ -1563,5 +1561,31 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				scope: $scope
 			});
 		};
+
+		$scope.clickedGotoDate = function() {
+			var bill = $scope.transactionsDetails.bills[$scope.currentActiveBill],
+			params = {
+				minDate: bill.days[0].date,
+				maxDate: _.last(bill.days).date,
+				activeDate: bill.activeDate
+			};
+
+			ngDialog.open({
+				template: '/assets/partials/accounts/transactions/rvAccountDatePicker.html',
+				controller: 'rvAccountDatepickerCtrl',
+				className: 'single-date-picker',
+				scope: $scope,
+				data: params
+			});
+		};
+
+		/*
+		 *	Date chaged event from rvAccountDatepickerCtrl
+		 *	@param {Object} [event object]
+		 *	@param {String} [selected date]
+		 */
+		$scope.addListener('DATE_CHANGED', function( event, date ) {
+			getBillTransactionDetails(null, date);
+		});
 	}
 ]);
