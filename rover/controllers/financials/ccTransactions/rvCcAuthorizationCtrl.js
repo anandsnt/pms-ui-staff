@@ -1,15 +1,9 @@
-sntRover.controller('RVccAuthorizationController', ['$scope', '$filter', '$stateParams', 'ngDialog', '$rootScope', 'RVccTransactionsSrv', '$timeout', function($scope, $filter, $stateParams, ngDialog, $rootScope, RVccTransactionsSrv, $timeout) {
+sntRover.controller('RVccAuthorizationController', ['$scope', '$filter', '$stateParams', 'ngDialog', '$rootScope', 'RVccTransactionsSrv', '$timeout', '$state', function($scope, $filter, $stateParams, ngDialog, $rootScope, RVccTransactionsSrv, $timeout, $state) {
 
 	BaseCtrl.call(this, $scope);
-
-	var init = function() {
-		fetchAuthData();
-		$scope.setScroller('authorization-scroll', {});
-
-	};
+	$scope.setScroller('authorization-scroll', {});
 
 	var fetchAuthData = function() {
-
 		var fetchAuthDataSuccess = function(data) {
 			$scope.data.authData = data;
 			refreshAuthorizationScroll();
@@ -19,14 +13,21 @@ sntRover.controller('RVccAuthorizationController', ['$scope', '$filter', '$state
         };
 
         $scope.callAPI(RVccTransactionsSrv.fetchAuthData, options);
-
 	};
 
 	var refreshAuthorizationScroll = function() {
         setTimeout(function() {
         	$scope.refreshScroller('authorization-scroll');
         }, 500);
-    };
+	};
+	
+	// Do not call auth fetch API, if we are coming back from Stay Card.
+	if ($stateParams.isRefresh || ($scope.previousState && $scope.previousState.name !== "rover.reservation.staycard.reservationcard.reservationdetails")) {
+		fetchAuthData();
+	}
+	else {
+		refreshAuthorizationScroll();
+	}
 
     $scope.$on('mainTabSwiched', function() {
 		if ($scope.data.activeTab === 1) {
@@ -81,8 +82,18 @@ sntRover.controller('RVccAuthorizationController', ['$scope', '$filter', '$state
 		item.active = !item.active;
 		refreshAuthorizationScroll();
 	};
-
-
-	init();
+	/*
+	 * 	Method to go to stay card.
+	 *	@params {Number} [reservation id]
+	 *	@params {String} [reservation no or confirmation no]
+	 */
+	$scope.gotoStayCard = function(reservationId, confirmationId) {
+		RVccTransactionsSrv.updateCache($scope.data);
+		$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+			id: reservationId,
+			confirmationId: confirmationId,
+			isrefresh: true
+		});
+	};
 
 }]);

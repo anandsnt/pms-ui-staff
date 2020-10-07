@@ -38,21 +38,18 @@
       Unavailable
     </a>
     <!-- Show balance -->
-    <div class="balance break" ng-hide="isSRViewRateBtnShown()">
-      <span class="label">Balance</span>
-      <!-- According to CICO-15833, we need SR in both connected & stanalone -->
-      <span>
-        <span
-          class="h1"
-          ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)"
-          ng-if="isBalanceAmountShown()"
-        >
-          {{::currencySymbol}}
-          {{ reservationData.reservation_card.balance_amount | number: 2 }}
-        </span>
-        <span class="h1" ng-if="!isBalanceAmountShown()">
-          {{::('SUPPRESSED_RATES_TEXT' | translate)}}
-        </span>
+    <div class="balance background-{{getBalanceAmountColor(reservationData.reservation_card.balance_amount)}}" ng-hide="isSRViewRateBtnShown()">
+      <span class="label">{{['CHECKEDIN','CHECKEDOUT', 'CHECKING_OUT'].includes(reservationData.reservation_card.reservation_status)?'Guest Balance':'Guest to Pay'}}</span>
+      <span
+        class="h1"
+        ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)"
+        ng-if="isBalanceAmountShown()"
+      >
+        {{::currencySymbol}}
+        {{ reservationData.reservation_card.balance_amount | number: 2 }}
+      </span>
+      <span class="h1" ng-if="!isBalanceAmountShown()">
+        {{::('SUPPRESSED_RATES_TEXT' | translate)}}
       </span>
     </div>
 

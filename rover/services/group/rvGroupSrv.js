@@ -189,5 +189,19 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		// CICO-77203: Methods to update cache filter data of group list
+		this.updateCache = function(data) {
+			this.filterParams = data;
+		};
+
+		// CICO-77203 : Methods to fetch cache filter data of group list
+		this.getCache = function() {
+			return this.filterParams;
+		};
+
+		// CICO-77203 : Methods to clear cache filter data of group list
+		this.clearCache = function() {
+			this.filterParams = {};
+		};
 	}
 ]);

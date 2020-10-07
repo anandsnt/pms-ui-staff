@@ -68,7 +68,11 @@
                 </div>
             </div>
             <div class="entry no-label only-button margin">
-                <button class="button white blue-text" ng-click="openDepositBalanceModal();" translate>BALANCE_DETAILS</button>
+                <button class="button white blue-text" 
+                    ng-click="openDepositBalanceModal();" 
+                    ng-disabled="!accountConfigData.summary.posting_account_id" 
+                    ng-class="{'overlay': !accountConfigData.summary.posting_account_id}"
+                    translate>BALANCE_DETAILS</button>
                 <!-- opens {modals/post-deposit.html} -->
             </div>
             <div class="entry no-label only-button" ng-hide="true">

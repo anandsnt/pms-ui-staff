@@ -6,6 +6,9 @@ angular.module('sntRover')
         '$window',
         '$timeout',
         function ($scope, rvAvailabilitySrv, $q, $window, $timeout) {
+            var AVAILABILITY_GRID_PERIOD_14 = 14,
+                AVAILABILITY_GRID_PERIOD_30 = 30;
+
 
             /*
             * Function to set all toggle to close
@@ -17,6 +20,7 @@ angular.module('sntRover')
                 $scope.toggleStatusOf['overbooking'] = false;
                 $scope.toggleStatusOf['occupancy'] = false;
                 $scope.toggleStatusOf['roomInventory'] = false;
+                $scope.toggleStatusOf['bar'] = false;
             };
 
             // we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
@@ -61,14 +65,6 @@ angular.module('sntRover')
                         $scope.toggleStatusOf[key] = ! $scope.toggleStatusOf[key];
                     }
                 }
-            };
-
-            var hasAdditionalData = function () {
-                return !! $scope.data.additionalData;
-            };
-
-            var hasBestAvailabilityRate = function () {
-                return hasAdditionalData() && !! $scope.data.additionalData.bestAvailabilityRate;
             };
 
             /** 
@@ -124,7 +120,8 @@ angular.module('sntRover')
                         $scope.toggleOccupancy(show, multiple),
                         $scope.toggleAvailableRooms(show, multiple),
                         $scope.toggleSoldRooms(show, multiple),
-                        $scope.toggleShowGroupAllotmentTotals(show)
+                        $scope.toggleShowGroupAllotmentTotals(show),
+                        $scope.toggleBar(show, multiple)
                     ],
                     delay = 500;
 
@@ -146,6 +143,7 @@ angular.module('sntRover')
                 $scope.toggleAvailableRooms(show);
                 $scope.toggleSoldRooms(show);
                 $scope.toggleShowGroupAllotmentTotals(show);
+                $scope.toggleBar(show);
             };
 
             /** ------------------------------------------------------------------------------ */
@@ -178,7 +176,7 @@ angular.module('sntRover')
                 'occupancy',
                 rvAvailabilitySrv.fetchBARs,
                 function() {
-                    return isSectionOpen('occupancy') || hasBestAvailabilityRate();
+                    return isSectionOpen('occupancy');
                 }
             );
 
@@ -202,6 +200,17 @@ angular.module('sntRover')
                 toggleSection( 'roomInventory', show );
                 $scope.refreshScroller('room_availability_scroller');
             };
+
+            /**
+             * Toggle the section showing the BAR
+             */
+            $scope.toggleBar = toggleSectionGenerator(
+                'bar',
+                rvAvailabilitySrv.getBestAvailableRatesByRoomType,
+                function() {
+                    return isSectionOpen('bar');
+                }
+            );
             
             /*
             * function to toggle the display of individual group/allotmet on clicking
@@ -229,6 +238,16 @@ angular.module('sntRover')
 
                 return deferred.promise;
             };
+
+            // add the print orientation before printing
+            var addPrintOrientation = function() {
+                $( 'head' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
+            };
+
+            // add the print orientation after printing
+            var removePrintOrientation = function() {
+                $( '#print-orientation' ).remove();
+            };
             
             // Listener hash to catch each events
             var listeners = {};
@@ -239,9 +258,11 @@ angular.module('sntRover')
                         closeDelay = 1000;
 
                     $( '#loading' ).addClass( 'ng-hide' );
+                    addPrintOrientation();
 
                     var onPrintCompletion = function() {
                         $timeout(closeAllSections, closeDelay);
+                        removePrintOrientation();
                     };
 
                     $timeout(function () {
@@ -315,13 +336,13 @@ angular.module('sntRover')
 
                 var leftMostRowCaptionWidth = 130, // 120px cell width + 10px cell spacing
                     totalColumns = $scope.data && $scope.data.dates && $scope.data.dates.length,
-                    individualColWidth = 60; // 55px cell width + 5px cell spacing
+                    individualColWidth = 100; // 95px cell width + 5px cell spacing
 
-                if (!_.has($scope.data, 'dates') && totalColumns < 30) {
+                if (!_.has($scope.data, 'dates') && totalColumns < AVAILABILITY_GRID_PERIOD_14) {
                     return 0;
                 }
 
-                if (totalColumns == 30) {
+                if (totalColumns === AVAILABILITY_GRID_PERIOD_14 || totalColumns === AVAILABILITY_GRID_PERIOD_30) {
                     return totalColumns * individualColWidth + leftMostRowCaptionWidth;
                 }
             };

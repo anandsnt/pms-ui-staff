@@ -386,11 +386,20 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		$scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {}, successCallBackOfFetchPayment);
 		// Show DEPOSIT/BALANCE popup
 		$scope.openDepositBalanceModal = function() {
+			$scope.$emit('showErrorMessage', []);
 			var dataToSrv = {
 				"posting_account_id": $scope.accountConfigData.summary.posting_account_id
-			};
+				},
+				onBalanceFetchFailure = function (error) {
+					$scope.$emit('showErrorMessage', error);
+				};
+			
+			$scope.callAPI(RVDepositBalanceSrv.getRevenueDetails, {
+				params: dataToSrv,
+				onSuccess: $scope.successCallBackFetchDepositBalance,
+				onFailure: onBalanceFetchFailure
+			});
 
-			$scope.invokeApi(RVDepositBalanceSrv.getRevenueDetails, dataToSrv, $scope.successCallBackFetchDepositBalance);
 		};
 
 		$scope.successCallBackFetchDepositBalance = function(data) {

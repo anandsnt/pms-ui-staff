@@ -2507,6 +2507,17 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             }
         });
 
+        var fetchActiveRestrictionsList = () => {
+            var options = {
+                params: {},
+                onSuccess: function(response) {
+                    $scope.activeRestrictionsList = response.results;
+                }
+            };
+
+            $scope.callAPI(rvRateManagerCoreSrv.fetchActiveRestrictionsList, options);
+        };
+
         /*
          * to initialize data model for rate manager
          */
@@ -2524,6 +2535,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             // mode
             $scope.viewingScreen = RM_RX_CONST.GRID_VIEW;
+            $scope.activeRestrictionsList = [];
+
+            if (activeHierarchyRestrictions()) {
+                fetchActiveRestrictionsList();
+            }
         };
 
         var activeHierarchyRestrictions = () => {
