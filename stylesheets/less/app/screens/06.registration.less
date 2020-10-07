@@ -761,12 +761,20 @@
                                 background-size: 100px !important;
 
                                 &.check-in {
-                                    background-position: 10px -465px !important; // overwrite # specificity
+                                    background-position: 10px -465px !important;
                                 }
 
                                 &.check-out {
-                                    background-position: 10px -498px !important; // overwrite # specificity
+                                    background-position: 10px -498px !important;
                                 }
+                            }
+
+                            .value {
+                                display: block;
+                                font-size: 14px;
+                                line-height: 1;
+                                margin-top: -5px;
+                                color: @grey3;
                             }
 
                             &:not(:last-child) {
