@@ -1484,7 +1484,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     if (_.isArray(responseData)) {
                         totalDepositOnRateUpdate = 0;
                         _.each (responseData, function (reservationDetailsObj, idx) {
-                            $scope.reservationsListArray.reservations[idx] = reservationDetailsObj.deposit_amount;
+                            if ($scope.reservationsListArray.reservations[idx]) {
+                                $scope.reservationsListArray.reservations[idx].deposit_amount = reservationDetailsObj.deposit_amount;
+                            }
                             totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(reservationDetailsObj.deposit_amount);
                         });
                     }

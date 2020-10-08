@@ -694,6 +694,7 @@ sntRover.controller('RVbillCardController',
 		$scope.showActiveBillFeesDetails = billIndex;
 		$scope.calculateHeightAndRefreshScroll();
 		setChargeCodesSelectedStatus(false);
+		$scope.selectedAllowanceReference = '';
 	};
 	/* $state
 	 * Show Addons
@@ -704,6 +705,7 @@ sntRover.controller('RVbillCardController',
 		$scope.dayRates = -1;
 		$scope.showGroupItemIndex = -1;
 		$scope.calculateHeightAndRefreshScroll();
+		$scope.selectedAllowanceReference = '';
 	};
 	/*
 	 * Show Group Items
@@ -714,12 +716,14 @@ sntRover.controller('RVbillCardController',
 		$scope.showGroupItemIndex = ($scope.showGroupItemIndex !== groupIndex) ? groupIndex : -1;
 		$scope.showAddonIndex = -1;
 		$scope.calculateHeightAndRefreshScroll();
+		$scope.selectedAllowanceReference = '';
 	};
 	/*
 	 * Show Room Details
 	 * @param {int} each day room index
 	 */
 	$scope.showRoomDetails = function(roomDetailsIndex) {
+		$scope.selectedAllowanceReference = '';
 		// Condition added to do toggle action - Room details area
 		if ($scope.showRoomDetailsIndex === roomDetailsIndex) {
 			$scope.showRoomDetailsIndex = -1;
@@ -727,6 +731,18 @@ sntRover.controller('RVbillCardController',
 			$scope.showRoomDetailsIndex = roomDetailsIndex;
 		}
 		$scope.calculateHeightAndRefreshScroll();
+	};
+
+	$scope.showAllowanceDetails = function(billNumber) {
+		$scope.dayRates = -1;
+		$scope.showGroupItemIndex = -1;
+		$scope.showRoomDetailsIndex = -1;
+		$scope.showAddonIndex = -1;
+		if ($scope.selectedAllowanceReference === billNumber) {
+			$scope.selectedAllowanceReference = '';
+			return;
+		}
+		$scope.selectedAllowanceReference = billNumber;
 	};
 	/*
 	 * To get class of balance red/green

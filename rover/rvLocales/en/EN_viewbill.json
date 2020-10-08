@@ -180,6 +180,11 @@
     "NET" : "Net",
     "TAX" : "Tax",
     "TOTAL" : "Total",
-    "ADJUSTMENT" : "Adjustment"
+    "ADJUSTMENT" : "Adjustment",
+
+    "ALLOWANCES": "Allowances",
+    "ALLOWANCE": "Allowance",
+    "CONSUMED": "Consumed"
+    
 
 
