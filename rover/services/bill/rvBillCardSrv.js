@@ -26,7 +26,7 @@ angular.module('sntRover').service('RVBillCardSrv',
 			if (response.allowance_data && parseInt(response.allowance_data.amount) > 0) {
 
 				// show only the following two types in bill
-				var allowedAllowanceTypesForBill = ['ALLOWANCE LOAD', 'UNUSED ALLOWANCE / ALLOWANCE LOSS'];
+				var allowedAllowanceTypesForBill = ['ALLOWANCE LOAD'];
 				var unwantedAllowanceTypes = _.reject(response.allowance_data.allowance_entries, function(entry) {
 					return allowedAllowanceTypesForBill.includes(entry.type);
 				});
