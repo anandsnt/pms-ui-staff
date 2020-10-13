@@ -17,18 +17,73 @@ angular.module('sntRover').service('RVBillCardSrv',
 			});
         return deferred.promise;
     };
-    this.fetchBillData = function (billNo) {
 
-        var deferred = $q.defer(),
-		    url = '/api/bills/' + billNo;
+	this.fetchAllowanceData = function(deferred, billId, billData) {
+		var url = '/api/bills/' + billId + '/allowance_transactions';
 
-			rvBaseWebSrvV2.getJSON(url).then(function(response) {
-			   	 deferred.resolve(response.data);
-			}, function(data) {
-			    deferred.reject(data);
-			});
-        return deferred.promise;
-    };
+		rvBaseWebSrvV2.getJSON(url).then(function(response) {
+
+			if (response.allowance_data && parseInt(response.allowance_data.amount) > 0) {
+
+				// show only the following two types in bill
+				var allowedAllowanceTypesForBill = ['ALLOWANCE LOAD'];
+				var unwantedAllowanceTypes = _.reject(response.allowance_data.allowance_entries, function(entry) {
+					return allowedAllowanceTypesForBill.includes(entry.type);
+				});
+				var unwantedAllowanceTypeIdsForBill = _.map(unwantedAllowanceTypes, function(requiredAllowanceType) {
+					return parseInt(requiredAllowanceType.id);
+				});
+
+				_.each(response.allowance_data.allowance_entries, function(entry, index) {
+					// Group entries with date
+					entry.entriesForTheDate = _.filter(response.allowance_data.allowance_entries, function(allowance) {
+						return allowance.date === entry.date;
+					});
+					entry.amount = entry.amount ? parseFloat(entry.amount) : entry.amount;
+
+					if (billData.total_fees && billData.total_fees.length && billData.total_fees[0].fees_details) {
+						// take actual charge code description from allowance data and include it in bill data
+						_.each(billData.total_fees[0].fees_details, function(feeDetail) {
+							if (feeDetail.id === entry.id) {
+								_.each(feeDetail.description, function(description) {
+									description.fees_desc = entry.description;
+								});
+								feeDetail.reference_text = '';
+								feeDetail.is_description_edited = false;
+							}
+						});
+					}
+				});
+
+				billData.allowance_data = response.allowance_data;
+
+				if (billData.total_fees && billData.total_fees.length && billData.total_fees[0].fees_details) {
+					// remove all allowance entries other than 'ALLOWANCE LOAD' OR 'UNUSED ALLOWANCE / ALLOWANCE LOSS'
+					billData.total_fees[0].fees_details = _.reject(billData.total_fees[0].fees_details, function(feeDetail) {
+						return unwantedAllowanceTypeIdsForBill.includes(parseInt(feeDetail.id));
+					});
+				}
+			}
+
+			deferred.resolve(billData);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+    this.fetchBillData = function(billNo) {
+
+		var deferred = $q.defer(),
+			url = '/api/bills/' + billNo;
+
+		rvBaseWebSrvV2.getJSON(url).then(function(response) {
+			that.fetchAllowanceData(deferred, billNo, response.data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
 
 	this.fetch = function(reservationId) {
 			var reservationBillData = '',
