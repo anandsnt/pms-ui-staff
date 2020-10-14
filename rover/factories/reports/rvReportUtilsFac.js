@@ -287,7 +287,8 @@ angular.module('reportsModule')
                 'INCLUDE_ADDON_REVENUE': true,
                 'INCLUDE_ACTIONS': true,
                 'INCLUDE_LEDGER_DATA': true,
-                'HAS_VEHICLE_REG_NO': true
+                'HAS_VEHICLE_REG_NO': true,
+                'SHOW_PHONE_NUMBER': true
             };
 
             var __excludeFilterNames = {
@@ -3263,7 +3264,7 @@ angular.module('reportsModule')
                     });
                 }
 
-                filter.hasReservationStatus = {
+                filter.hasHkReservationStatus = {
                     data: statusCopy,
                     options: {
                         selectAll: getSelectAllVal(statusCopy),
@@ -3581,6 +3582,281 @@ angular.module('reportsModule')
                     };
                     
                 });
+            };
+
+            /**
+             * Fill AddonGroups and addons
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @param {String} reportName - name of the report
+             * @return {void} 
+             */
+            factory.fillAddonGroups = function (filter, filterValues, reportName) {
+                var getSelectAllVal = (addOnGroups) => {
+                    var selectAll = true;
+
+                    if (filterValues && filterValues.addon_group_ids) {
+                        selectAll = addOnGroups.length === filterValues.addon_group_ids.length;
+                    } else if (filterValues && !filterValues.addon_group_ids) {
+                        selectAll = false;
+                    }
+                    return selectAll;
+                };
+
+                var getSelectAllValAddons = (addons) => {
+                    var selectAll = true;
+
+                    if (filterValues && filterValues.addon_ids) {
+                        var originalAddonGroupIds = filterValues.addon_ids,
+                            addonLength = 0;
+
+                        _.each(addons, function (ag) {
+                            if (originalAddonGroupIds.indexOf(ag.group_id) > -1) {
+                                addonLength = addonLength + ag.list_of_addons.length;
+                            }
+                        });
+                        selectAll = filterValues.addon_ids.length === addonLength;
+                    }
+
+                    return selectAll;
+                };
+
+                var flattenAddons = function (addons) {
+                    var data = [];
+
+                    _.each(addons, function (addon) {
+                        if (!addon.disabled) {
+                            _.each(addon.list_of_addons, function (la) {
+                                la.selected = false;
+                                if ((filterValues && !!filterValues.addon_ids && (filterValues.addon_ids.indexOf(la.addon_id) > -1)) || angular.isUndefined(filterValues)) {
+                                    la.selected = true;
+                                }
+                                data.push(la);
+                            });
+                        }
+                    });
+                    return data;
+                };
+
+                var fillAGAs = function(data, addonData) {
+                    var addonGroupsCopy = angular.copy(data),
+                        addonsCopy = angular.copy(addonData);
+
+                    if (filterValues && filterValues.addon_group_ids) {
+                        addonGroupsCopy = addonGroupsCopy.map(addonGroup => {
+                            addonGroup.selected = false;
+                            if (filterValues.addon_group_ids.indexOf(addonGroup.id) > -1) {
+                                addonGroup.selected = true;
+                            }
+                            return addonGroup;
+                        });
+                    } 
+                    filter.hasAddonGroups = {
+                        title: 'Addon Groups',
+                        data: addonGroupsCopy,
+                        options: {
+                            selectAll: getSelectAllVal(addonGroupsCopy),
+                            hasSearch: true,
+                            key: 'name'
+                        },
+                        affectsFilter: {
+                            name: 'hasAddons',
+                            process: function (filter, selectedItems) {
+                                _.each(filter.originalData, function (od) {
+                                    od.disabled = true;
+                                });
+                                _.each(filter.originalData, function (od) {
+                                    _.each(selectedItems, function (si) {
+                                        if (od.group_id === si.id) {
+                                            od.disabled = false;
+                                        }
+                                    });
+                                });
+                                filter.updateData();
+                            }
+                        }
+                    };
+                    filter.hasAddons = {
+                        data: flattenAddons(addonData),
+                        originalData: addonsCopy,
+                        options: {
+                            selectAll: getSelectAllValAddons(addonsCopy),
+                            hasSearch: true,
+                            key: 'addon_name'
+                        },
+                        updateData: function () {
+                            this.data = flattenAddons(this.originalData);
+                            this.options.selectAll = getSelectAllValAddons(addonsCopy);
+                        }
+                    };
+
+                };
+
+                reportsSubSrv.fetchChargeNAddonGroups({for_addon_forecast_report: reportName === 'Add-On Forecast'}).then(function (data) {
+                    reportsSubSrv.fetchAddons({ 'addon_group_ids': _.pluck(data, 'id') }).then( fillAGAs.bind(null, data));                   
+                });
+            };
+
+            /**
+             * Fill reservation statuses
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @return {void} 
+             */
+            factory.fillResStatus = function (filter, filterValues) {
+                var getSelectAllVal = (resStatus) => {
+                    var selectAll = true;
+
+                    if (filterValues && filterValues.status_ids) {
+                        selectAll = resStatus.length === filterValues.status_ids.length;
+                    } else if (angular.isDefined(filterValues) && !filterValues.status_ids) {
+                        selectAll = false;
+                    }
+
+                    return selectAll;
+                };
+
+                reportsSubSrv.fetchReservationStatus().then( function (data) {
+                    var resStatusCopy = angular.copy(data);
+
+                    if (filterValues && filterValues.status_ids) {
+                        resStatusCopy = resStatusCopy.map(resStatus => {
+                            resStatus.selected = false;
+
+                            if (filterValues.status_ids.indexOf(resStatus.id.toString()) > -1) {
+                                resStatus.selected = true;
+                            }
+                            return resStatus;
+                        });
+                    }  
+
+                    filter.hasReservationStatus = {
+                        data: resStatusCopy,
+                        options: {
+                            selectAll: getSelectAllVal(resStatusCopy),
+                            hasSearch: false,
+                            key: 'status',
+                            defaultValue: 'Select status'
+                        }
+                    };
+                });
+            };
+
+            /**
+             * Fill Rate codes
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @return {Object} params - params
+             */
+            factory.fillRateCodes = function (filter, filterValues, params) {
+
+                if (filterValues && filterValues.rate_id) {
+                    params.rate_code = filterValues.rate_id;
+                }
+                reportsSubSrv.fetchRateCode().then(function (data) {
+                    filter.hasRateCode = {
+                        title: 'Rate Codes',
+                        data: data
+                    };
+                });
+            };
+
+            /**
+             * Fill Aging balances
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @return {void} set filter values
+             */
+            factory.fillAgingBalances = function (filter, filterValues) {
+                var ageBuckets = [
+                        { id: "0to30", status: "0-30 DAYS"},
+                        { id: "31to60", status: "31-60 DAYS"},
+                        { id: "61to90", status: "61-90 DAYS"},
+                        { id: "91to120", status: "91-120 DAYS"},
+                        { id: "120plus", status: "120+ DAYS" }
+                    ],
+                
+                    getSelectAllVal = (ages) => {
+                        var selectAll = true;
+
+                        if (filterValues && filterValues.age_buckets) {
+                            selectAll = ages.length === filterValues.age_buckets.length;
+                        } else if (angular.isDefined(filterValues) && !filterValues.age_buckets) {
+                            selectAll = false;
+                        }
+
+                        return selectAll;
+                    },
+                    data = angular.copy(ageBuckets);
+
+                if (filterValues && filterValues.age_buckets) {
+                    data = data.map(age => {
+                        age.selected = false;
+
+                        if (filterValues.age_buckets.indexOf(age.id) > -1) {
+                            age.selected = true;
+                        }
+                        return age;
+                    });
+                }
+
+                filter.hasIncludeAgingBalance = {
+                    data: data,
+                    options: {
+                        hasSearch: false,
+                        selectAll: getSelectAllVal(data),
+                        key: 'status',
+                        defaultValue: 'Select Aging Balance'
+                    }
+                };
+               
+            };
+
+            /**
+             * Fill account names
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @return {void} set filter values
+             */
+            factory.fillAccountNames = function (filter, filterValues) {
+                var getSelectAllVal = (accounts) => {
+                    var selectAll = false;
+
+                    if (filterValues && filterValues.account_ids) {
+                        selectAll = accounts.length === filterValues.account_ids.length;
+                    } else if (angular.isDefined(filterValues) && !filterValues.account_ids) {
+                        selectAll = false;
+                    }
+
+                    return selectAll;
+                };
+
+                reportsSubSrv.fetchAccounts().then( function (data) {
+                    var accounts = angular.copy(data);
+
+                    if (filterValues && filterValues.account_ids) {
+                        accounts = accounts.map(account => {
+                            accounts.selected = false;
+
+                            if (filterValues.account_ids.indexOf(account.id) > -1) {
+                                account.selected = true;
+                            }
+                            return account;
+                        });
+                    }  
+                    filter.hasAccountSearch = {
+                        data: accounts,
+                        options: {
+                            selectAll: getSelectAllVal(accounts),
+                            hasSearch: true,
+                            key: 'account_name',
+                            defaultValue: 'Select Accounts'
+                        }
+                    };
+                
+                    
+                });
+               
             };
 
             return factory;

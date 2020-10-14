@@ -94,7 +94,11 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	    };
 
 	    $scope.getRoomStatusClass = function(roomStatus) {
-	    	return roomStatus.toLowerCase();
+		 if (roomStatus === 'DO NOT DISTURB') {
+			return 'dnd';
+		 }
+
+		 return roomStatus.toLowerCase();
 	    };
 	    
 	    init();

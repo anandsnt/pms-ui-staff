@@ -135,6 +135,8 @@
             <multi-option-selection ng-show="filters.hasGuaranteeTypeList" label="Guarantee Type(s)" on-update="refreshSecondColumnScroll" data="filters.hasGuaranteeTypeList.data" options="filters.hasGuaranteeTypeList.options"></multi-option-selection>
             <multi-option-selection ng-show="filters.hasRateCodeList" label="Rate" on-update="refreshSecondColumnScroll" data="filters.hasRateCodeList.data" options="filters.hasRateCodeList.options"></multi-option-selection>
             <multi-option-selection ng-show="filters.hasRoomTypeList" label="Room Types" on-update="refreshSecondColumnScroll" data="filters.hasRoomTypeList.data" options="filters.hasRoomTypeList.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasHkReservationStatus" label="Reservation Status" on-update="refreshSecondColumnScroll" data="filters.hasHkReservationStatus.data" options="filters.hasHkReservationStatus.options"></multi-option-selection>
+
             <multi-option-selection ng-show="filters.hasReservationStatus" label="Reservation Status" on-update="refreshSecondColumnScroll" data="filters.hasReservationStatus.data" options="filters.hasReservationStatus.options"></multi-option-selection>
 
             <multi-option-selection ng-show="filters.hasFloorList" label="Floor(s)" on-update="refreshSecondColumnScroll" data="filters.hasFloorList.data" options="filters.hasFloorList.options"></multi-option-selection>
@@ -145,6 +147,19 @@
 
             <multi-option-selection ng-show="filters.hasHouseKeepingStatus" label="Housekeeping Status" on-update="refreshSecondColumnScroll" data="filters.hasHouseKeepingStatus.data" options="filters.hasHouseKeepingStatus.options"></multi-option-selection>
            
+            <multi-option-selection ng-show="filters.hasAddonGroups" label="Add-On Group(s)" on-update="refreshSecondColumnScroll" report="uiChosenReport" data="filters.hasAddonGroups.data" options="filters.hasAddonGroups.options" affects-filter="filters.hasAddonGroups.affectsFilter" filter-holder-obj="filters"></multi-option-selection>
+
+            <multi-option-selection ng-show="filters.hasAddons" label="Add-On(s)" on-update="refreshSecondColumnScroll" data="filters.hasAddons.data" options="filters.hasAddons.options" filter-holder-obj="filters"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasIncludeAgingBalance && filters.hasIncludeAgingBalance.data.length"
+                label="Aging Balance"
+                on-update="refreshSecondColumnScroll"
+                data="filters.hasIncludeAgingBalance.data"
+                options="filters.hasIncludeAgingBalance.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasAccountSearch && filters.hasAccountSearch.data.length"
+                label="Account Name"
+                on-update="refreshSecondColumnScroll"
+                data="filters.hasAccountSearch.data"
+                options="filters.hasAccountSearch.options"></multi-option-selection>
             <div class="entry date-range" ng-show="isOccupancyRevenueSummaryReport">
                 <label>DAY USE</label>
                 <label class="checkbox inline" ng-class="{'checked':scheduleParams.include_day_use}">

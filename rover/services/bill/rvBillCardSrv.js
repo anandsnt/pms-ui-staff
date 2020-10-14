@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVBillCardSrv', 
+angular.module('sntRover').service('RVBillCardSrv',
 	['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'sntBaseWebSrv',
 	function($http, $q, BaseWebSrvV2, RVBaseWebSrv, rvBaseWebSrvV2, sntBaseWebSrv) {
 
@@ -10,25 +10,80 @@ angular.module('sntRover').service('RVBillCardSrv',
 		    url = '/api/reservations/' + reservationId + '/bills_summary';
 
 			rvBaseWebSrvV2.getJSON(url).then(function(response) {
-				
+
 			   	deferred.resolve(response.data);
 			}, function(data) {
 			    deferred.reject(data);
 			});
         return deferred.promise;
     };
-    this.fetchBillData = function (billNo) {
 
-        var deferred = $q.defer(),
-		    url = '/api/bills/' + billNo;
+	this.fetchAllowanceData = function(deferred, billId, billData) {
+		var url = '/api/bills/' + billId + '/allowance_transactions';
 
-			rvBaseWebSrvV2.getJSON(url).then(function(response) {
-			   	 deferred.resolve(response.data);
-			}, function(data) {
-			    deferred.reject(data);
-			});
-        return deferred.promise;
-    };
+		rvBaseWebSrvV2.getJSON(url).then(function(response) {
+
+			if (response.allowance_data && parseInt(response.allowance_data.amount) > 0) {
+
+				// show only the following two types in bill
+				var allowedAllowanceTypesForBill = ['ALLOWANCE LOAD'];
+				var unwantedAllowanceTypes = _.reject(response.allowance_data.allowance_entries, function(entry) {
+					return allowedAllowanceTypesForBill.includes(entry.type);
+				});
+				var unwantedAllowanceTypeIdsForBill = _.map(unwantedAllowanceTypes, function(requiredAllowanceType) {
+					return parseInt(requiredAllowanceType.id);
+				});
+
+				_.each(response.allowance_data.allowance_entries, function(entry, index) {
+					// Group entries with date
+					entry.entriesForTheDate = _.filter(response.allowance_data.allowance_entries, function(allowance) {
+						return allowance.date === entry.date;
+					});
+					entry.amount = entry.amount ? parseFloat(entry.amount) : entry.amount;
+
+					if (billData.total_fees && billData.total_fees.length && billData.total_fees[0].fees_details) {
+						// take actual charge code description from allowance data and include it in bill data
+						_.each(billData.total_fees[0].fees_details, function(feeDetail) {
+							if (feeDetail.id === entry.id) {
+								_.each(feeDetail.description, function(description) {
+									description.fees_desc = entry.description;
+								});
+								feeDetail.reference_text = '';
+								feeDetail.is_description_edited = false;
+							}
+						});
+					}
+				});
+
+				billData.allowance_data = response.allowance_data;
+
+				if (billData.total_fees && billData.total_fees.length && billData.total_fees[0].fees_details) {
+					// remove all allowance entries other than 'ALLOWANCE LOAD' OR 'UNUSED ALLOWANCE / ALLOWANCE LOSS'
+					billData.total_fees[0].fees_details = _.reject(billData.total_fees[0].fees_details, function(feeDetail) {
+						return unwantedAllowanceTypeIdsForBill.includes(parseInt(feeDetail.id));
+					});
+				}
+			}
+
+			deferred.resolve(billData);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+    this.fetchBillData = function(billNo) {
+
+		var deferred = $q.defer(),
+			url = '/api/bills/' + billNo;
+
+		rvBaseWebSrvV2.getJSON(url).then(function(response) {
+			that.fetchAllowanceData(deferred, billNo, response.data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
 
 	this.fetch = function(reservationId) {
 			var reservationBillData = '',
@@ -40,7 +95,7 @@ angular.module('sntRover').service('RVBillCardSrv',
                 return that.fetchReservationBillData(reservationId).then(function(response) {
                     reservationBillData = response;
                 });
-            })           
+            })
             .then(function() {
             	billNumber = reservationBillData.bills[0].bill_id;
 				billIndex = parseInt(reservationBillData.bills[0].bill_number) - 1;
@@ -56,7 +111,7 @@ angular.module('sntRover').service('RVBillCardSrv',
 
 
 		return deferred.promise;
-	};	
+	};
 
 	this.fetchBillPrintData = function(params) {
 		var deferred = $q.defer();
@@ -269,7 +324,7 @@ angular.module('sntRover').service('RVBillCardSrv',
     this.fetchAdjustmentReasons = function() {
         var deferred = $q.defer(),
 			url = '/admin/force_adjustment_reasons';
-			
+
         BaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
@@ -389,11 +444,11 @@ angular.module('sntRover').service('RVBillCardSrv',
         return deferred.promise;
     };
 
-	this.fetchGuestLanguages = function() {
+	this.fetchGuestLanguages = function(params) {
 		var deferred = $q.defer();
 		var url = '/api/guest_languages';
 
-		rvBaseWebSrvV2.getJSON(url).then(function(data) {
+		rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
 			if (data.languages) {
 				data.languages = _.filter(data.languages, {
 					is_show_on_guest_card: true
@@ -419,7 +474,7 @@ angular.module('sntRover').service('RVBillCardSrv',
         return deferred.promise;
     };
 
-    // Generate folio number 
+    // Generate folio number
     this.generateFolioNumber = function(params) {
         var deferred = $q.defer(),
             url = '/api/bills/' + params.bill_id + '/generate_folio_number';
@@ -437,13 +492,13 @@ angular.module('sntRover').service('RVBillCardSrv',
         var deferred = $q.defer(),
             url = '/api/bills/' + params.bill_id + '/void_bill';
 
-        BaseWebSrvV2.postJSON(url, params.data).then(function(response) {        	
+        BaseWebSrvV2.postJSON(url, params.data).then(function(response) {
             deferred.resolve(response.data);
         }, function (data) {
             deferred.reject(data);
         });
         return deferred.promise;
-    };  
+    };
     // Final invoice
 	this.settleFinalInvoice = function(params) {
 		var deferred = $q.defer(),

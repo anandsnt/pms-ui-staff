@@ -64,11 +64,22 @@ angular.module('sntRover')
                     $scope.popUpView = checkEmptyOrListView($scope.restrictionObj.listData);
                 };
 
-                $scope.initiateNewRestrictionForm = () => {
-                    // trigger Restriction setting window
-                    $scope.selectedRestriction = {};
+                $scope.initiateNewRestrictionForm = ( restrictionKey ) => {
+                    if (restrictionKey) {
+                        // Add New action from '+' icon from sub list.
+                        $scope.selectedRestriction = _.find(hierarchyUtils.restrictionColorAndIconMapping, 
+                                                                function(item) { return item.key  === restrictionKey; }
+                                                        );
+                        $scope.selectedRestriction.value = null;
+                        $scope.selectedRestriction.id = hierarchyUtils.restrictionKeyToCodeMapping[$scope.selectedRestriction.key][0];
+                        $scope.restrictionStylePack = angular.copy(hierarchyUtils.restrictionColorAndIconMapping);
+                    }
+                    else {
+                        $scope.selectedRestriction = {};
+                        $scope.selectedRestriction.activeGroupList = [];
+                        $scope.restrictionStylePack = hierarchyUtils.getActiveRestrictionColorAndIconMapping($scope.activeRestrictionsList);
+                    }
                     $scope.popUpView = 'NEW';
-                    $scope.restrictionStylePack = angular.copy(hierarchyUtils.restrictionColorAndIconMapping);
                     $scope.showRestrictionSelection = false;
                     $scope.$broadcast('INIT_SET_ON_SEARCH');
                     $scope.restrictionObj.isRepeatOnDates = false;
@@ -82,7 +93,11 @@ angular.module('sntRover')
                 };
 
                 $scope.showPlaceholder = () => {
-                    return _.isEmpty($scope.selectedRestriction);
+                    return !$scope.selectedRestriction.type;
+                };
+
+                $scope.disableSelectBox = () => {
+                    return ($scope.popUpView === 'EDIT' || ($scope.popUpView === 'NEW' && $scope.selectedRestriction.activeGroupList && $scope.selectedRestriction.activeGroupList.length > 0));
                 };
 
                 $scope.showNights = () => {
@@ -99,8 +114,17 @@ angular.module('sntRover')
                         $scope.selectedRestriction.value = null;
                     }
                     $scope.selectedRestriction = restriction;
+                    $scope.selectedRestriction.id = hierarchyUtils.restrictionKeyToCodeMapping[$scope.selectedRestriction.key][0];
                     $scope.toggleRestrictionSelection();
                     $scope.$broadcast('SCROLL_REFRESH_REPEAT_ON_DATES');
+                    // To fix issues from normal ADD and the new add from sub list.
+                    if ($scope.selectedRestriction.activeGroupList) {
+                        $scope.selectedRestriction.activeGroupList = [];
+                        $scope.selectedRestriction.value = null;
+                    }
+                    if ($scope.ngDialogData.hierarchyLevel === 'Rate') {
+                        $scope.$broadcast('INIT_SET_ON_SEARCH');
+                    }
                 };
 
                 // Check repeat on dates fields are not valid.
@@ -110,7 +134,7 @@ angular.module('sntRover')
                 
                 // Check set on search field is not valid.
                 const isSetOnSelectFormNotValid = () => {
-                    return ($scope.ngDialogData.hierarchyLevel !== 'House' && !$scope.restrictionObj.isSetOnAllActive && $scope.restrictionObj.selectedSetOnIds.length === 0);
+                    return ($scope.ngDialogData.hierarchyLevel !== 'House' && !$scope.restrictionObj.isSetOnAllActive && $scope.restrictionObj.selectedSetOnIds && $scope.restrictionObj.selectedSetOnIds.length === 0);
                 };
 
                 $scope.validateForm = () => {
@@ -143,6 +167,7 @@ angular.module('sntRover')
                     let params = {
                         from_date: $scope.ngDialogData.date,
                         to_date: $scope.ngDialogData.date,
+                        associate_multiple: $scope.ngDialogData.hierarchyLevel !== 'House',
                         restrictions 
                     };
 
@@ -154,9 +179,16 @@ angular.module('sntRover')
                             params.room_type_ids = !$scope.restrictionObj.isSetOnAllActive ? $scope.restrictionObj.selectedSetOnIds : [];
                             apiMethod = hierarchySrv.saveRoomTypeRestrictions;
                             break;
-
+                        case 'RateType':
+                            params.rate_type_ids = !$scope.restrictionObj.isSetOnAllActive ? $scope.restrictionObj.selectedSetOnIds : [];
+                            apiMethod = hierarchySrv.saveRateTypeRestrictions;
+                            break;
+                        case 'Rate':
+                            params.rate_ids = !$scope.restrictionObj.isSetOnAllActive ? $scope.restrictionObj.selectedSetOnIds : [];
+                            apiMethod = hierarchySrv.saveRateRestrictions;
+                            break;
                         default:
-                        break;
+                            break;
                     }
 
                     if ($scope.restrictionObj.isRepeatOnDates) {
@@ -227,10 +259,52 @@ angular.module('sntRover')
                     }
                     return label;
                 };
-
+                // Check whether Remove button needed to disable.
+                $scope.disableRemoveButton = function() {
+                    return isRepeatOnDatesNotValid();
+                };
                 // Handle REMOVE button click
                 $scope.clickedOnRemoveButton =  function() {
                     $scope.$broadcast('CLICKED_REMOVE_ON_DATES');
+                };
+                // Handle click on '+' button in left sub list.
+                $scope.clickedOnAddNew = () => {
+                    $scope.initiateNewRestrictionForm($scope.selectedRestriction.key);
+                    $scope.selectedRestriction.activeGroupIndex = null;
+                };
+
+                /*
+                 *  Handle click on left bar sub list items.
+                 *  @params {Number | null} [index value of the clicked item]
+                 */
+                $scope.clickedOnLeftRestrictionList = ( index ) => {
+                    let clickedItem = '';
+
+                    $scope.popUpView = 'EDIT';
+                    if ($scope.selectedRestriction.type === 'number') {
+                        // min_length_of_stay, min_stay_through etc.
+                        clickedItem = $scope.restrictionObj.listData[$scope.selectedRestriction.activeGroupKey][index];
+                        $scope.selectedRestriction.value = clickedItem.value;
+                        $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values;
+                        $scope.selectedRestriction.activeGroupIndex = index;
+                    }
+                    else {
+                        // closed, closed_arrival and closed_departure.
+                        clickedItem = $scope.restrictionObj.listData[$scope.selectedRestriction.activeGroupKey];
+                        $scope.selectedRestriction.value = null;
+                        $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values || [];
+                        $scope.selectedRestriction.activeGroupIndex = 0;
+                    }
+                    $scope.restrictionObj.isRepeatOnDates = false;
+                    $scope.$broadcast('INIT_SET_ON_SEARCH');
+                    refreshScroller();
+                    // Handle ON ALL checkbox selection.
+                    if (clickedItem.set_on_values.length === $scope.restrictionObj.setOnCount) {
+                        $scope.restrictionObj.isSetOnAllActive = true;
+                    }
+                    else {
+                        $scope.restrictionObj.isSetOnAllActive = false;
+                    }
                 };
 
                 var initController = () => {

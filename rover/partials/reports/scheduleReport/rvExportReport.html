@@ -65,7 +65,10 @@
                 <label for="schedule-start" ng-if="selectedEntityDetails.report.title === 'Journal Export' || selectedEntityDetails.report.title === 'Guest Details by Arrival Date'">
                    Date
                 </label>
-                <label for="schedule-start" ng-if="selectedEntityDetails.report.title === 'Invoice / Folio Export' || selectedEntityDetails.report.title === 'GOBD Export' || selectedEntityDetails.report.title === 'Cancellations by Arrival Date' || selectedEntityDetails.report.title === 'Cancellations by Cancel Date'">
+                <label for="schedule-start" ng-if="selectedEntityDetails.report.title === 'Invoice / Folio Export' || selectedEntityDetails.report.title === 'GOBD Export' ||
+                selectedEntityDetails.report.title === 'GOBD Admin Charge Code Actions Export' ||
+                selectedEntityDetails.report.title === 'Cancellations by Arrival Date' ||
+                selectedEntityDetails.report.title === 'Cancellations by Cancel Date'">
                    From Date
                 </label>
                 <div class="has-datepicker">
@@ -96,6 +99,17 @@
                 data="filters.hasGeneralOptions.data"
                 on-update="refreshSecondColumnScroll"
                 options="filters.hasGeneralOptions.options"></multi-option-selection>
+
+            <div class="entry" ng-show="filters.hasRateCode && filters.hasRateCode.data.length">
+                <label>Rate Code</label>
+                <div class="select">
+                    <select ng-model="scheduleParams.rate_code"
+                        ng-options="rate.id as rate.rate_code for rate in filters.hasRateCode.data" 
+                        iscroll-stop-propagation>
+                        <option value="">Rate Code</option>
+                    </select>
+                </div>
+            </div>
 
             <div class="entry" ng-show="selectedEntityDetails.sort_fields.length">
                 <label>Sort By</label>

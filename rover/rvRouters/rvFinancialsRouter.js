@@ -36,9 +36,12 @@ angular.module('FinancialsModule', [])
     });
 
     $stateProvider.state('rover.financials.ccTransactions', {
-        url: '/ccTransactions/:id',
+        url: '/ccTransactions',
         templateUrl: '/assets/partials/financials/ccTransactions/rvCcTransactions.html',
-        controller: 'RVccTransactionsController'
+        controller: 'RVccTransactionsController',
+        params: {
+            isRefresh: true
+        }
     });
 
     $stateProvider.state('rover.financials.accountsReceivables', {

@@ -179,7 +179,7 @@ angular.module('sntRover')
         };
         // Show/Hide unassigned list based on screen width and filter type
         $scope.isShowUnassignedList = function() {
-            return (screen.width >= 1600 || $scope.diaryData.rightFilter === 'UNASSIGNED_RESERVATION') ? 'visible' : '';
+            return (window.innerWidth > 1599 || (window.innerWidth <= 1599 && $scope.diaryData.rightFilter === 'UNASSIGNED_RESERVATION')) ? 'visible' : '';
         };
         // CICO-73889 : Handle unassigned reservation selection.
         $scope.addListener('SELECT_UNASSIGNED_RESERVATION', function(event, reservationId, arrivalDate) {

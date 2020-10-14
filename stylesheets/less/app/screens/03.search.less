@@ -2154,7 +2154,8 @@
 
                     .confirmation,
                     .icons,
-                    .guest-time {
+                    .guest-time,
+                    .member-level {
                         line-height: 14px;
                         height: 14px;
                         font-size: 14px;
@@ -2197,6 +2198,18 @@
                     .guest-meta {
                         height: 14px;
                         #flexbox > .display();
+                    }
+
+                    .member-level {
+                        .nowrap();
+                        margin-left: 10px;
+                        font-weight: 400;
+                        color: @grey3;
+                        text-transform: uppercase;
+
+                        strong {
+                            font-weight: 600;
+                        }
                     }
                 }
 

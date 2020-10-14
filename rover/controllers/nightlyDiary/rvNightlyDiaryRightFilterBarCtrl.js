@@ -166,7 +166,7 @@ angular.module('sntRover')
 
 			// Show/Hide right filter based on screen width and filter type
 			$scope.isShowRightFilter = function() {
-				return (screen.width >= 1600 || $scope.diaryData.rightFilter === 'RESERVATION_FILTER') ? 'visible' : '';
+				return (window.innerWidth > 1599 || (window.innerWidth <= 1599 && $scope.diaryData.rightFilter === 'RESERVATION_FILTER')) ? 'visible' : '';
 			};
 
 			/**

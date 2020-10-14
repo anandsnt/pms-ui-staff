@@ -1008,7 +1008,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				printDataFetchSuccess = function(successData) {
 					sntActivity.stop("PRINT_STARTED");
 					successData = successData.data;
-					var copyCount = "",
+                    var copyCount = "",
+                        copyLabel = "",
 						arInvoiceNumberActivatedDate = moment(successData.print_ar_invoice_number_activated_at, "YYYY-MM-DD"),
 						arTransactionDate = moment(successData.ar_transaction_date, "YYYY-MM-DD"),
 						dateDifference = arTransactionDate.diff(arInvoiceNumberActivatedDate, 'days');
@@ -1026,22 +1027,23 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					}
 					else if (parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices))
 					{
-						successData.invoiceLabel = successData.translation.ar_invoice;
+						successData.invoiceLabel = successData.ar_invoice_label || successData.translation.ar_invoice;
 					}
 					else if (parseInt(successData.print_counter) === 1 && parseInt(successData.no_of_original_invoices) === 0)
 					{
-						successData.invoiceLabel = successData.translation.ar_invoice;
+						successData.invoiceLabel = successData.ar_invoice_label || successData.translation.ar_invoice;
 					}
 					else if ((parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices)) && !$scope.roverObj.noReprintReEmailInvoice)
 					{
 						if (successData.is_copy_counter) {
             				copyCount = getCopyCount(successData);
-						}
-						successData.invoiceLabel = successData.translation.copy_of_ar_invoice.replace("#count", copyCount);
+                        }
+                        copyLabel = successData.ar_invoice_copy_label || successData.translation.copy_of_ar_invoice;
+						successData.invoiceLabel = copyLabel.replace("#count", copyCount);
 					}
 					else if (!$scope.billFormat.isInformationalInvoice) 
 					{
-						successData.invoiceLabel = successData.translation.ar_invoice;
+						successData.invoiceLabel = successData.ar_invoice_label || successData.translation.ar_invoice;
 					}
 					$scope.printData = successData;
 					$scope.errorMessage = "";

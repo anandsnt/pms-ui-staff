@@ -694,6 +694,7 @@ sntRover.controller('RVbillCardController',
 		$scope.showActiveBillFeesDetails = billIndex;
 		$scope.calculateHeightAndRefreshScroll();
 		setChargeCodesSelectedStatus(false);
+		$scope.selectedAllowanceReference = '';
 	};
 	/* $state
 	 * Show Addons
@@ -704,6 +705,7 @@ sntRover.controller('RVbillCardController',
 		$scope.dayRates = -1;
 		$scope.showGroupItemIndex = -1;
 		$scope.calculateHeightAndRefreshScroll();
+		$scope.selectedAllowanceReference = '';
 	};
 	/*
 	 * Show Group Items
@@ -714,12 +716,14 @@ sntRover.controller('RVbillCardController',
 		$scope.showGroupItemIndex = ($scope.showGroupItemIndex !== groupIndex) ? groupIndex : -1;
 		$scope.showAddonIndex = -1;
 		$scope.calculateHeightAndRefreshScroll();
+		$scope.selectedAllowanceReference = '';
 	};
 	/*
 	 * Show Room Details
 	 * @param {int} each day room index
 	 */
 	$scope.showRoomDetails = function(roomDetailsIndex) {
+		$scope.selectedAllowanceReference = '';
 		// Condition added to do toggle action - Room details area
 		if ($scope.showRoomDetailsIndex === roomDetailsIndex) {
 			$scope.showRoomDetailsIndex = -1;
@@ -727,6 +731,18 @@ sntRover.controller('RVbillCardController',
 			$scope.showRoomDetailsIndex = roomDetailsIndex;
 		}
 		$scope.calculateHeightAndRefreshScroll();
+	};
+
+	$scope.showAllowanceDetails = function(billNumber) {
+		$scope.dayRates = -1;
+		$scope.showGroupItemIndex = -1;
+		$scope.showRoomDetailsIndex = -1;
+		$scope.showAddonIndex = -1;
+		if ($scope.selectedAllowanceReference === billNumber) {
+			$scope.selectedAllowanceReference = '';
+			return;
+		}
+		$scope.selectedAllowanceReference = billNumber;
 	};
 	/*
 	 * To get class of balance red/green
@@ -827,7 +843,7 @@ sntRover.controller('RVbillCardController',
 					bill_number: response.data[0].to_bill_number,
 					total_amount: response.data[0].bill_amount
 				};
-			}			
+			}
 
 			var reservationStatus = $scope.reservationBillData.reservation_status;
 
@@ -1009,7 +1025,7 @@ sntRover.controller('RVbillCardController',
 			},
 		3000);
 	 });
-	 
+
 	$scope.addListener('STAY_ON_BILL', function() {
 		$scope.isMessagePopupDuringCheckout = false;
 		$scope.reservationBillData.reservation_status = "CHECKEDOUT";
@@ -2116,7 +2132,7 @@ sntRover.controller('RVbillCardController',
 	// To handle complete checkout button click
 	$scope.clickedCompleteCheckout = function() {
 		$scope.checkoutInProgress = true;
-		
+
 		$scope.findNextBillToReview();	// Verifying wheather any bill is remaing for reviewing.
 		if (!$scope.isAllBillsReviewed) {
 			$scope.checkoutInProgress = false;
@@ -2720,7 +2736,7 @@ sntRover.controller('RVbillCardController',
 				params: {"bill_id": $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id},
 				successCallBack: settleInvoiceSuccess
 			};
-	
+
 		$scope.callAPI(RVBillCardSrv.settleFinalInvoice, options);
 	};
 
@@ -2761,7 +2777,8 @@ sntRover.controller('RVbillCardController',
 					return copyCount;
 				},
 				printDataFetchSuccess = function(successData) {
-					var copyCount = "",
+                    var copyCount = "",
+                        copyLabel = "",
 						arInvoiceNumberActivatedDate = moment(successData.print_ar_invoice_number_activated_at, "YYYY-MM-DD"),
 						arTransactionDate = moment(successData.ar_transaction_date, "YYYY-MM-DD"),
 						dateDifference = arTransactionDate.diff(arInvoiceNumberActivatedDate, 'days');
@@ -2782,7 +2799,7 @@ sntRover.controller('RVbillCardController',
 						successData.invoiceLabel = successData.translation.information_invoice;
 					}
 					else if (successData.no_of_original_invoices === null && !$scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
-						successData.invoiceLabel = successData.translation.invoice;
+						successData.invoiceLabel = successData.guest_bill_invoice_label || successData.translation.invoice;
 					}
 					else if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
 						if ((successData.no_of_original_invoices === null || parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices))) {
@@ -2795,12 +2812,13 @@ sntRover.controller('RVbillCardController',
 					}
 					else if (parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices))
 					{
-						successData.invoiceLabel = successData.translation.invoice;
+						successData.invoiceLabel = successData.guest_bill_invoice_label || successData.translation.invoice;
 					}
 					else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
 					{
-						copyCount = getCopyCount(successData);
-						successData.invoiceLabel = successData.translation.copy_of_invoice.replace("#count", copyCount);
+                        copyCount = getCopyCount(successData);
+                        copyLabel = successData.guest_bill_invoice_copy_label || successData.translation.copy_of_invoice;
+						successData.invoiceLabel = copyLabel.replace("#count", copyCount);
 					}
 
 					$scope.printData = successData;
@@ -2954,7 +2972,7 @@ sntRover.controller('RVbillCardController',
 			});
 		};
 		var options = {
-			params: {},
+			params: { 'reservation_id': $scope.reservationBillData.reservation_id },
 			successCallBack: onLanguageFetchSuccess,
 			failureCallBack: failureCallback
 		};
@@ -2988,11 +3006,14 @@ sntRover.controller('RVbillCardController',
 				$scope.isViaReviewProcess = false;
 				callBlackBoxAPI();
 			}
-	};	
+	};
 
 	$scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data) {
 		if ($scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type === "DB") {
-			$scope.contactInformation.address_details.email_address = data;
+			if (typeof $scope.contactInformation !== "undefined") {
+				$scope.contactInformation.address_details.email_address = data;
+			}
+			
 		} else {
 			$scope.guestCardData.contactInfo.email = data;
 		}		
@@ -3020,7 +3041,7 @@ sntRover.controller('RVbillCardController',
 		if ($rootScope.autoEmailPayReceipt || ($rootScope.autoEmailDepositInvoice && $scope.isDepositPayment)) {
 			$scope.autoTriggerPaymentReceiptActions();
 		}
-				
+
 	});
 
 	// To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617
@@ -3424,9 +3445,9 @@ sntRover.controller('RVbillCardController',
 
 	$scope.$on("COMPANY_ADDED", function() {
 		$scope.reservationBillData.bills[0].show_invoice_type_toggle = true;
-		
+
 	});
-	
+
 	/*
 	 * Open void bill popup
 	 */

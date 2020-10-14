@@ -84,7 +84,7 @@
                         <!-- <strong>*</strong> -->
                     </label>
                     <div class="select">
-                        <select ng-disabled="isShoulderDateDisabled" ng-model="groupConfigData.summary.shoulder_from" ng-change="onShoulderDateChange('from')"> <!-- Add attr 'disabled' when L100 is pressed. Remove when L102 or L103 is pressed -->
+                        <select ng-disabled="shouldDisableShoulderFrom()" ng-model="groupConfigData.summary.shoulder_from" ng-change="onShoulderDateChange('from')"> <!-- Add attr 'disabled' when L100 is pressed. Remove when L102 or L103 is pressed -->
                             <option value="0">0</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -108,7 +108,7 @@
                     <!-- If new group, add class "datepicker" -->
                     <input id="group-block-to" class="datepicker" type="text" ui-date="toDateOptions" rv-set-textbox-value listen-this="groupConfigData.summary.block_to|date:dateFormat" readonly ng-class="{'not-selected': !groupConfigData.summary.block_to}" />
                     <div class="select">
-                        <select ng-disabled="isShoulderDateDisabled" ng-model="groupConfigData.summary.shoulder_to" ng-change="onShoulderDateChange('to')"> <!-- Add attr 'disabled' when L100 is pressed. Remove when L102 or L103 is pressed -->
+                        <select ng-disabled="shouldDisableShoulderTo()" ng-model="groupConfigData.summary.shoulder_to" ng-change="onShoulderDateChange('to')"> <!-- Add attr 'disabled' when L100 is pressed. Remove when L102 or L103 is pressed -->
                             <option value="0">0</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -275,8 +275,8 @@
             </div>
             <!--Bypass CC Guarantee Toggle Ends -->
             <!-- Notes -->
-            <strong class="h3 margin">Notes</strong>
-            <div class="entry full-width no-label with-notes">
+            <strong class="h3 margin" ng-if="!isCloudStorageEnabledForCardType('group')">Notes</strong>
+            <div class="entry full-width no-label with-notes" ng-if="!isCloudStorageEnabledForCardType('group')">
                 <textarea id="group-notes" ng-disabled="isInStaycardScreen()" ng-model="groupSummaryData.newNote" placeholder="Write a note" rows="2"></textarea>
                 <!-- CICO-24928, minor changes -->
                 <button type="button" ng-disabled="isInStaycardScreen()" class="button" ng-class="{'brand-colors' : !isInAddMode() && !isInStaycardScreen() && groupSummaryData.newNote.trim()!=='' , 'grey' : isInAddMode()||isInStaycardScreen()||groupSummaryData.newNote.trim()===''}" ng-click="saveGroupNote()" ng-show="groupSummaryData.editingNote===null">Post</button>
@@ -285,7 +285,7 @@
 
                 <button type="button" ng-disabled="isInStaycardScreen()" class="button blank" ng-click="cancelEditModeGroupNote()" ng-show="groupSummaryData.editingNote!==null">Cancel</button>
             </div>
-            <ul class="notes" ng-disabled="isInStaycardScreen()">
+            <ul class="notes" ng-disabled="isInStaycardScreen()" ng-if="!isCloudStorageEnabledForCardType('group')">
                 <li ng-repeat="note in groupConfigData.summary.notes" ng-class="{'editing': (groupSummaryData.editingNote && note.note_id === groupSummaryData.editingNote.note_id)}"
                 ng-click="clickedOnNote(note)">
                     <figure class="guest-image">

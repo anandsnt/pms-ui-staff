@@ -493,17 +493,11 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		rvBaseWebSrvV2.getJSON(url, payLoad).then(function(response) {
 			var BARs = [];
 
-			if (!that.data.gridData.additionalData) {
-                that.data.gridData.additionalData = {};
-            }
-
 			_.each(response.dates, function(day) {
 				BARs.push((null == day.amount) ? 'C' : day.amount);
 			});
 
-			_.extend(that.data.gridData.additionalData, {
-				'bestAvailabilityRate': BARs
-			});
+			that.data.gridData.bestAvailabilityRates = BARs;
 
 			deferred.resolve(BARs);
 
@@ -938,5 +932,72 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
             });
 
             return deferred.promise;
-        };
+		};
+		/**
+		 * Fetch main availability and best available rates
+		 * @param  {Object }params datae params
+		 * @return {Promise}
+		 */
+		this.fetchAvailabilityAndBestAvailableRates = function (params) {
+			var deferred = $q.defer();				
+
+			that.fetchAvailabilityDetails(params).then(function() {
+				that.fetchBARs(params).then(function() {
+					deferred.resolve();
+				}, function (error) {
+					deferred.reject(error);
+				});
+
+			}, function (error) {
+				deferred.reject(error);
+			});
+			
+			return deferred.promise;
+
+		};
+
+		/**
+		 * Fetch best available rates by room type
+		 * @param {Object} params date params
+		 * @return {Promise}
+		 */
+		this.getBestAvailableRatesByRoomType = function (params) {
+			var deferred = $q.defer(),
+				url = '/api/availability/bar_for_room_types';
+
+			rvBaseWebSrvV2.getJSON(url, params).then(function (response) {
+				var roomTypeNames = [];
+
+				if (!that.data.gridData.additionalData) {
+					that.data.gridData.additionalData = {};
+				}
+
+				if (response.results.length > 0) {
+					// Inorder to get the room type names in the order of display fetch the first result set
+					var firstDayRoomDetails = response.results[0].room_types,
+						idsInOrder = _.pluck(firstDayRoomDetails, 'id');
+
+					_.each(idsInOrder, function (roomTypeId) {
+						var roomTypeData = {};
+
+						roomTypeData.name = _.find(that.data.gridData.roomTypes, {
+							id: roomTypeId
+						}).name;
+						roomTypeData.is_suite = _.find(that.data.gridData.roomTypes, {
+							id: roomTypeId
+						}).is_suite;
+						roomTypeNames.push(roomTypeData);
+					});
+				}
+				_.extend(that.data.gridData.additionalData, {
+					'roomTypeBar': _.zip.apply(null, _.pluck(response.results, 'room_types')),
+					'roomTypeList': roomTypeNames
+				});
+				deferred.resolve(true);
+			}, function (data) {
+				deferred.reject(data);
+			});
+			
+			return deferred.promise;
+		};
     }]);

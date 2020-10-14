@@ -601,8 +601,27 @@ sntRover.controller('RVPostChargeControllerV2',
 
 				var updateParam = data;
 
-				/** **    CICO-6094    **/
-				if (!needToCreateNewBill) {
+				var taxExemptTypeId = $scope.groupConfigData ? $scope.groupConfigData.summary.tax_exempt_type_id : '',
+					groupTaxExemptChargeCodeList = [],
+					isChargeCodeInTaxExempt = false;
+
+				_.each ($scope.taxExemptTypes, function(type) {
+					if (type.id === taxExemptTypeId) {
+						_.each (type.charge_codes, function(chargeCode) {
+							groupTaxExemptChargeCodeList.push(chargeCode.charge_code);
+						});
+					}
+				});
+
+				_.each ($scope.selectedChargeItemHash, function(item) {
+					isChargeCodeInTaxExempt = _.contains(groupTaxExemptChargeCodeList, item.charge_code);
+				});
+
+				if (isChargeCodeInTaxExempt) {
+					$scope.errorMessage = ['Charge codes belongs to tax exempt type can not be posted'];
+					$scope.disablePostChargeButton = false;
+
+				} else if (!needToCreateNewBill) {         /** **    CICO-6094    **/
 					if (isFromAccounts) {
 						$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback, failureCallback);
 					}

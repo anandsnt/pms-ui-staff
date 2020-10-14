@@ -87,7 +87,17 @@ sntRover.controller('reservationDetailsController',
 			setNavigationBookMark();
 		}
 
-        if($scope.previousState.name === "rover.actionsManager") {
+        if ($scope.previousState.name === "rover.financials.ccTransactions" || $rootScope.stayCardStateBookMark.previousState === 'rover.financials.ccTransactions') {
+            setNavigationBookMark();
+            $rootScope.setPrevState = {
+                title: 'CC TRANSACTIONS',
+				name: 'rover.financials.ccTransactions',
+				param: {
+					isRefresh: false
+				}
+            };
+        }
+        else if ($scope.previousState.name === "rover.actionsManager") {
             setNavigationBookMark();
             $rootScope.setPrevState = {
                 title: 'ACTIONS MANAGER',
@@ -96,7 +106,7 @@ sntRover.controller('reservationDetailsController',
                     restore: true
                 }
             };
-        }
+		}
 		else if ($scope.previousState.name === "rover.groups.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.groups.config') {
 			if ($scope.previousState.name === "rover.groups.config") {
 				setNavigationBookMark();
@@ -1076,7 +1086,7 @@ sntRover.controller('reservationDetailsController',
 			};
 
 			if (($scope.reservationParentData.checkinTime.hh !== '' && $scope.reservationParentData.checkinTime.mm !== '') || ($scope.reservationParentData.checkoutTime.hh !== '' && $scope.reservationParentData.checkoutTime.mm !== '') || ($scope.reservationParentData.checkinTime.hh === '' && $scope.reservationParentData.checkinTime.mm === '') || ($scope.reservationParentData.checkoutTime.hh === '' && $scope.reservationParentData.checkoutTime.mm === '')) {
-				var postData = $scope.computeReservationDataforUpdate();
+				var postData = $scope.computeReservationDataforUpdate(true);
 				// CICO-11705
 
 				postData.reservationId = $scope.reservationParentData.reservationId;

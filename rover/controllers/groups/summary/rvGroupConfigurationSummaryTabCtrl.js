@@ -163,7 +163,9 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         var failureCallBackOfEarlierArrivalDateChange = function(error) {
             $scope.errorMessage = error;
             $scope.groupConfigData.summary.block_from = summaryMemento.block_from;
-            $scope.emit('hideLoader');
+            $scope.groupConfigData.summary.shoulder_from_date = summaryMemento.shoulder_from_date;
+            $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
+            $scope.$emit('hideLoader');
         };
 
         /**
@@ -192,7 +194,9 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         var failureCallBackOfLaterArrivalDateChange = function(errorMessage) {
             $scope.errorMessage = errorMessage;
             $scope.groupConfigData.summary.block_from = summaryMemento.block_from;
-            $scope.emit('hideLoader');
+            $scope.groupConfigData.summary.shoulder_from_date = summaryMemento.shoulder_from_date;
+            $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
+            $scope.$emit('hideLoader');
         };
 
         /**
@@ -233,7 +237,9 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         var failureCallBackOfEarlierDepartureDateChange = function(errorMessage) {
             $scope.errorMessage = errorMessage;
             $scope.groupConfigData.summary.block_to = summaryMemento.block_to;
-            $scope.emit('hideLoader');
+            $scope.groupConfigData.summary.shoulder_to_date = summaryMemento.shoulder_to_date;
+            $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
+            $scope.$emit('hideLoader');
         };
 
         /**
@@ -271,7 +277,9 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         var failureCallBackOfLaterDepartureDateChange = function(errorMessage) {
             $scope.errorMessage = errorMessage;
             $scope.groupConfigData.summary.block_to = summaryMemento.block_to;
-            $scope.emit('hideLoader');
+            $scope.groupConfigData.summary.shoulder_to_date = summaryMemento.shoulder_to_date;
+            $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
+            $scope.$emit('hideLoader');
         };
 
         /**
@@ -421,7 +429,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
          */
         var fromDateChoosed = function(date, datePickerObj) {
             $scope.groupConfigData.summary.block_from = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
-
+            $scope.groupConfigData.summary.shoulder_from_date = $scope.setShoulderDatesInAPIFormat($scope.groupConfigData.summary.block_from, (-1) * $scope.groupConfigData.summary.shoulder_from);
             // referring data source
             var refData = $scope.groupConfigData.summary,
                 newBlockFrom = refData.block_from,
@@ -542,11 +550,13 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
          */
         var toDateChoosed = function(date, datePickerObj) {
             $scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+            $scope.groupConfigData.summary.shoulder_to_date = $scope.setShoulderDatesInAPIFormat($scope.groupConfigData.summary.block_to, $scope.groupConfigData.summary.shoulder_to);
             // referring data source
             var refData = $scope.groupConfigData.summary,
                 newBlockTo = refData.block_to,
                 oldBlockTo = new tzIndependentDate(summaryMemento.block_to),
                 chActions = $scope.changeDatesActions;
+
 
             if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
                 fetchApplicableRates();
@@ -1034,6 +1044,21 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 closeByEscape: false
             });
         };
+        
+        /*
+         *  CICO-80327: To show the waring popup for addon overbooked info.
+         *  @param {Array} [addonsList]
+         */
+        var showAddonOverbookedWarningPopup = function( addonsList ) {
+            $scope.addonNames = addonsList.join(", ");
+            ngDialog.open({
+                template: '/assets/partials/groups/summary/warnAddonOverBooked.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
 
         var onRateChangeSuccessCallBack = function(response) {
             $scope.$emit('hideLoader');
@@ -1051,6 +1076,9 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 summaryMemento.uniqId = $scope.groupConfigData.summary.uniqId;
                 // fetch summary once rate is changed - as per CICO-31812 comments
                 $scope.$emit('FETCH_SUMMARY');
+                if (response.overbooked_addons.length > 0) {
+                    showAddonOverbookedWarningPopup(response.overbooked_addons);
+                }
             }
         };
 
@@ -1129,6 +1157,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 className: '',
                 closeByDocument: false,
                 closeByEscape: false
+
             });
         };
 
@@ -1151,7 +1180,13 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 return false;
             } 
 
-            showRateChangePopup();
+            if (summaryData.rooms_total > 0) {
+                showRateChangePopup();
+            } else {
+                $scope.updateRate(false); 
+            }
+
+            
         };
 
         $scope.cancelDemographicChanges = function() {
@@ -1591,7 +1626,67 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             }
         });
 
-        var fetchApplicableRates = function() {
+        /**
+         * Get group date based on shoulder date configuration
+         * @param {Date} blockDate group date from/to
+         * @param {Object} shoulderDate shoulder from/to in date or sting
+         * @return {String} date
+         */
+        var getGroupBlockDate = function (blockDate, shoulderDate) {
+            var selectedDate;
+
+            if (shoulderDate) {
+                if (_.isDate(shoulderDate)) {
+                    selectedDate = $filter('date')(shoulderDate, 'yyyy-MM-dd');
+                } else {
+                    selectedDate = shoulderDate;
+                }
+            } else {
+                selectedDate = $filter('date')(tzIndependentDate(blockDate), 'yyyy-MM-dd');
+            }
+
+            return selectedDate;
+        };
+
+        /*
+         *  CICO-80266: Utility method to check whether rateId in group summary is exist inside - group rates / company card rates / travel agent rates.
+         *  If it doesnt exist, we will show a waring popup GroupRateNotValidForShoulderDates.
+         *  @param {Array} [groupRatesConfigured - group rates]
+         *  @param {Array} [companyRatesConfigured - company card rates]
+         *  @param {Array} [taRatesConfigured - travel agent rates]
+         */
+        var checkRateValidationWithShoulderDates = function( groupRatesConfigured, companyRatesConfigured, taRatesConfigured ) {
+            var rateId = $scope.groupConfigData.summary.rate,
+                isRateExist = true;
+
+            // rate value will be -1 in the case of custom rates selected.
+            if (rateId !== '-1') {
+                isRateExist = _.find(groupRatesConfigured, function(obj) { 
+                                        return obj.id === rateId; 
+                                    });
+            }
+            if (!isRateExist && rateId !== '-1') {
+                isRateExist = _.find(companyRatesConfigured, function(obj) { 
+                                        return obj.id === rateId; 
+                                    });
+            }
+            if (!isRateExist && rateId !== '-1') {
+                isRateExist = _.find(taRatesConfigured, function(obj) { 
+                                        return obj.id === rateId; 
+                                    });
+            }
+            if (!isRateExist) {
+                ngDialog.open({
+                    template: '/assets/partials/groups/summary/rvGroupRateNotValidForShoulderDatesWarning.html',
+                    className: '',
+                    scope: $scope,
+                    closeByDocument: false,
+                    closeByEscape: false
+                });
+            }
+        };
+
+        var fetchApplicableRates = function(isFromInit) {
             var onFetchRatesSuccess = function(data) {
                     var sumData = $scope.groupSummaryData;
 
@@ -1639,6 +1734,9 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                         $scope.groupConfigData.summary.uniqId = '-1';
                     }
                     summaryMemento.uniqId = $scope.groupConfigData.summary.uniqId;
+                    if (isFromInit) {
+                        checkRateValidationWithShoulderDates(data.group_rates, data.company_rates, data.travel_agent_rates);
+                    }
                 },
                 onFetchRatesFailure = function(errorMessage) {
                     $scope.errorMessage = errorMessage;
@@ -1649,8 +1747,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                     successCallBack: onFetchRatesSuccess,
                     failureCallBack: onFetchRatesFailure,
                     params: {
-                        from_date: $filter('date')(tzIndependentDate($scope.groupConfigData.summary.block_from), 'yyyy-MM-dd'),
-                        to_date: $filter('date')(tzIndependentDate($scope.groupConfigData.summary.block_to), 'yyyy-MM-dd'),
+                        from_date: getGroupBlockDate($scope.groupConfigData.summary.block_from, $scope.groupConfigData.summary.shoulder_from_date),
+                        to_date: getGroupBlockDate($scope.groupConfigData.summary.block_to, $scope.groupConfigData.summary.shoulder_to_date),
                         company_id: ($scope.groupConfigData.summary.company && $scope.groupConfigData.summary.company.id) || null,
                         travel_agent_id: ($scope.groupConfigData.summary.travel_agent && $scope.groupConfigData.summary.travel_agent.id) || null
                     }
@@ -1950,7 +2048,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             //
             // Fetch rates to show in dropdown
             if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
-                fetchApplicableRates();
+                fetchApplicableRates(true);
             }
 
             // Redo rates list while modifying attached cards to the group
@@ -2000,6 +2098,43 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             if (fromOrToFlag === "to") {
                 $scope.groupConfigData.summary.shoulder_to_date = $scope.setShoulderDatesInAPIFormat($scope.groupConfigData.summary.block_to, $scope.groupConfigData.summary.shoulder_to);
             }
+            var summary = $scope.groupConfigData.summary;
+
+            if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+                fetchApplicableRates();
+            }
+
+            if (!$scope.isInAddMode() && !summary.is_a_past_group) {
+                $timeout(function() {
+                    $scope.updateGroupSummary();
+                }, 100);
+            }
         };
+
+        // Invoke when the rate change popup closes
+        $scope.closeRateChangePromptPopup = function () {
+            var uniqId = summaryMemento.uniqId,
+                rateId = uniqId && uniqId.split(':')[0],
+                contractId = uniqId && uniqId.split(':')[1];
+
+            $scope.groupConfigData.summary.uniqId = uniqId;
+            $scope.groupConfigData.summary.contract_id = contractId;
+            $scope.groupConfigData.summary.rate = rateId; 
+
+            ngDialog.close();
+
+        };
+
+        $scope.shouldDisableShoulderFrom = function () {
+            return $scope.isShoulderDateDisabled || (new tzIndependentDate($scope.groupConfigData.summary.block_from) <= new tzIndependentDate($rootScope.businessDate));
+        };
+
+        $scope.shouldDisableShoulderTo = function () {
+            return $scope.isShoulderDateDisabled || (new tzIndependentDate($scope.groupConfigData.summary.block_to) < new tzIndependentDate($rootScope.businessDate));
+        };
+
+        $scope.addListener('DATE_CHANGE_FAILED', function() {
+            fetchApplicableRates();
+        });
     }
 ]);

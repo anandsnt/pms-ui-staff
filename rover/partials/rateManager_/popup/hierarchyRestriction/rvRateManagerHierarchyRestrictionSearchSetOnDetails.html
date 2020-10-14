@@ -1,8 +1,8 @@
 <div class="entry-group" ng-controller="rvRateManagerHierarchyRestrictionSearchSetOnDetailsCtrl">
     <div class="entry full-width">
         <label>{{searchObj.headerLabel}}</label>
-        <div class="entry full-width autocomplete-search" ng-class="{'selected': searchObj.selectedList.length > 0, 'searching': searchObj.isShowResults}">
-            <div class="search" ng-hide="restrictionObj.isSetOnAllActive">
+        <div class="entry full-width autocomplete-search" ng-class="{'selected': (!restrictionObj.isSetOnAllActive && searchObj.selectedList.length > 0), 'searching': searchObj.isShowResults}">
+            <div class="search" ng-hide="restrictionObj.isSetOnAllActive" ng-class="{'overlay': !selectedRestriction.id}">
                 <button type="submit" name="submit" class="icons icon-search">Search</button>
                 <input ng-model="searchObj.query" ng-click="showResults()" ng-focus="showResults()" ng-blur="hideResults()" ng-change="queryEntered()" name="autocomplete-search" class="query" placeholder="{{searchObj.placeholder}}" autocomplete="off" type="search">
             </div>

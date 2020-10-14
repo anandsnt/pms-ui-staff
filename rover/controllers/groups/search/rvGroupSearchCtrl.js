@@ -9,6 +9,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
     '$state',
     'rvUtilSrv',
     'rvPermissionSrv',
+    '$stateParams',
     function($scope,
         $rootScope,
         rvGroupSrv,
@@ -18,7 +19,8 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
         $timeout,
         $state,
         util,
-        rvPermissionSrv) {
+        rvPermissionSrv,
+        $stateParams) {
 
         BaseCtrl.call(this, $scope);
 
@@ -272,6 +274,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
                 options = {
                     params: params,
                     successCallBack: successCallBackOfSearch,
+                    successCallBackParameters: pageNo,
                     failureCallBack: failureCallBackOfSearch
                 };
 
@@ -283,17 +286,21 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          * @param {Array} - array of objects - groups
          * @return {None}
          */
-        var successCallBackOfSearch = function(data) {
-                // groupList
-                $scope.groupList = data.groups;
+        var successCallBackOfSearch = function(data, pageNo) {
+            // groupList
+            $scope.groupList = data.groups;
 
-                // total result count
-                $scope.totalResultCount = data.total_count;
+            // total result count
+            $scope.totalResultCount = data.total_count;
 
-                refreshScrollers();
+            refreshScrollers();
 
-                $scope.refreshPagination(PAGINATION_ID);                
-            };            
+            $scope.refreshPagination(PAGINATION_ID);
+
+            setTimeout(function() {
+                $scope.$broadcast('updatePageNo', pageNo);
+            }, 150);
+        };
 
         /**
          * on success of search API
@@ -363,7 +370,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
         /**
          * Pagination things
          */
-        var setInitialPaginationAndAPIThings = function() {
+        var setInitialPaginationValues = function() {
             // pagination
             $scope.perPage = rvGroupSrv.DEFAULT_PER_PAGE;
             $scope.start = 1;
@@ -409,7 +416,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          * @return {Boolean}
          */
         var hasSomeSearchResults = function() {
-            return ($scope.groupList.length > 0);
+            return ($scope.groupList && $scope.groupList.length > 0);
         };
 
         /**
@@ -436,11 +443,63 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
             });
         };
 
+        var getFilterParams = function() {
+            return {
+                fromDate: $scope.fromDate,
+                fromDateForAPI: $scope.fromDateForAPI,
+                toDate: $scope.toDate,
+                toDateForAPI: $scope.toDateForAPI,
+                query: $scope.query,
+                page: $scope.pageOptions.currentPage,
+                groupStatusObj: $scope.groupStatusObj
+            };
+        };
+
+        var checkCachedFilterData = function() {
+            var data = rvGroupSrv.getCache();
+
+            // Once we entered group details screen and trying to came back to group list,
+            // We will be showing the same state of data list with the filters selected as before.
+            if (data && $stateParams.origin === 'BACK_TO_GROUP_SEARCH_LIST') {
+                setDatePickerOptions();
+
+                $scope.fromDate = data.fromDate;
+                $scope.fromDateForAPI = data.fromDateForAPI;
+                $scope.toDate = data.toDate;
+                $scope.toDateForAPI = data.toDateForAPI;
+                
+                $scope.query = data.query;
+                $scope.groupStatusObj = data.groupStatusObj;
+
+                $scope.search(data.page);
+                // Clearing cached data.
+                rvGroupSrv.clearCache();
+            }
+            else {
+                // date related setups and things
+                setDatePickerOptions();
+
+                // groupList
+                $scope.groupList = initialGroupListing.groups;
+
+                // total result count
+                $scope.totalResultCount = initialGroupListing.total_count;
+
+                // populate data for Group status dropdown-chboxes filter.
+                fetchHoldStatusList();
+
+                $scope.refreshPagination(PAGINATION_ID);
+            }
+        };
+
         /**
          * Navigate to the group configuration state for editing the group
          * @return undefined
          */
         $scope.gotoEditGroupConfiguration = function(groupId) {
+            var params = getFilterParams();
+
+            rvGroupSrv.updateCache(params);
             $state.go('rover.groups.config', {
                 id: groupId,
                 activeTab: 'SUMMARY'
@@ -495,29 +554,18 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
             // updating the left side menu
             $scope.$emit("updateRoverLeftMenu", "menuManageGroup");
 
-            // date related setups and things
-            setDatePickerOptions();
-
-            // groupList
-            $scope.groupList = initialGroupListing.groups;
-
-            // total result count
-            $scope.totalResultCount = initialGroupListing.total_count;
-
             // Yes am first time here
             $scope.amFirstTimeHere = true;
 
             // scroller and related things
             setScrollerForMe();
 
-            // pagination  & API things
-            setInitialPaginationAndAPIThings();
+            // pagination & API things
+            setInitialPaginationValues();
 
             configurePagination();
 
-            $scope.refreshPagination(PAGINATION_ID);
-
-            fetchHoldStatusList();
+            checkCachedFilterData();
 
         }());
 

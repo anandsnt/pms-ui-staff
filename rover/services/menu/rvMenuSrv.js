@@ -327,8 +327,11 @@ angular.module('sntRover').service('rvMenuSrv',
 		            menuIndex: "journals"
 		        }, {
 		            title: "MENU_CC_TRANSACTIONS",
-		            action: "rover.financials.ccTransactions({ id : 'REVENUE'})",
-		            menuIndex: "ccTransactions"
+		            action: "rover.financials.ccTransactions",
+					menuIndex: "ccTransactions",
+					actionParams: {
+						isRefresh: true
+					}
 		        }, {
 		            title: "MENU_ACCOUNTS_RECEIVABLES",
 		            action: "rover.financials.accountsReceivables",

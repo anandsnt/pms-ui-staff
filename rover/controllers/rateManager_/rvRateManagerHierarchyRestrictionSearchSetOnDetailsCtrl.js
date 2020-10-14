@@ -9,6 +9,7 @@ angular.module('sntRover')
             $timeout) {
                 BaseCtrl.call(this, $scope);
                 let apiMethod = '';
+                let apiParams = {};
                 let initialSetOnListData = [];
 
                 const setscroller = () => {
@@ -21,22 +22,35 @@ angular.module('sntRover')
                     }, 500);
                 };
 
+                const processSearchListData = (response) => {
+                    let resultArray = response.results || response;
+
+                    if ($scope.popUpView === 'EDIT') {
+                        _.each(resultArray, function (resultArrayItem) {
+                            _.each($scope.selectedRestriction.setOnValuesList, function (setOnValuesListItem) {
+                                if (resultArrayItem.id === setOnValuesListItem.id) {
+                                    $scope.searchObj.selectedList.push(resultArrayItem);
+                                    resultArray = resultArray.filter((item) => item.id !== setOnValuesListItem.id);
+                                }
+                            });
+                        });
+                        $scope.restrictionObj.selectedSetOnIds = _.pluck($scope.searchObj.selectedList, 'id');
+                    }
+                    $scope.searchObj.results = resultArray;
+                    initialSetOnListData = angular.copy(resultArray);
+                };
+
                 // Fetch comeplete list for set on filter/search.
                 const fetchSetOnData = () => {
                     const fetchSetOnSuccessCallback = ( response ) => {
-                        $scope.errorMessage = '';
-                        $scope.searchObj.results = response.results;
-                        initialSetOnListData = angular.copy(response.results);
+                        processSearchListData(response);
                     };
                     const fetchSetOnFailureCallback = (errorMessage) => {
                         $scope.errorMessage = errorMessage;
                     };
 
-                    let params = {
-                        'exclude_pseudo': true
-                    };
                     let options = {
-                        params: params,
+                        params: apiParams,
                         onSuccess: fetchSetOnSuccessCallback,
                         failureCallBack: fetchSetOnFailureCallback
                     };
@@ -62,10 +76,33 @@ angular.module('sntRover')
                             $scope.searchObj.noticeLabel = 'Applies to All Room Types!';
                             $scope.searchObj.placeholder = 'Select or Search by Name/Code';
                             apiMethod = hierarchySrv.fetchAllRoomTypes;
+                            // API: /api/room_types.json?exclude_pseudo=true&query=roomtype
+                            apiParams = {
+                                exclude_pseudo: true
+                            };
                             break;
-
+                        case 'RateType':
+                            $scope.searchObj.headerLabel = 'Set on Rate Type(s)';
+                            $scope.searchObj.noticeLabel = 'Applies to All Rate Types!';
+                            $scope.searchObj.placeholder = 'Select or Search by Rate Type Name';
+                            apiMethod = hierarchySrv.fetchAllRateTypes;
+                            // API: /api/rate_types/active?query=group
+                            apiParams = {};
+                            break;
+                        case 'Rate':
+                            $scope.searchObj.headerLabel = 'Set on Rate(s)';
+                            $scope.searchObj.noticeLabel = 'Applies to All Rates!';
+                            $scope.searchObj.placeholder = 'Search by Rate Name or Code';
+                            apiMethod = hierarchySrv.fetchAllRates;
+                            // API: /api/rates?is_fully_configured=true&is_active=true&query=ratename&exclude_locked_restriction_id=5
+                            apiParams = {
+                                is_fully_configured: true,
+                                is_active: true,
+                                exclude_locked_restriction_id: $scope.selectedRestriction.type === 'number' ? $scope.selectedRestriction.id : ''
+                            };
+                            break;
                         default:
-                        break;
+                            break;
                     }
 
                     fetchSetOnData();
@@ -105,10 +142,10 @@ angular.module('sntRover')
                 // Handle ON ALL checkbox toggle.
                 $scope.clickedOnAllCheckBox = function() {
                     $scope.restrictionObj.isSetOnAllActive = !$scope.restrictionObj.isSetOnAllActive;
+                    $scope.$emit('REFRESH_FORM_SCROLL');
                     if ($scope.restrictionObj.isSetOnAllActive) {
                         $scope.restrictionObj.selectedSetOnIds = [];
                         $scope.searchObj.selectedList = [];
-                        $scope.$emit('REFRESH_FORM_SCROLL');
                     }
                 };
                 // Handle query entered on change event.
@@ -122,11 +159,11 @@ angular.module('sntRover')
                             // check if the querystring is number or string
                             var result = 
                                 (
-                                    isNaN($scope.searchObj.query) &&
+                                    isNaN($scope.searchObj.query) && item.name &&
                                     item.name.toUpperCase().includes($scope.searchObj.query.toUpperCase())
                                 ) ||
                                 (
-                                    isNaN($scope.searchObj.query) &&
+                                    isNaN($scope.searchObj.query) && item.code &&
                                     item.code.toUpperCase().includes($scope.searchObj.query.toUpperCase())
                                 );
 
@@ -150,8 +187,6 @@ angular.module('sntRover')
                     $scope.searchObj.isShowResults = false;
                     $scope.$emit('REFRESH_FORM_SCROLL');
                 };
-                
-                init();
 
                 $scope.addListener('INIT_SET_ON_SEARCH', init);
             }

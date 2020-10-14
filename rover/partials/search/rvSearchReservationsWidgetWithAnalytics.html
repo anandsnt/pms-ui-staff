@@ -192,6 +192,8 @@
                             </span>
                             <span class="icons icon-location" ng-if="escapeNullStr(row.location) !== ''">{{escapeNullStr(row.location)}}</span>
                             <span class="icons icon-location no-location" ng-if="escapeNullStr(row.location) === ''">N/A</span>
+                            <span class="member-level" ng-if="escapeNullStr(row.membership_level) !== ''"><strong>{{row.membership_type}}</strong> {{row.membership_card_number}} ({{row.membership_level}})</span>
+                            <span class="member-level" ng-if="escapeNullStr(row.membership_level) === ''"><strong>{{row.membership_type}}</strong> {{row.membership_card_number}} </span>
                         </div>
                     </div>
 

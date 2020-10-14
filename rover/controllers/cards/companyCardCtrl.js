@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', 'ngDialog', '$filter', '$stateParams', 'rvPermissionSrv',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, ngDialog, $filter, $stateParams, rvPermissionSrv) {
+angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', 'ngDialog', '$filter', '$stateParams', 'rvPermissionSrv', 'rvFileCloudStorageSrv',
+	function($scope, $rootScope, RVCompanyCardSrv, $timeout, ngDialog, $filter, $stateParams, rvPermissionSrv, rvFileCloudStorageSrv) {
 		$scope.searchMode = true;
 		$scope.account_type = 'COMPANY';
 		$scope.currentSelectedTab = 'cc-contact-info';
@@ -312,6 +312,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 				$scope.$emit("saveContactInformation");
 				$rootScope.$broadcast("saveArAccount");
 			}
+			rvFileCloudStorageSrv.activeCardType = 'ACCOUNT_COMPANY';
 
 		};
 

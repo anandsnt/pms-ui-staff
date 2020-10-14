@@ -21,6 +21,7 @@ angular.module('sntRover')
         'RVReservationSummarySrv',
         'baseSearchData',
         '$interval',
+        'sntActivity',
         function(
 			$scope,
 			$rootScope,
@@ -41,7 +42,8 @@ angular.module('sntRover')
 			$timeout,
 			RVReservationSummarySrv,
             baseSearchData,
-            $interval
+            $interval,
+            sntActivity
 		) {
             $scope.$emit('showLoader');
             BaseCtrl.call(this, $scope);
@@ -354,6 +356,24 @@ angular.module('sntRover')
 
                 correctTimeDate = util.correctTime(coming_date, propertyTime);
             }
+
+            /**
+             * Show room status and service update popup
+             * @param {Object} roomInfo room info
+             * @return {void}
+             */
+            $scope.showRoomStatusAndServiceUpdatePopup = function(roomInfo) {
+                if ($rootScope.isStandAlone) {
+                    ngDialog.open({
+                        template: '/assets/partials/diary/rvDiaryUpdateRoomStatusAndServicePopup.html',
+                        className: 'ngdialog-theme-default',
+                        closeByDocument: true,
+                        controller: 'rvDiaryRoomStatusAndServiceUpdatePopupCtrl',
+                        data: roomInfo,
+                        scope: $scope
+                    }); 
+                }
+            }; 
 
             /* --------------------------------------------------*/
             /* BEGIN CONFIGURATION
@@ -2722,6 +2742,27 @@ angular.module('sntRover')
                 }
                 return hideToggleMenu;
             };
+
+            // Refresh rooms and reservations
+            var refreshDiary = function () {
+                var props = $scope.gridProps,
+                    filter = props.filter,
+                    arrivalms = filter.arrival_date.getTime(),
+                    timeSet;
+
+                $scope.$emit('hideLoader');
+
+                timeSet = util.gridTimeComponents(arrivalms, 48, util.deepCopy($scope.gridProps.display));
+                $scope.gridProps.display = util.deepCopy(timeSet.display);
+                callDiaryAPIsAgainstNewDate(timeSet.toStartDate(), timeSet.toEndDate());
+
+                $scope.gridProps.unassignedRoomList.reset();
+            };
+
+            // Refresh the diary
+            $scope.addListener('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function() {
+                refreshDiary();
+            });
         }
     ]
 );

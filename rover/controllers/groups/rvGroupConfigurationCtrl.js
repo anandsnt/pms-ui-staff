@@ -506,6 +506,13 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 });
             };
 
+            // Trigger the date change failed event
+            var triggerDateChangeFailedEvent = function () {
+                $timeout(function () {
+                    $scope.$broadcast('DATE_CHANGE_FAILED');
+                }, 500);
+            };
+
             /**
              * [failureCallBackOfMoveDatesAPI description]
              * @param  {[type]} errorMessage [description]
@@ -536,6 +543,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         default:
                             $scope.errorMessage = error;
                             lastFailureCallback (error);
+                            triggerDateChangeFailedEvent();
                             break;
                     }
                 }
@@ -543,6 +551,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 else {
                     $scope.errorMessage = error;
                     lastFailureCallback (error);
+                    triggerDateChangeFailedEvent();                    
                 }
             };
 
@@ -1215,6 +1224,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
                 var summaryData = JSON.parse(JSON.stringify($scope.groupConfigData.summary));
 
+                if (summaryData.company) {
+                    delete summaryData.company;
+                }
+
                 summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
                 summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
@@ -1378,7 +1391,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     $scope.groupConfigData.summary.company.name = ui.item.label;
                     $scope.groupConfigData.summary.company.id = ui.item.value;
                     if (!$scope.isInAddMode()) {
-                        $scope.updateGroupSummary();
+                       updateCompanyCardForGroup();
                     }
                     $scope.$broadcast("COMPANY_CARD_CHANGED");
                     runDigestCycle();
@@ -1516,6 +1529,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             } else if ( 'ACCOUNT' === $scope.groupConfigData.activeTab ) {
                 $scope.$broadcast( 'UPDATE_ACCOUNT_SUMMARY' );
             }
+            if (resolvedBackBtn.name === 'rover.groups.search') {
+                resolvedBackBtn.param.origin = 'BACK_TO_GROUP_SEARCH_LIST';
+            }
 
             $state.go( resolvedBackBtn.name, resolvedBackBtn.param );
         };
@@ -1577,6 +1593,40 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             return (rvPermissionSrv.getPermissionValue('TAX_EXEMPT') && $scope.taxExemptTypes.length);
         };
 
+        var updateCompanyCardForGroup = function() {
+
+            var updateCompanyCardForGroupFailure = function(error) {
+                updateGroupSummaryInProgress = false;
+                /* CICO-20270: Since we are expecting some custom http error status in the response
+                 * and we are using that to acknowledge error with card detaching.*/
+                if (error.hasOwnProperty('httpStatus')) {
+                    switch (error.httpStatus) {
+                        case 470:
+                            showRemoveCardsAPIErrorPopup(error);
+                            break;
+                        default:
+                            $scope.errorMessage = error.errorMessage;
+                            break;
+                    }
+                } else {
+                    $scope.groupConfigData.summary.shoulder_from_date = $scope.groupSummaryMemento.shoulder_from_date;
+                    $scope.groupConfigData.summary.shoulder_to_date = $scope.groupSummaryMemento.shoulder_to_date;
+                    // client controllers should get an infromation whether updation was a failure
+                    $scope.$broadcast("FAILED_TO_UPDATE_GROUP_INFO", error);
+                    $scope.errorMessage = error;
+                    return false;
+                }
+            };
+            $scope.callAPI(rvGroupConfigurationSrv.updateCompanyCard, {
+                successCallBack: fetchSummaryData,
+                failureCallBack: updateCompanyCardForGroupFailure,
+                params: {
+                    id: $scope.groupConfigData.summary.group_id,
+                    company_card_id: $scope.groupConfigData.summary.company ? $scope.groupConfigData.summary.company.id : ''
+                }
+            });
+
+        };
         // Detaches the cards(TA/CC) from group
         $scope.detachCard = function(cardType) {
             if (cardType === 'company')  {
@@ -1584,14 +1634,16 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     id: ""
                 };  
                 $scope.$broadcast("COMPANY_CARD_CHANGED");
+                updateCompanyCardForGroup();
 
             } else {
                 $scope.groupConfigData.summary.travel_agent = {
                     id: ""
                 }; 
                 $scope.$broadcast("TA_CARD_CHANGED");
+                $scope.updateGroupSummary(true);
             }
-            $scope.updateGroupSummary(true);
+            
         };
 
         // Cancel the detachment of CC/TA from group

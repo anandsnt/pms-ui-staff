@@ -33,7 +33,7 @@
                                 <td>{{transaction.card_no}}</td>
                                 <td>{{transaction.user}}</td>
                                 <td>{{transaction.room_no}}</td>
-                                <td>{{transaction.reservation_no}}</td>
+                                <td><a ng-click="gotoStayCard(transaction.reservation_id, transaction.reservation_no)" class="button white brand-text has-arrow next-view with-arrow">{{transaction.reservation_no}}</a></td>
                                 <td>{{transaction.guest_name}}</td>
                                 <td>{{transaction.auth_code}}</td>
                                 <td>{{currencySymbol}}{{transaction.amount|number:2}}</td>
@@ -70,7 +70,7 @@
                                 <td>{{transaction.card_no}}</td>
                                 <td>{{transaction.user}}</td>
                                 <td>{{transaction.room_no}}</td>
-                                <td>{{transaction.reservation_no}}</td>
+                                <td><a ng-click="gotoStayCard(transaction.reservation_id, transaction.reservation_no)" class="button white brand-text has-arrow next-view with-arrow">{{transaction.reservation_no}}</a></td>
                                 <td>{{transaction.guest_name}}</td>
                                 <td>{{transaction.auth_code}}</td>
                                 <td>{{currencySymbol}}{{transaction.amount|number:2}}</td> 
@@ -107,7 +107,7 @@
                                 <td>{{transaction.card_no}}</td>
                                 <td>{{transaction.user}}</td>
                                 <td>{{transaction.room_no}}</td>
-                                <td>{{transaction.reservation_no}}</td>
+                                <td><a ng-click="gotoStayCard(transaction.reservation_id, transaction.reservation_no)" class="button white brand-text has-arrow next-view with-arrow">{{transaction.reservation_no}}</a></td>
                                 <td>{{transaction.guest_name}}</td>
                                 <td>{{transaction.auth_code}}</td>
                                 <td>{{currencySymbol}}{{transaction.amount|number:2}}</td> 

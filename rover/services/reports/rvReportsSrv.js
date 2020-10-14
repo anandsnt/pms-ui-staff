@@ -105,6 +105,9 @@ angular.module('sntRover').service('RVreportsSrv', [
             'GOBD Export': [
                 'DATE_RANGE'
             ],
+            'GOBD Admin Charge Code Actions Export': [
+                'DATE_RANGE'
+            ],
             'Clairvoyix Stays Export': [
                 'YESTERDAY',
                 'ALL'
@@ -247,6 +250,9 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_OCTOBER',
                 'LAST_NOVEMBER',
                 'LAST_DECEMBER'
+            ],
+            'Ad Notum - Rate of the Day Export': [
+                'TODAY'
             ]
         };
 
@@ -447,6 +453,52 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_OCTOBER',
                 'LAST_NOVEMBER',
                 'LAST_DECEMBER'
+            ],
+            'Add-On Forecast': [
+                'TODAY',
+                'TOMORROW',
+                'NEXT_SEVEN_DAYS',
+                'NEXT_TEN_DAYS',
+                'NEXT_THIRTY_DAYS'
+            ],
+            'Forecast Guests & Groups': [
+                'CURRENT_MONTH',
+                'CURRENT_MONTH_PLUS_ONE',
+                'CURRENT_MONTH_PLUS_TWO',
+                'CURRENT_MONTH_PLUS_THREE',
+                'NEXT_SEVEN_DAYS',
+                'NEXT_TEN_DAYS',
+                'NEXT_THIRTY_DAYS'
+            ],
+            'Market Segment Statistics Report': [
+                'YESTERDAY'
+            ],
+            'A/R Aging': [
+                'YESTERDAY'
+            ],
+            'Complimentary Room Report': [
+                'TODAY',
+                'TOMORROW',
+                'YESTERDAY',
+                'LAST_WEEK',
+                'LAST_SEVEN_DAYS',
+                'LAST_THIRTY_DAYS',
+                'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER',
+                'CURRENT_MONTH',
+                'NEXT_SEVEN_DAYS',
+                'NEXT_THIRTY_DAYS'
             ]
         };
 
