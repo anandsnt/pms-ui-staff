@@ -40,11 +40,15 @@ sntRover.controller('rvAllRoutesCtrl', ['$scope', '$rootScope', '$filter', 'RVBi
     * function to delete route
     */
     $scope.deleteRoute = function(index) {
-        var successCallback = function(data) {
+        var successCallback = function(response) {
                 $scope.routes.splice(index, 1);
                 $scope.$parent.$emit('hideLoader');
                 $scope.$parent.$emit('BILLINGINFODELETED', $scope.routes);
                 $scope.$parent.$emit('REFRESH_BILLCARD_VIEW');
+                if (response && response.bill_number) {
+                    $scope.reservationBillData.bills[response.bill_number - 1].routed_entity_type = response.routed_entity_type;
+                    $scope.reservationBillData.bills[response.bill_number - 1].guest_image = response.guest_image;
+                }
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');

@@ -91,6 +91,38 @@
                     .show;
                     .no-transition;
 
+                    .bill-entity-icon {
+                        .square(25px);
+                        float: left;
+                        margin-right: 10px;
+                        position: relative;
+                        padding: 5px;
+                        background: @gcard;
+
+                        img {
+                            max-width: 100%;
+                            height: auto;
+                        }
+
+                        .icons {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            background-size: 70px;
+                            .square(25px);
+
+                            &.icon-company {
+                                background-color: @ccard;
+                                background-position: 6px -2013px;
+                            }
+
+                            &.icon-travel-agent {
+                                background-color: @tacard;
+                                background-position: 6px -2082px;
+                            }
+                        }
+                    }
+
                     .price {
                         font-weight: 600;
                         .pull-left;
@@ -146,7 +178,7 @@
                     }
 
                     &.has-icon {
-                        .icons {
+                        .icons:not(.icon-company):not(.icon-travel-agent) {
                             background-size: 80px;
                             .square(14px);
                             top: 5px;
