@@ -138,7 +138,7 @@
                     </h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
                     <span class="room-status {{ room.roomStatusClass }}" ng-if="room.hk_status.value !== 'DO_NOT_DISTURB'">{{room.hk_status.value}}</span>
                     <span class="room-status {{ room.roomStatusClass }}" ng-if="room.hk_status.value === 'DO_NOT_DISTURB'">{{ 'DO_NOT_DISTURB' | translate }}</span>
-                    .
+                    <span class="room-dot">.</span>
                     <span class="room-type">{{::room.room_type.name}}</span>
                 </div>
 
