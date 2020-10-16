@@ -1546,6 +1546,16 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
           }
           return (returnString);
 		};
+
+		/**
+		 * Should show guest count in the room listing screen
+		 */
+		$scope.shouldShowGuestCount = function(room, roomStatus) {
+			var showGuestCount = $rootScope.isStandAlone && util.getDiaryMode() !== 'FULL';
+
+			showGuestCount = showGuestCount && room.guest_details && room.room_reservation_status === roomStatus;
+			return showGuestCount;
+		};
 		
 	}
 	]);
