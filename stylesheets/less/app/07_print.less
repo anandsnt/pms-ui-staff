@@ -931,6 +931,54 @@
                         float: none;
                     }
                 }
+               
+                &.with-checkbox {
+                    .reservation-status {
+                        .guest-status {
+                            background-image: @iconPrint;
+
+                            &.no-show {
+                                background-image: none;
+                            }
+                        }
+                    }
+
+                    .occupancy {
+                        margin-top: 2px;
+                        #flexbox > .parent('', '', center, '');
+                        padding: 0;
+
+                        .occupancy-number {
+                            margin-right: 5px;
+                    
+                            font-size: 12px;
+                            line-height: 12px;
+    
+                            .icons {
+                                .square(12px);
+                                .pull-left();
+                                background-image: @icons;
+                                margin-right: 5px;
+                                opacity: 0.5;
+    
+                                background-size: 50px;
+                
+                                &.icon-adult-2 {
+                                    background-position: 0px -5792px;
+                                }
+    
+                                &.icon-student {
+                                    background-size: 60px;
+                                    background-position: 0px -5270px;
+                                }
+    
+                                &.icon-baby {
+                                    background-position: 2px -5816px;
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             /* Commisions ***/
