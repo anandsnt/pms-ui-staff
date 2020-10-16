@@ -838,13 +838,35 @@
 
     .reservation-filters {
         padding: 20px;
-        .float;
+        #flexbox > .parent(row wrap, '', center, '');
+
+        .restrictions {
+            flex: 0 1 auto;
+            line-height: 20px;
+            margin-right: 10px;
+            margin-bottom: 0;
+            #flexbox > .parent(row wrap, '', center, '');
+
+            strong {
+                font-weight: 600;
+                margin-right: 5px;
+            }
+
+            .restriction-icon {
+                font-weight: 600;
+                .square(20px);
+
+                &:not(:last-child) {
+                    margin-right: 5px;
+                }
+            }
+        }
         
         .select {
+            flex: 1 1 auto;
             height: 40px;
-            margin-right: 20px;
-            .size(40px, 180px);
-            .pull-left;
+            margin-right: 10px;
+            max-width: 180px;
 
             select { height: 40px; }
 
@@ -852,10 +874,11 @@
         }
 
         .find-rates {
+            flex: 1 1 auto;
             position: relative;
-            margin-right: 20px;
-            .size(40px, 280px);
-            .pull-left;
+            margin-right: 10px;
+            height: 40px;
+            max-width: 180px;
 
             .icon-search {
                 position: absolute;
@@ -874,10 +897,12 @@
         }
 
         ul {
-            .pull-right;
-            .float;
+            margin-left: auto;
+            flex: 0 1 auto;
+            #flexbox > .parent(row wrap, '', center, '');
 
             li { 
+                flex: 0 1 auto;
                 cursor: pointer;
                 margin: 0 0 0 1px;
                 font-size: 14px;
@@ -886,10 +911,9 @@
                 color: @textColor;
                 font-weight: 600;
                 text-transform: uppercase;
-                padding: 0 20px;
+                padding: 0 10px;
                 .clickable;
                 #border-radius > .rounded(0);
-                .pull-left;
 
                 &:hover { 
                     color: @logoPrimary; 
@@ -913,8 +937,8 @@
 
             .edit-guests {
                 position: relative;
-                width: 170px;
-                .pull-left;
+                max-width: 240px;
+                margin-right: 10px;
 
                 .toggle {
                     text-shadow: none;
@@ -950,20 +974,20 @@
                             position: absolute;
                             top: 10px;
                             left: 10px;
+                            float: none;
+                            margin: 0;
                             z-index: 1;
                         }
 
-                        select { 
-                            position: relative;
+                        select {
                             font-size: 24px;
-                            line-height: 40px;
-                            height: 40px;
-                            padding: 0 10px 0 120px;
+                            direction: rtl;
+                            width: 100%;
+                            padding-right: 30px;
                             background: transparent;
                             border: 0;
-                            width: 100%;
                             z-index: 9;
-                            .box-shadow(none);                          
+                            .box-shadow(none);                        
                         }
 
                         &.adults { z-index: 30; }
@@ -973,10 +997,12 @@
                 }                    
             }
 
-            .select,
             .find-rates {
-                margin-right: 20px;
-                .pull-right;
+                margin-left: 10px;
+            }
+
+            .select {
+                margin-left: 10px;
             }
         }
     }
