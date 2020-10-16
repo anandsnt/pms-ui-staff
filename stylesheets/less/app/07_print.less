@@ -933,6 +933,17 @@
                 }
                
                 &.with-checkbox {
+                   
+                    height: auto;
+                    .room-dot { .hide(); }
+
+                    .room-info {
+                        height: auto;
+                        .room-type {
+                            margin-top: 2px;
+                        }
+                    }
+
                     .reservation-status {
                         .guest-status {
                             background-image: @iconPrint;
@@ -940,6 +951,11 @@
                             &.no-show {
                                 background-image: none;
                             }
+                        }
+
+                        .current,
+                        .next {
+                            height: auto;
                         }
                     }
 
@@ -964,7 +980,7 @@
                                 background-size: 50px;
                 
                                 &.icon-adult-2 {
-                                    background-position: 0px -5792px;
+                                    background-position: 0px -5791px;
                                 }
     
                                 &.icon-student {
