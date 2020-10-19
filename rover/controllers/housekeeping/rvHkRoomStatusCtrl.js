@@ -1550,10 +1550,10 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		/**
 		 * Should show guest count in the room listing screen
 		 */
-		$scope.shouldShowGuestCount = function(room, roomStatus) {
+		$scope.shouldShowGuestCount = function(room, reservationStatus) {
 			var showGuestCount = $rootScope.isStandAlone && util.getDiaryMode() !== 'FULL';
 
-			showGuestCount = showGuestCount && room.guest_details && room.room_reservation_status === roomStatus;
+			showGuestCount = showGuestCount && room.guest_details && room.reservation_status === reservationStatus;
 			return showGuestCount;
 		};
 		
