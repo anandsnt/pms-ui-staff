@@ -68,7 +68,7 @@
     </div>
 
     <!-- Room or Task View, default to Room -->
-    <div class="switch" ng-if="::(isStandAlone && !isHourlyRateOn)">
+    <div class="entry switch" ng-if="::(isStandAlone && !isHourlyRateOn)">
         <div class="switch-button"
             ng-class="{ 'on': currentView === 'ROOMS', 'off': currentView==='TASKS' }">
             <input id="room-task-toggle" value="" type="checkbox"
