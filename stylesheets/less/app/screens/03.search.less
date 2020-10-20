@@ -2844,6 +2844,11 @@
                         .nowrap();
                         display: block;
                         padding: 0 30px 10px 30px;
+
+                         h2 {
+                            font-size: 24px;
+                            line-height: 25px;
+                        }
                     }
 
                     .occupancy {
@@ -4512,6 +4517,8 @@
                 }
 
                 &.with-checkbox {
+                    min-height: 60px;
+
                     .check {
                         right: auto;
                         left: 0;
@@ -4535,7 +4542,13 @@
                     .room-info {
                         display: block;
                         padding-bottom: 0px;
+                        padding-left: 0;
                         .calc-width(60,280);
+
+                        h2 {
+                            font-size: 24px;
+                            line-height: 25px;
+                        }
                     }
 
                     .assigned {
@@ -4559,12 +4572,13 @@
     
                     .room-type {
                         line-height: 1;
-                        display: inline-block;
+                        display: inline;
                         vertical-align: middle;
                     }
 
                     .reservation-status {
-                        width: 310px;
+                        width: 290px;
+                        padding-right: 0;
 
                         .guest-status {
                             margin-right: 10px;
@@ -4614,7 +4628,7 @@
                     }
                     
                     .service-status {
-                        right: 40px;
+                        right: 70px;
                         width: 150px;
                         top: 5px;
                     }
