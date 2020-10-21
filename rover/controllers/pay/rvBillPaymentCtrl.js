@@ -38,6 +38,9 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		$scope.disableMakePaymentButton = false;
 		$scope.splitBillEnabled = false;
 		$scope.showDBconfirmation = false;
+		$scope.billPaymentReceiptData = {};
+		$scope.billPaymentReceiptData.allBillReceiptsList = {};
+		$scope.shouldDisableSplit = false;
 	};
 
 	var startingAmount = 0;
@@ -114,6 +117,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 				$scope.creditCardTypes = item.values;
 			}
 		});
+		$scope.shouldDisableSplit = $scope.renderData.defaultPaymentAmount < 0;
 	};
 
 	/*
@@ -227,6 +231,16 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 	$scope.hasPermissionToDirectBillPayment = function() {
 		return rvPermissionSrv.getPermissionValue ('DIRECT_BILL_PAYMENT');
 	};
+
+	$scope.getReceiptsListSuccess = function(data) {	
+
+		$scope.billPaymentReceiptData.allBillReceiptsList = data.data;
+		$scope.billPaymentReceiptData.receiptsList = _.find($scope.billPaymentReceiptData.allBillReceiptsList.payment_receipts, {
+														bill_number: $scope.billsArray[$scope.currentActiveBill].bill_number
+													});
+	
+	};
+	
 	/*
 	* Initial function - To render screen with data
 	* Initial screen - filled with deafult amount on bill
@@ -262,6 +276,17 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, $scope.getPaymentListSuccess);
 
 		$scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.reservationData.reservationId, $scope.cardsListSuccess);
+		if ($rootScope.selectedReceiptTypeValue === "tax_payment_receipt") {
+			var paramsToApi = {
+				"bill_holder_id": $scope.reservationData.reservationId,
+				"bill_holder_type": "Reservation"
+			};
+
+			$scope.invokeApi(RVPaymentSrv.getReceiptsList, paramsToApi, $scope.getReceiptsListSuccess);
+		}
+
+		$scope.disableRefund = $scope.billPaymentReceiptData.receiptsList && $scope.billPaymentReceiptData.receiptsList.length > 0 && !$scope.payment.receipt_id;
+		
 	};
 
 	$scope.init();	
@@ -318,8 +343,15 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 	*/
 	$scope.billNumberChanged = function() {
 		$scope.currentActiveBill = parseInt($scope.renderData.billNumberSelected) - parseInt(1);
+		$scope.billPaymentReceiptData.receiptsList = _.find($scope.billPaymentReceiptData.allBillReceiptsList.payment_receipts, {
+			bill_number: $scope.billsArray[$scope.currentActiveBill].bill_number
+		});
 		$scope.renderDefaultValues();
 	};
+
+	$scope.$on('AMOUNT_UPDATED', function( event, data) {
+		$scope.shouldDisableSplit = data < 0;		
+	});
 
 	/*
 	* Params - Index of clicked button starting from 1.

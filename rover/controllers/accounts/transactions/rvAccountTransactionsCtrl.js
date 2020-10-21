@@ -296,7 +296,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.isFromGroups = (typeof $scope.groupConfigData !== "undefined" && $scope.groupConfigData.activeTab === "TRANSACTIONS");
 
-			$scope.invoiceDate = $rootScope.businessDate;
+			$scope.invoiceDate = $rootScope.businessDate;			
 
 		}());
 

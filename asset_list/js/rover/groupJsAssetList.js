@@ -15,6 +15,7 @@ module.exports = {
                 roverRoot + "controllers/bill/rvRouteDetailsCtrl.js",
 				roverRoot + "controllers/packages/rvReservationPackageController.js",
 				roverRoot + "controllers/rvAddonDatePickerCtrl.js",
+				roverRoot + 'controllers/paymentReceipt/rvPaymentReceiptCtrl.js',
 				servicesRoot + "group/**/*.js",
 				servicesRoot + "reservation/rvReservationSummarySrv.js",
 				servicesRoot + "reservation/RVReservationAddonsSrv.js",

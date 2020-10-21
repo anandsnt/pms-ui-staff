@@ -2,7 +2,10 @@
     <img src="{{receiptPrintData.hotel_logo}}" alt="" />
     <h1>{{receiptPrintData.hotel_name}}</h1>
     <span ng-bind-html="receiptPrintData.hotel_address"></span>
-    <span class="type">{{receiptPrintData.receipt_translations.payment_receipt}}</span>
+    <span class="type">
+        {{receiptPrintData.receiptHeading}}
+        <span class="label" ng-if="receiptPrintData.receipt_type === 'tax_payment_receipt' && receiptPrintData.tax_receipt_type !== '' && receiptPrintData.tax_receipt_type !== null">{{receiptPrintData.tax_receipt_type}}</span>
+    </span>
     <!-- If showing QR code, place it here:-->
     <span class="type" ng-if="receiptPrintData.qr_code !== '' && receiptPrintData.qr_code !== null">
         <br/><img src="{{receiptPrintData.qr_code}}" alt="" class="qr-code" /> 
@@ -32,13 +35,21 @@
         </span>
         <div class="info-bottom">
             <strong>{{receiptPrintData.receipt_translations.payment_receipt_number}}:</strong> {{receiptPrintData.receipt_no}}
+            <br/>
+            <span ng-if="receiptPrintData.receipt_type === 'tax_payment_receipt' && receiptPrintData.invoice_number !== '' && receiptPrintData.invoice_number !== null">
+                <strong>{{receiptPrintData.receipt_translations.invoice_number}}: </strong> {{receiptPrintData.invoice_number}}
+            </span>
+            <br/>
+            <span ng-if="receiptPrintData.receipt_type === 'tax_payment_receipt' && receiptPrintData.reference_payment_receipt_info">
+                <strong>{{receiptPrintData.receipt_translations.refer_to_tax_payment_receipt}}:</strong> {{receiptPrintData.reference_payment_receipt_info}}
+            </span>
         </div>
     </div>
     <div class="info-right" ng-if="isFromBillCard">           
-        <strong>{{receiptPrintData.invoice_translations.arrival_date}}:</strong> {{receiptPrintData.arrival_date}}<br/>
-        <strong>{{receiptPrintData.invoice_translations.departure_date}}:</strong> {{receiptPrintData.departure_date}}<br/>
-        <strong>{{receiptPrintData.invoice_translations.room_number}}:</strong> {{receiptPrintData.room_no}}<br/> 
-        <strong>{{receiptPrintData.invoice_translations.confirmation_number}}:</strong> {{receiptPrintData.confirmation_number}}<br/>
+        <strong>{{receiptPrintData.receipt_translations.arrival_date}}:</strong> {{receiptPrintData.arrival_date}}<br/>
+        <strong>{{receiptPrintData.receipt_translations.departure_date}}:</strong> {{receiptPrintData.departure_date}}<br/>
+        <strong>{{receiptPrintData.receipt_translations.room_number}}:</strong> {{receiptPrintData.room_no}}<br/> 
+        <strong>{{receiptPrintData.receipt_translations.confirmation_number}}:</strong> {{receiptPrintData.confirmation_number}}<br/>
     </div>
 </div>
 
@@ -78,6 +89,68 @@
                 </td>
             </tr>
         </tbody>
+    </table>
+    <table class="invoice-details tax-breakdown" ng-if="receiptPrintData.show_extended_tax">
+        <thead>
+            <tr>
+                <th class="tax-description" >{{receiptPrintData.receipt_translations.tax_description}}</th>
+                <th >{{receiptPrintData.receipt_translations.gross}}</th>
+                <th >{{receiptPrintData.receipt_translations.net}}</th>
+                <th >{{receiptPrintData.receipt_translations.tax}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="tax_breakdown in receiptPrintData.payments.extended_tax_breakdown.details">
+                <td ng-if="tax_breakdown.section_value === 'vat'">
+                    {{receiptPrintData.receipt_translations.vat}} {{receiptPrintData.tax_percent}} %
+                </td>
+                <td ng-if="tax_breakdown.section_value === 'tax_exempt'">
+                    {{receiptPrintData.receipt_translations.tax_exempt}}
+                </td>
+                <td>
+                    {{currencySymbol}}{{tax_breakdown.gross_amount | number: precisonTwo }}
+                    <div class="converted-currency">
+                        {{invoiceCurrencySymbol}}{{tax_breakdown.inv_gross_amount | number: precisonTwo }}
+                    </div>
+                </td>
+                <td>
+                    {{currencySymbol}}{{tax_breakdown.net_amount | number: precisonTwo }}
+                    <div class="converted-currency">
+                        {{invoiceCurrencySymbol}}{{tax_breakdown.inv_net_amount | number: precisonTwo }}
+                    </div>
+                </td>
+                <td>
+                    {{currencySymbol}}{{tax_breakdown.tax_amount | number: precisonTwo }}
+                    <div class="converted-currency">
+                        {{invoiceCurrencySymbol}}{{tax_breakdown.inv_tax_amount | number: precisonTwo }}
+                    </div>
+                </td>
+            </tr>
+           
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>Total</td>
+                <td>
+                    {{currencySymbol}}{{receiptPrintData.payments.extended_tax_breakdown.total_gross_amount | number: precisonTwo }}
+                    <div class="converted-currency">
+                        {{invoiceCurrencySymbol}}{{receiptPrintData.payments.extended_tax_breakdown.inv_total_gross_amount | number: precisonTwo }}
+                    </div>
+                </td>
+                <td>
+                    {{currencySymbol}}{{receiptPrintData.payments.extended_tax_breakdown.total_net_amount | number: precisonTwo }}
+                    <div class="converted-currency">
+                        {{invoiceCurrencySymbol}}{{receiptPrintData.payments.extended_tax_breakdown.inv_total_net_amount | number: precisonTwo }}
+                    </div>
+                </td>
+                <td>
+                    {{currencySymbol}}{{receiptPrintData.payments.extended_tax_breakdown.total_tax_amount | number: precisonTwo }}
+                    <div class="converted-currency">
+                        {{invoiceCurrencySymbol}}{{receiptPrintData.payments.extended_tax_breakdown.inv_total_tax_amount | number: precisonTwo }}
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
