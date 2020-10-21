@@ -1058,7 +1058,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 							timeDelay = 700,
 							arInvoiceNumberActivatedDate = moment(responseData.print_ar_invoice_number_activated_at, "YYYY-MM-DD"),
 							arTransactionDate = moment(responseData.ar_transaction_date, "YYYY-MM-DD"),
-							dateDifference = arTransactionDate.diff(arInvoiceNumberActivatedDate, 'days');
+							dateDifference = arTransactionDate.diff(arInvoiceNumberActivatedDate, 'days'),
+							copyInvoiceLabel = '';
 
 						$scope.shouldShowArInvoiceNumber = true;
 						if (dateDifference < 0) {
@@ -1075,7 +1076,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 							responseData.invoiceLabel = responseData.translation.information_invoice;
 						}
 						else if (responseData.no_of_original_invoices === null && !$scope.transactionsDetails.bills[$scope.currentActiveBill].is_void_bill) {
-							responseData.invoiceLabel = responseData.translation.invoice;
+							responseData.invoiceLabel = responseData.posting_account_invoice_label || responseData.translation.invoice;
 						}
 						else if ($scope.transactionsDetails.bills[$scope.currentActiveBill].is_void_bill) {
 							
@@ -1088,12 +1089,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 						} 
 						else if (parseInt(responseData.print_counter, 10) <= parseInt(responseData.no_of_original_invoices, 10)) 
 						{
-							responseData.invoiceLabel = responseData.translation.invoice;
+							responseData.invoiceLabel = responseData.posting_account_invoice_label || responseData.translation.invoice;
 						} 
 						else if (parseInt(responseData.print_counter, 10) > parseInt(responseData.no_of_original_invoices, 10))
 						{
 							copyCount = getCopyCount(responseData);
-							responseData.invoiceLabel = responseData.translation.copy_of_invoice.replace("#count", copyCount);
+							copyInvoiceLabel = responseData.posting_account_invoice_copy_label || responseData.translation.copy_of_invoice;
+							responseData.invoiceLabel = copyInvoiceLabel.replace("#count", copyCount);
 						}
 						$scope.invoiceActive = true;
 						$scope.printData = responseData;
