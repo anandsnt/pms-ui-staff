@@ -89,24 +89,25 @@
 		                                    Void<br/>Bill
 		                            </button>
 								</li>
-
-								<li class="days">
-									<button class="only-icon prev" ng-class="{'disabled': billData.disablePrev}" ng-show="billData.days" ng-click="summaryDateBtnGroup.prev(billData)">
-									   <span class="icons icon-double-arrow rotate-left"></span>
+								<!-- If we have dates to pick -->
+								<li class="go-to-date" ng-hide="billData.days.length <= maxNoOfDaysToShow">
+									<button type="button" class="button blue with-icon" ng-click="clickedGotoDate()">
+										<span class="icons icon-forward"></span>
+										Go to Date
 									</button>
+								</li>
+								<!-- if we show the date button above, add .with-date -->
+								<li class="days" ng-class="{'with-date': billData.days.length > maxNoOfDaysToShow}">
 									<div class="days-wrapper">
 										<ul class="wrapper">
-											<li class="active" ng-class="{'today' : (businessDate === days.date)}" ng-repeat="days in billData.days"  ng-show="days.isShown" click-touch="clickedSummaryDate(days.date)">
-												<a class="toggle" type ="button" ng-class="{'active' : (billData.activeDate === days.date)}">
-													<span class="day">{{days.date | date:'MMM'}} {{days.date | date:'dd'}}</span>
-													<span class="price"><span class="currency">{{currencySymbol}}</span>{{days.total_amount | number: precisonZero}}</span>
+											<li class="active" ng-class="{'today' : (businessDate === day.date)}" ng-repeat="(index, day) in billData.days" ng-show="day.show" click-touch="clickedSummaryDate(day.date)">
+												<a class="toggle" type ="button" ng-class="{'active' : (billData.activeDate === day.date)}">
+													<span class="day">{{day.date | date:'MMM'}} {{day.date | date:'dd'}}</span>
+													<span class="price"><span class="currency">{{currencySymbol}}</span>{{day.total_amount | number: precisonZero}}</span>
 												</a>
 											</li>
 										</ul>
 									</div>
-									<button class="only-icon next" ng-show="billData.days" ng-class="{'disabled': billData.disableNext}" ng-click="summaryDateBtnGroup.next(billData)">
-									   <span class="icons icon-double-arrow rotate-right"></span>
-									</button>
 								</li>
 							</ul>
 						</div>
