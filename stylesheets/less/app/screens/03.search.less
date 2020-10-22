@@ -2518,7 +2518,7 @@
 
                 .check {
                     top: 0;
-                    right: 0;
+                    left: 0;
                 }
 
                 /* Number, Room Type & Room Status ***/
@@ -2592,6 +2592,38 @@
                     &.dnd { color: @purple; }
                 }
 
+                .occupancy {
+                    color: @grey3;
+
+                    .occupancy-number {
+                        margin-right: 5px;
+                        font-size: 14px;
+                        line-height: 14px;
+
+                        .icons {
+                            .square(12px);
+                            .pull-left();
+                            margin-right: 5px;
+                            opacity: 0.5;
+
+                            background-size: 60px;
+            
+                            &.icon-adult-2 {
+                                background-position: 0px -6950px;
+                            }
+
+                            &.icon-student {
+                                background-size: 70px;
+                                background-position: 0px -6148px;
+                            }
+
+                            &.icon-baby {
+                                background-position: 2px -6980px;
+                            }
+                        }
+                    }
+                }
+
                 /* Reservation Status ***/
                 .reservation-status {
                     width: 140px;
@@ -2642,7 +2674,6 @@
                 .unassigned { color: @grey2; }
 
                 .no-service {
-                    
                     .notice();
                     margin: 0;
                     display: block;
@@ -2650,7 +2681,7 @@
                     position: absolute;
                     padding: 0 5px;
                     right: 40px;
-                    top: 35px;
+                    top: 10px;
                     font-size: 10px;
                     height: 20px;
                     line-height: 20px;
@@ -2752,6 +2783,137 @@
                 /* Arrival & Departure Date will show only on print ***/
                 .print-date {
                     display: none;
+                }
+
+                &.with-checkbox {
+                    a,
+                    .faux-anchor {
+                        padding-bottom: 5px;
+                    }
+
+                    /* Occupancy & Queued Room ***/
+                    .show-vacant,
+                    .guest-image,
+                    .icon-queued {
+                        top: 10px;
+                    }
+
+                    .icon-queued {
+                        width: 65px;
+                        height: 20px;
+                        background-position: 40px -14018px;
+    
+                        &.has-time {
+                            width: 65px;
+
+                            .time {
+                                width: 35px;
+                                text-align: right;
+                                display: block;
+                                float: left;
+                                font-size: 11px;
+                                text-indent: initial;
+                                line-height: 20px;
+                                text-transform: uppercase;
+                            }
+                        }
+                    }
+
+                    .guest-image {
+                        right: 10px;
+                        .square(20px);
+
+                        .stay-count,
+                        .vip {
+                            .square(12px);
+                            #flexbox > .parent('', center, center, '');
+                            z-index: 20;
+                        }
+
+                        .stay-count {
+                            font-size: 10px;
+                            line-height: 16px;
+                        }
+                        .vip {
+                            font-size: 5px;
+                            line-height: 1;
+                        }
+                    }
+
+                    .room-info {
+                        .nowrap();
+                        display: block;
+                        padding: 0 30px 10px 30px;
+
+                         h2 {
+                            font-size: 24px;
+                            line-height: 25px;
+                        }
+                    }
+
+                    .occupancy {
+                        margin-left: 5px;
+                        margin-top: 0;
+                        #flexbox > .parent('', '', center, '');
+                        padding: 0;
+                    }
+
+                    .room-status {
+                        position: static;
+                        line-height: 1;
+                        display: inline-block;
+                        vertical-align: middle;
+                        font-size: 14px;
+                        width: auto;
+                        margin: 0;
+                    }
+
+                    .service-status {
+                        margin-bottom: 5px;
+                    }
+
+                    .assigned,
+                    .unassigned {
+                        .calc-width( 100, 260);
+                        line-height: 20px;
+                        float: left;
+                    }
+
+                    .last-column {
+                        padding-top: 5px;
+                        clear: both;
+                    }
+    
+                    .room-type {
+                        line-height: 1;
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+
+                    .reservation-status {
+                        width: auto;
+                        .current,
+                        .next {
+                            max-width: 180px;
+                            height: 20px;
+                            line-height: 20px;
+                            
+                            .guest-status {
+                                margin-right: 5px;
+                                .square(20px);
+
+                                &.check-out {background-position: 6px -102px;}
+                                &.check-in { background-position: 6px -75px; }
+                                &.late-check-out { background-position: 7px -1902px; }
+                                &.inhouse { background-position:  5px -128px; }
+                            }
+
+                            .reservation-time {
+                                font-size: 14px;
+                                #flexbox > .parent(row, flex-end, '', '');
+                            }
+                        }
+                    }
                 }
             }
 
@@ -4352,6 +4514,124 @@
                 .show-vacant {
                     top: 25px;
                     right: 50px;
+                }
+
+                &.with-checkbox {
+                    min-height: 60px;
+
+                    .check {
+                        right: auto;
+                        left: 0;
+                        top: 10px;
+                    }
+
+                    .show-vacant {
+                        top: 20px;
+                        right: 10px;
+                        line-height: 20px;
+                    }
+
+                    a,
+                    .faux-anchor {
+                        padding-left: 40px;
+                        padding-bottom: 10px;
+                        padding-top: 10px;
+                        padding-right: 10px;
+                    }
+
+                    .room-info {
+                        display: block;
+                        padding-bottom: 0px;
+                        padding-left: 0;
+                        .calc-width(60,280);
+
+                        h2 {
+                            font-size: 24px;
+                            line-height: 25px;
+                        }
+                    }
+
+                    .assigned {
+                        font-size: 14px;
+                    }
+
+                    .assigned,
+                    .unassigned {
+                        .calc-width(40,220);
+                    }
+
+                    .room-status {
+                        position: static;
+                        line-height: 1;
+                        display: inline-block;
+                        vertical-align: middle;
+                        font-size: 14px;
+                        width: auto;
+                        margin: 0;
+                    }
+    
+                    .room-type {
+                        line-height: 1;
+                        display: inline;
+                        vertical-align: middle;
+                    }
+
+                    .reservation-status {
+                        width: 290px;
+                        padding-right: 0;
+
+                        .guest-status {
+                            margin-right: 10px;
+                        }
+
+                        .current,
+                        .next {
+                            max-width: 145px;
+                            height: auto;
+                            #flexbox > .parent('', '', center, '');
+                            
+                            .occupancy {
+                                margin-top: 2px;
+                                margin-left: 0;
+                            }
+
+                            .reservation-time {
+                                font-size: 14px;
+                                display: block;
+                            }
+                        }
+                    }
+
+                    .icon-queued,
+                    .guest-image {
+                        right: 10px;
+                        top: 20px;
+                    }
+
+                    .icon-queued {
+                         
+                        &.has-time {
+                             
+                            .time {
+                                
+                                font-size: 14px;
+                            }
+                        }
+                    }
+
+                    .no-service {
+                        right: 40px;
+                        font-size: 10px;
+                        top: 20px;
+                        height: 20px;
+                        line-height: 20px;
+                    }
+                    
+                    .service-status {
+                        right: 70px;
+                        width: 150px;
+                        top: 5px;
+                    }
                 }
             }
         }

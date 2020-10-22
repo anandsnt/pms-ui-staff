@@ -1,7 +1,13 @@
 <div class="invoice-logo envelope">
     <img src="{{receiptPrintData.hotel_logo}}" alt="" />
+    <br/>
+    <br/>
     <h1>{{receiptPrintData.hotel_name}}</h1>
     <span ng-bind-html="receiptPrintData.hotel_address"></span>
+    <br/>
+    <span ng-if="receiptPrintData.receipt_type === 'tax_payment_receipt' && receiptPrintData.hotel_tax_id">
+        <strong>{{receiptPrintData.receipt_translations.tax_id}}:</strong> {{receiptPrintData.hotel_tax_id}}
+    </span>
     <span class="type">
         {{receiptPrintData.receiptHeading}}
         <span class="label" ng-if="receiptPrintData.receipt_type === 'tax_payment_receipt' && receiptPrintData.tax_receipt_type !== '' && receiptPrintData.tax_receipt_type !== null">{{receiptPrintData.tax_receipt_type}}</span>
@@ -17,22 +23,33 @@
         <span ng-if="isFromBillCard">
             <span ng-if="!receiptPrintData.is_direct_bill_payment && !receiptPrintData.card_details.address">
                 {{receiptPrintData.guest_details.first_name}} {{receiptPrintData.guest_details.last_name}}<br/>
-                <span class="type" ng-bind-html="receiptPrintData.guest_details.address"></span>
-                <br/>
+                <span class="type" ng-bind-html="receiptPrintData.guest_details.address" ng-if="receiptPrintData.guest_details.address">
+                </span>
+                <br ng-if="receiptPrintData.guest_details.address" />
                 {{receiptPrintData.guest_details.city}}<span ng-if="receiptPrintData.guest_details.city !== '' && receiptPrintData.guest_details.city!== null">, </span>
                 {{receiptPrintData.guest_details.state}}<span ng-if="receiptPrintData.guest_details.state !== '' && receiptPrintData.guest_details.state!== null">, </span>
-                {{receiptPrintData.guest_details.postal_code}}<br/>
+                {{receiptPrintData.guest_details.postal_code}}
+                <br ng-if="receiptPrintData.guest_details.city || receiptPrintData.guest_details.state || receiptPrintData.guest_details.postal_code"/>
                 {{receiptPrintData.guest_details.country_name}}
+                <br/>
             </span>
             <span ng-if="!receiptPrintData.is_direct_bill_payment">
                 {{receiptPrintData.card_details.name}}<br/>
             </span>
             <span ng-bind-html="receiptPrintData.card_details.address" ng-if="receiptPrintData.card_details.address"></span>
+            <br ng-if="receiptPrintData.card_details.address" />
+            <span ng-if="receiptPrintData.receipt_type === 'tax_payment_receipt' && receiptPrintData.card_details.tax_number">
+                <strong>{{receiptPrintData.receipt_translations.tax_number}}:</strong> {{receiptPrintData.card_details.tax_number}}
+            </span>
+            <span ng-if="receiptPrintData.receipt_type === 'tax_payment_receipt' && !receiptPrintData.card_details.tax_number && receiptPrintData.guest_details.tax_number">
+                <strong>{{receiptPrintData.receipt_translations.tax_number}}:</strong> {{receiptPrintData.guest_details.tax_number}}
+            </span>
         </span>
         <span ng-if="!isFromBillCard">
             <strong>{{receiptPrintData.receipt_translations.account_name}}:</strong> {{receiptPrintData.account_name}} <br />
             <strong>{{receiptPrintData.receipt_translations.account_number}}:</strong> {{receiptPrintData.account_number}} <br />
         </span>
+        
         <div class="info-bottom">
             <strong>{{receiptPrintData.receipt_translations.payment_receipt_number}}:</strong> {{receiptPrintData.receipt_no}}
             <br/>

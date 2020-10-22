@@ -333,7 +333,7 @@ sntRover.controller('RVInvoiceSearchController',
 				"no_of_original_invoices": $scope.invoiceSearchData.reservationsList.no_of_original_invoices
 			};
 			$scope.reservationBillData.bills = $scope.invoiceSearchData.reservationsList.results[parentIndex].bills;
-			
+			$scope.invoiceSearchFlags.itemType = $scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.type;
 			if ($scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.type === 'RESERVATION') {
 				$scope.invoiceSearchFlags.isClickedReservation = true;
 				$scope.reservationBillData.reservation_id = $scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.item_id;
@@ -442,6 +442,8 @@ sntRover.controller('RVInvoiceSearchController',
 
                       if (isGuestBill) {
                         invoiceLabel = printData.guest_bill_invoice_label || printData.translation.invoice;
+                      } else if ($scope.invoiceSearchFlags.itemType === 'POSTING_ACCOUNT') {
+                        invoiceLabel = printData.posting_account_invoice_label || printData.translation.invoice;
                       }
 
                       return invoiceLabel;
@@ -457,6 +459,8 @@ sntRover.controller('RVInvoiceSearchController',
 
                         if (isGuestBill) {
                             invoiceLabel = printData.guest_bill_invoice_copy_label || printData.translation.copy_of_invoice;
+                        } else if ($scope.invoiceSearchFlags.itemType === 'POSTING_ACCOUNT') {
+                            invoiceLabel = printData.posting_account_invoice_copy_label || printData.translation.copy_of_invoice;
                         }
 
                         return invoiceLabel;
