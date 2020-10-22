@@ -121,9 +121,7 @@
 					<!-- Invoice -->
 					<div id="invoiceDiv" ng-if="printGroupProfomaActive" class="invoice invoice-page-break" ng-include="'/assets/partials/bill/rvPrintGroupProfoma.html'"></div>
 
-					<div class="invoice invoice-receipt">
-                        <div id="invoiceDiv" ng-if="printReceiptActive" class="invoice" ng-include="'/assets/partials/bill/rvPrintReceipt.html'"></div>
-                    </div>
+					<div id="invoiceDiv" ng-if="printReceiptActive" class="invoice invoice-receipt" ng-include="'/assets/partials/bill/rvPrintReceipt.html'"></div>
 
 					<!-- Balance / Signature / Card -->
 					<div class="total-stay-fees">
