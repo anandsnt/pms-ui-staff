@@ -246,6 +246,15 @@
 
                     td { width: 95px; }
 
+                    .button,
+                    .inner {
+                        font-size: 18px;
+
+                        &.unavailable { color: @red; }
+                        &.disabled { color: @grey2; }
+                        &.warning { background-color: rgba(248, 230, 230, .8); }
+                    }
+
                     .rate-value {
                         font-size: 16px;
                         line-height: 1;
