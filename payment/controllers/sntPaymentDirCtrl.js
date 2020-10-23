@@ -53,6 +53,7 @@ angular.module('sntPay').controller('sntPaymentController',
             };
 
             $scope.errorMessage = '';
+            $scope.precisionTwo = 2;
 
             // For some payment gateways, we might need to hide some payment types
             // conditionally. For eg:- Hide Credit card payment type for CBA + MLI payments
