@@ -1179,7 +1179,7 @@ angular.module('sntPay').controller('sntPaymentController',
             };
 
             $scope.onFeeOverride = function () {
-                var totalAmount = parseFloat($scope.feeData.calculatedFee) + parseFloat($scope.payment.amount);
+                var totalAmount = ( parseFloat($scope.feeData.calculatedFee) || 0 ) + parseFloat($scope.payment.amount);
 
                 $scope.feeData.totalOfValueAndFee = totalAmount.toFixed(2);
             };
