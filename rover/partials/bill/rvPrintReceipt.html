@@ -1,8 +1,17 @@
 <div class="invoice-logo envelope">
     <img src="{{receiptPrintData.hotel_logo}}" alt="" />
+    <br/>
+    <br/>
     <h1>{{receiptPrintData.hotel_name}}</h1>
     <span ng-bind-html="receiptPrintData.hotel_address"></span>
-    <span class="type">{{receiptPrintData.receipt_translations.payment_receipt}}</span>
+    <br/>
+    <span ng-if="receiptPrintData.receipt_type === 'tax_payment_receipt' && receiptPrintData.hotel_tax_id">
+        <strong>{{receiptPrintData.receipt_translations.tax_id}}:</strong> {{receiptPrintData.hotel_tax_id}}
+    </span>
+    <span class="type">
+        {{receiptPrintData.receiptHeading}}
+        <span class="label" ng-if="receiptPrintData.receipt_type === 'tax_payment_receipt' && receiptPrintData.tax_receipt_type !== '' && receiptPrintData.tax_receipt_type !== null">{{receiptPrintData.tax_receipt_type}}</span>
+    </span>
     <!-- If showing QR code, place it here:-->
     <span class="type" ng-if="receiptPrintData.qr_code !== '' && receiptPrintData.qr_code !== null">
         <br/><img src="{{receiptPrintData.qr_code}}" alt="" class="qr-code" /> 
@@ -14,31 +23,50 @@
         <span ng-if="isFromBillCard">
             <span ng-if="!receiptPrintData.is_direct_bill_payment && !receiptPrintData.card_details.address">
                 {{receiptPrintData.guest_details.first_name}} {{receiptPrintData.guest_details.last_name}}<br/>
-                <span class="type" ng-bind-html="receiptPrintData.guest_details.address"></span>
-                <br/>
+                <span class="type" ng-bind-html="receiptPrintData.guest_details.address" ng-if="receiptPrintData.guest_details.address">
+                </span>
+                <br ng-if="receiptPrintData.guest_details.address" />
                 {{receiptPrintData.guest_details.city}}<span ng-if="receiptPrintData.guest_details.city !== '' && receiptPrintData.guest_details.city!== null">, </span>
                 {{receiptPrintData.guest_details.state}}<span ng-if="receiptPrintData.guest_details.state !== '' && receiptPrintData.guest_details.state!== null">, </span>
-                {{receiptPrintData.guest_details.postal_code}}<br/>
+                {{receiptPrintData.guest_details.postal_code}}
+                <br ng-if="receiptPrintData.guest_details.city || receiptPrintData.guest_details.state || receiptPrintData.guest_details.postal_code"/>
                 {{receiptPrintData.guest_details.country_name}}
+                <br/>
             </span>
             <span ng-if="!receiptPrintData.is_direct_bill_payment">
                 {{receiptPrintData.card_details.name}}<br/>
             </span>
             <span ng-bind-html="receiptPrintData.card_details.address" ng-if="receiptPrintData.card_details.address"></span>
+            <br ng-if="receiptPrintData.card_details.address" />
+            <span ng-if="receiptPrintData.receipt_type === 'tax_payment_receipt' && receiptPrintData.card_details.tax_number">
+                <strong>{{receiptPrintData.receipt_translations.tax_number}}:</strong> {{receiptPrintData.card_details.tax_number}}
+            </span>
+            <span ng-if="receiptPrintData.receipt_type === 'tax_payment_receipt' && !receiptPrintData.card_details.tax_number && receiptPrintData.guest_details.tax_number">
+                <strong>{{receiptPrintData.receipt_translations.tax_number}}:</strong> {{receiptPrintData.guest_details.tax_number}}
+            </span>
         </span>
         <span ng-if="!isFromBillCard">
             <strong>{{receiptPrintData.receipt_translations.account_name}}:</strong> {{receiptPrintData.account_name}} <br />
             <strong>{{receiptPrintData.receipt_translations.account_number}}:</strong> {{receiptPrintData.account_number}} <br />
         </span>
+        
         <div class="info-bottom">
             <strong>{{receiptPrintData.receipt_translations.payment_receipt_number}}:</strong> {{receiptPrintData.receipt_no}}
+            <br/>
+            <span ng-if="receiptPrintData.receipt_type === 'tax_payment_receipt' && receiptPrintData.invoice_number !== '' && receiptPrintData.invoice_number !== null">
+                <strong>{{receiptPrintData.receipt_translations.invoice_number}}: </strong> {{receiptPrintData.invoice_number}}
+            </span>
+            <br/>
+            <span ng-if="receiptPrintData.receipt_type === 'tax_payment_receipt' && receiptPrintData.reference_payment_receipt_info">
+                <strong>{{receiptPrintData.receipt_translations.refer_to_tax_payment_receipt}}:</strong> {{receiptPrintData.reference_payment_receipt_info}}
+            </span>
         </div>
     </div>
     <div class="info-right" ng-if="isFromBillCard">           
-        <strong>{{receiptPrintData.invoice_translations.arrival_date}}:</strong> {{receiptPrintData.arrival_date}}<br/>
-        <strong>{{receiptPrintData.invoice_translations.departure_date}}:</strong> {{receiptPrintData.departure_date}}<br/>
-        <strong>{{receiptPrintData.invoice_translations.room_number}}:</strong> {{receiptPrintData.room_no}}<br/> 
-        <strong>{{receiptPrintData.invoice_translations.confirmation_number}}:</strong> {{receiptPrintData.confirmation_number}}<br/>
+        <strong>{{receiptPrintData.receipt_translations.arrival_date}}:</strong> {{receiptPrintData.arrival_date}}<br/>
+        <strong>{{receiptPrintData.receipt_translations.departure_date}}:</strong> {{receiptPrintData.departure_date}}<br/>
+        <strong>{{receiptPrintData.receipt_translations.room_number}}:</strong> {{receiptPrintData.room_no}}<br/> 
+        <strong>{{receiptPrintData.receipt_translations.confirmation_number}}:</strong> {{receiptPrintData.confirmation_number}}<br/>
     </div>
 </div>
 
@@ -78,6 +106,68 @@
                 </td>
             </tr>
         </tbody>
+    </table>
+    <table class="invoice-details tax-breakdown" ng-if="receiptPrintData.show_extended_tax">
+        <thead>
+            <tr>
+                <th class="tax-description" >{{receiptPrintData.receipt_translations.tax_description}}</th>
+                <th >{{receiptPrintData.receipt_translations.gross}}</th>
+                <th >{{receiptPrintData.receipt_translations.net}}</th>
+                <th >{{receiptPrintData.receipt_translations.tax}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="tax_breakdown in receiptPrintData.payments.extended_tax_breakdown.details">
+                <td ng-if="tax_breakdown.section_value === 'vat'">
+                    {{receiptPrintData.receipt_translations.vat}} {{receiptPrintData.tax_percent}} %
+                </td>
+                <td ng-if="tax_breakdown.section_value === 'tax_exempt'">
+                    {{receiptPrintData.receipt_translations.tax_exempt}}
+                </td>
+                <td>
+                    {{currencySymbol}}{{tax_breakdown.gross_amount | number: precisonTwo }}
+                    <div class="converted-currency">
+                        {{invoiceCurrencySymbol}}{{tax_breakdown.inv_gross_amount | number: precisonTwo }}
+                    </div>
+                </td>
+                <td>
+                    {{currencySymbol}}{{tax_breakdown.net_amount | number: precisonTwo }}
+                    <div class="converted-currency">
+                        {{invoiceCurrencySymbol}}{{tax_breakdown.inv_net_amount | number: precisonTwo }}
+                    </div>
+                </td>
+                <td>
+                    {{currencySymbol}}{{tax_breakdown.tax_amount | number: precisonTwo }}
+                    <div class="converted-currency">
+                        {{invoiceCurrencySymbol}}{{tax_breakdown.inv_tax_amount | number: precisonTwo }}
+                    </div>
+                </td>
+            </tr>
+           
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>Total</td>
+                <td>
+                    {{currencySymbol}}{{receiptPrintData.payments.extended_tax_breakdown.total_gross_amount | number: precisonTwo }}
+                    <div class="converted-currency">
+                        {{invoiceCurrencySymbol}}{{receiptPrintData.payments.extended_tax_breakdown.inv_total_gross_amount | number: precisonTwo }}
+                    </div>
+                </td>
+                <td>
+                    {{currencySymbol}}{{receiptPrintData.payments.extended_tax_breakdown.total_net_amount | number: precisonTwo }}
+                    <div class="converted-currency">
+                        {{invoiceCurrencySymbol}}{{receiptPrintData.payments.extended_tax_breakdown.inv_total_net_amount | number: precisonTwo }}
+                    </div>
+                </td>
+                <td>
+                    {{currencySymbol}}{{receiptPrintData.payments.extended_tax_breakdown.total_tax_amount | number: precisonTwo }}
+                    <div class="converted-currency">
+                        {{invoiceCurrencySymbol}}{{receiptPrintData.payments.extended_tax_breakdown.inv_total_tax_amount | number: precisonTwo }}
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
     </table>
 </div>
 

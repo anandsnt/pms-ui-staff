@@ -90,6 +90,10 @@ angular.module('sntPay').controller('sntPaymentController',
                     'bill_id': $scope.billId
                 };
 
+                if ($scope.isRefund() && $scope.hotelConfig.selectedReceiptTypeValue === 'tax_payment_receipt' && $scope.selectedPaymentType !== 'DB') {
+                    params.postData.receipt_id = $scope.payment.receipt_id;
+                }
+
                 // We need extra parameter parent ar id during AR refund
                 if ($scope.actionType === 'AR_REFUND_PAYMENT') {
                     params.postData.parent_ar_id = $scope.arTransactionId;
@@ -327,6 +331,11 @@ angular.module('sntPay').controller('sntPaymentController',
                 );
             };
 
+            // Disable condition for refund btn in the case of receipts
+            var disableCheckAgainstPaymentReceipts = function () {
+                return $scope.isRefund() && $scope.receiptsList && !$scope.payment.receipt_id && $scope.selectedPaymentType !== 'DB';
+            };
+
             /**
              * Hide payment method if there is no permission or no payment type
              * @returns {boolean} boolean
@@ -335,7 +344,7 @@ angular.module('sntPay').controller('sntPaymentController',
             $scope.shouldHidePaymentButton = function () {
                 return !$scope.workStationStatus || !$scope.selectedPaymentType || !$scope.hasPermission ||
                     $scope.isGCBalanceShort() ||
-                    (!$scope.splitBillEnabled && $scope.paymentAttempted && !$scope.isPaymentFailure);
+                    (!$scope.splitBillEnabled && $scope.paymentAttempted && !$scope.isPaymentFailure) || disableCheckAgainstPaymentReceipts();
             };
 
             /**
@@ -922,7 +931,6 @@ angular.module('sntPay').controller('sntPaymentController',
                     params.postData.is_cancellation_penalty = true;
                 }
 
-
                 sntActivity.start('SUBMIT_PAYMENT');
 
                 sntPaymentSrv.submitPayment(params).then(
@@ -1147,6 +1155,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 } else {
                     $scope.payment.showAddToGuestCard = false;
                 }
+                $scope.$emit('AMOUNT_UPDATED', $scope.payment.amount);     
             };
 
             $scope.onPaymentCurrencyChange = function() {
@@ -1503,7 +1512,7 @@ angular.module('sntPay').controller('sntPaymentController',
              */
             function onAmountChange() {
                 $scope.payment.amount = $scope.amount || 0;
-                initialPaymentAmount  = angular.copy($scope.payment.amount);
+                initialPaymentAmount  = angular.copy($scope.payment.amount);                           
                 calculateFee();
             }
 

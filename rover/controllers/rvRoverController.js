@@ -185,6 +185,7 @@ sntRover.controller('roverController', [
             $rootScope.shouldShowPaymentDropDown = true;
         }
         $rootScope.hasPaymentRounding = hotelDetails.has_payment_rounding;
+        $rootScope.selectedReceiptTypeValue = hotelDetails.selected_receipt_type_value;
         // $rootScope.isRoomDiaryEnabled = hotelDetails.is_room_diary_enabled;
         // CICO-40544 - Now we have to enable menu in all standalone hotels
         // API not removing for now - Because if we need to disable it we can use the same param
@@ -563,7 +564,8 @@ sntRover.controller('roverController', [
                 mliMerchantId: $rootScope.MLImerchantId,
                 currencySymbol: $rootScope.currencySymbol,
                 isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled,
-                isEMVEnabled: $rootScope.isMLIEMVEnabled
+                isEMVEnabled: $rootScope.isMLIEMVEnabled,
+                selectedReceiptTypeValue: $rootScope.selectedReceiptTypeValue
             };
             $rootScope.featuresSupportedInIosApp = []; // The feature list cordoav call will work only in new builds.
 

@@ -53,6 +53,40 @@
         </span>
 </div>
 
+<div id="refund-field" class="entry full-width " ng-show="isRefund() && hotelConfig.selectedReceiptTypeValue === 'tax_payment_receipt' && ((paymentAttempted && isPaymentFailure) || !paymentAttempted)">
+    <label for="reference" ng-if="selectedPaymentType !== 'DB'">Payment Receipt</label>
+
+    <!-- Remove .hidden if the selected receipt's amount is lower than the entered one -->
+    <div class="notice smaller hidden">
+       <strong>Please Review!</strong>
+       <p>Amount entered is greater than original receipt.</p>
+    </div>
+
+    <!-- Remove .hidden if there are no receipts found -->
+    <div class="notice success" ng-if="selectedPaymentType !== 'DB' && (!receiptsList || receiptsList.receipts.length === 0)">
+       There are no Payment Receipts for this refund
+    </div>
+
+    <!-- Remove .hidden when there are receipts available -->
+    <div id="noticeSelectReceipt" class="notice" ng-show="selectedPaymentType !== 'DB' && receiptsList.receipts.length > 0 && !payment.receipt_id">
+        Select a Payment Receipt for this refund
+    </div>
+
+    <!-- Show while checking for receipts -->
+    <div class="notice hidden">
+       Checking for payment receipts for this refund...
+    </div>
+    
+    <!-- Show if there are any receipts found -->
+    <div class="select" ng-if="receiptsList.receipts.length > 0 && selectedPaymentType !== 'DB'">
+        <!-- Remove .placeholder when user has selected an option -->
+
+        <select class="placeholder" ng-options="receiptData.receipt_id as receiptData.description for receiptData in receiptsList.receipts"  ng-model="payment.receipt_id">
+            <option style="display:none" value="">Select Payment Receipt</option>
+        </select>
+    </div>
+</div>
+
 <div class="entry full-width" ng-if="selectedPaymentType === 'CC' && hotelConfig.paymentGateway === 'SHIJI' && getShijiOfflineStatus()">
     <label for="auth-code">{{ 'ENTER_MANUAL_AUTH_CODE' | translate }}</label>
     <input id="auth-code"

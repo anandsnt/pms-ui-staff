@@ -94,6 +94,20 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 			});
 		return deferred.promise;
 	};
+
+	this.getReceiptsList = function(params) {
+		var deferred = $q.defer();
+		var url = '/api/bills/payment_receipts';
+
+		RVBaseWebSrvV2.getJSON(url, params).then(function (data) {
+			deferred.resolve(data);
+		}, function (data) {
+			deferred.reject(data);
+		});
+
+		return deferred.promise;
+	};
+	
 	this.getExistingPaymentsForBill = function(data) {
 		var deferred = $q.defer();
 		var url = '/staff/staycards/get_credit_cards.json';
