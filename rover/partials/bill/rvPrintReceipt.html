@@ -19,7 +19,7 @@
 </div>
 <br />
 <div class="info-container account-info">
-    <div class="info-left">
+    <div ng-class="{'info-left': isFromBillCard}">
         <span ng-if="isFromBillCard">
             <span ng-if="!receiptPrintData.is_direct_bill_payment && !receiptPrintData.card_details.address">
                 {{receiptPrintData.guest_details.first_name}} {{receiptPrintData.guest_details.last_name}}<br/>
@@ -58,7 +58,7 @@
             </span>
             <br/>
             <span ng-if="receiptPrintData.receipt_type === 'tax_payment_receipt' && receiptPrintData.reference_payment_receipt_info">
-                <strong>{{receiptPrintData.receipt_translations.refer_to_tax_payment_receipt}}:</strong> {{receiptPrintData.reference_payment_receipt_info}}
+                <strong>{{receiptPrintData.receipt_translations.refer_to_tax_payment_receipt}}:</strong> <span style="white-space:nowrap;">{{receiptPrintData.reference_payment_receipt_info}}</span>
             </span>
         </div>
     </div>

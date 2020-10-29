@@ -1449,6 +1449,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				
 				cb && cb();
 				$scope.refreshScroll();
+			},
+			function(errorMessage) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorMessage;
 			});
 		};
 
