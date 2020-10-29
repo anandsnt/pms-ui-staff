@@ -6,7 +6,7 @@
     <input ng-change="onPaymentInfoChange()"
            ng-model="payment.amount"
            type="number"
-           ng-value="payment.amount | number: precisionTwo"
+           ng-value="payment.amount"
            class="amount" ng-disabled="actionType === 'AR_REFUND_PAYMENT'" onpaste="return false"/>
 
     <span ng-show="feeData.showFee" class="delimiter">+</span>
@@ -14,7 +14,7 @@
     <input ng-show="feeData.showFee"
            ng-change="onFeeOverride()"
            ng-model="feeData.calculatedFee"
-           ng-value="feeData.calculatedFee | number: precisionTwo"
+           ng-value="feeData.calculatedFee"
            type="text"
            class="fee"/>
 
