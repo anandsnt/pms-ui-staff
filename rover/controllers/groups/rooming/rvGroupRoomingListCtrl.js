@@ -559,7 +559,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             $scope.possibleNumberOfRooms = [];
 
             // varibale used to track addmode/display mode, default add mode
-            $scope.isAddingMode = true;
+            $scope.isAddingMode = false;
 
             // default sorting fields & directions
             $scope.sort_field = 'room_no';
