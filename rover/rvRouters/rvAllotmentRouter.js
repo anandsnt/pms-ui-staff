@@ -10,6 +10,9 @@ angular.module('allotmentModule', [])
             url: '/allotments',
             abstract: true,
             templateUrl: '/assets/partials/allotments/rvAllotmentRoot.html',
+            params: {
+                origin: ''
+            },
             controller: 'rvAllotmentRootCtrl',
             resolve: {
                 allotmentAssets: function(jsMappings) {

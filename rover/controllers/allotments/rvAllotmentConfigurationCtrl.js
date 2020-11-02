@@ -622,7 +622,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             } else if ($scope.allotmentConfigData.activeTab === "ACCOUNT") {
                 $scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
             }
-            $state.go('rover.allotments.search');
+            $state.go('rover.allotments.search', { origin: 'BACK_TO_ALLOTMENT_SEARCH_LIST' });
         };
 
         /**
