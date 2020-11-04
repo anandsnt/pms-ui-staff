@@ -131,6 +131,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     has = $scope.scheduleParams.arrival_date_range || $scope.scheduleParams.adjustment_date_range;
                 }
 
+                if ($scope.isCancellationNoShowReport) {
+                    has = $scope.scheduleParams.date_range || $scope.scheduleParams.cancelation_date_range; 
+                }
+
                 return has;
             };
 
@@ -260,6 +264,14 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             if ($scope.scheduleParams.adjustment_date_range) {
                 filter_values.adjustment_date_range = $scope.scheduleParams.adjustment_date_range;
+            }
+
+            if ($scope.scheduleParams.date_range) {
+                filter_values.date_range = $scope.scheduleParams.date_range;
+            }
+
+            if ($scope.scheduleParams.cancelation_date_range) {
+                filter_values.cancelation_date_range = $scope.scheduleParams.cancelation_date_range;
             }
 
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
@@ -557,6 +569,14 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             if ($scope.scheduleParams.adjustment_date_range) {
                 filter_values.adjustment_date_range = $scope.scheduleParams.adjustment_date_range;
+            }
+
+            if ($scope.scheduleParams.date_range) {
+                filter_values.date_range = $scope.scheduleParams.date_range;
+            }
+
+            if ($scope.scheduleParams.cancelation_date_range) {
+                filter_values.cancelation_date_range = $scope.scheduleParams.cancelation_date_range;
             }
 
             params.format_id = parseInt($scope.scheduleParams.format_id);
@@ -998,6 +1018,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         selected = true;
                     }
 
+                    if ($scope.selectedEntityDetails.report.title === reportNames['CANCELLATION_NO_SHOW'] && filter.value === 'INCLUDE_CANCELED') {
+                        selected = true;
+                    }
+
                     $scope.filters.hasGeneralOptions.data.push({
                         paramKey: filter.value.toLowerCase(),
                         description: filter.description,
@@ -1092,7 +1116,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 } else if (filter.value === 'CREATE_DATE_RANGE') {
                     $scope.creationDateTimePeriods = reportsSrv.getScheduleReportTimePeriods($scope.selectedEntityDetails.report.title + ':' + filter.value);
                     $scope.creationDateTimePeriods = populateTimePeriodsData($scope.creationDateTimePeriods);
-                } else if (filter.value === 'ARRIVAL_DATE_RANGE') {
+                } else if (filter.value === 'ARRIVAL_DATE_RANGE' || filter.value === 'DATE_RANGE') {
                     $scope.arrivalDateTimePeriods = reportsSrv.getScheduleReportTimePeriods($scope.selectedEntityDetails.report.title + ':' + filter.value);
                     $scope.arrivalDateTimePeriods = populateTimePeriodsData($scope.arrivalDateTimePeriods);
                 } else if (filter.value === 'EMPLOYEE') {
@@ -1107,6 +1131,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     reportUtils.fillAgingBalances($scope.filters, $scope.selectedEntityDetails.filter_values);
                 } else if (filter.value === 'ACCOUNT_NAME') {
                     reportUtils.fillAccountNames($scope.filters, $scope.selectedEntityDetails.filter_values); 
+                } else if (filter.value === 'CANCELATION_DATE_RANGE') {
+                    $scope.cancellationDateTimePeriods = reportsSrv.getScheduleReportTimePeriods($scope.selectedEntityDetails.report.title + ':' + filter.value);
+                    $scope.cancellationDateTimePeriods = populateTimePeriodsData($scope.cancellationDateTimePeriods);
                 }
             });
 
@@ -1235,7 +1262,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     $scope.selectedEntityDetails.uiChosenIncludeCompanyTaGroup = $scope.selectedEntityDetails.filter_values[reportParams['ENTITY_NAME']];
                 } else if (groupByFields[key.toUpperCase()]) {
                     $scope.scheduleParams.groupBy = groupByFields[key.toUpperCase()];
-                } else if (upperCaseKey === 'CREATE_DATE_RANGE' || upperCaseKey === 'ARRIVAL_DATE_RANGE' || upperCaseKey === 'ADJUSTMENT_DATE_RANGE') {
+                } else if (upperCaseKey === 'CREATE_DATE_RANGE' || upperCaseKey === 'ARRIVAL_DATE_RANGE' || upperCaseKey === 'ADJUSTMENT_DATE_RANGE' || upperCaseKey === 'DATE_RANGE' || upperCaseKey === 'CANCELATION_DATE_RANGE') {
                     $scope.scheduleParams[key] = value;
                 } 
 
@@ -1278,6 +1305,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.isRoomStatusReport = $scope.selectedEntityDetails.report.title === reportNames['ROOM_STATUS_REPORT'];
             $scope.isRateAdjustmentReport = $scope.selectedEntityDetails.report.title === reportNames['RATE_ADJUSTMENTS_REPORT'];
             $scope.isOccupancyRevenueSummaryReport = $scope.selectedEntityDetails.report.title === reportNames['OCCUPANCY_REVENUE_SUMMARY'];
+            $scope.isCancellationNoShowReport = $scope.selectedEntityDetails.report.title === reportNames['CANCELLATION_NO_SHOW'];
             
             if (angular.isDefined($scope.selectedEntityDetails.schedule_formats)) {
                 $scope.schedule_formats = $scope.selectedEntityDetails.schedule_formats;
@@ -1647,7 +1675,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Forecast Guests & Groups': true,
                 'Market Segment Statistics Report': true,
                 'A/R Aging': true,
-                'Complimentary Room Report': true
+                'Complimentary Room Report': true,
+                'Cancellation & No Show': true
             };
 
             var forWeekly = {
@@ -1672,7 +1701,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Add-On Forecast': true,
                 'Forecast Guests & Groups': true,
                 'A/R Aging': true,
-                'Complimentary Room Report': true
+                'Complimentary Room Report': true,
+                'Cancellation & No Show': true
             };
             var forMonthly = {
                 'Arrival': true,
@@ -1696,7 +1726,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Add-On Forecast': true,
                 'Forecast Guests & Groups': true,
                 'A/R Aging': true,
-                'Complimentary Room Report': true
+                'Complimentary Room Report': true,
+                'Cancellation & No Show': true
             };
 
             var forHourly = {
@@ -1718,7 +1749,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Add-On Forecast': true,
                 'Forecast Guests & Groups': true,
                 'A/R Aging': true,
-                'Complimentary Room Report': true
+                'Complimentary Room Report': true,
+                'Cancellation & No Show': true
             };
 
             if (forHourly[item.report.title]) {
@@ -2047,6 +2079,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.creationDateTimePeriods = [];
             $scope.arrivalDateTimePeriods = [];
             $scope.adjustmentDateTimePeriods = [];
+            $scope.cancellationDateTimePeriods = [];
             setupScrolls();
 
             fetch_reportSchedules_frequency_timePeriod_scheduableReports();
