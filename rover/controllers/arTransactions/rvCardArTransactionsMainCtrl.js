@@ -561,14 +561,14 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.currentSelectedArTab = 'balance';
 			$scope.allocatedPayment = selectedPaymentData;
 			$scope.arFlags.isPaymentSelected = true;
-			$scope.arDataObj.availableAmount = selectedPaymentData.available_amount;
+			$scope.arDataObj.availableAmount = selectedPaymentData.available_amount ? parseFloat(selectedPaymentData.available_amount).toFixed(2) : "0.00";
 			$scope.arFlags.isFromAddPaymentOrAllocateButton = true;
 			var totalAllocatedAmount = 0;
 
             _.each($scope.arDataObj.balanceList, function (eachItem) {
                 totalAllocatedAmount = parseFloat(totalAllocatedAmount) + parseFloat(eachItem.amount);
             });
-            $scope.arDataObj.totalOfAllInvoicesInBalanceTab = totalAllocatedAmount;
+            $scope.arDataObj.totalOfAllInvoicesInBalanceTab = totalAllocatedAmount.toFixed(2);
             $scope.arDataObj.totalAllocatedAmount = totalAllocatedAmount;
 		});
 
