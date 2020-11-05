@@ -15,6 +15,8 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
         var zeroAmount = parseFloat("0.00");
 
         $scope.feeData = {};
+        $scope.billPaymentReceiptData = {};
+        $scope.billPaymentReceiptData.allBillReceiptsList = {};
 
         /**
          * function to check whether the user has permission
@@ -127,8 +129,19 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
 
         $scope.billNumberChanged = function() {
             $scope.currentActiveBill = parseInt($scope.renderData.billNumberSelected) - parseInt(1);
+            $scope.billPaymentReceiptData.receiptsList = _.find($scope.billPaymentReceiptData.allBillReceiptsList.payment_receipts, {
+                bill_number: $scope.billsArray[$scope.currentActiveBill].bill_number.toString()
+            });
             renderDefaultValues();
         };
+
+        $scope.getReceiptsListSuccess = function(data) {	
+
+			$scope.billPaymentReceiptData.allBillReceiptsList = data.data;
+			$scope.billPaymentReceiptData.receiptsList = _.find($scope.billPaymentReceiptData.allBillReceiptsList.payment_receipts, {
+															bill_number: $scope.billsArray[$scope.currentActiveBill].bill_number.toString()
+														});
+		};
 
         /*
          * Retrive data to be displayed in the payment screen - payment types and credit card types
@@ -151,6 +164,15 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
                     direct_bill: true
                 }
             });
+
+            if ($rootScope.selectedReceiptTypeValue === 'tax_payment_receipt') {
+                var paramsToApi = {
+                    bill_holder_id: $scope.accountConfigData.summary.posting_account_id,
+                    bill_holder_type: 'PostingAccount'
+                };
+                
+				$scope.invokeApi(RVPaymentSrv.getReceiptsList, paramsToApi, $scope.getReceiptsListSuccess);
+			}
         };
 
         /*

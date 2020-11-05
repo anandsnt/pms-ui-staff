@@ -18,15 +18,34 @@
     class="search-form room-search" role="search"
     ng-class="{'has-options': isStandAlone, 'showing-filters': filterOpen }">
 
+    <!-- Select All Rooms from list -->
+    <!-- Add class "rooms-checked" when some/all rooms are checked -->
+    <div class="entry check" id="hk-multi-select"
+        ng-if="::isStandAlone" ng-class="{ 'rooms-checked': multiRoomAction.anyChosen }">
+
+        <label class="checkbox inline" for="select-all-rooms">
+            <span class="icon-form icon-checkbox" ng-class="{ 'semi-checked': (multiRoomAction.anyChosen && !multiRoomAction.allChosen), 'checked': multiRoomAction.allChosen }"></span>
+            <input id="select-all-rooms" type="checkbox" ng-model="multiRoomAction.allChosen" ng-change="toggleRoomSelection($event)"/>
+        </label>
+
+        <!-- Hidden until at least 1 room is selected -->
+        <button type="button" class="button purple with-icon only-icon hidden"
+            ng-class="{ 'hidden': !multiRoomAction.anyChosen }"
+            ng-click="openChangeHkStatusModal()">
+                <span class="icons icon-pencil"></span>
+                Update
+        </button>
+    </div>
+
     <!-- Refresh list -->
-    <button type="button" class="entry button white with-icon only-icon refresh"
+    <button type="button" class="button white with-icon only-icon refresh"
         ng-click="refreshData()">
         <span class="icons icon-reset"></span>
         {{::( 'Refresh' | translate)}}
     </button>
 
     <!-- Filter list -->
-    <button type="button" class="entry button white with-icon only-icon filter"
+    <button type="button" class="button white with-icon only-icon filter"
         ng-click="showFilters()">
         <span class="icons icon-filter"></span>
         {{::('FILTER_ROOMS' | translate)}}
@@ -64,24 +83,6 @@
             </label>
         </div>
     </div>
-
-    <!-- Select All Rooms from list -->
-    <!-- Add class "rooms-checked" when some/all rooms are checked -->
-    <div class="entry check" id="hk-multi-select"
-        ng-if="::isStandAlone" ng-class="{ 'rooms-checked': multiRoomAction.anyChosen }">
-        <!-- Hidden until at least 1 room is selected -->
-        <button type="button" class="button purple with-icon only-icon hidden"
-            ng-class="{ 'hidden': !multiRoomAction.anyChosen }"
-            ng-click="openChangeHkStatusModal()">
-                <span class="icons icon-pencil"></span>
-                Update
-        </button>
-        <label class="checkbox inline" for="select-all-rooms">
-           <span class="icon-form icon-checkbox" ng-class="{ 'semi-checked': (multiRoomAction.anyChosen && !multiRoomAction.allChosen), 'checked': multiRoomAction.allChosen }"></span>
-           <input id="select-all-rooms" type="checkbox" ng-model="multiRoomAction.allChosen" ng-change="toggleRoomSelection($event)"/>
-       </label>
-    </div>
-
     <!-- Add class "rooms-checked" when some/all rooms are checked -->
     <button type="button" class="button blue with-icon only-icon print"
         ng-click="printData()" ng-class="{ 'rooms-checked': multiRoomAction.anyChosen }">
@@ -121,7 +122,7 @@
             <p class="pull-msg" ng-show="disablePrevBtn">Pull down to refresh page</p>
         </li>
 
-        <li class="room" ng-repeat="room in rooms track by $index" emit-when="{event: 'ALL_RENDERED', condition: $last}">
+        <li class="room with-checkbox" ng-repeat="room in rooms track by $index" emit-when="{event: 'ALL_RENDERED', condition: $last}">
             <div ng-if="::isStandAlone" class="check">
                 <label class="checkbox inline">
                     <span class="icon-form icon-checkbox" ng-class="{ 'checked' : room.selected }"></span>
@@ -136,9 +137,10 @@
                         <span>{{ ::room.room_no }}</span>
                         <span class="icons icon-suite" ng-show="room.is_suite">Suite Room</span>
                     </h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
-                    <span class="room-type">{{::room.room_type.name}}</span>
                     <span class="room-status {{ room.roomStatusClass }}" ng-if="room.hk_status.value !== 'DO_NOT_DISTURB'">{{room.hk_status.value}}</span>
                     <span class="room-status {{ room.roomStatusClass }}" ng-if="room.hk_status.value === 'DO_NOT_DISTURB'">{{ 'DO_NOT_DISTURB' | translate }}</span>
+                    <span class="room-dot" ng-if="room.room_type && room.room_type.name">·</span> 
+                    <span class="room-type">{{::room.room_type.name}}</span>
                 </div>
 
                 <!-- {reservation-status} classes here are used from reservation screens, so sometimes they might be different than the actual status -->
@@ -147,13 +149,41 @@
                     <div class="current {{ ::room.leaveStatusClass }}">
                       <span class="guest-status {{ ::room.leaveStatusClass }}">{{ ::room.room_reservation_status }}</span>
                       <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
-                      <span>{{ ::room.timeOrOut }}</span>
+                      <span class="reservation-time">
+                        {{ ::room.timeOrOut }}
+                         <!-- Show only if applicable -->
+                        <span class="occupancy" ng-if="shouldShowGuestCount(room,'CHECKEDIN')">
+                            <span class="occupancy-number">
+                                <span class="icons icon-adult-2"></span> {{room.guest_details.adults}}
+                            </span>
+                            <span class="occupancy-number">
+                                <span class="icons icon-student"></span> {{room.guest_details.children}}
+                            </span>
+                            <span class="occupancy-number">
+                                <span class="icons icon-baby"></span> {{room.guest_details.infants}}
+                            </span>
+                        </span>
+                      </span>
                     </div>
                     <!-- {reservation-status} can be check-in(for arrival or arrived) or no-show(if room is not allocated to guest) -->
                     <div class="next {{ ::room.enterStatusClass }}">
                       <span class="guest-status {{ ::room.enterStatusClass }}">{{ ::room.room_reservation_status }}</span>
-                      <!-- Show only if applicable, {arrival-time} can be time or 'IN' if arrived -->
-                      <span>{{ ::room.timeOrIn }}</span>
+                      <span class="reservation-time">
+                        {{ ::room.timeOrIn }}
+                         <!-- Show only if applicable -->
+                        <span class="occupancy" ng-if="shouldShowGuestCount(room, 'RESERVED')">
+                            <span class="occupancy-number">
+                                <span class="icons icon-adult-2"></span> {{room.guest_details.adults}}
+                            </span>
+                            <span class="occupancy-number">
+                                <span class="icons icon-student"></span> {{room.guest_details.children}}
+                            </span>
+                            <span class="occupancy-number">
+                                <span class="icons icon-baby"></span> {{room.guest_details.infants}}
+                            </span>
+                        </span>
+                      </span>
+                      
                     </div>
                 </div>
 

@@ -71,7 +71,7 @@
                 </ul>
             </div>
             <!-- Split payment -->
-            <div class="entry split" ng-class="{active: splitBillEnabled }"
+            <div class="entry split" ng-class="{active: splitBillEnabled, overlay: hotelPaymentConfig.selectedReceiptTypeValue === 'tax_payment_receipt' && shouldDisableSplit}"
                  ng-hide="depositPaidSuccesFully || defaultPaymentTypeOfBill === 'GIFT_CARD' || defaultPaymentTypeOfBill === 'DB' || !isStandAlone" ng-if="false">
 
                 <label class="checkbox inline" ng-class="{checked: splitBillEnabled }">
@@ -127,6 +127,7 @@
                     num-splits="splitePaymentDetail.totalNoOfsplits"
                     completed-split-payments="splitePaymentDetail.completedSplitPayments" 
                     payment-currency-list="paymentCurrencyList" 
+                    receipts-list = "billPaymentReceiptData.receiptsList" 
                     ng-show="!errorOccured && !depositPaidSuccesFully">
             </snt-payment>
             <div class="actions" ng-hide="!depositPaidSuccesFully">

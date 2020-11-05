@@ -1,6 +1,6 @@
 sntRover.controller('RVSelectRoomAndRateCtrl', [
-	'$rootScope', '$scope', 'areReservationAddonsAvailable', '$stateParams', 'rates', 'ratesMeta', '$timeout', '$state', 'RVReservationBaseSearchSrv', 'RVReservationStateService', 'RVReservationDataService', 'house', 'RVSelectRoomRateSrv', 'rvPermissionSrv', 'ngDialog', '$filter', 'RVRoomRatesSrv', 'rvGroupConfigurationSrv', 'rvAllotmentConfigurationSrv', 'dateFilter',
-	function($rootScope, $scope, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state, RVReservationBaseSearchSrv, RVReservationStateService, RVReservationDataService, house, RVSelectRoomRateSrv, rvPermissionSrv, ngDialog, $filter, RVRoomRatesSrv, rvGroupConfigurationSrv, rvAllotmentConfigurationSrv, dateFilter) {
+	'$rootScope', '$scope', 'areReservationAddonsAvailable', '$stateParams', 'rates', 'ratesMeta', '$timeout', '$state', 'RVReservationBaseSearchSrv', 'RVReservationStateService', 'RVReservationDataService', 'house', 'RVSelectRoomRateSrv', 'rvPermissionSrv', 'ngDialog', '$filter', 'RVRoomRatesSrv', 'rvGroupConfigurationSrv', 'rvAllotmentConfigurationSrv', 'dateFilter', 'houseRestrictions',
+	function($rootScope, $scope, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state, RVReservationBaseSearchSrv, RVReservationStateService, RVReservationDataService, house, RVSelectRoomRateSrv, rvPermissionSrv, ngDialog, $filter, RVRoomRatesSrv, rvGroupConfigurationSrv, rvAllotmentConfigurationSrv, dateFilter, houseRestrictions) {
 		BaseCtrl.call(this, $scope);
 		$scope.borrowForGroups = $stateParams.borrow_for_groups === 'true' ? true : false;
 
@@ -1449,6 +1449,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				
 				cb && cb();
 				$scope.refreshScroll();
+			},
+			function(errorMessage) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorMessage;
 			});
 		};
 
@@ -2354,14 +2358,29 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 
 		_.each(restrictionsArray, function(restrictionObject) {
-		   var restrictionKey = restrictionObject.key;
+			var restrictionKey = (restrictionObject.key).toUpperCase(),
+				restrictionClass = getRestrictionClass(restrictionKey);
 
-		   restrictionObject.restrictionBgClass = "bg-" + getRestrictionClass(restrictionKey);
-		   // restrictionObject.restrictionBgColor = getRestrictionClass(restrictionKey);
+		   restrictionObject.restrictionBgClass = (restrictionClass !== '') ? ("bg-" + restrictionClass) : restrictionClass;
 		   restrictionObject.restrictionIcon = getRestrictionIcon(restrictionKey);
 		});
 		$scope.legendRestrictionsArray = restrictionsArray;
+		
+		$scope.houseRestrictionArray = [];
+		if (houseRestrictions) {
+			_.mapObject(houseRestrictions, function(value, key) {
+				var restrictionKey = key.toUpperCase(),
+					activeHouseRestriction = {},
+					restrictionClass = getRestrictionClass(restrictionKey);
 
+				if ((typeof(value) === 'boolean' && value) || typeof(value) === 'number') {
+					activeHouseRestriction.value = typeof(value) === 'boolean' ? '' : value;
+					activeHouseRestriction.restrictionBgClass = (restrictionClass !== '') ? ("bg-" + restrictionClass) : restrictionClass;
+					activeHouseRestriction.restrictionIcon = getRestrictionIcon(restrictionKey);
+					$scope.houseRestrictionArray.push(activeHouseRestriction);
+				}
+			});
+		}
 
         updateRateMetaOnLoad();
 

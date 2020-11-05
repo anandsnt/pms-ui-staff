@@ -9,10 +9,10 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
-					angular.forEach(data.bills, function(bill, index2) {
+					angular.forEach(data.bills, function(bill) {
 						bill.page_no = 1;
 						bill.transactions = [];
-						bill.activeDate = null;
+						bill.activeDate = bill.days.length > 0 ? _.last(bill.days).date : null;
 					});
 					deferred.resolve(data);
 				}, function(data) {

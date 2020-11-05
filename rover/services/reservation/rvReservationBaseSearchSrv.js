@@ -629,6 +629,18 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             return deferred.promise;
         };
 
+        this.fetchHouseRestrictions = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/availability/house_restrictions';
+
+            RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
+                deferred.resolve(response.restrictions);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
         this.fetchTaxRateAddonMeta = function(params) {
             var deferred = $q.defer(),
                 promises = [];

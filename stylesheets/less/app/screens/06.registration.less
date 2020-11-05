@@ -306,14 +306,13 @@
                     }
 
                     .days-wrapper {
-                        width: auto;
-                        max-width: 310px;
+                        width: 100%;
                         overflow: hidden;
                         max-height: 60px;
 
                         .wrapper {
                             li {
-                                margin: 0 0 0 1px;
+                                margin: 0 0 0 5px;
                                 width: 60px;
                                 min-width: 60px;
                                 max-width: 60px;
@@ -358,9 +357,17 @@
                     .float;
                     /* Container of the days carousel */
                      > .with-days {
-                        width: 530px;
+                         width: 100%;
                         .pull-left();
                         position: relative;
+
+                        .days {
+                            .calc-width(100, 80);
+
+                            &.with-date {
+                                .calc-width(100,160);
+                            }
+                        }
                         
                         &:not(.no-border) {
                             &:after {
@@ -467,7 +474,7 @@
                         .with-icon {
                             padding-top: 28px;
                             font-size: 11px;
-                            line-height: 8px;
+                            line-height: 9px;
                             .size(50px, 60px);
 
                             .icons { top: 5px; }
@@ -503,6 +510,7 @@
                         }
 
                         &.add-new,
+                        &.go-to-date,
                         &.check-out {
                             margin-right: 10px;
                             padding-right: 10px;
@@ -515,6 +523,18 @@
                                 right: 0;
                                 height: 50px;
                                 border-right: 1px solid rgba(0,0,0,.1);
+                            }
+                        }
+
+                        &.go-to-date {
+                            .button {
+                                padding-left: 5px;
+                                padding-right: 5px;
+                            }
+
+                            .icons.icon-forward {
+                                background-position: 3px -9224px;
+                                background-size: 80px;
                             }
                         }
 

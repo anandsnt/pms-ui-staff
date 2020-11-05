@@ -33,12 +33,23 @@ sntRover.controller('RVReceiptPopupController',
         }
         return isEmailButtonDisabled;
     };
+    
     /*
      * print receipt method
      */
     $scope.printReceipt = function() {
         var printReceiptSuccess = function (response) {
-                $scope.$emit("PRINT_RECEIPT", response.data);
+                var data = response.data;
+
+                if (!data.is_copy_of_receipt) {
+                    data.receiptHeading = data.receipt_translations.payment_receipt;
+                } else {
+                    var count = data.copy_counter || '';
+
+                    data.receiptHeading = data.receipt_translations.copy_of_receipt.replace("#count", count);
+                }
+
+                $scope.$emit("PRINT_RECEIPT", data);
             },
             dataToSend = {
                 params: {
