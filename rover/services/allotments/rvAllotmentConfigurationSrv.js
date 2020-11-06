@@ -549,5 +549,24 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 			});
 			return deferred.promise;
 		};
+
+		/**
+		 * Update allotment hold status
+		 * @param {Object} params params for hold status update
+		 * @return {Promise} promise
+		 */
+		this.updateHoldStatus = function (params) {
+			var deferred = $q.defer(),
+				url = '/api/groups/' + params.id + '/hold_status';
+
+			rvBaseWebSrvV2.putJSON(url, params)
+				.then(function (data) {
+					deferred.resolve(data);
+				}, function (data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
 	}
 ]);

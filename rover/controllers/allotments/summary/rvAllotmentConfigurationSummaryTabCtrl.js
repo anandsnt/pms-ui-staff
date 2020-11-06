@@ -748,6 +748,19 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			$scope.callAPI(rvAllotmentConfigurationSrv.cancelAllotment, options);
 		};
 
+        // Update group hold status
+        var updateHoldStatus = function () {
+            $scope.callAPI(rvAllotmentConfigurationSrv.updateHoldStatus, {
+                params: {
+                    hold_status_id: $scope.allotmentConfigData.summary.hold_status,
+                    id: $scope.allotmentConfigData.summary.allotment_id
+                },
+                onSuccess: function () {
+                    $scope.allotmentSummaryMemento.hold_status = $scope.allotmentConfigData.summary.hold_status;
+                }
+            });
+        };
+
 		$scope.onHoldStatusChange = function() {
 			if (!$scope.isInAddMode()) {
 				var selectedStatus = _.findWhere($scope.allotmentConfigData.holdStatusList, {
@@ -763,7 +776,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 						closeByEscape: false
 					});
 				} else {
-					$scope.updateAllotmentSummary();
+					updateHoldStatus();
 					$scope.allotmentSummaryData.existingHoldStatus = parseInt($scope.allotmentConfigData.summary.hold_status);
 
 				}

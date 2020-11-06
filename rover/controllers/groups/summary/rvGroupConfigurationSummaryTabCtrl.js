@@ -1294,6 +1294,19 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             $scope.callAPI(rvGroupConfigurationSrv.cancelGroup, options);
         };
 
+        // Update group hold status
+        var updateHoldStatus = function () {
+            $scope.callAPI(rvGroupConfigurationSrv.updateHoldStatus, {
+                params: {
+                    hold_status_id: $scope.groupConfigData.summary.hold_status,
+                    id: $scope.groupConfigData.summary.group_id
+                },
+                onSuccess: function () {
+                    $scope.groupSummaryMemento.hold_status = $scope.groupConfigData.summary.hold_status;
+                }
+            });
+        };
+
         $scope.onHoldStatusChange = function() {
             if (!$scope.isInAddMode()) {
                 var selectedStatus = _.findWhere($scope.groupConfigData.holdStatusList, {
@@ -1309,7 +1322,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                         closeByEscape: false
                     });
                 } else {
-                    $scope.updateGroupSummary();
+                    updateHoldStatus();
                     $scope.groupSummaryData.existingHoldStatus = parseInt($scope.groupConfigData.summary.hold_status);
 
                 }
