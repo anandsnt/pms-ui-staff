@@ -757,7 +757,11 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
                 },
                 onSuccess: function () {
                     $scope.allotmentSummaryMemento.hold_status = $scope.allotmentConfigData.summary.hold_status;
-                }
+				},
+				onFailure: function(errorMsg) {
+					$scope.$emit('showErrorMessage', errorMsg);
+					$scope.allotmentConfigData.summary.hold_status = $scope.allotmentSummaryMemento.hold_status;
+				}
             });
         };
 

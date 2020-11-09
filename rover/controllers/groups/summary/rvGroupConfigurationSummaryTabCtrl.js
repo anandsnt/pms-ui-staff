@@ -1303,6 +1303,10 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 },
                 onSuccess: function () {
                     $scope.groupSummaryMemento.hold_status = $scope.groupConfigData.summary.hold_status;
+                },
+                onFailure: function(errorMsg) {
+                    $scope.$emit('showErrorMessage', errorMsg);
+                    $scope.groupConfigData.summary.hold_status = $scope.groupSummaryMemento.hold_status;
                 }
             });
         };
