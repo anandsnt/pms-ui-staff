@@ -1983,7 +1983,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     selectedEntity.report.title === reportNames['FORECAST_GUEST_GROUPS'] ||
                     selectedEntity.report.title === reportNames['MARKET_SEGMENT_STAT_REPORT'] || 
                     selectedEntity.report.title === reportNames['A/R_AGING'] || 
-                    selectedEntity.report.title === reportNames['COMPLIMENTARY_ROOM_REPORT'])) {
+                    selectedEntity.report.title === reportNames['COMPLIMENTARY_ROOM_REPORT'] || 
+                    selectedEntity.report.title === reportNames['CANCELLATION_NO_SHOW'])) {
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) {
                     return object.value === 'CSV';
                 });
@@ -2013,7 +2014,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['FORECAST_GUEST_GROUPS'] || 
                 selectedEntity.report.title === reportNames['MARKET_SEGMENT_STAT_REPORT'] || 
                 selectedEntity.report.title === reportNames['A/R_AGING'] || 
-                selectedEntity.report.title === reportNames['COMPLIMENTARY_ROOM_REPORT']);
+                selectedEntity.report.title === reportNames['COMPLIMENTARY_ROOM_REPORT'] || 
+                selectedEntity.report.title === reportNames['CANCELLATION_NO_SHOW']);
 
         };
 
