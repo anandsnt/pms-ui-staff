@@ -68,7 +68,7 @@
                     ng-repeat="roomTypeWiseBar in data.additionalData.roomTypeBar track by $index">
                     <th scope="row" ng-bind="data.additionalData.roomTypeList[$index].name"></th>
                     <td ng-repeat="bar in roomTypeWiseBar track by $index">
-                        <button type="button" class="button white rate-value" ng-if="bar.amount === 'C' || bar.amount === null">
+                        <button type="button" class="button white rate-value not-clickable" ng-if="bar.amount === 'C' || bar.amount === null">
 							{{bar.amount}}
                         </button>
                         <button type="button" class="button white rate-value" ng-if="bar.amount !== 'C' && bar.amount !== null" ng-click="navigateToCreateReservation(bar, data.dates, $index)">
