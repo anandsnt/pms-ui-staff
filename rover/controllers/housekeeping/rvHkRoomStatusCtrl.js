@@ -1548,11 +1548,20 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		};
 
 		/**
-		 * Should show guest count in the room listing screen
+		 * Should show arriving guest count in the room listing screen
 		 */
-		$scope.shouldShowGuestCount = function(room, reservationStatus) {
-			return $rootScope.isStandAlone && room.guest_details && room.reservation_status === reservationStatus;
+		$scope.shouldShowArrivingGuestCount = function(room) {
+			return $rootScope.isStandAlone && room.guest_details && (room.reservation_status === 'RESERVED' || (room.reservation_status === 'CHECKEDIN' && !room.is_stayover));
 		};
+
+		/**
+		 * Should show arriving guest count in the room listing screen
+		 */
+		$scope.shouldShowStayoverGuestCount = function(room) {
+			return $rootScope.isStandAlone && room.guest_details && room.reservation_status === 'CHECKEDIN' && room.is_stayover;
+		};
+
+
 		
 	}
 	]);
