@@ -1560,8 +1560,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.shouldShowStayoverGuestCount = function(room) {
 			return $rootScope.isStandAlone && room.guest_details && room.reservation_status === 'CHECKEDIN' && room.is_stayover;
 		};
-
-
 		
 	}
 	]);
