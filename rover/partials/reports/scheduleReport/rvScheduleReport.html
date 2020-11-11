@@ -39,7 +39,7 @@
         <!-- Add vertical scroller here + add class "buttons-3" if it's an existing schedule -->
         <div class="wrapper">
             <h3>Schedule Parameters<span>{{ selectedEntityDetails.report.title }}</span></h3>
-            <div class="entry" ng-hide="isGuestBalanceReport || isYearlyTaxReport || isCreditCheckReport || isReservationsByUserReport || isRoomStatusReport || isRateAdjustmentReport">
+            <div class="entry" ng-hide="!scheduleTimePeriods.length || isGuestBalanceReport || isYearlyTaxReport || isCreditCheckReport || isReservationsByUserReport || isRoomStatusReport || isRateAdjustmentReport">
                 <label for="time-period">Time Period</label>
                 <div class="select">
                     <select ng-model="scheduleParams.time_period_id" ng-options="timePeriod.id as timePeriod.description for timePeriod in scheduleTimePeriods" ng-disabled="isGuestBalanceReport" iscroll-stop-propagation>
@@ -55,7 +55,15 @@
                     </select>
                 </div>
             </div>
-            <div class="entry" ng-show="arrivalDateTimePeriods.length > 0">
+            <div class="entry" ng-show="isCancellationNoShowReport && arrivalDateTimePeriods.length > 0">
+                <label for="time-period">Arrival Date</label>
+                <div class="select">
+                    <select ng-model="scheduleParams.date_range" ng-options="timePeriod.id as timePeriod.description for timePeriod in arrivalDateTimePeriods" iscroll-stop-propagation>
+                        <option value="">Time period</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry" ng-show="!isCancellationNoShowReport && arrivalDateTimePeriods.length > 0">
                 <label for="time-period">Arrival Date</label>
                 <div class="select">
                     <select ng-model="scheduleParams.arrival_date_range" ng-options="timePeriod.id as timePeriod.description for timePeriod in arrivalDateTimePeriods" iscroll-stop-propagation>
@@ -67,6 +75,14 @@
                 <label for="time-period">Adjustment Date</label>
                 <div class="select">
                     <select ng-model="scheduleParams.adjustment_date_range" ng-options="timePeriod.id as timePeriod.description for timePeriod in adjustmentDateTimePeriods" iscroll-stop-propagation>
+                        <option value="">Time period</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry" ng-show="cancellationDateTimePeriods.length > 0">
+                <label for="time-period">Cancellation Date</label>
+                <div class="select">
+                    <select ng-model="scheduleParams.cancelation_date_range" ng-options="timePeriod.id as timePeriod.description for timePeriod in cancellationDateTimePeriods" iscroll-stop-propagation>
                         <option value="">Time period</option>
                     </select>
                 </div>
