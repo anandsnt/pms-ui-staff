@@ -800,7 +800,9 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 $scope.reservationBillData.bills[data.bill_number - 1] = {
                     bill_id: data.id,
                     bill_number: data.bill_number,
-                    total_amount: 0
+                    total_amount: 0,
+                    routed_entity_type: data.routed_entity_type,
+                    guest_image: data.guest_image
                 };
             }
 

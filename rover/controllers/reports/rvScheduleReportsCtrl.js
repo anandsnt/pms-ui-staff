@@ -20,6 +20,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         var FOURTH_COLUMN_SCROLL = 'FOURTH_COLUMN_SCROLL';
         const SHOW_ERROR_MSG_EVENT = 'SHOW_ERROR_MSG_EVENT';
 
+        var originalScheduleFormats = [];
+
         var showFilterNames = [
             'INCLUDE_DUE_OUT',
             'INCLUDE_INHOUSE',
@@ -1320,6 +1322,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     $scope.selectedEntityDetails.report.title !== reportNames['GUEST_BALANCE_REPORT']) {
                     var pdfFormat = _.find($scope.scheduleFormat, { value: 'PDF' });
 
+                    if (!pdfFormat) {
+                        pdfFormat = _.find(originalScheduleFormats, { value: 'PDF' });
+                    }
+
                     if (pdfFormat) {
                         $scope.scheduleParams.format_id = pdfFormat.id;
                     }
@@ -1435,6 +1441,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.originalScheduleTimePeriods = payload.scheduleTimePeriods;
                 $scope.originalScheduleFrequency = payload.scheduleFrequency;
                 $scope.scheduleFormat = payload.scheduleFormat;
+                originalScheduleFormats = dclone(payload.scheduleFormat);
                 $scope.$parent.$parent.schedulesList = [];
                 $scope.$parent.$parent.schedulableReports = [];
 
