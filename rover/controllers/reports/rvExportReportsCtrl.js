@@ -3,12 +3,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
     '$scope',
     'RVreportsSrv',
     'RVReportUtilsFac',
-    'RVReportParamsConst',
-    'RVReportMsgsConst',
-    'RVReportNamesConst',
+    'RVReportParamsConst',    
     '$filter',
     '$timeout',
-    'rvUtilSrv',
     'ngDialog',
     function(
         $rootScope,
@@ -16,11 +13,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         reportsSrv,
         reportUtils,
         reportParams,
-        reportMsgs,
-        reportNames,
         $filter,
         $timeout,
-        util,
         ngDialog
     ) {
         var scheduleTimePeriods = [];
@@ -279,6 +273,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 params.delivery_type_id = parseInt(deliveryType.id);
             }
 
+            if ($scope.scheduleParams.format_id) {
+                params.format_id = $scope.scheduleParams.format_id;
+            }
+
             // fill emails/FTP
             if ( $scope.checkDeliveryType('EMAIL') && $scope.emailList.length ) {
                 params.emails = $scope.emailList.join(', ');
@@ -419,6 +417,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             if (deliveryType) {
                 params.delivery_type_id = parseInt(deliveryType.id);
+            }
+
+            if ($scope.scheduleParams.format_id) {
+                params.format_id = $scope.scheduleParams.format_id;
             }
 
             // fill emails/FTP
@@ -940,6 +942,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             $scope.scheduleParams.ends_on_date = reportUtils.processDate(endsOnDate).today;
 
             $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : null;
+            $scope.scheduleParams.format_id = $scope.selectedEntityDetails.format ? $scope.selectedEntityDetails.format.id : getFileFormatId();
             
             if ($scope.scheduleParams.delivery_id === 'CLOUD_DRIVE') {
                 $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.cloud_drive_type;
@@ -972,6 +975,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.dropBoxAccountList = payload.dropBoxAccounts;
                 $scope.googleDriveAccountList = payload.googleDriveAccounts;
                 $scope.scheduleDeliveryTypes = payload.scheduleDeliveryTypes;
+                $scope.scheduleFormat = payload.scheduleFormat;
 
                 // sort schedule list by report name
                 $scope.$parent.$parent.schedulesList = _.sortBy(
@@ -1522,6 +1526,23 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             // a single cloud drive account and if not cleared it will shows empty <option>
             // when the cloud account type is changed from the delivery options
             $scope.scheduleParams.selectedCloudAccount = null;
+        };
+
+        /**
+         * Checks whether the file format dropdown should be shown or not
+         * @param {Object} selectedEntity - selected report
+         * @return {boolean} value for show/hide dropdown
+         */
+        $scope.shouldShowFileFormat = function(selectedEntity) {
+            if (selectedEntity.report && selectedEntity.report.title === 'Journal Export' && $rootScope.isGOBDExportEnabled) {
+                $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) {
+                    return object.value === 'CSV';
+                });
+            }
+            
+
+            return selectedEntity.report && (selectedEntity.report.title === 'Journal Export' && $rootScope.isGOBDExportEnabled);
+
         };
 
         /**

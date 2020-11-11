@@ -121,6 +121,14 @@
                     </select>
                 </div>
             </div>
+            <div class="entry" ng-show="shouldShowFileFormat(selectedEntityDetails)">
+                <label for="file-format">File Format</label>
+                <div class="select">
+                    <select iscroll-stop-propagation ng-model="scheduleParams.format_id" ng-options="format.id as format.value for format in scheduleFormat">
+                       <option value="" >File Format</option>
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
 
