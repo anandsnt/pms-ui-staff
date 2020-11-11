@@ -9,6 +9,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
     '$state',
     'rvUtilSrv',
     'rvPermissionSrv',
+    '$stateParams',
     function($scope,
         $rootScope,
         rvAllotmentSrv,
@@ -18,7 +19,8 @@ sntRover.controller('rvAllotmentSearchCtrl', [
         $timeout,
         $state,
         util,
-        rvPermissionSrv) {
+        rvPermissionSrv,
+        $stateParams) {
 
         BaseCtrl.call(this, $scope);
 
@@ -253,6 +255,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
             var options = {
                 params: params,
                 successCallBack: successCallBackOfSearch,
+                successCallBackParameters: pageNo,
                 failureCallBack: failureCallBackOfSearch
             };
 
@@ -264,7 +267,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          * @param {Array} - array of objects - allotments
          * @return {None}
          */
-        var successCallBackOfSearch = function(data) {
+        var successCallBackOfSearch = function(data, pageNo) {
                 // allotmentlist
                 $scope.allotmentList = data.allotments;
 
@@ -273,7 +276,10 @@ sntRover.controller('rvAllotmentSearchCtrl', [
 
                 refreshScrollers();
                 $scope.refreshPagination(PAGINATION_ID);
-                
+
+                setTimeout(function() {
+                    $scope.$broadcast('updatePageNo', pageNo);
+                }, 150);
             };
 
         /**
@@ -390,7 +396,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          * @return {Boolean}
          */
         var hasSomeSearchResults = function() {
-            return ($scope.allotmentList.length > 0);
+            return ($scope.allotmentList && $scope.allotmentList.length > 0);
         };
 
         /**
@@ -417,11 +423,57 @@ sntRover.controller('rvAllotmentSearchCtrl', [
             });
         };                
 
+        var getFilterParams = function() {
+            return {
+                fromDate: $scope.fromDate,
+                fromDateForAPI: $scope.fromDateForAPI,
+                toDate: $scope.toDate,
+                toDateForAPI: $scope.toDateForAPI,
+                query: $scope.query,
+                page: $scope.pageOptions.currentPage
+            };
+        };
+
+        var checkCachedFilterData = function() {
+            var data = rvAllotmentSrv.getCache();
+
+            // Once we entered group details screen and trying to came back to group list,
+            // We will be showing the same state of data list with the filters selected as before.
+            if (data && $stateParams.origin === 'BACK_TO_ALLOTMENT_SEARCH_LIST') {
+                setDatePickerOptions();
+
+                $scope.fromDate = data.fromDate;
+                $scope.fromDateForAPI = data.fromDateForAPI;
+                $scope.toDate = data.toDate;
+                $scope.toDateForAPI = data.toDateForAPI;
+                $scope.query = data.query;
+
+                $scope.search(data.page);
+                // Clearing cached data.
+                rvAllotmentSrv.clearCache();
+            }
+            else {
+                // date related setups and things
+                setDatePickerOptions();
+
+                // allotmentlist
+                $scope.allotmentList = initialAllotmentListing.allotments;
+
+                // total result count
+                $scope.totalResultCount = initialAllotmentListing.total_count;
+
+                $scope.refreshPagination(PAGINATION_ID);
+            }
+        };
+
         /**
          * Navigate to the allotment configuration state for editing the allotment
          * @return undefined
          */
         $scope.gotoEditAllotmentConfiguration = function(allotmentId) {
+            var params = getFilterParams();
+
+            rvAllotmentSrv.updateCache(params);
             $state.go('rover.allotments.config', {
                 id: allotmentId,
                 activeTab: 'SUMMARY'
@@ -448,15 +500,6 @@ sntRover.controller('rvAllotmentSearchCtrl', [
             // updating the left side menu
             $scope.$emit("updateRoverLeftMenu", "menuManageAllotment");
 
-            // date related setups and things
-            setDatePickerOptions();
-
-            // allotmentlist
-            $scope.allotmentList = initialAllotmentListing.allotments;
-
-            // total result count
-            $scope.totalResultCount = initialAllotmentListing.total_count;
-
             // Yes am first time here
             $scope.amFirstTimeHere = true;
 
@@ -468,7 +511,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
 
             configurePagination();
 
-            $scope.refreshPagination(PAGINATION_ID);
+            checkCachedFilterData();
         }());
 
 

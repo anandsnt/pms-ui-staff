@@ -98,5 +98,20 @@ angular.module('sntRover').service('rvAllotmentSrv', ['$q', 'rvBaseWebSrvV2',
 
 			return deferred.promise;
 		};
+
+		// CICO-81923: Methods to update cache filter data of allotment list
+		this.updateCache = function(data) {
+			this.filterParams = data;
+		};
+
+		// CICO-81923 : Methods to fetch cache filter data of allotment list
+		this.getCache = function() {
+			return this.filterParams;
+		};
+
+		// CICO-81923 : Methods to clear cache filter data of allotment list
+		this.clearCache = function() {
+			this.filterParams = {};
+		};
 	}
 ]);
