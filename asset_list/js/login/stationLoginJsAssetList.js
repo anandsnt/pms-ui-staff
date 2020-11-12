@@ -4,7 +4,6 @@ module.exports = {
 		jsLibRoot 		= sharedRoot + 'lib/js/',
 		loginRoot 		= 'login/',
                 // remove ref when virtual keyboard files have updated loading
-		zestRoot 		= 'zest_station/',
 		loginJsAssets 	= {
 			minifiedFiles: [
 				jsLibRoot + 'angular.min.js',
@@ -29,7 +28,7 @@ module.exports = {
 				'!'+loginRoot+'stationLoginJsAssetList.js',
                 // these files used for zest station chromeapp 
                 // (need to prompt for virtual keyboard if launched from within a chrome-app)
-				zestRoot + 'zsVirtualKeyboard.js',
+				sharedRoot + 'stationKeyboard/virtualKeyBoard.js',
                 // Eliminate all spec files
                 '!**/*.spec.js',
                 '!**/*.conf.js'
