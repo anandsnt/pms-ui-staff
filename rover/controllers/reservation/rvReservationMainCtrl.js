@@ -1221,7 +1221,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                 $scope.reservationData.rooms[key] = Object.assign($scope.reservationData.rooms[key], targetObject);
                 $scope.reservationData.totalStayCost = _.reduce($scope.reservationData.rooms, function(memo, roomData) {
-                    return memo + roomData.total_stay_cost;
+                    return parseFloat(memo) + parseFloat(roomData.total_stay_cost);
                 }, 0);
                 $scope.reservationData.totalTax = _.reduce($scope.reservationData.rooms, function(memo, roomData) {
                     return memo + roomData.total_tax;
