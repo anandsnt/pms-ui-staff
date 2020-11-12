@@ -33,7 +33,7 @@ module.exports = function(gulp, $, options) {
 	    return cssInjector(file_name);
 	});
 
-	gulp.task('rover-less-production', ['rover-copy-less-files'], function () {
+	gulp.task('rover-less-production', ['rover-copy-less-files', 'copy-shiji-iframe-styles'], function () {
 	  return gulp.src(LESS_SOURCE_FILE)
 	        .pipe($.less({
 	        	compress: true,
@@ -60,9 +60,13 @@ module.exports = function(gulp, $, options) {
 	    return cssInjector(ROVER_CSS_FILE);
 	});
 
+	gulp.task('copy-shiji-iframe-styles', function(){
+    	return gulp.src('shared/lib/css/shiji-iframe.css').pipe(gulp.dest(DEST_ROOT_PATH));
+	});
+
 	//inorder to tackle the bug in injector, doing this way
 	//bug noticed: parallel injecting is not possible. When 400+ js injection is going on css injection is failing
-	gulp.task('build-rover-less-js-dev', ['rover-less-dev', 'build-rover-js-dev'], function(){
+	gulp.task('build-rover-less-js-dev', ['rover-less-dev', 'build-rover-js-dev', 'copy-shiji-iframe-styles'], function(){
 	    return cssInjector(ROVER_CSS_FILE);
 	});
 	//LESS END
