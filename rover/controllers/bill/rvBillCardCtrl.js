@@ -841,7 +841,9 @@ sntRover.controller('RVbillCardController',
 				$scope.reservationBillData.bills[parseInt(response.data[0].to_bill_number) - 1] = {
 					bill_id: response.data[0].to_bill_id,
 					bill_number: response.data[0].to_bill_number,
-					total_amount: response.data[0].bill_amount
+					total_amount: response.data[0].bill_amount,
+					routed_entity_type: response.data[0].routed_entity_type,
+					guest_image: response.data[0].guest_image
 				};
 			}
 
