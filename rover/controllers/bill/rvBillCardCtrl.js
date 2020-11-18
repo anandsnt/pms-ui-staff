@@ -2760,7 +2760,6 @@ sntRover.controller('RVbillCardController',
 		removePrintOrientation();
 		$scope.printBillCardActive = false;
 		$("body #loading").html('<div id="loading-spinner" ></div>');// CICO-56119
-		$scope.reloadCurrentActiveBill();
 	};
 
 	// print the page
