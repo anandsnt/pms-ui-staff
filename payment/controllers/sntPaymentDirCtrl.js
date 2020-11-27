@@ -1115,7 +1115,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
 
                 if (isInitialLoad && $scope.payment.paymentCurrencyAmount) {
-                    $scope.payment.amount = $scope.payment.paymentCurrencyAmount;
+                    $scope.payment.amount = parseFloat($scope.payment.paymentCurrencyAmount).toFixed(2);
                 }
 
                 // If the changed payment type is CC and payment gateway is MLI show CC addition options
