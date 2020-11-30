@@ -485,6 +485,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 params.filter_values.exclude_tax = true;
             }
 
+            if ($scope.scheduleParams.includeHeader) {
+                params.include_header = $scope.scheduleParams.includeHeader;
+            }
+
             $scope.invokeApi(reportsSrv.createSchedule, params, success, failed);
         };
 
@@ -797,6 +801,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             if (isDailyProdReport()) {
                 params.filter_values.exclude_tax = true;
+            }
+
+            if ($scope.scheduleParams.includeHeader) {
+                params.include_header = $scope.scheduleParams.includeHeader;
             }
 
             $scope.invokeApi(reportsSrv.updateSchedule, params, success, failed);
@@ -1417,6 +1425,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             }
 
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOT);
+
+            $scope.scheduleParams.includeHeader = $scope.selectedEntityDetails.include_header;
         };
 
         var fetch_reportSchedules_frequency_timePeriod_scheduableReports = function() {
@@ -1444,6 +1454,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 originalScheduleFormats = dclone(payload.scheduleFormat);
                 $scope.$parent.$parent.schedulesList = [];
                 $scope.$parent.$parent.schedulableReports = [];
+                $scope.CSV_FORMAT_ID = (_.find($scope.scheduleFormat, { value: 'CSV'})).id;
 
                 // sort schedule list by report name
                 $scope.$parent.$parent.schedulesList = _.sortBy(
