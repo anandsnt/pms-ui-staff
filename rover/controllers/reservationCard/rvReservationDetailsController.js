@@ -148,7 +148,7 @@ sntRover.controller('reservationDetailsController',
 					activeTab: "RESERVATIONS"
 				}
 			};
-		} else if ($stateParams.isFromCards || $rootScope.stayCardStateBookMark.previousState === "rover.companycarddetails") {
+		} else if ($stateParams.isFromCards) {
 
 			setNavigationBookMark();
 			$rootScope.setPrevState = {
