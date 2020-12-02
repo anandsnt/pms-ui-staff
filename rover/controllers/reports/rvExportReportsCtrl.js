@@ -301,6 +301,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             });
             params.filter_values = filter_values;
 
+            if ($scope.scheduleParams.includeTitleHeader) {
+                params.include_title_header = $scope.scheduleParams.includeTitleHeader;
+            }
+
             $scope.invokeApi( reportsSrv.createSchedule, params, success, failed );
         };
 
@@ -446,6 +450,11 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 }
             });
             params.filter_values = filter_values;
+
+            if ($scope.scheduleParams.includeTitleHeader) {
+                params.include_title_header = $scope.scheduleParams.includeTitleHeader;
+            }
+            
 
             $scope.invokeApi( reportsSrv.updateSchedule, params, success, failed );
         };
@@ -959,6 +968,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ($scope.selectedEntityDetails.report.title === 'Ad Notum - Rate of the Day Export') {
                 $scope.isAdNotumExport = true;
             }
+
+            $scope.scheduleParams.includeTitleHeader = $scope.selectedEntityDetails.include_title_header;
             
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOTS);
         };
@@ -976,6 +987,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.googleDriveAccountList = payload.googleDriveAccounts;
                 $scope.scheduleDeliveryTypes = payload.scheduleDeliveryTypes;
                 $scope.scheduleFormat = payload.scheduleFormat;
+                $scope.CSV_FORMAT_ID = (_.find($scope.scheduleFormat, { value: 'CSV'})).id;
 
                 // sort schedule list by report name
                 $scope.$parent.$parent.schedulesList = _.sortBy(
