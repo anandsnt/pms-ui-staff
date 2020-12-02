@@ -123,8 +123,8 @@
             </div>
             <div class="entry" ng-show="!shouldShowFileFormat(selectedEntityDetails) && scheduleParams.format_id === CSV_FORMAT_ID">
                 <label for="include-header" class="checkbox">
-                  <span class="icon-form icon-checkbox" ng-class="{'checked': scheduleParams.includeHeader}"></span>
-                  <input id="include-header" type="checkbox" ng-model="scheduleParams.includeHeader">
+                  <span class="icon-form icon-checkbox" ng-class="{'checked': scheduleParams.includeTitleHeader}"></span>
+                  <input id="include-header" type="checkbox" ng-model="scheduleParams.includeTitleHeader">
                   Include CSV Header
                 </label>
             </div>
@@ -137,8 +137,8 @@
                 </div>
                 <!-- Only when Output Format is set to CSV show:-->
                 <label for="include-header" class="checkbox" ng-if="scheduleParams.format_id === CSV_FORMAT_ID">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked': scheduleParams.includeHeader}"></span>
-                    <input id="include-header" type="checkbox" ng-model="scheduleParams.includeHeader">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': scheduleParams.includeTitleHeader}"></span>
+                    <input id="include-header" type="checkbox" ng-model="scheduleParams.includeTitleHeader">
                     Include CSV Header
                 </label>
             </div>

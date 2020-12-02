@@ -301,8 +301,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             });
             params.filter_values = filter_values;
 
-            if ($scope.scheduleParams.includeHeader) {
-                params.include_title_header = $scope.scheduleParams.includeHeader;
+            if ($scope.scheduleParams.includeTitleHeader) {
+                params.include_title_header = $scope.scheduleParams.includeTitleHeader;
             }
 
             $scope.invokeApi( reportsSrv.createSchedule, params, success, failed );
@@ -451,8 +451,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             });
             params.filter_values = filter_values;
 
-            if ($scope.scheduleParams.includeHeader) {
-                params.include_title_header = $scope.scheduleParams.includeHeader;
+            if ($scope.scheduleParams.includeTitleHeader) {
+                params.include_title_header = $scope.scheduleParams.includeTitleHeader;
             }
             
 
@@ -969,7 +969,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.isAdNotumExport = true;
             }
 
-            $scope.scheduleParams.includeHeader = $scope.selectedEntityDetails.include_title_header;
+            $scope.scheduleParams.includeTitleHeader = $scope.selectedEntityDetails.include_title_header;
             
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOTS);
         };

@@ -485,8 +485,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 params.filter_values.exclude_tax = true;
             }
 
-            if ($scope.scheduleParams.includeHeader && ($scope.scheduleParams.format_id === $scope.CSV_FORMAT_ID)) {
-                params.include_title_header = $scope.scheduleParams.includeHeader;
+            if ($scope.scheduleParams.includeTitleHeader && ($scope.scheduleParams.format_id === $scope.CSV_FORMAT_ID)) {
+                params.include_title_header = $scope.scheduleParams.includeTitleHeader;
             }
 
             $scope.invokeApi(reportsSrv.createSchedule, params, success, failed);
@@ -803,8 +803,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 params.filter_values.exclude_tax = true;
             }
 
-            if ($scope.scheduleParams.includeHeader && ($scope.scheduleParams.format_id === $scope.CSV_FORMAT_ID)) {
-                params.include_title_header = $scope.scheduleParams.includeHeader;
+            if ($scope.scheduleParams.includeTitleHeader && ($scope.scheduleParams.format_id === $scope.CSV_FORMAT_ID)) {
+                params.include_title_header = $scope.scheduleParams.includeTitleHeader;
             }
 
             $scope.invokeApi(reportsSrv.updateSchedule, params, success, failed);
@@ -1426,7 +1426,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOT);
 
-            $scope.scheduleParams.includeHeader = $scope.selectedEntityDetails.include_title_header;
+            $scope.scheduleParams.includeTitleHeader = $scope.selectedEntityDetails.include_title_header;
         };
 
         var fetch_reportSchedules_frequency_timePeriod_scheduableReports = function() {

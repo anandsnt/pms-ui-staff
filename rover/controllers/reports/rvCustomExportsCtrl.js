@@ -314,7 +314,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOTS);
 
-            $scope.customExportsScheduleParams.includeHeader = $scope.selectedEntityDetails.include_title_header;
+            $scope.customExportsScheduleParams.includeTitleHeader = $scope.selectedEntityDetails.include_title_header;
         };
 
         /**
@@ -660,8 +660,8 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 params.sftp_server_id = '';
             }
 
-            if ($scope.customExportsScheduleParams.includeHeader && ($scope.customExportsScheduleParams.format === $scope.customExportsData.CSV_FORMAT_ID)) {
-                params.include_title_header = $scope.customExportsScheduleParams.includeHeader;
+            if ($scope.customExportsScheduleParams.includeTitleHeader && ($scope.customExportsScheduleParams.format === $scope.customExportsData.CSV_FORMAT_ID)) {
+                params.include_title_header = $scope.customExportsScheduleParams.includeTitleHeader;
             }
 
             return params;
