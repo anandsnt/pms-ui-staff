@@ -660,7 +660,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 params.sftp_server_id = '';
             }
 
-            if ($scope.customExportsScheduleParams.includeHeader) {
+            if ($scope.customExportsScheduleParams.includeHeader && ($scope.customExportsScheduleParams.format === $scope.customExportsData.CSV_FORMAT_ID)) {
                 params.include_title_header = $scope.customExportsScheduleParams.includeHeader;
             }
 

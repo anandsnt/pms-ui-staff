@@ -485,7 +485,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 params.filter_values.exclude_tax = true;
             }
 
-            if ($scope.scheduleParams.includeHeader) {
+            if ($scope.scheduleParams.includeHeader && ($scope.scheduleParams.format_id === $scope.CSV_FORMAT_ID)) {
                 params.include_title_header = $scope.scheduleParams.includeHeader;
             }
 
@@ -803,7 +803,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 params.filter_values.exclude_tax = true;
             }
 
-            if ($scope.scheduleParams.includeHeader) {
+            if ($scope.scheduleParams.includeHeader && ($scope.scheduleParams.format_id === $scope.CSV_FORMAT_ID)) {
                 params.include_title_header = $scope.scheduleParams.includeHeader;
             }
 
@@ -2059,13 +2059,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         $scope.checkDeliveryType = function(checkFor) {
             return checkFor === $scope.scheduleParams.delivery_id;
         };
-
-        // $scope.hasIncludeCompanyTaGroup = function(selectedEntity) {
-        //     if (selectedEntity.report && selectedEntity.report.title === reportNames['FORECAST_BY_DATE']) {
-        //         return true;
-        //     }
-        //     return false;
-        // }
 
         /**
          * Startup
