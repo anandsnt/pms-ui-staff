@@ -793,15 +793,18 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 		$scope.shouldPrintInvoiceNumber = function(printData, statement) {
 			var printInvNo = false;
-
-			if (!printData.is_print_ar_invoice_number_enabled && !printData.is_print_folio_enabled) {
-				printInvNo = true;
-			} else if (!printData.is_print_ar_invoice_number_enabled && printData.is_print_folio_enabled && !statement.folio_number) {
-				printInvNo = true;
-			} else if (printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && printData.is_print_folio_enabled && !statement.folio_number) {
-				printInvNo = true;
-			} else if (!statement.ar_invoice_number && !statement.folio_number) {
-				printInvNo = true;
+			// only show invoice number when print invoice number is enabled and statement has invoice number data
+			// CICO-83139
+			if(printData.is_print_invoice_enabled && statement.invoice_number) {
+				if (!printData.is_print_ar_invoice_number_enabled && !printData.is_print_folio_enabled) {
+					printInvNo = true;
+				} else if (!printData.is_print_ar_invoice_number_enabled && printData.is_print_folio_enabled && !statement.folio_number) {
+					printInvNo = true;
+				} else if (printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && printData.is_print_folio_enabled && !statement.folio_number) {
+					printInvNo = true;
+				} else if (!statement.ar_invoice_number && !statement.folio_number) {
+					printInvNo = true;
+				}
 			}
 
 			return printInvNo;
