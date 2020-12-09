@@ -12,10 +12,11 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 	'rvAccountTransactionsSrv',
 	'$vault',
 	'$timeout',
+	'transitions',
 	function($scope, $rootScope, rvGroupSrv, $filter, 
 		$stateParams, rvAccountsConfigurationSrv, 
 		rvGroupConfigurationSrv, accountData, $state, 
-		rvPermissionSrv, rvAccountTransactionsSrv, $vault, $timeout) {
+		rvPermissionSrv, rvAccountTransactionsSrv, $vault, $timeout, transitions) {
 
     BaseCtrl.call(this, $scope);
 
@@ -101,8 +102,17 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 						isFromStayCard: true
 					}
 				};
+			} else if ((transitions.get().from()['name'].match(/rover\.reports/))) {
+				$rootScope.setPrevState = {
+						title: 'REPORTS',
+						name: transitions.get().from()['name'],
+						param: angular.extend(
+								angular.copy(transitions.get().params('from')), {
+										action: 'report.show.last'
+								})
+				};
 			}
-      // setting title and things
+            // setting title and things
 			setTitle();
 		};
 
