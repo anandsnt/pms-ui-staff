@@ -3223,7 +3223,16 @@ sntRover.controller('RVbillCardController',
 
 		var reservationStatus = $scope.reservationBillData.reservation_status;
 
-		$scope.getBillData($scope.currentActiveBill);
+		var fetchSuccessCallback = function(reservationBillDataFetched) {
+			$scope.reservationBillData.bills = reservationBillDataFetched.bills;
+			$scope.getBillData($scope.currentActiveBill);
+		},
+		dataToSend = {
+			params: $scope.reservationBillData.reservation_id,
+			successCallBack: fetchSuccessCallback
+		};
+
+		$scope.callAPI(RVBillCardSrv.fetch, dataToSend);
 	});
 
 	/**

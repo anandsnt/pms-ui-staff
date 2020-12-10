@@ -598,6 +598,17 @@
         .size(40px, 100%);
     }
 
+    .checkbox:not(.inline),
+    .radio:not(.inline) {
+        .icon-form {
+            background-color: @white;
+        }
+
+        &:not(:first-child) {
+            margin-top: 10px;
+        }
+    }
+
     .select {
         &:after { background-color: @grey1; }
 
@@ -1530,9 +1541,10 @@
 
     .entry {
         position: relative;
+        flex: 0;
         margin-right: 10px;
 
-        label {
+        label:not(.checkbox) {
             position: absolute;
             top: 6px;
             left: 10px;
@@ -1550,17 +1562,34 @@
 
         input {
             font-weight: 600;
-            width: 240px;
+            width: 100%;
         }
 
         select {
             padding-right: 20px;
-            width: 140px;
+            width: 130px;
+        }
+
+        .checkbox {
+            font-size: 14px;
+            text-transform: uppercase;
+            margin: 0;
+            padding-right: 10px;
+            height: 40px;
+            width: 180px;
+        }
+
+        &:first-child {
+            flex: 1;
         }
     }
 
     .actions {
         margin-left: auto;
+
+        .button:not(:last-child) {
+            margin-right: 5px;
+        }
     }
 }
 
