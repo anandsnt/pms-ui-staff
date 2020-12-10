@@ -1306,6 +1306,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.creationDateTimePeriods = [];
             $scope.arrivalDateTimePeriods = [];
             $scope.adjustmentDateTimePeriods = [];
+            $scope.cancellationDateTimePeriods = [];
+            $scope.scheduleTimePeriods = [];
             
             $scope.scheduleParams = {};
 
@@ -1316,18 +1318,17 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.isRateAdjustmentReport = $scope.selectedEntityDetails.report.title === reportNames['RATE_ADJUSTMENTS_REPORT'];
             $scope.isOccupancyRevenueSummaryReport = $scope.selectedEntityDetails.report.title === reportNames['OCCUPANCY_REVENUE_SUMMARY'];
             $scope.isCancellationNoShowReport = $scope.selectedEntityDetails.report.title === reportNames['CANCELLATION_NO_SHOW'];
-            
+            $scope.scheduleParams.format_id = null;
+
             if (angular.isDefined($scope.selectedEntityDetails.schedule_formats)) {
                 $scope.schedule_formats = $scope.selectedEntityDetails.schedule_formats;
                 $scope.scheduleParams.format_id = $scope.selectedEntityDetails.format.id;
             } else {
                 if ($scope.isYearlyTaxReport || $scope.selectedEntityDetails.report.title === reportNames['BUSINESS_ON_THE_BOOKS']) {
-                    $scope.scheduleParams.format_id = _.find($scope.scheduleFormat, { value: 'CSV' }).id;
-                } else if ($scope.selectedEntityDetails.report.title !== reportNames['COMPARISION_BY_DATE'] &&
-                    $scope.selectedEntityDetails.report.title !== reportNames['DAILY_PRODUCTION_DEMO'] &&
-                    $scope.selectedEntityDetails.report.title !== reportNames['DAILY_PRODUCTION_RATE'] &&
-                    $scope.selectedEntityDetails.report.title !== reportNames['DAILY_PRODUCTION_ROOM_TYPE'] &&
-                    $scope.selectedEntityDetails.report.title !== reportNames['GUEST_BALANCE_REPORT']) {
+                    $scope.scheduleParams.format_id = _.find($scope.scheduleFormat, { value: 'CSV' }).id; 
+                } else if ($scope.selectedEntityDetails.report.title === reportNames['ARRIVAL'] || 
+                $scope.selectedEntityDetails.report.title === reportNames['DEPARTURE'] || 
+                $scope.selectedEntityDetails.report.title === reportNames['IN_HOUSE_GUEST']) {
                     var pdfFormat = _.find($scope.scheduleFormat, { value: 'PDF' });
 
                     if (!pdfFormat) {
@@ -1337,8 +1338,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     if (pdfFormat) {
                         $scope.scheduleParams.format_id = pdfFormat.id;
                     }
-
                 }
+                
             }
             if ($scope.isYearlyTaxReport) {
                 $scope.scheduleParams.year = moment().format('YYYY');
@@ -1982,7 +1983,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         // Checks whether file format dropdown should be shown or not
         $scope.shouldShowFileFormat = function(selectedEntity) {
             if (selectedEntity.report && selectedEntity.report.title === reportNames['COMPARISION_BY_DATE']) {
-                $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) { return object.value !== "XML"; });
+                $scope.scheduleFormat = _.filter(originalScheduleFormats, function(object) { return object.value !== "XML"; });
             } else if (selectedEntity.report && (selectedEntity.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
                     selectedEntity.report.title === reportNames['DAILY_PRODUCTION_DEMO'] ||
                     selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] ||
@@ -2003,11 +2004,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     selectedEntity.report.title === reportNames['A/R_AGING'] || 
                     selectedEntity.report.title === reportNames['COMPLIMENTARY_ROOM_REPORT'] || 
                     selectedEntity.report.title === reportNames['CANCELLATION_NO_SHOW'])) {
-                $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) {
+                $scope.scheduleFormat = _.filter(originalScheduleFormats, function(object) {
                     return object.value === 'CSV';
                 });
             } else if (selectedEntity.report && selectedEntity.report.title === reportNames['GUEST_BALANCE_REPORT']) {
-                $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) {
+                $scope.scheduleFormat = _.filter(originalScheduleFormats, function(object) {
                     return object.value === 'CSV' || object.value === 'PDF';
                 });
             }
