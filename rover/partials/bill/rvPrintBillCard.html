@@ -21,15 +21,16 @@
         <div class="info-bottom" ng-if="!printData.is_deposit_invoice">
             <strong >{{printData.translation.invoice_date}}: </strong>{{printData.invoice_date | date:dateFormat}}<br/>
             <span ng-if="printData.should_print_invoice_number">
-                <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
+                <strong ><span ng-if="printData.invoice_number_label">{{printData.invoice_number_label}}:</span>
+                <span ng-if="!printData.invoice_number_label">{{printData.translation.invoice_number}}:</span></strong>{{printData.invoice_number}}<br/>
             </span>
             <span ng-show="printData.should_print_ar_invoice_number && shouldShowArInvoiceNumber">
                 <strong >{{printData.translation.ar_invoice_number}}:</strong>{{printData.ar_invoice_number}}<br/>
             </span>
 
             <span ng-if="!printData.is_informational_invoice && printData.folio_number && printData.is_print_folio_enabled && ((printData.is_print_ar_invoice_number_enabled  && (!printData.is_db_payment_exists || !shouldShowArInvoiceNumber)) || !printData.is_print_ar_invoice_number_enabled)">
-                <strong><span ng-if = "!printData.folio_label && !printData.is_invoice_void_number_enabled">{{printData.translation.folio_number}}:</span>
-                    <span ng-if = "printData.folio_label && !printData.is_invoice_void_number_enabled">{{printData.folio_label}}:</span>  
+                <strong><span ng-if = "!printData.folio_number_label && !printData.is_invoice_void_number_enabled">{{printData.translation.folio_number}}:</span>
+                    <span ng-if = "printData.folio_number_label && !printData.is_invoice_void_number_enabled">{{printData.folio_number_label}}:</span>  
                     <span ng-if = "printData.is_invoice_void_number_enabled && printData.void_number_label">{{printData.void_number_label}}:</span>
                     <span ng-if = "printData.is_invoice_void_number_enabled && !printData.void_number_label">{{printData.translation.void_number}}:</span>
                 </strong>{{printData.folio_number}}<br/>
@@ -52,10 +53,11 @@
         <div ng-if="printData.is_deposit_invoice">
             <strong >{{printData.translation.invoice_date}}: </strong>{{printData.invoice_date | date:dateFormat}}<br/>
             <span ng-if="printData.should_print_invoice_number">
-                <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
+                <strong ><span ng-if="printData.invoice_number_label">{{printData.invoice_number_label}}:</span>
+                <span ng-if="!printData.invoice_number_label">{{printData.translation.invoice_number}}:</span></strong>{{printData.invoice_number}}<br/>
             </span>
             <span ng-show="printData.deposit_folio_number">
-                <strong><span ng-if = "printData.folio_label">{{printData.folio_label}}:</span><span ng-if = "!printData.folio_label">{{printData.translation.folio_number}}:</span></strong>{{printData.deposit_folio_number}}<br/>
+                <strong><span ng-if = "printData.folio_number_label">{{printData.folio_number_label}}:</span><span ng-if = "!printData.folio_number_label">{{printData.translation.folio_number}}:</span></strong>{{printData.deposit_folio_number}}<br/>
             </span>
         </div>
     </div>
@@ -91,14 +93,15 @@
             <div ng-if="!printData.is_deposit_invoice">
                 <strong >{{printData.translation.invoice_date}}: </strong>{{printData.invoice_date | date:dateFormat}}<br/>
                 <span ng-if="printData.should_print_invoice_number">
-                    <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
+                    <strong ><span ng-if="printData.invoice_number_label">{{printData.invoice_number_label}}:</span>
+                    <span ng-if="!printData.invoice_number_label">{{printData.translation.invoice_number}}:</span></strong>{{printData.invoice_number}}<br/>
                 </span>
                 <span ng-show="printData.should_print_ar_invoice_number && shouldShowArInvoiceNumber">
                     <strong >{{printData.translation.ar_invoice_number}}:</strong>{{printData.ar_invoice_number}}<br/>
                 </span>
                 <span ng-if="!printData.is_informational_invoice && printData.folio_number && printData.is_print_folio_enabled && ((printData.is_print_ar_invoice_number_enabled  && (!printData.is_db_payment_exists || !shouldShowArInvoiceNumber)) || !printData.is_print_ar_invoice_number_enabled)">
-                    <strong><span ng-if = "!printData.folio_label && !printData.is_invoice_void_number_enabled">{{printData.translation.folio_number}}:</span>
-                    <span ng-if = "printData.folio_label && !printData.is_invoice_void_number_enabled">{{printData.folio_label}}:</span>  
+                    <strong><span ng-if = "!printData.folio_number_label && !printData.is_invoice_void_number_enabled">{{printData.translation.folio_number}}:</span>
+                    <span ng-if = "printData.folio_number_label && !printData.is_invoice_void_number_enabled">{{printData.folio_number_label}}:</span>  
                     <span ng-if = "printData.is_invoice_void_number_enabled && printData.void_number_label">{{printData.void_number_label}}:</span>
                     <span ng-if = "printData.is_invoice_void_number_enabled && !printData.void_number_label">{{printData.translation.void_number}}:</span>
                 </strong>{{printData.folio_number}}<br/>
@@ -122,10 +125,11 @@
             </div>
             <div ng-if="printData.is_deposit_invoice">
                 <span ng-show="printData.should_print_invoice_number">
-                    <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
+                    <strong ><span ng-if="printData.invoice_number_label">{{printData.invoice_number_label}}:</span>
+                    <span ng-if="!printData.invoice_number_label">{{printData.translation.invoice_number}}:</span></strong>{{printData.invoice_number}}<br/>
                 </span>
                 <span ng-show="printData.deposit_folio_number">
-                    <strong><span ng-if = "printData.folio_label">{{printData.folio_label}}:</span><span ng-if = "!printData.folio_label">{{printData.translation.folio_number}}:</span></strong>{{printData.deposit_folio_number}}<br/>
+                    <strong><span ng-if = "printData.folio_number_label">{{printData.folio_number_label}}:</span><span ng-if = "!printData.folio_number_label">{{printData.translation.folio_number}}:</span></strong>{{printData.deposit_folio_number}}<br/>
                 </span>
             </div>
         </div>

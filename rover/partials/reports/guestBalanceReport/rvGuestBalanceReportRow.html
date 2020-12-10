@@ -1,6 +1,6 @@
 <tr class="row-break" ng-repeat="item in results">
     <td class="name">
-        <strong>{{item.name}}</strong>
+        <strong class="title"><a ng-click="gotoNavigation(item)">{{item.name}}</a></strong>
         <em>{{item.number}}</em>
     </td>
     <td class="room">

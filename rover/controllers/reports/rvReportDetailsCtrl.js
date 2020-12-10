@@ -1446,6 +1446,42 @@ sntRover.controller('RVReportDetailsCtrl', [
             });
         };
 
+        /**
+         * to goto account
+         * @param {Object} account
+         * @return {undefined}
+         */
+        $scope.gotoAccount = function (account) {
+            $state.go('rover.accounts.config', {
+                id: account.posting_account_id,
+                activeTab: 'ACCOUNT'
+            });
+        };
+
+        /**
+         * Define navigation based on Guest / Account
+         * @param {Object} data
+         * @return {undefined}
+         */
+        $scope.gotoNavigation = function (data) {
+            if (data.entity_type === 'Reservation') {
+                // Navigate to Guest Account
+                var reservation = {
+                    'reservation_id': data.entity_id,
+                    'confirm_no': data.number
+                };
+
+                $scope.gotoStayCard(reservation);
+            } else if (data.entity_type === 'PostingAccount') {
+                // Navigate to Posting Account
+                var account = {
+                    'posting_account_id': data.entity_id
+                };
+
+                $scope.gotoAccount(account);
+            }
+        };
+
         var onReportSubmit = function () {
             $_pageNo = 1;
             $scope.errorMessage = [];
