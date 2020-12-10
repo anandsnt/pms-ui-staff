@@ -25,6 +25,7 @@
 "AR_NO:"            : "AR Number: ",
 "FIND_INVOICE"      : "Find Invoice",
 "SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER_RESERVATION": "Search by Invoice or Folio No., Guest Name",
+"SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER_RESERVATION_DEPOSIT": "Search by Invoice, Deposit Invoice or Folio No., Guest Name",
 "SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER_ACCOUNT": "Search by Invoice or Folio No., Account Name",
 "SEARCH_PLACE_HOLDER_WITHOUT_FOLIO_NUMBER": "Search by Invoice No., Account/Guest Name",
 "SEARCH_PLACE_HOLDER_WITH_RECEIPTS_RESERVATION": "Search by Receipt No., Guest Name",

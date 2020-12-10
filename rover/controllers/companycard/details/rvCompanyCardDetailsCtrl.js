@@ -97,7 +97,12 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				$scope.$broadcast("saveArAccount");
 			}
 
-			$state.go($rootScope.previousState, $rootScope.previousStateParams);
+			if ($stateParams.origin === 'COMMISION_SUMMARY') {
+				$state.go('rover.financials.commisions');
+			} else {
+				$state.go($rootScope.previousState, $rootScope.previousStateParams);
+			}
+			
 		};
 		$scope.isContactInformationSaved = false;
 		// inheriting some useful things

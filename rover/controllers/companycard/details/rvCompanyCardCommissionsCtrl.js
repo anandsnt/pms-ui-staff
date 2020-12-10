@@ -581,9 +581,11 @@ sntRover.controller('companyCardCommissionsCtrl', [
             if ($scope.currentSelectedTab === 'cc-commissions') {
                 fetchCommissionDetails(true);
             }
-            $vault.set('travelAgentId', $stateParams.id);
-            $vault.set('travelAgentType', $stateParams.type);
-            $vault.set('travelAgentQuery', $stateParams.query);
+            if ($state.current.name === 'rover.companycarddetails') {
+                $vault.set('travelAgentId', $stateParams.id);
+                $vault.set('travelAgentType', $stateParams.type);
+                $vault.set('travelAgentQuery', $stateParams.query);
+            }
 
             $scope.paginationData = {
                 id: 'RESERVATION_LIST_' + $scope.accountId,
