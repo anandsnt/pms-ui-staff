@@ -178,6 +178,7 @@ sntRover.controller('roverController', [
         $rootScope.paymentCurrencyList = hotelDetails.currency_list_for_payment;
         $rootScope.autoEmailPayReceipt =  hotelDetails.auto_email_pay_receipt;
         $rootScope.autoEmailDepositInvoice =  hotelDetails.auto_email_deposit_invoice;
+        $rootScope.isDepositInvoiceEnabled =  hotelDetails.advance_payment_enabled;
         $rootScope.hotelDefaultLanguageCode =  hotelDetails.hotel_default_language_code;
         $rootScope.shouldShowPaymentDropDown = false;
         $rootScope.disableReverseCheckin = hotelDetails.disable_reverse_checkin;
