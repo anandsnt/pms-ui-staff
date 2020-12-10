@@ -485,6 +485,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 params.filter_values.exclude_tax = true;
             }
 
+            if ($scope.scheduleParams.includeTitleHeader && ($scope.scheduleParams.format_id === $scope.CSV_FORMAT_ID)) {
+                params.include_title_header = $scope.scheduleParams.includeTitleHeader;
+            }
+
             $scope.invokeApi(reportsSrv.createSchedule, params, success, failed);
         };
 
@@ -797,6 +801,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             if (isDailyProdReport()) {
                 params.filter_values.exclude_tax = true;
+            }
+
+            if ($scope.scheduleParams.includeTitleHeader && ($scope.scheduleParams.format_id === $scope.CSV_FORMAT_ID)) {
+                params.include_title_header = $scope.scheduleParams.includeTitleHeader;
             }
 
             $scope.invokeApi(reportsSrv.updateSchedule, params, success, failed);
@@ -1418,6 +1426,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             }
 
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOT);
+
+            $scope.scheduleParams.includeTitleHeader = $scope.selectedEntityDetails.include_title_header;
         };
 
         var fetch_reportSchedules_frequency_timePeriod_scheduableReports = function() {
@@ -1445,6 +1455,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 originalScheduleFormats = dclone(payload.scheduleFormat);
                 $scope.$parent.$parent.schedulesList = [];
                 $scope.$parent.$parent.schedulableReports = [];
+                $scope.CSV_FORMAT_ID = (_.find($scope.scheduleFormat, { value: 'CSV'})).id;
 
                 // sort schedule list by report name
                 $scope.$parent.$parent.schedulesList = _.sortBy(
@@ -2049,13 +2060,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         $scope.checkDeliveryType = function(checkFor) {
             return checkFor === $scope.scheduleParams.delivery_id;
         };
-
-        // $scope.hasIncludeCompanyTaGroup = function(selectedEntity) {
-        //     if (selectedEntity.report && selectedEntity.report.title === reportNames['FORECAST_BY_DATE']) {
-        //         return true;
-        //     }
-        //     return false;
-        // }
 
         /**
          * Startup
