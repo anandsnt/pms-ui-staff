@@ -53,7 +53,8 @@
                             {{statement.departure_date | date:dateFormat }}
                         </span>
                         <span class="person-meta" ng-if="shouldPrintArInvoiceNumber(printData, statement)">
-                            <strong >{{printData.translation.ar_invoice_number}}</strong> 
+                            <strong ><span ng-if = "printData.ar_invoice_number_label">{{printData.ar_invoice_number_label}}</span>
+                                <span ng-if = "!printData.ar_invoice_number_label">{{printData.translation.ar_invoice_number}}</span></strong> 
                             {{statement.ar_invoice_number}}
                         </span>
                         <span class="person-meta" ng-if="shouldPrintFolioNumber(printData, statement)">
@@ -118,7 +119,8 @@
                             {{statement.folio_number}}
                         </span>
                         <span class="person-meta" ng-if="shouldPrintArInvoiceNumber(printData, statement)">
-                            <strong >{{printData.translation.ar_invoice_number}}</strong> 
+                            <strong ><span ng-if = "printData.ar_invoice_number_label">{{printData.ar_invoice_number_label}}</span>
+                                <span ng-if = "!printData.ar_invoice_number_label">{{printData.translation.ar_invoice_number}}</span></strong> 
                             {{statement.ar_invoice_number}}
                         </span>
                         <span class="person-meta" ng-if="shouldPrintInvoiceNumber(printData, statement)">
