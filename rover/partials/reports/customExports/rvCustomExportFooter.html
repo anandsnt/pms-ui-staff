@@ -5,12 +5,19 @@
     </div>
     <div class="entry">
         <div class="select">
-            <label for="export-output">Output Format</label>
-            <select id="export-output" ng-model="customExportsScheduleParams.format" convert-to-number ng-change="onOutputFormatChange()">
+            <label for="schedule-file-format">Output Format</label>
+            <select id="export-output" name="schedule-file-format" ng-model="customExportsScheduleParams.format" convert-to-number ng-change="onOutputFormatChange()">
                 <option value="">Select output format</option>
                 <option ng-repeat="format in customExportsData.exportFormats" value="{{format.id}}">{{format.value}}</option>
             </select>
         </div>
+    </div>
+    <div class="entry" ng-show="customExportsScheduleParams.format == customExportsData.CSV_FORMAT_ID">
+        <label for="include-header" class="checkbox" ng-class="{'checked': customExportsScheduleParams.includeTitleHeader}">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': customExportsScheduleParams.includeTitleHeader}"></span>
+            <input id="include-header" type="checkbox" ng-model="customExportsScheduleParams.includeTitleHeader">
+            Include CSV Header
+        </label>
     </div>
     
     <div class="actions">

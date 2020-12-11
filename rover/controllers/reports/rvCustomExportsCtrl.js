@@ -313,6 +313,8 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             } 
 
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOTS);
+
+            $scope.customExportsScheduleParams.includeTitleHeader = $scope.selectedEntityDetails.include_title_header;
         };
 
         /**
@@ -448,6 +450,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     $scope.ftpServerList = payload.ftpServerList;
                     $scope.dropBoxAccountList = payload.dropBoxAccounts;
                     $scope.googleDriveAccountList = payload.googleDriveAccounts;
+                    $scope.customExportsData.CSV_FORMAT_ID = (_.find($scope.customExportsData.exportFormats, {value: 'CSV'})).id;
 
                     if (!$scope.customExportsData.isNewExport) {
                         applySelectedFormatAndDeliveryTypes(); 
@@ -655,6 +658,10 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             } else {
                 params.emails = '';
                 params.sftp_server_id = '';
+            }
+
+            if ($scope.customExportsScheduleParams.includeTitleHeader && ($scope.customExportsScheduleParams.format === $scope.customExportsData.CSV_FORMAT_ID)) {
+                params.include_title_header = $scope.customExportsScheduleParams.includeTitleHeader;
             }
 
             return params;
