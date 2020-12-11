@@ -217,20 +217,25 @@ sntRover.controller('reservationDetailsController',
 				}
 			};
 
-		} else if ($scope.previousState.name === "rover.companycarddetails") {
+		} else if ($scope.previousState.name === "rover.companycarddetails" || $scope.$parent.reservationData.wasFromCard) {
 
             setNavigationBookMark();
-            $rootScope.setPrevState = {
-                title: 'TRAVEL Agent',
-                name: 'rover.companycarddetails',
-                param: {
+			var isBackToTACommission = $stateParams.isFromTACommission || $scope.$parent.reservationData.isFromTACommission;
+
+			$rootScope.setPrevState = {
+				title: 'TRAVEL Agent',
+				name: 'rover.companycarddetails',
+				param: {
 					id: $vault.get('travelAgentId'),
 					type: $vault.get('travelAgentType'),
 					query: $vault.get('travelAgentQuery'),
-					isBackToTACommission: $stateParams.isFromTACommission,
-					isBackFromStaycard: true
+					isBackToTACommission: isBackToTACommission,
+					isBackFromStaycard: true,
+					origin: isBackToTACommission ? 'COMMISION_SUMMARY' : ''
 				}
-            };
+			};
+			$scope.$parent.reservationData.wasFromCard = true;
+			$scope.$parent.reservationData.isFromTACommission = angular.copy($stateParams.isFromTACommission);
         } else if ($stateParams.isFromGuestStatistics) {			
 			$rootScope.setPrevState = {
 				title: 'Guest Statistics',

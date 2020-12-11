@@ -8,7 +8,7 @@
 
         <li class="dates">
             <strong>Date Range</strong>
-            <span>{{fromDate}} to {{toDate}}</span>
+            <span>{{fromDate | date:dateFormat}} to {{toDate | date:dateFormat}}</span>
         </li>
 
         <li class="rates" ng-show="chosenTab === 'RATE_TYPES' && isRateTypeView">
