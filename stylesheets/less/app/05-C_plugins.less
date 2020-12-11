@@ -10814,6 +10814,94 @@
 
                 }
             }
+
+            /** Events **/
+            &.events {
+                width: 520px;
+                max-height: 610px;
+                padding: 20px 0;
+
+                .h2 {
+                    margin-bottom: 5px;
+                }
+
+                .scrollable {
+                    max-height: 450px;
+                    position: relative;
+                    padding: 0 20px;
+
+                    .iScrollVerticalScrollbar {
+                        top: 0;
+                        bottom: 0;
+                    }
+                }
+
+                .events-list {
+                    .event-type {
+                        font-size: 14px;
+                        color: @grey4;
+                        text-transform: uppercase;
+                        margin-bottom: 10px;
+                        #flexbox > .parent(row, '', center, '');
+
+                        .event-count {
+                            background: @azure;
+                            display: inline-block;
+                            text-align: center;
+                            line-height: 20px;
+                            border-radius: 3px;
+                            font-weight: 600;
+                            color: @white;
+                            margin-right: 5px;
+                            .square(20px);
+                        }
+                    }
+
+                    .event-type-list {
+                        &:not(:last-child) {
+                            margin-bottom: 15px;
+                        }
+
+                        .event {
+                            background: @white;
+                            border-radius: 3px;
+                            padding: 10px;
+
+                            &:not(:last-child) {
+                                margin-bottom: 10px;
+                            }
+
+                            .event-end {
+                                color: @azure;
+                                font-size: 14px;
+                                line-height: 14px;
+                                text-transform: uppercase;
+                                margin-bottom: 5px;
+                                .show();
+                            }
+                            
+                            .event-title {
+                                font-weight: 700;
+                                font-size: 16px;
+                                line-height: 16px;
+                            }
+
+                            .event-description {
+                                font-size: 14px;
+                                line-height: 16px;
+                                color: @grey3;
+                                text-transform: uppercase;
+                            }
+                        }
+                    }
+                }
+
+                .actions {
+                    .button {
+                        font-size: 14px;
+                    }
+                }
+            }
         } // end of modals
     }
 
