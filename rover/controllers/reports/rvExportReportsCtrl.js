@@ -622,7 +622,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             var weeklyOnly = _.find($scope.originalScheduleFrequency, { value: 'WEEKLY' }),
                 monthlyOnly = _.find($scope.originalScheduleFrequency, { value: 'MONTHLY' }),
-                hourlyOnly = _.find($scope.originalScheduleFrequency, { value: 'HOURLY' });
+                hourlyOnly = _.find($scope.originalScheduleFrequency, { value: 'HOURLY' }),
+                runDuringEod = _.find($scope.originalScheduleFrequency, { value: 'RUN_DURING_EOD'});
 
             $scope.scheduleFrequency = [];
             $scope.scheduleFreqType = [];
@@ -748,6 +749,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ( forRunOnceOnly[item.report.title] ) {
                 $scope.scheduleFrequency.push(runOnceOnly);
             }
+
+            $scope.scheduleFrequency.push(runDuringEod);
         };
 
         // Configure the time periods for the given report
@@ -1555,6 +1558,13 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             return selectedEntity.report && (selectedEntity.report.title === 'Journal Export' && $rootScope.isGOBDExportEnabled);
 
+        };
+
+        /**
+         * Disable repeats every section
+         */
+        $scope.shallDisableRepeatsEvery = () => {
+            return $scope.originalScheduleFrequency && ($scope.scheduleParams.frequency_id === (_.find($scope.originalScheduleFrequency, {value: 'RUN_DURING_EOD'})).id);
         };
 
         /**

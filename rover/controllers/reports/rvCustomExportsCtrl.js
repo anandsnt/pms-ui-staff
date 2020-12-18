@@ -355,6 +355,10 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         var fetchCustomExportsAndExportFrequencies = () => {
             var onScheduledExportsFetchSuccess = (data) => {
                     $scope.customExportsData.scheduledCustomExports = data.customExports;
+                    data.scheduleFrequencies = _.sortBy(data.scheduleFrequencies, (obj) => {
+                        return obj.id;
+                    });
+                    
                     $scope.customExportsData.scheduleFrequencies = angular.copy(data.scheduleFrequencies);
 
                     _.each($scope.customExportsData.scheduledCustomExports, function (schedule) {
@@ -1029,6 +1033,13 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 currentStage: STAGES.SHOW_CUSTOM_EXPORT_LIST
             };
             $scope.repeatMinutesMinVal = 0;
+        };
+
+        /**
+         * Disable repeats every section
+         */
+        $scope.shallDisableRepeatsEvery = () => {
+            return $scope.customExportsData.scheduleFrequencies && ($scope.scheduleParams.frequency_id === (_.find($scope.customExportsData.scheduleFrequencies, {value: 'RUN_DURING_EOD'})).id);
         };
         
         // Initialize the controller

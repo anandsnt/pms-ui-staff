@@ -1658,11 +1658,12 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             var dailyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'DAILY' }),
                 weeklyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'WEEKLY' }),
                 monthlyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'MONTHLY' }),
-                hourlyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'HOURLY' });
+                hourlyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'HOURLY' });                
 
             var weeklyOnly = _.find($scope.originalScheduleFrequency, { value: 'WEEKLY' }),
                 monthlyOnly = _.find($scope.originalScheduleFrequency, { value: 'MONTHLY' }),
-                hourlyOnly = _.find($scope.originalScheduleFrequency, { value: 'HOURLY' });
+                hourlyOnly = _.find($scope.originalScheduleFrequency, { value: 'HOURLY' }),
+                runDuringEod = _.find($scope.originalScheduleFrequency, { value: 'RUN_DURING_EOD'});
 
             $scope.scheduleFrequency = [];
             $scope.scheduleFreqType = [];
@@ -1790,6 +1791,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.scheduleFrequency.push(monthlyOnly);
                 $scope.scheduleFreqType.push(monthlyTypeOnly);
             }
+
+            $scope.scheduleFrequency.push(runDuringEod);
 
         };
 
@@ -2058,6 +2061,13 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
         $scope.checkDeliveryType = function(checkFor) {
             return checkFor === $scope.scheduleParams.delivery_id;
+        };
+
+        /**
+         * Disable repeats every section
+         */
+        $scope.shallDisableRepeatsEvery = () => {
+            return $scope.originalScheduleFrequency && ($scope.scheduleParams.frequency_id === (_.find($scope.originalScheduleFrequency, {value: 'RUN_DURING_EOD'})).id);
         };
 
         /**
