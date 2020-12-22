@@ -109,7 +109,10 @@ sntRover.controller('RVInvoiceSearchController',
 		$scope.searchInvoice = (page) => {
 
 			$timeout(function() {
-				if ($scope.shouldShowReservationInvoices()) {
+			if ($scope.shouldShowReservationInvoices() && $rootScope.isDepositInvoiceEnabled) {
+				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER_RESERVATION_DEPOSIT');
+			}
+			else if ($scope.shouldShowReservationInvoices()) {
 				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER_RESERVATION');
 			}
 			if ($scope.shouldShowAccountInvoices()) {
@@ -480,7 +483,10 @@ sntRover.controller('RVInvoiceSearchController',
 						if (!$scope.invoiceSearchFlags.isClickedReservation) {
 							successData = successData.data;
 						}
-						if ($scope.billFormat.isInformationalInvoice) {
+						if (successData.is_deposit_invoice) {
+							successData.invoiceLabel = successData.translation.deposit_invoice;
+						}
+						else if ($scope.billFormat.isInformationalInvoice) {
 							successData.invoiceLabel = successData.translation.information_invoice;
 						}
 						else if (successData.no_of_original_invoices === null && !successData.is_void_bill) {

@@ -152,7 +152,7 @@
                       <span class="reservation-time">
                         {{ ::room.timeOrOut }}
                          <!-- Show only if applicable -->
-                        <span class="occupancy" ng-if="shouldShowGuestCount(room,'CHECKEDIN')">
+                        <span class="occupancy" ng-if="shouldShowStayoverGuestCount(room)">
                             <span class="occupancy-number">
                                 <span class="icons icon-adult-2"></span> {{room.guest_details.adults}}
                             </span>
@@ -171,7 +171,7 @@
                       <span class="reservation-time">
                         {{ ::room.timeOrIn }}
                          <!-- Show only if applicable -->
-                        <span class="occupancy" ng-if="shouldShowGuestCount(room, 'RESERVED')">
+                        <span class="occupancy" ng-if="shouldShowArrivingGuestCount(room)">
                             <span class="occupancy-number">
                                 <span class="icons icon-adult-2"></span> {{room.guest_details.adults}}
                             </span>

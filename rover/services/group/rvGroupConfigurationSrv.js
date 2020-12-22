@@ -651,7 +651,26 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
                     deferred.reject(data);
                 });
             return deferred.promise;
-        };
+		};
+		
+		/**
+		 * Update group hold status
+		 * @param {Object} params params for hold status update
+		 * @return {Promise} promise
+		 */
+		this.updateHoldStatus = function (params) {
+			var deferred = $q.defer(),
+				url = '/api/groups/' + params.id + '/hold_status';
+
+			rvBaseWebSrvV2.putJSON(url, params)
+				.then(function (data) {
+					deferred.resolve(data);
+				}, function (data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
 	}
 
 

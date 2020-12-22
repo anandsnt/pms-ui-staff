@@ -800,7 +800,9 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 $scope.reservationBillData.bills[data.bill_number - 1] = {
                     bill_id: data.id,
                     bill_number: data.bill_number,
-                    total_amount: 0
+                    total_amount: 0,
+                    routed_entity_type: data.routed_entity_type,
+                    guest_image: data.guest_image
                 };
             }
 
@@ -981,6 +983,15 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 $scope.$parent.$emit('BILLINGINFOADDED');
                 // Added for CICO-23210
                 $scope.$parent.$emit('REFRESH_BILLCARD_VIEW');
+            }
+            if ($scope.reservationBillData && data.bill_number) {
+                $scope.reservationBillData.bills[data.bill_number - 1] = {
+                    bill_id: data.id,
+                    bill_number: data.bill_number,
+                    total_amount: 0,
+                    routed_entity_type: data.routed_entity_type,
+                    guest_image: data.guest_image
+                };
             }
         };
         $scope.errorCallback = function(errorMessage) {

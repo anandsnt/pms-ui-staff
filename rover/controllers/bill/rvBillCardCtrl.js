@@ -484,7 +484,7 @@ sntRover.controller('RVbillCardController',
 			width = width + 230;
 		}
 
-		width = 133 * $scope.reservationBillData.bills.length + width + 160;
+		width = 168 * $scope.reservationBillData.bills.length + width + 160;
 		return width;
 	};
 
@@ -841,7 +841,9 @@ sntRover.controller('RVbillCardController',
 				$scope.reservationBillData.bills[parseInt(response.data[0].to_bill_number) - 1] = {
 					bill_id: response.data[0].to_bill_id,
 					bill_number: response.data[0].to_bill_number,
-					total_amount: response.data[0].bill_amount
+					total_amount: response.data[0].bill_amount,
+					routed_entity_type: response.data[0].routed_entity_type,
+					guest_image: response.data[0].guest_image
 				};
 			}
 
@@ -2760,7 +2762,6 @@ sntRover.controller('RVbillCardController',
 		removePrintOrientation();
 		$scope.printBillCardActive = false;
 		$("body #loading").html('<div id="loading-spinner" ></div>');// CICO-56119
-		$scope.reloadCurrentActiveBill();
 	};
 
 	// print the page
@@ -3081,7 +3082,9 @@ sntRover.controller('RVbillCardController',
 			$scope.reservationBillData.bills[data.bill_number - 1] = {
 				bill_id: data.id,
 				bill_number: data.bill_number,
-				total_amount: 0
+				total_amount: 0,
+				routed_entity_type: null,
+				guest_image: $scope.reservationBillData.bills[0].guest_image
 			};
 			var data = {};
 
@@ -3220,7 +3223,16 @@ sntRover.controller('RVbillCardController',
 
 		var reservationStatus = $scope.reservationBillData.reservation_status;
 
-		$scope.getBillData($scope.currentActiveBill);
+		var fetchSuccessCallback = function(reservationBillDataFetched) {
+			$scope.reservationBillData.bills = reservationBillDataFetched.bills;
+			$scope.getBillData($scope.currentActiveBill);
+		},
+		dataToSend = {
+			params: $scope.reservationBillData.reservation_id,
+			successCallBack: fetchSuccessCallback
+		};
+
+		$scope.callAPI(RVBillCardSrv.fetch, dataToSend);
 	});
 
 	/**

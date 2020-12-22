@@ -39,7 +39,7 @@
         <!-- Add vertical scroller here + add class "buttons-3" if it's an existing schedule -->
         <div class="wrapper">
             <h3>Schedule Parameters<span>{{ selectedEntityDetails.report.title }}</span></h3>
-            <div class="entry" ng-hide="isGuestBalanceReport || isYearlyTaxReport || isCreditCheckReport || isReservationsByUserReport || isRoomStatusReport || isRateAdjustmentReport">
+            <div class="entry" ng-hide="!scheduleTimePeriods.length || isGuestBalanceReport || isYearlyTaxReport || isCreditCheckReport || isReservationsByUserReport || isRoomStatusReport || isRateAdjustmentReport">
                 <label for="time-period">Time Period</label>
                 <div class="select">
                     <select ng-model="scheduleParams.time_period_id" ng-options="timePeriod.id as timePeriod.description for timePeriod in scheduleTimePeriods" ng-disabled="isGuestBalanceReport" iscroll-stop-propagation>
@@ -55,7 +55,15 @@
                     </select>
                 </div>
             </div>
-            <div class="entry" ng-show="arrivalDateTimePeriods.length > 0">
+            <div class="entry" ng-show="isCancellationNoShowReport && arrivalDateTimePeriods.length > 0">
+                <label for="time-period">Arrival Date</label>
+                <div class="select">
+                    <select ng-model="scheduleParams.date_range" ng-options="timePeriod.id as timePeriod.description for timePeriod in arrivalDateTimePeriods" iscroll-stop-propagation>
+                        <option value="">Time period</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry" ng-show="!isCancellationNoShowReport && arrivalDateTimePeriods.length > 0">
                 <label for="time-period">Arrival Date</label>
                 <div class="select">
                     <select ng-model="scheduleParams.arrival_date_range" ng-options="timePeriod.id as timePeriod.description for timePeriod in arrivalDateTimePeriods" iscroll-stop-propagation>
@@ -67,6 +75,14 @@
                 <label for="time-period">Adjustment Date</label>
                 <div class="select">
                     <select ng-model="scheduleParams.adjustment_date_range" ng-options="timePeriod.id as timePeriod.description for timePeriod in adjustmentDateTimePeriods" iscroll-stop-propagation>
+                        <option value="">Time period</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry" ng-show="cancellationDateTimePeriods.length > 0">
+                <label for="time-period">Cancellation Date</label>
+                <div class="select">
+                    <select ng-model="scheduleParams.cancelation_date_range" ng-options="timePeriod.id as timePeriod.description for timePeriod in cancellationDateTimePeriods" iscroll-stop-propagation>
                         <option value="">Time period</option>
                     </select>
                 </div>
@@ -185,14 +201,26 @@
                     </select>
                  </div>
             </div>
-            
+            <div class="entry" ng-show="!shouldShowFileFormat(selectedEntityDetails) && scheduleParams.format_id === CSV_FORMAT_ID">
+                <label for="include-header" class="checkbox">
+                  <span class="icon-form icon-checkbox" ng-class="{'checked': scheduleParams.includeTitleHeader}"></span>
+                  <input id="include-header" type="checkbox" ng-model="scheduleParams.includeTitleHeader">
+                  Include CSV Header
+                </label>
+            </div>
             <div class="entry" ng-show="shouldShowFileFormat(selectedEntityDetails)">
-                <label for="file-format">File Format</label>
+                <label for="schedule-file-format">File Format</label>
                 <div class="select">
-                    <select iscroll-stop-propagation ng-model="scheduleParams.format_id" ng-options="format.id as format.value for format in scheduleFormat">
-                       <option value="" >File Format</option>
+                    <select iscroll-stop-propagation id="export-output" name="schedule-file-format" ng-model="scheduleParams.format_id" ng-options="format.id as format.value for format in scheduleFormat" ng-change="refreshSecondColumnScroll()">
+                       <option value="">File Format</option>
                     </select>
                 </div>
+                <!-- Only when Output Format is set to CSV show:-->
+                <label for="include-header" class="checkbox" ng-if="scheduleParams.format_id === CSV_FORMAT_ID">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': scheduleParams.includeTitleHeader}"></span>
+                    <input id="include-header" type="checkbox" ng-model="scheduleParams.includeTitleHeader">
+                    Include CSV Header
+                </label>
             </div>
         </div>
     </div>
@@ -268,12 +296,12 @@
                 <div class="entry-data entry-first">
                     <label for="schedule-ends-on-number" class="radio inline">
                         <span class="icon-form icon-radio" ng-class="{ 'checked': scheduleParams.scheduleEndsOn === 'NUMBER' }"></span>
-                        <input type="radio" name="ends-on" checked ng-model="scheduleParams.scheduleEndsOn" value="NUMBER">
+                        <input id="schedule-ends-on-number" type="radio" name="ends-on" checked ng-model="scheduleParams.scheduleEndsOn" value="NUMBER">
                         After
                     </label>
                 </div>
                 <div class="entry-data entry-second with-label">
-                    <input id="schedule-ends-on-number" type="number" placeholder="No." ng-model="scheduleParams.ends_on_after">
+                    <input  type="number" placeholder="No." ng-model="scheduleParams.ends_on_after">
                     <span class="label" ng-bind="getRepeatPer()"></span>
                 </div>
                 <!-- next -->

@@ -91,6 +91,38 @@
                     .show;
                     .no-transition;
 
+                    .bill-entity-icon {
+                        .square(25px);
+                        float: left;
+                        margin-right: 10px;
+                        position: relative;
+                        padding: 5px;
+                        background: @gcard;
+
+                        img {
+                            max-width: 100%;
+                            height: auto;
+                        }
+
+                        .icons {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            background-size: 70px;
+                            .square(25px);
+
+                            &.icon-company {
+                                background-color: @ccard;
+                                background-position: 6px -2013px;
+                            }
+
+                            &.icon-travel-agent {
+                                background-color: @tacard;
+                                background-position: 6px -2082px;
+                            }
+                        }
+                    }
+
                     .price {
                         font-weight: 600;
                         .pull-left;
@@ -146,7 +178,7 @@
                     }
 
                     &.has-icon {
-                        .icons {
+                        .icons:not(.icon-company):not(.icon-travel-agent) {
                             background-size: 80px;
                             .square(14px);
                             top: 5px;
@@ -1521,7 +1553,7 @@
     left: 0;
     width: 100%;
     height: 90px;
-    padding: 20px;
+    padding: 10px;
     background: @background;
     .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
     #flexbox > .parent(row wrap, flex-end, center, space-between);
@@ -1553,7 +1585,7 @@
             }
 
             .checkbox {
-                margin-bottom: 10px;
+                margin-bottom: 7px;
 
                 .icon-checkbox { 
                     top: 0;
