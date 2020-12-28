@@ -1726,12 +1726,18 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                                 rate.name = rate.name + ' (' + rate.contract_name + ')';
                                 if (rate.id === $scope.groupConfigData.summary.rate && rate.contract_id === $scope.groupConfigData.summary.contract_id) {
                                     $scope.groupConfigData.summary.uniqId = rate.uniqId;
+                                    $scope.$emit('GROUP_SUMMARY_UNIQUE_ID_SET', {
+                                        uniqId: $scope.groupConfigData.summary.uniqId
+                                    });
                                 }
                             }
                             else {
                                 rate.uniqId = rate.id + ':';
                                 if (rate.id === $scope.groupConfigData.summary.rate) {
                                     $scope.groupConfigData.summary.uniqId = rate.uniqId;
+                                    $scope.$emit('GROUP_SUMMARY_UNIQUE_ID_SET', {
+                                        uniqId: $scope.groupConfigData.summary.uniqId
+                                    });
                                 }
                             }
                             sumData.rateSelectDataObject.push(rate);
