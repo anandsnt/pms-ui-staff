@@ -1538,16 +1538,17 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
         })( $rootScope );
 
         $scope.updateAndBack = function() {
-            if ( !$scope.isInAddMode() && 'SUMMARY' === $scope.groupConfigData.activeTab ) {
-                $scope.updateGroupSummary(false, true);
-                return;
-            } else if ( 'ACCOUNT' === $scope.groupConfigData.activeTab ) {
-                $scope.$broadcast( 'UPDATE_ACCOUNT_SUMMARY' );
-            }
             if (resolvedBackBtn.name === 'rover.groups.search') {
                 resolvedBackBtn.param.origin = 'BACK_TO_GROUP_SEARCH_LIST';
             }
-            $state.go( resolvedBackBtn.name, resolvedBackBtn.param );
+            if (!$scope.isInAddMode() && 'SUMMARY' === $scope.groupConfigData.activeTab) {
+                $scope.updateGroupSummary(false, true);
+                return;
+            } else if ('ACCOUNT' === $scope.groupConfigData.activeTab) {
+                $scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
+            }
+
+            $state.go(resolvedBackBtn.name, resolvedBackBtn.param);
         };
 
         // function to set Back Navigation params
