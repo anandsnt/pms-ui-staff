@@ -54,10 +54,6 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             }
         };
 
-        $scope.addListener('RESET_DATE_PICKERS', function() {
-            resetDatePickers();
-        });
-
         /**
          * Use to reset calender date pickers to actual dates
          * @return {undefined}
@@ -2164,6 +2160,10 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
 
         $scope.addListener('DATE_CHANGE_FAILED', function() {
             fetchApplicableRates();
+        });
+
+        $scope.addListener('RESET_DATE_PICKERS', function() {
+            resetDatePickers();
         });
         
     }
