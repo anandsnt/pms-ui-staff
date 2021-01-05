@@ -113,6 +113,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                     failureCallBack: failureCallBackOfMoveButton,
                     cancelPopupCallBack: cancelCallBackofDateChange
                 };
+            
             $scope.actionStatus.isMoveBtnClicked = false;
 
             $scope.changeDatesActions.clickedOnMoveSaveButton (options);
