@@ -54,7 +54,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             }
         };
 
-        $scope.$on('RESET_DATE_PICKERS', function() {
+        $scope.addListener('RESET_DATE_PICKERS', function() {
             resetDatePickers();
         });
 
