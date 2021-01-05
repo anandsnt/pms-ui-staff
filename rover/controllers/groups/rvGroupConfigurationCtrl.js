@@ -933,21 +933,20 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
             if (!groupSummary.release_date) {
                 groupSummary.release_date = groupSummary.block_from;
-             }
+            }
  
-             if (!$scope.isInAddMode()) {
-                 groupSummary.block_from = new tzIndependentDate(groupSummary.block_from);
-                 groupSummary.block_to = new tzIndependentDate(groupSummary.block_to);
-                 groupSummary.shoulder_from_date = new tzIndependentDate(groupSummary.shoulder_from_date);
-                 groupSummary.shoulder_to_date = new tzIndependentDate(groupSummary.shoulder_to_date);
-             }
+            if (!$scope.isInAddMode()) {
+                groupSummary.block_from = new tzIndependentDate(groupSummary.block_from);
+                groupSummary.block_to = new tzIndependentDate(groupSummary.block_to);
+                groupSummary.shoulder_from_date = new tzIndependentDate(groupSummary.shoulder_from_date);
+                groupSummary.shoulder_to_date = new tzIndependentDate(groupSummary.shoulder_to_date);
+            }
  
- 
-             // if we searched a group name that wasnt in the db
-             // pass over that search term here
-             if ( !!$stateParams.newGroupName ) {
-                 groupSummary.group_name = $stateParams.newGroupName;
-             }
+            // if we searched a group name that wasnt in the db
+            // pass over that search term here
+            if ( !!$stateParams.newGroupName ) {
+                groupSummary.group_name = $stateParams.newGroupName;
+            }
 
             $timeout(function() {
                 $scope.groupSummaryMemento = angular.copy(groupSummary);
