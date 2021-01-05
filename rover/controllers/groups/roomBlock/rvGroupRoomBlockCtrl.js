@@ -1658,7 +1658,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             if (activeTab !== 'ROOM_BLOCK') {
                 return;
             }
-            
+            setDatePickers();
             callInitialAPIs();
 
 			// end date picker will be in disabled in move mode

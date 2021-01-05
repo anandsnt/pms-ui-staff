@@ -927,6 +927,28 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             
             var groupSummary = $scope.groupConfigData.summary;
 
+            if (groupSummary.rate === '-1') {
+                groupSummary.uniqId = '-1';
+            }
+
+            if (!groupSummary.release_date) {
+                groupSummary.release_date = groupSummary.block_from;
+             }
+ 
+             if (!$scope.isInAddMode()) {
+                 groupSummary.block_from = new tzIndependentDate(groupSummary.block_from);
+                 groupSummary.block_to = new tzIndependentDate(groupSummary.block_to);
+                 groupSummary.shoulder_from_date = new tzIndependentDate(groupSummary.shoulder_from_date);
+                 groupSummary.shoulder_to_date = new tzIndependentDate(groupSummary.shoulder_to_date);
+             }
+ 
+ 
+             // if we searched a group name that wasnt in the db
+             // pass over that search term here
+             if ( !!$stateParams.newGroupName ) {
+                 groupSummary.group_name = $stateParams.newGroupName;
+             }
+
             $timeout(function() {
                 $scope.groupSummaryMemento = angular.copy(groupSummary);
             }, 500);
@@ -935,21 +957,6 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             $scope.accountConfigData = {
                 summary: summaryData.accountSummary
             };
-            if (!groupSummary.release_date) {
-               groupSummary.release_date = groupSummary.block_from;
-            }
-
-            if (!$scope.isInAddMode()) {
-                groupSummary.block_from = new tzIndependentDate(groupSummary.block_from);
-                groupSummary.block_to = new tzIndependentDate(groupSummary.block_to);
-            }
-
-
-            // if we searched a group name that wasnt in the db
-            // pass over that search term here
-            if ( !!$stateParams.newGroupName ) {
-                groupSummary.group_name = $stateParams.newGroupName;
-            }
 
         };
 
@@ -970,6 +977,11 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
             // if there was any error message there, we are clearing
             $scope.errorMessage = '';
+
+            if ($scope.actionStatus.isMoveBtnClicked) {
+                $scope.$broadcast('RESET_DATE_PICKERS');
+                $scope.actionStatus.isMoveBtnClicked = false;
+            }
 
             // allow to swith to "transactions" tab only if the user has its permission
             if (tab === "TRANSACTIONS" && !$scope.hasPermissionToViewTransactionsTab()) {
@@ -1165,7 +1177,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 'rooms_pickup',
                 'rooms_total',
                 'revenue_actual',
-                'revenue_potential'
+                'revenue_potential',
+                'shoulder_from_date',
+                'shoulder_to_date'
             ],
             summaryDataCopy = JSON.parse(JSON.stringify(summaryData));
 
@@ -1684,6 +1698,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             setActiveLeftSideMenu();
 
             $scope.countries = countries;
+
+            $scope.actionStatus = {
+                isMoveBtnClicked: false
+            };
             
         };
 
