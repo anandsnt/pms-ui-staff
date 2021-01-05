@@ -92,17 +92,15 @@
                                         <span class="cell-row" ng-bind-html="level3.details"></span>
                                         <!-- If adjusted, show like this:
                                         <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
-                                    </td>
-                                    <td class="align-right" ng-show="item.credit !== '' && item.credit !== null">
-
-
-                                        <span ng-bind-html="level3.credit | sntCurrency:this"></span>
                                         <span class="converted-currency" ng-if="level3.converted_currency">
                                             <span ng-bind-html="level3.credit_converted_amount | sntCurrency:this:level3.converted_currency"></span>
                                         </span>
                                         <span class="converted-currency smaller" ng-if="level3.conversion_rate">
                                              <span class="currency">{{level3.conversion_rate}}</span>
                                         </span>
+                                    </td>
+                                    <td class="align-right" ng-show="item.credit !== '' && item.credit !== null">
+                                        <span ng-bind-html="level3.credit | sntCurrency:this"></span>
                                     </td>
                                 </tr>
                                 <!-- Pagination -->
@@ -146,16 +144,15 @@
                                         <span class="cell-row" ng-bind-html="level2.details"></span>
                                         <!-- If adjusted, show like this:
                                         <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
-                                    </td>
-                                    <td class="align-right" ng-show="item.credit !== '' && item.credit !== null">
-
-                                        <span ng-bind-html="level2.credit | sntCurrency:this"></span>
                                         <span class="converted-currency" ng-if="level2.converted_currency">
                                             <span ng-bind-html="level2.credit_converted_amount | sntCurrency:this:level2.converted_currency"></span>
                                         </span>
                                         <span class="converted-currency smaller" ng-if="level2.conversion_rate">
                                              <span class="currency">{{level2.conversion_rate}}</span>
                                         </span>
+                                    </td>
+                                    <td class="align-right" ng-show="item.credit !== '' && item.credit !== null">
+                                        <span ng-bind-html="level2.credit | sntCurrency:this"></span>
                                     </td>
                                 </tr>
                                 <!-- Pagination -->
