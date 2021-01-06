@@ -115,7 +115,10 @@
                 <span ng-if="printRegCardData.is_reservation_rate_suppressed">SR</span>
                 <span ng-if="!printRegCardData.is_reservation_rate_suppressed">{{ each.rate | currency:currencySymbol:2 }}</span>
             </td>
-            <td ng-hide="printRegCardData.hide_rates">{{ each.tax  | currency:currencySymbol:2 }}</td>
+            <td ng-hide="printRegCardData.hide_rates">
+                <span ng-if="printRegCardData.is_reservation_rate_suppressed">SR</span>
+                <span ng-if="!printRegCardData.is_reservation_rate_suppressed">{{ each.tax  | currency:currencySymbol:2 }}</span>
+            </td>
             <td class="addons" colspan="2">
                 <table>
                     <tr ng-repeat="item in each.addons">
