@@ -953,6 +953,12 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
         };
 
+        var groupSummaryIdListener = $scope.$on('GROUP_SUMMARY_UNIQUE_ID_SET', function(evt, data) {
+            if ($scope.groupSummaryMemento) {
+                $scope.groupSummaryMemento.uniqId = data.uniqId;
+            }
+        });
+
         /**
          * function to check whether the user has permission
          * to make view the transactions tab
@@ -1176,12 +1182,16 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          * Update the group data
          * @return boolean
          */
-        $scope.updateGroupSummary = function(reload) {
+        $scope.updateGroupSummary = function(reload, isbackButtonAction) {
             if (rvPermissionSrv.getPermissionValue('EDIT_GROUP_SUMMARY')) {
                 if ($scope.groupConfigData.summary.tax_exempt_type_id === null || $scope.groupConfigData.summary.tax_exempt_type_id === "") {
                     $scope.groupConfigData.summary.is_tax_exempt = false;
                 }
-                if (angular.equals(getGroupSummaryFields($scope.groupSummaryMemento), getGroupSummaryFields($scope.groupConfigData.summary)) || updateGroupSummaryInProgress ) {
+                if (angular.equals(getGroupSummaryFields($scope.groupSummaryMemento), getGroupSummaryFields($scope.groupConfigData.summary)) || updateGroupSummaryInProgress) {
+                    // Navigate back to previous state for Back button click
+                    if (isbackButtonAction) {
+                        $state.go(resolvedBackBtn.name, resolvedBackBtn.param);
+                    }
                     return false;
                 }
                 var onGroupUpdateSuccess = function(data) {
@@ -1194,6 +1204,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         $scope.groupSummaryMemento = angular.copy($scope.groupConfigData.summary);
                         if (reload) {
                             fetchSummaryData();
+                        }
+                        // Navigate back to previous state for Back button click
+                        if (isbackButtonAction) {
+                            $state.go(resolvedBackBtn.name, resolvedBackBtn.param);
                         }
                         return true;
                     },
@@ -1524,16 +1538,17 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
         })( $rootScope );
 
         $scope.updateAndBack = function() {
-            if ( !$scope.isInAddMode() && 'SUMMARY' === $scope.groupConfigData.activeTab ) {
-                $scope.updateGroupSummary();
-            } else if ( 'ACCOUNT' === $scope.groupConfigData.activeTab ) {
-                $scope.$broadcast( 'UPDATE_ACCOUNT_SUMMARY' );
-            }
             if (resolvedBackBtn.name === 'rover.groups.search') {
                 resolvedBackBtn.param.origin = 'BACK_TO_GROUP_SEARCH_LIST';
             }
+            if (!$scope.isInAddMode() && 'SUMMARY' === $scope.groupConfigData.activeTab) {
+                $scope.updateGroupSummary(false, true);
+                return;
+            } else if ('ACCOUNT' === $scope.groupConfigData.activeTab) {
+                $scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
+            }
 
-            $state.go( resolvedBackBtn.name, resolvedBackBtn.param );
+            $state.go(resolvedBackBtn.name, resolvedBackBtn.param);
         };
 
         // function to set Back Navigation params
@@ -1688,5 +1703,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
         };
 
         initGroupConfig();
+
+        $scope.$on('$destroy', groupSummaryIdListener);
     }
 ]);
