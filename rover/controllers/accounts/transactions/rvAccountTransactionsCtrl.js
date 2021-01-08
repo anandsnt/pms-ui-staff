@@ -1372,7 +1372,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.isFolioNumberExists = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists;
 			$scope.reservationBillData = $scope.transactionsDetails;
 			if ($scope.transactionsDetails.bills[$scope.currentActiveBill].is_transactions_exist 
-				&& $scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount === "0.0" 
+				&& $scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount === "0.00"
 				&& $scope.transactionsDetails.is_bill_lock_enabled 
 				&& $scope.transactionsDetails.bills[$scope.currentActiveBill].is_active) {
 				$scope.isInvoiceStepOneActive = true;
