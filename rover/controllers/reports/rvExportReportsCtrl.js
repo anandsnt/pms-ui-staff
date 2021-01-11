@@ -25,6 +25,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         var FOURTH_COLUMN_SCROLL = 'FOURTH_COLUMN_SCROLL';
         const SHOW_ERROR_MSG_EVENT = 'SHOW_ERROR_MSG_EVENT';
 
+        var runDuringEodScheduleFrequencyId;
+
         var setupScrolls = function() {
             var scrollerOptions = {
                 tap: true,
@@ -243,7 +245,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 params.starts_on = $filter('date')($scope.scheduleParams.starts_on, 'yyyy/MM/dd');
             }
 
-            if ( $scope.scheduleParams.frequency_id === runOnceId ) {
+            if ( ($scope.scheduleParams.frequency_id === runOnceId) || ($scope.scheduleParams.frequency_id === runDuringEodScheduleFrequencyId)) {
                 params.repeats_every = null;
             } else if ( $scope.scheduleParams.repeats_every ) {
                 params.repeats_every = $scope.scheduleParams.repeats_every;
@@ -393,7 +395,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 params.starts_on = $filter('date')($scope.scheduleParams.starts_on, 'yyyy/MM/dd');
             }
 
-            if ( $scope.scheduleParams.frequency_id === runOnceId ) {
+            if (($scope.scheduleParams.frequency_id === runOnceId) || ($scope.scheduleParams.frequency_id === runDuringEodScheduleFrequencyId)) {
                 params.repeats_every = null;
             } else if ( $scope.scheduleParams.repeats_every ) {
                 params.repeats_every = $scope.scheduleParams.repeats_every;
@@ -750,7 +752,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.scheduleFrequency.push(runOnceOnly);
             }
 
-            $scope.scheduleFrequency.push(runDuringEod);
+            if ($rootScope.isStandAlone) {
+                $scope.scheduleFrequency.push(runDuringEod);
+            }
         };
 
         // Configure the time periods for the given report
@@ -982,6 +986,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             var success = function(payload) {
                 $scope.originalScheduleFrequency = payload.scheduleFrequency;
+                runDuringEodScheduleFrequencyId = (_.find($scope.originalScheduleFrequency, { value: 'RUN_DURING_EOD'})).id;
                 $scope.originalScheduleTimePeriods = payload.scheduleTimePeriods;
                 $scope.$parent.$parent.schedulesList = [];
                 $scope.$parent.$parent.schedulableReports = [];

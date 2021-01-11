@@ -33,6 +33,8 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         const SCROLL_REFRESH_DELAY = 100;
         const SHOW_ERROR_MSG_EVENT = 'SHOW_ERROR_MSG_EVENT';
 
+        var runDuringEodScheduleFrequencyId;
+
         // Initialize the scrollers
         var initializeScrollers = () => {
             var scrollerOptions = {
@@ -360,6 +362,10 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     });
                     
                     $scope.customExportsData.scheduleFrequencies = angular.copy(data.scheduleFrequencies);
+                    $scope.customExportsData.scheduleFrequencies = _.filter($scope.customExportsData.scheduleFrequencies, (scheduleFrequency) => {
+                        return (scheduleFrequency.value === 'RUN_DURING_EOD' ? $rootScope.isStandAlone : true);
+                    });
+                    runDuringEodScheduleFrequencyId = (_.find($scope.customExportsData.scheduleFrequencies, { value: 'RUN_DURING_EOD'})).id;
 
                     _.each($scope.customExportsData.scheduledCustomExports, function (schedule) {
                         schedule.filteredOut = false;
@@ -621,7 +627,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 params.starts_on = $filter('date')($scope.scheduleParams.starts_on, 'yyyy/MM/dd');
             }
 
-            if ( $scope.scheduleParams.frequency_id === runOnceId ) {
+            if ( ($scope.scheduleParams.frequency_id === runOnceId) || ($scope.scheduleParams.frequency_id === runDuringEodScheduleFrequencyId)) {
                 params.repeats_every = null;
             } else if ( $scope.scheduleParams.repeats_every ) {
                 params.repeats_every = $scope.scheduleParams.repeats_every;
