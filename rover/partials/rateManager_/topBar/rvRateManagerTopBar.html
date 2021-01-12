@@ -71,7 +71,14 @@
            <strong ng-show="selectedAccountName[0] == null">{{selectedCardNames.join()}}</strong>
            <strong>{{selectedAccountName.join()}}</strong>
            <span>{{selectedAddress.join()}}</span>
-       </li>
+        </li>
+        <li class="show-availability-check" ng-if="shouldShowRoomTypeAvailabilityCheckbox()">
+            <label class="checkbox" ng-class="{'checked': showAvailability}">
+                <span class="icon-form icon-checkbox" ng-class="{'checked': showAvailability}"></span>
+                <input type="checkbox" ng-model="showAvailability" ng-click="toggleAvailability()">
+                Show Availability
+            </label>
+        </li>
          
         <!-- show .card if there are any cards selected -->
         <!-- <li class="card" ng-hide="selectedAccountName.length">

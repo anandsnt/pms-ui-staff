@@ -141,6 +141,10 @@ module.exports = {
 			'rover.reportAnalytics': {
 				filename: roverJsListRoot + 'reportsAnalyticsAssetsList.js',
 				babelify: false
+			},
+			'rover.events': {
+				filename: roverJsListRoot + 'eventsJsAssetList.js',
+				babelify: false
 			}
 		};
 	}

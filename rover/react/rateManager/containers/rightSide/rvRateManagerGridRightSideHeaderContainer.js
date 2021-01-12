@@ -1,6 +1,6 @@
 const {connect} = ReactRedux;
 
-let convertDateDataForHeader = (dates, businessDate) => {
+let convertDateDataForHeader = (dates, businessDate, eventsCount) => {
     var headerDateData = [],
         copiedDate = null,
         copiedDateComponents = null,
@@ -8,7 +8,8 @@ let convertDateDataForHeader = (dates, businessDate) => {
         isWeekEnd = false,
         isPastDate = false,
         headerConditionalClass = '',
-        cellConditionalClass = '';
+        cellConditionalClass = '',
+        dailyEventData;
 
     dates.map(date => {
         copiedDate = tzIndependentDate(date);
@@ -26,13 +27,17 @@ let convertDateDataForHeader = (dates, businessDate) => {
             cellConditionalClass = 'isHistory-cell-content';
         }
 
+        dailyEventData = _.find(eventsCount, {date: date});
+
         headerDateData.push({
             'headerClass': headerConditionalClass,
             'cellClass': 'date-header ' + cellConditionalClass,
             'topLabel': copiedDateComponents.weekday,
             'topLabelContainerClass': 'week-day',
             'bottomLabel': copiedDateComponents.monthName + ' ' + ((day.length === 1) ? ('0' + day) : day),
-            'bottomLabelContainerClass': ''
+            'bottomLabelContainerClass': '',
+            'eventCount': (dailyEventData && dailyEventData.count) || 0,
+            'date': date
         });
 
     });
@@ -46,11 +51,12 @@ const mapStateToRateManagerGridRightSideHeaderContainerProps = (state) => {
     // for every mode (all rate view, room type, single rate view), this is same
     var propsToReturn =  {
         mode: state.mode,
-        headerDataList: convertDateDataForHeader(state.dates, state.businessDate),
+        headerDataList: convertDateDataForHeader(state.dates, state.businessDate, state.eventsCount),
         summary: utilMethods.convertDataForRestrictionListing(state.summary, state.restrictionTypes),
         dateList: utilMethods.convertDateListForRestrictionView(state.dates, state.businessDate),
         dates: state.dates,
-        hideTopHeader: false
+        hideTopHeader: false,
+        onDailyEventCountClick: state.callBacksFromAngular.onDailyEventCountClick
     };
 
     switch(state.mode) {

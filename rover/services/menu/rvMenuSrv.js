@@ -292,6 +292,11 @@ angular.module('sntRover').service('rvMenuSrv',
 					action: "rover.overbooking",
 					menuIndex: "overbooking",
 					hidden: !shouldShowSellLimits()
+		        }, {
+					title: "MENU_EVENTS",
+					action: "rover.events",
+					menuIndex: "events",
+					hidden: this.hideMenuOnPermission('EVENTS')			
 		        }]
 		    }, {
 		        title: "MENU_HOUSEKEEPING",
@@ -743,6 +748,13 @@ angular.module('sntRover').service('rvMenuSrv',
 			return false;
 		}
 		return true;
+	};
+
+	/**
+	 * Hide events menu based on permission
+	 */
+	this.hideMenuOnPermission = function(permissionKey) {
+		return !rvPermissionSrv.getPermissionValue(permissionKey);
 	};
 
 }] );

@@ -26,14 +26,29 @@ const RateManagerGridRightSideHeaderComponent = createClass({
 							<tr className="cell">
 								{this.props.headerDataList.map( (headerData, index) =>
 									<th className={headerData.headerClass} key={"header-data-" + index}>
-										<div className={headerData.cellClass}>
-											<span className={headerData.topLabelContainerClass}>
-												{headerData.topLabel}
-											</span>
-											<span className={headerData.bottomLabelContainerClass}>
-												{headerData.bottomLabel}
-											</span>
-										</div>
+										{
+											headerData.eventCount !== 0 && <div onClick={() => this.props.onDailyEventCountClick(headerData.date)} data-events={headerData.eventCount} className="has-event-block border">
+												<div className={headerData.cellClass}>
+													<span className={headerData.topLabelContainerClass}>
+														{headerData.topLabel}
+													</span>
+													<span className={headerData.bottomLabelContainerClass}>
+														{headerData.bottomLabel}
+													</span>
+												</div>
+											</div>
+										}
+										{
+											headerData.eventCount === 0	&& <div className={headerData.cellClass}>
+												<span className={headerData.topLabelContainerClass}>
+													{headerData.topLabel}
+												</span>
+												<span className={headerData.bottomLabelContainerClass}>
+													{headerData.bottomLabel}
+												</span>
+											</div>
+										}
+										
 									</th>
 								)}
 							</tr>
@@ -61,6 +76,11 @@ const RateManagerGridRightSideHeaderComponent = createClass({
 							</tbody>
 						}
 					</table>
+					{
+						(this.props.mode === RM_RX_CONST.RATE_VIEW_MODE || this.props.mode === RM_RX_CONST.RATE_TYPE_VIEW_MODE) &&
+						<RateManagerGridRightSideAvailableRoomsHeaderContainer />
+					}
+					
 				</div>
 			</div>
 		);

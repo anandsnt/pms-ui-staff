@@ -1,0 +1,217 @@
+<div ng-include="'/assets/partials/common/header.html'"></div>
+
+<!-- Search form: To show add new button link, add class .enable-adding or remove ot hide it  -->
+<form method="get" action="" name="find-events-search-form" id="find-events-search-form" class="search-form enable-adding events-search has-dates" role="search">
+    <div class="entry event-type-select">
+        <div class="select with-label">
+            <label for="event-type">Show</label>
+            <select id="event-type" ng-model="filter.eventType" ng-change="search()">
+                <option value="">All Event Types</option>
+               <option ng-repeat="event in eventTypes" value="{{event.id}}">{{event.description}}</option>               
+            </select>
+        </div>
+    </div>
+    
+    <div class="entry search ">
+        <button id="find-events-clear-query" class="clear-query" ng-click="clearFilter($event, 'eventName', filter, '', true)" ng-class="{'visible': filter.eventName}">
+            <span class="icons icon-clear-search">Clear query</span>
+        </button>
+        <button type="submit" name="submit" class="icons icon-search" >Search</button>
+        <input name="find-events-query" id="find-events-query" class="query" placeholder="Search by Event Name" type="search" autocomplete="off" data-search-for="events" ng-model="filter.eventName" ng-change="onEventNameSearch()">
+    </div>
+    
+    <div class="entry dates">
+        <div class="entry-data has-datepicker">
+            <label for="find-events-date-from">Date(s) From</label>
+            <!-- add .visible when we have a date to remove -->
+            <button id="find-events-date-from-clear" class="clear-query" ng-class="{'visible': filterStartDate}" ng-click="clearFilter($event,'startDate', filter, 'startDate', true)">
+                <span class="icons icon-clear-search">Clear query</span>
+            </button>
+            <input name="find-events-date-from" 
+                id="find-events-date-from" 
+                type="text" 
+                class="datepicker"
+                ng-model="filterStartDate" 
+                ui-date="startDateOptions" 
+                readonly="">
+        </div>
+        <div class="entry-data has-datepicker">
+            <label for="find-events-date-to">Date(s) To</label>
+            <!-- add .visible when we have a date to remove -->
+            <button id="find-events-date-to-clear" class="clear-query" ng-class="{'visible': filterEndDate}" ng-click="clearFilter($event, 'endDate', filter, 'endDate', true)">
+                <span class="icons icon-clear-search">Clear query</span></button>
+            <input name="find-events-date-to" 
+                id="find-events-date-to" 
+                type="text" 
+                class="datepicker" 
+                ng-model="filterEndDate"
+                ui-date="endDateOptions" 
+                readonly="">
+        </div>
+    </div>
+    
+    <!-- Add New -->
+    <a href=""  class="add-new-button" ng-click="addEvent()">+ New Event</a>
+    
+    <div class="entry refresh">
+        <button type="button" class="button white with-icon only-icon" ng-click="refreshEventsList()">
+            <span class="icons icon-reset"></span>
+            Refresh
+        </button>
+    </div>
+</form>
+
+<!-- Search panel - EMPTY --> 
+<section id="find-events" class="content no-results no-pagination" role="complementary" ng-if="!events.length">
+    <div class="events-col">
+        
+        <div id="find-events-scroll" class="scrollable">
+            <div class="wrapper">
+                <ul id="revenue-events-search-results" class="search-results">
+                    <li class="no-content">
+                        <div class="info">
+                            <span class="icon-no-content icon-cards"></span>
+                            <strong class="h1">Events</strong>
+                            <span class="h2">Search by <strong>Event</strong></span>
+                        </div>
+                    </li>
+                                                
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- remove .no-pagination if there is a pagination -->
+<!-- add .cols-2 when showing events -->
+<section id="find-events" class="content" role="complementary" ng-class="{'no-pagination': !shouldShowPagination(), 'cols-2': shouldShowEventDetails}" ng-if="events.length">
+    <div class="events-col">
+        <ul class="find-events-header">
+            <li class="event">Event</li>
+            <li class="type">Type</li>
+            <!-- Add .hidden when showing details -->
+            <li class="start-date" ng-hide="shouldShowEventDetails">Start Date</li>
+            <!-- Add .hidden when showing details -->
+            <li class="end-date" ng-hide="shouldShowEventDetails">End Date</li>
+            <!-- Remove .hidden when showing details -->
+            <li class="dates" ng-show="shouldShowEventDetails">Dates</li>
+        </ul>
+        <!-- Create scroller on it -->
+        <div id="find-events-scroll" class="scrollable" ng-iscroll="events_list_scroller">
+            <div class="wrapper">
+                <ul id="revenue-events-search-results" class="search-results">
+                    <li class="no-content hidden">
+                        <div class="info">
+                            <span class="icon-no-content icon-cards"></span>
+                            <strong class="h1">Events</strong>
+                            <span class="h2">Search by <strong>Event</strong></span>
+                        </div>
+                    </li>
+
+                    <li class="find-event" ng-repeat="event in events">
+                        <!-- Add .active when showing details -->
+                        <div class="faux-anchor event-item" ng-click="showEventDetails(event)" ng-class="{'active': event.active}">
+                            <div class="data">
+                                <h2 ng-bind-html="escapeNull(event.eventName)|highlight:filter.eventName:false"></h2>
+                                <!-- if it has a description, show it here -->
+                                <span class="description" ng-if="event.description">{{event.description}}</span>
+                            </div>
+                            <div class="type">
+                                {{event.eventTypeDesc}}                                   
+                            </div>
+                            <div class="start-date" ng-hide="shouldShowEventDetails">
+                                {{event.startDate | date:dateFormat }}                                   
+                            </div>
+                            <div class="end-date" ng-hide="shouldShowEventDetails">
+                                {{event.endDate | date:dateFormat}}                                       
+                            </div>
+                            <div class="dates" ng-show="shouldShowEventDetails">
+                                <span>{{event.startDate | date:dateFormat}}</span>
+                                <span>{{event.endDate | date:dateFormat}}</span>                                    
+                            </div>
+                        </div>
+                    </li>
+                                                
+                </ul>
+            </div>
+        </div>
+        <!-- Search pagination -->
+        <rv-pagination page-options="eventsSearchPagination" page-data="totalResultCount" ng-if="events.length"></rv-pagination>
+    </div>
+    <div class="event-details" ng-show="shouldShowEventDetails">
+        <div class="report-col">
+            <h3>Edit event details</h3>
+            <div class="error notice" ng-if="errorMsg">
+                {{errorMsg}}
+            </div>
+            <!-- add a scroller here -->
+            <div id="eventDetailsForm" class="scrollable" ng-iscroll="event_details_scroller">
+                <div class="wrapper">
+                    <div class="entry">
+                        <label for="event-type">Type</label>
+                        <div class="select">
+                            <select id="event-type" ng-model="eventData.eventType" convert-to-number ng-change="onFieldChange(eventData.eventType, 'eventType')" ng-class="{'error': fieldErrors.eventType}">
+                                <option ng-repeat="event in eventTypes" value="{{event.id}}">{{event.description}}</option>               
+                            </select>
+                        </div>
+                    </div>
+                    <div class="entry">
+                        <label for="event-title">Name</label>
+                        <input name="event-title" id="event-title" placeholder="Event Name" type="text" autocomplete="off" ng-model="eventData.eventName" ng-change="onFieldChange(eventData.eventName, 'eventName')" ng-class="{'error': fieldErrors.eventName}" maxlength="255">
+                    </div>
+                    <div class="entry">
+                        <label for="event-description">Description <span>(Optional)</span></label>
+                        <textarea name="event-description" id="event-description" placeholder="Event Description" autocomplete="off" ng-model="eventData.description" ng-change="onFieldChange(eventData.description, 'description')" ng-class="{'error': fieldErrors.description}" maxlength="255">
+                        </textarea>
+                    </div>
+                    <div class="entry">
+                        <label for="event-start">
+                            Start Date
+                        </label>
+                        <div class="has-datepicker">
+                            <!-- add .visible to show clear button -->
+                            <button class="clear-query" ng-class="{'visible': eventDates.start}" ng-click="clearFilter($event, 'startDate', eventData, 'start', false, true)">
+                                <span class="icons icon-clear-search">Clear query</span>
+                            </button>
+                            <input id="event-start" 
+                                type="text" 
+                                class="datepicker" 
+                                readonly="" 
+                                ui-date="eventStartDateOptions" 
+                                ng-model="eventDates.start"
+                                ng-change="onFieldChange(eventDates.start, 'startDate')"
+                                ng-class="{'error': fieldErrors.startDate}"
+                                placeholder="Select Date">
+                                                
+                        </div>
+                    </div>
+                    <div class="entry">
+                        <label for="event-end">
+                            End Date
+                        </label>
+                        <div class="has-datepicker">
+                             <!-- add .visible to show clear button -->
+                            <button class="clear-query" ng-class="{'visible': eventDates.end}" ng-click="clearFilter($event, 'endDate', eventData, 'end', false, true)">
+                                <span class="icons icon-clear-search">Clear query</span>
+                            </button>
+                            <input id="event-end" 
+                                type="text" 
+                                class="datepicker" 
+                                readonly="" 
+                                ng-model="eventDates.end"
+                                ui-date="eventEndDateOptions"
+                                ng-change="onFieldChange(eventDates.end, 'endDate')"
+                                ng-class="{'error': fieldErrors.endDate}"
+                                placeholder="Select Date">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column-actions">
+                <button type="button" class="button green" ng-click="updateEvent()">Save Changes</button>
+                <button type="button" class="button red" ng-click="showDeleteConfirmationPopup()">Delete Event</button>
+                <button type="button" class="button blank" ng-click="discardEdit()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</section>
