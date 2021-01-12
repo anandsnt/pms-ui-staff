@@ -24,7 +24,7 @@ function ($scope, $filter, eventsSrv, eventTypes, $rootScope, ngDialog, $timeout
      * @param {Object} datePickerObj date picker object
      * @return {void}
      */
-    that.startDateChoosed = function() {
+    that.startDateSelected = function() {
         $scope.filter.startDate = $scope.filterStartDate;
 
         // we have to search on changing the start date
@@ -38,7 +38,7 @@ function ($scope, $filter, eventsSrv, eventTypes, $rootScope, ngDialog, $timeout
      * @param {Object} datePickerObj date picker object
      * @return {void}
      */
-    that.endDateChoosed = function() {
+    that.endDateSelected = function() {
         $scope.filter.endDate = $scope.filterEndDate;
 
         // we have to search on changing the end date
@@ -67,12 +67,12 @@ function ($scope, $filter, eventsSrv, eventTypes, $rootScope, ngDialog, $timeout
         
         // date picker options - From
         $scope.startDateOptions = _.extend({
-            onSelect: that.startDateChoosed
+            onSelect: that.startDateSelected
         }, that.getCommonDateOptions());
 
         // date picker options - Departute
         $scope.endDateOptions = _.extend({
-            onSelect: that.endDateChoosed
+            onSelect: that.endDateSelected
         }, that.getCommonDateOptions());
 
         $scope.filterStartDate = tzIndependentDate($rootScope.businessDate);
