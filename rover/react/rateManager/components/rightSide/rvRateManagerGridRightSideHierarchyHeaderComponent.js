@@ -26,9 +26,21 @@ const RateManagerGridRightSideHierarchyHeaderComponent = createClass({
 							<tr className="cell">
 								{this.props.headerDataList.map( (headerData, index) =>
 									<th className={headerData.headerClass} key={"header-data-" + index}>
-										{
-											headerData.eventCount !== 0 && <div onClick={() => this.props.onDailyEventCountClick(headerData.date)} data-events={headerData.eventCount} className="has-event-block border">
-												<div className={headerData.cellClass}>
+										<div className="date-header">
+											{
+												headerData.eventCount !== 0 && <div onClick={() => this.props.onDailyEventCountClick(headerData.date)} data-events={headerData.eventCount} className="has-event-block border">
+													<div className={headerData.cellClass}>
+														<span className={headerData.topLabelContainerClass}>
+															{headerData.topLabel}
+														</span>
+														<span className={headerData.bottomLabelContainerClass}>
+															{headerData.bottomLabel}
+														</span>
+													</div>
+												</div>
+											}
+											{
+												headerData.eventCount === 0 && <div className={headerData.cellClass}>
 													<span className={headerData.topLabelContainerClass}>
 														{headerData.topLabel}
 													</span>
@@ -36,18 +48,8 @@ const RateManagerGridRightSideHierarchyHeaderComponent = createClass({
 														{headerData.bottomLabel}
 													</span>
 												</div>
-											</div>
-										}
-										{
-											headerData.eventCount === 0 && <div className={headerData.cellClass}>
-												<span className={headerData.topLabelContainerClass}>
-													{headerData.topLabel}
-												</span>
-												<span className={headerData.bottomLabelContainerClass}>
-													{headerData.bottomLabel}
-												</span>
-											</div>
-										}
+											}
+										</div>
 									</th>
 								)}
 							</tr>
