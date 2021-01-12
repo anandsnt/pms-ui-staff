@@ -31,7 +31,7 @@ let convertDateDataForHeader = (dates, businessDate, eventsCount) => {
 
         headerDateData.push({
             'headerClass': headerConditionalClass,
-            'cellClass': 'date-header ' + cellConditionalClass,
+            'cellClass': cellConditionalClass,
             'topLabel': copiedDateComponents.weekday,
             'topLabelContainerClass': 'week-day',
             'bottomLabel': copiedDateComponents.monthName + ' ' + ((day.length === 1) ? ('0' + day) : day),
