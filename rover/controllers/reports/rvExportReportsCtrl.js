@@ -71,7 +71,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ( value === FREQ_VALUES.RUN_ONCE ) {
                 occurance += 'once';
             } else {
-                if ( item.repeats_every === 0 ) {
+                if ( item.repeats_every === 0 || !item.repeats_every) {
                     occurance += description.toLowerCase();
                 } else {
                     occurance += 'after every ' + item.repeats_every + ' ';

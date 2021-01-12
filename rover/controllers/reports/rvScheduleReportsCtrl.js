@@ -77,7 +77,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 value = frequency.value;
             }
 
-            if (item.repeats_every === 0) {
+            if (item.repeats_every === 0 || !item.repeats_every) {
                 occurance += description.toLowerCase();
             } else {
                 occurance += 'after every ' + item.repeats_every + ' ';
