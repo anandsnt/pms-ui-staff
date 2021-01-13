@@ -22,6 +22,9 @@ angular.module('sntRover')
                     }, 500);
                 };
 
+                setscroller();
+                refreshScroller();
+
                 const processSearchListData = (response) => {
                     let resultArray = response.results || response;
 
@@ -106,7 +109,6 @@ angular.module('sntRover')
                     }
 
                     fetchSetOnData();
-                    setscroller();
                     refreshScroller();
                     $scope.$emit('REFRESH_FORM_SCROLL');
                 };
@@ -180,6 +182,7 @@ angular.module('sntRover')
 
                 $scope.showResults = () => {
                     $scope.searchObj.isShowResults = true;
+                    refreshScroller();
                     $scope.$emit('REFRESH_FORM_SCROLL');
                 };
 
