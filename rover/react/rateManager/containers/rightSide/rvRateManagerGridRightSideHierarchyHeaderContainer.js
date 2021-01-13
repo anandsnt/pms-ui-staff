@@ -1,6 +1,6 @@
 const {connect} = ReactRedux;
 
-let convertDateDataForHeader = (dates, businessDate) => {
+let convertDateDataForHeader = (dates, businessDate, eventsCount) => {
     var headerDateData = [],
         copiedDate = null,
         copiedDateComponents = null,
@@ -8,7 +8,8 @@ let convertDateDataForHeader = (dates, businessDate) => {
         isWeekEnd = false,
         isPastDate = false,
         headerConditionalClass = '',
-        cellConditionalClass = '';
+        cellConditionalClass = '',
+        dailyEventData;
 
     dates.map(date => {
         copiedDate = tzIndependentDate(date);
@@ -26,13 +27,17 @@ let convertDateDataForHeader = (dates, businessDate) => {
             cellConditionalClass = 'isHistory-cell-content';
         }
 
+        dailyEventData = _.find(eventsCount, {date: date});
+
         headerDateData.push({
             'headerClass': headerConditionalClass,
-            'cellClass': 'date-header ' + cellConditionalClass,
+            'cellClass': cellConditionalClass,
             'topLabel': copiedDateComponents.weekday,
             'topLabelContainerClass': 'week-day',
             'bottomLabel': copiedDateComponents.monthName + ' ' + ((day.length === 1) ? ('0' + day) : day),
-            'bottomLabelContainerClass': ''
+            'bottomLabelContainerClass': '',
+            'eventCount': (dailyEventData && dailyEventData.count) || 0,
+            'date': date
         });
 
     });
@@ -43,14 +48,16 @@ let convertDateDataForHeader = (dates, businessDate) => {
 const mapStateToRateManagerGridRightSideHierarchyHeaderContainerProps = (state) => {
     // for every mode (all rate view, room type, single rate view), this is same
     var propsToReturn =  {
-        headerDataList: convertDateDataForHeader(state.dates, state.businessDate),
+        headerDataList: convertDateDataForHeader(state.dates, state.businessDate, state.eventsCount),
         showHouse: state.isHierarchyHouseRestrictionEnabled,
         showRoomType: state.isHierarchyRoomTypeRestrictionEnabled,
         showRateType: state.isHierarchyRateTypeRestrictionEnabled,
         showRate: state.isHierarchyRateRestrictionEnabled,
         showAllRoomTypes: state.mode === RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE,
         hierarchyRestrictionClass: state.hierarchyRestrictionClass,
-        frozenPanelClass: state.frozenPanelClass
+        frozenPanelClass: state.frozenPanelClass,
+        mode: state.mode,
+        onDailyEventCountClick: state.callBacksFromAngular.onDailyEventCountClick
     };
 
     return propsToReturn;

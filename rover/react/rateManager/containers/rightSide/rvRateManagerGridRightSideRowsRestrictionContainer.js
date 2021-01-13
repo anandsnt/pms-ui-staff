@@ -1,7 +1,6 @@
 const {connect} = ReactRedux;
 
 const mapStateToRateManagerGridRightSideRestrictionRowsContainerProps = (state) => {
-    // app/assets/rover/react/rateManager/utils/rvRateManagerGridRightSideContainerUtils.js
     var utilMethods = new rvRateManagerRightSideContainerUtils(),
         restrictionRows = utilMethods.convertDataForRestrictionListing(state.list, state.restrictionTypes),
         propsToReturn = {};
@@ -10,7 +9,8 @@ const mapStateToRateManagerGridRightSideRestrictionRowsContainerProps = (state) 
         restrictionRows,
         mode: state.mode,
         dateList: utilMethods.convertDateListForRestrictionView(state.dates, state.businessDate),
-        dates: state.dates
+        dates: state.dates,
+        showAvailability: state.showAvailability
     };
     switch(state.mode) {
         case RM_RX_CONST.RATE_VIEW_MODE:
@@ -28,6 +28,7 @@ const mapStateToRateManagerGridRightSideRestrictionRowsContainerProps = (state) 
         default:
             break;
     }
+    
     return propsToReturn;
 };
 

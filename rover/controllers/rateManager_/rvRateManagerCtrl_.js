@@ -822,7 +822,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             },
             dates,
             restrictionTypes,
-            activeHierarchyRestrictions: activeHierarchyRestrictions()
+            activeHierarchyRestrictions: activeHierarchyRestrictions(),
+            houseAvailability: [...$scope.houseAvailability],
+            eventsCount: [...$scope.eventsCount]            
         };
 
         // dispatching to redux
@@ -1044,7 +1046,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 clickedOnHierarchyRoomTypeCell,
                 clickedOnHierarchyRateTypeCell,
                 clickedOnHierarchyRateCell,
-                clickedOnHierarchyHouseCell
+                clickedOnHierarchyHouseCell,
+                onDailyEventCountClick
             };
         };
 
@@ -1118,7 +1121,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                                        },
                 dates,
                 restrictionTypes,
-                activeHierarchyRestrictions: activeHierarchyRestrictions()
+                activeHierarchyRestrictions: activeHierarchyRestrictions(),
+                houseAvailability: [...$scope.houseAvailability],
+                eventsCount: [...$scope.eventsCount] 
             };
 
             // we will attach scrollTo if attached filter from somewhere
@@ -1394,16 +1399,19 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          * @param  {array} room types
          * @return {array}
          */
-        var formRenderingDataModelForAllRoomTypes = (dates, roomTypeRestrictions, commonRestrictions, roomTypes, panelRestrictions) => {
+        var formRenderingDataModelForAllRoomTypes = (dates, roomTypeRestrictions, commonRestrictions, roomTypes, panelRestrictions, roomTypeAvailability) => {
             var dateRoomTypeSet = null,
                 roomTypeRestrictionWithDateAsKey = _.object(dates, roomTypeRestrictions),
                 roomTypeIDs = _.pluck(roomTypes, 'id'),
-                roomTypeObjectBasedOnID = _.object(roomTypeIDs, roomTypes);
+                roomTypeObjectBasedOnID = _.object(roomTypeIDs, roomTypes),
+                roomTypeAvailabilityWithDateAsKey = _.object(dates, roomTypeAvailability),
+                dateAvailability = null;
 
             // rate & restrictions -> 2nd row onwards
             var roomTypeWithRestrictions = roomTypeRestrictions[0].room_types.map((roomType) => {
                 roomType.restrictionList = [];
                 roomType.amountList = [];
+                roomType.availabilityList = [];
 
                 roomType = {...roomType, ...roomTypeObjectBasedOnID[roomType.id]};
 
@@ -1415,7 +1423,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     }
                     else if (dateRoomTypeSet.hasOwnProperty('amount')) {
                         roomType.amountList.push(dateRoomTypeSet.rate_currency + "" + dateRoomTypeSet.amount);
-                    }                    
+                    } 
+                    dateAvailability = _.findWhere(roomTypeAvailabilityWithDateAsKey[date].room_types, {id: roomType.id});
+                    if (dateAvailability && dateAvailability.availability === null) {
+                        roomType.availabilityList.push(null);
+                    } else if (dateAvailability && dateAvailability.hasOwnProperty('availability')) {
+                        roomType.availabilityList.push(dateAvailability.availability);
+                    }
                 });
 
                 return _.omit(roomType, 'restrictions');
@@ -1453,7 +1467,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 callbacksFromAngular: getTheCallbacksFromAngularToReact(),
                 dates,
                 restrictionTypes,
-                activeHierarchyRestrictions: activeHierarchyRestrictions()
+                activeHierarchyRestrictions: activeHierarchyRestrictions(),
+                eventsCount: [...$scope.eventsCount]
             };
 
             // dispatching to redux
@@ -1467,7 +1482,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         var processRoomTypesAndRestrictionForAllRoomType = (response) => {
             var roomTypeRestrictions = response.roomTypeAndRestrictions,
                 commonRestrictions = response.commonRestrictions,
-                panelRestrictions = response.panelRestrictions;
+                panelRestrictions = response.panelRestrictions,
+                roomTypeAvailability = response.roomTypeAvailability;
 
             // roomTypeList is now cached, we will not fetch that again
             cachedRoomTypeList = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList;
@@ -1477,7 +1493,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             showAndFormDataForTopBar(dates);
 
-            var renderableData = formRenderingDataModelForAllRoomTypes(dates, roomTypeRestrictions, commonRestrictions, cachedRoomTypeList, panelRestrictions);
+            var renderableData = formRenderingDataModelForAllRoomTypes(dates, roomTypeRestrictions, commonRestrictions, cachedRoomTypeList, panelRestrictions, roomTypeAvailability);
 
             var roomTypeWithRestrictions = renderableData.roomTypeWithRestrictions;
 
@@ -2130,12 +2146,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          * @return {array}
          */
         var formRenderingDataModelForSingleRateDetailsAndRestrictions =
-            (dates, roomTypeAmountAndRestrictions, commonRestrictions, roomTypes, panelRestrictions) => {
+            (dates, roomTypeAmountAndRestrictions, commonRestrictions, roomTypes, panelRestrictions, roomTypeAvailability) => {
 
             var dateRoomTypeSet = null,
                 roomTypeRestrictionWithDateAsKey = _.object(dates, roomTypeAmountAndRestrictions),
                 roomTypeIDs = _.pluck(roomTypes, 'id'),
-                roomTypeObjectBasedOnID = _.object(roomTypeIDs, roomTypes);
+                roomTypeObjectBasedOnID = _.object(roomTypeIDs, roomTypes),
+                roomTypeAvailabilityWithDateAsKey = _.object(dates, roomTypeAvailability),
+                dateAvailability = null;
 
             // 2nd row onwards
             var roomTypeWithRestrictions = roomTypeAmountAndRestrictions[0].room_types
@@ -2149,6 +2167,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     roomType = _.pick(roomType, 'id', 'name', 'restrictions');
                     roomType.restrictionList = [];
                     roomType.rateDetails = [];
+                    roomType.availabilityList = [];
 
                     dates.map( date => {
                         dateRoomTypeSet = _.findWhere( roomTypeRestrictionWithDateAsKey[date].room_types, { id: roomType.id } );
@@ -2159,6 +2178,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                                 'id',
                                 'rateDetails',
                                 'restrictionList'));
+                        dateAvailability = _.findWhere(roomTypeAvailabilityWithDateAsKey[date].room_types, {id: roomType.id});
+                        if (dateAvailability && dateAvailability.availability === null) {
+                            roomType.availabilityList.push(null);
+                        } else if (dateAvailability && dateAvailability.hasOwnProperty('availability')) {
+                            roomType.availabilityList.push(dateAvailability.availability);
+                        }
                     });
                     return _.omit(roomType, 'restrictions');
                 }
@@ -2197,7 +2222,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 callbacksFromAngular: getTheCallbacksFromAngularToReact(),
                 restrictionTypes,
                 dates,
-                activeHierarchyRestrictions: activeHierarchyRestrictions()
+                activeHierarchyRestrictions: activeHierarchyRestrictions(),
+                houseAvailability: [...$scope.houseAvailability],
+                eventsCount: [...$scope.eventsCount] 
             });
         };
 
@@ -2208,7 +2235,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         var onFetchSingleRateDetailsAndRestrictions = (response) => {
             var roomTypeAmountAndRestrictions = response.roomTypeAndRestrictions,
                 commonRestrictions = response.commonRestrictions,
-                panelRestrictions = response.panelRestrictions;
+                panelRestrictions = response.panelRestrictions,
+                roomTypeAvailability = response.roomTypeAvailability;
 
             // roomTypeList is now cached, we will not fetch that again
             cachedRoomTypeList = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList;
@@ -2229,7 +2257,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             // grid view data model
             var renderableData = formRenderingDataModelForSingleRateDetailsAndRestrictions
-                (dates, roomTypeAmountAndRestrictions, commonRestrictions, cachedRoomTypeList, panelRestrictions);
+                (dates, roomTypeAmountAndRestrictions, commonRestrictions, cachedRoomTypeList, panelRestrictions, roomTypeAvailability);
 
             var roomTypeWithAmountAndRestrictions = renderableData.roomTypeWithRestrictions;
 
@@ -2375,6 +2403,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.$on(rvRateManagerEventConstants.UPDATE_RESULTS, (event, newFilterValues) => {
             var initiatedFromLeftFilter = (_.has(newFilterValues, 'fromLeftFilter') && newFilterValues.fromLeftFilter)
 
+            $scope.houseAvailability = [...newFilterValues.houseAvailability];
+            $scope.eventsCount = [...newFilterValues.eventsCount ];
+            $scope.isSingleRateSelected = false;
             // Storing for further reference
             if (initiatedFromLeftFilter) {
                 cachedRoomTypeList = [];
@@ -2445,6 +2476,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
                 // single rate view
                 if (newFilterValues.selectedRates.length === 1)  {
+                    $scope.isSingleRateSelected = true;
                     fetchSingleRateDetailsAndRestrictions(newFilterValues);
                 }
                 // multiple rate view
@@ -2532,6 +2564,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             $scope.selectedAddress = [];
             $scope.fromDate = null;
             $scope.toDate = null;
+            $scope.showAvailability = true;
 
             // mode
             $scope.viewingScreen = RM_RX_CONST.GRID_VIEW;
@@ -2560,6 +2593,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             isHierarchyRoomTypeRestrictionEnabled: $scope.hierarchyRestrictions.roomTypeEnabled,
             isHierarchyRateTypeRestrictionEnabled: $scope.hierarchyRestrictions.rateTypeEnabled,
             isHierarchyRateRestrictionEnabled: $scope.hierarchyRestrictions.rateEnabled,
+            showAvailability: true
         };
 
         const store = configureStore(initialState);
@@ -2576,6 +2610,42 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             </Provider>,
             document.querySelector('#rate-manager .rate-manager-content')
         );
+        
+        /**
+         * Toggles the room type availability
+         */
+        $scope.toggleAvailability = () => {
+            $scope.showAvailability = !$scope.showAvailability;
+            $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
+            store.dispatch({
+                type: RM_RX_CONST.SHOW_AVAILABILITY,
+                showAvailability: !!$scope.showAvailability
+            });
+        };
+
+        /**
+         * Should show the room type availability checkbox
+         */
+        $scope.shouldShowRoomTypeAvailabilityCheckbox = () => {
+            return $scope.isRoomTypeView || $scope.isSingleRateSelected;
+        };
+        
+        /**
+         * Show the popup with the house event details for that particular date
+         * @param {Date} date 
+         * @return {void}
+         */
+        var onDailyEventCountClick = (date) => {
+            $scope.selectedEventDisplayDate = date;
+            ngDialog.open({
+                template: '/assets/partials/rateManager_/listHouseEventsPopup.html',
+                scope: $scope,
+                controller: 'rvRateManagerEventsListPopupCtrl',
+                className: 'ngdialog-theme-default',
+                closeByDocument: false,
+                closeByEscape: true
+            });
+        };
 
     /**
      * initialisation function
