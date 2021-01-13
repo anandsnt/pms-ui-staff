@@ -85,7 +85,7 @@ function ($scope, $filter, eventsSrv, eventTypes, $rootScope, ngDialog, $timeout
     that.resetEventMinMaxDates = function () {
         $scope.eventStartDateOptions.minDate = tzIndependentDate($rootScope.businessDate);
         $scope.eventStartDateOptions.maxDate = null;
-        $scope.eventEndDateOptions.minDate = null;
+        $scope.eventEndDateOptions.minDate = tzIndependentDate($rootScope.businessDate);
         $scope.eventEndDateOptions.maxDate = null;
     };
 
