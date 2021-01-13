@@ -19,6 +19,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         var THIRD_COLUMN_SCROLL = 'THIRD_COLUMN_SCROLL';
         var FOURTH_COLUMN_SCROLL = 'FOURTH_COLUMN_SCROLL';
         const SHOW_ERROR_MSG_EVENT = 'SHOW_ERROR_MSG_EVENT';
+        var runDuringEodScheduleFrequencyId;
 
         var originalScheduleFormats = [];
 
@@ -76,7 +77,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 value = frequency.value;
             }
 
-            if (item.repeats_every === 0) {
+            if (item.repeats_every === 0 || !item.repeats_every) {
                 occurance += description.toLowerCase();
             } else {
                 occurance += 'after every ' + item.repeats_every + ' ';
@@ -282,7 +283,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             if ($scope.scheduleParams.starts_on) {
                 params.starts_on = $filter('date')($scope.scheduleParams.starts_on, 'yyyy/MM/dd');
             }
-            if ($scope.scheduleParams.repeats_every) {
+            if ($scope.scheduleParams.frequency_id === runDuringEodScheduleFrequencyId) {
+                params.repeats_every = null;
+            } else if ($scope.scheduleParams.repeats_every) {
                 params.repeats_every = $scope.scheduleParams.repeats_every;
             } else {
                 params.repeats_every = 0;
@@ -593,11 +596,14 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             if ($scope.scheduleParams.starts_on) {
                 params.starts_on = $filter('date')($scope.scheduleParams.starts_on, 'yyyy/MM/dd');
             }
-            if ($scope.scheduleParams.repeats_every) {
+            if ($scope.scheduleParams.frequency_id === runDuringEodScheduleFrequencyId) {
+                params.repeats_every = null;
+            } else if ($scope.scheduleParams.repeats_every) {
                 params.repeats_every = $scope.scheduleParams.repeats_every;
             } else {
                 params.repeats_every = 0;
             }
+
             if ($scope.scheduleParams.scheduleEndsOn === 'NUMBER') {
                 params.ends_on_after = $scope.scheduleParams.ends_on_after;
             } else if ($scope.scheduleParams.scheduleEndsOn === 'DATE') {
@@ -1451,6 +1457,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                 $scope.originalScheduleTimePeriods = payload.scheduleTimePeriods;
                 $scope.originalScheduleFrequency = payload.scheduleFrequency;
+                runDuringEodScheduleFrequencyId = (_.find($scope.originalScheduleFrequency, { value: 'RUN_DURING_EOD'})).id;
                 $scope.scheduleFormat = payload.scheduleFormat;
                 originalScheduleFormats = dclone(payload.scheduleFormat);
                 $scope.$parent.$parent.schedulesList = [];
@@ -1659,11 +1666,12 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             var dailyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'DAILY' }),
                 weeklyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'WEEKLY' }),
                 monthlyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'MONTHLY' }),
-                hourlyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'HOURLY' });
+                hourlyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'HOURLY' });                
 
             var weeklyOnly = _.find($scope.originalScheduleFrequency, { value: 'WEEKLY' }),
                 monthlyOnly = _.find($scope.originalScheduleFrequency, { value: 'MONTHLY' }),
-                hourlyOnly = _.find($scope.originalScheduleFrequency, { value: 'HOURLY' });
+                hourlyOnly = _.find($scope.originalScheduleFrequency, { value: 'HOURLY' }),
+                runDuringEod = _.find($scope.originalScheduleFrequency, { value: 'RUN_DURING_EOD'});
 
             $scope.scheduleFrequency = [];
             $scope.scheduleFreqType = [];
@@ -1790,6 +1798,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             if (forMonthly[item.report.title]) {
                 $scope.scheduleFrequency.push(monthlyOnly);
                 $scope.scheduleFreqType.push(monthlyTypeOnly);
+            }
+
+            if ($rootScope.isStandAlone) {
+                $scope.scheduleFrequency.push(runDuringEod);
             }
 
         };
@@ -2059,6 +2071,13 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
         $scope.checkDeliveryType = function(checkFor) {
             return checkFor === $scope.scheduleParams.delivery_id;
+        };
+
+        /**
+         * Disable repeats every section
+         */
+        $scope.shallDisableRepeatsEvery = () => {
+            return $scope.originalScheduleFrequency && ($scope.scheduleParams.frequency_id === (_.find($scope.originalScheduleFrequency, {value: 'RUN_DURING_EOD'})).id);
         };
 
         /**

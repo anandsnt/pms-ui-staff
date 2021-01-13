@@ -2570,7 +2570,7 @@ sntRover.controller('RVbillCardController',
    /*
 	 * open popup for edit/split/remove transaction
 	 */
-	$scope.openActionsPopup = function(id, desc, amount, type, credits, reference_text, show_ref_on_invoice) {
+	$scope.openActionsPopup = function(id, desc, amount, type, credits, reference_text, show_ref_on_invoice, show_split_payment) {
 
 		$scope.errorMessage = "";
 		// hide edit and remove options in case type is  payment
@@ -2580,6 +2580,7 @@ sntRover.controller('RVbillCardController',
 		$scope.selectedTransaction.desc = desc;
 		$scope.reference_text = reference_text;
 		$scope.show_ref_on_invoice = show_ref_on_invoice;
+		$scope.show_split_payment = show_split_payment;
 
 		if (amount) {
 			$scope.selectedTransaction.amount = amount;
@@ -3082,7 +3083,7 @@ sntRover.controller('RVbillCardController',
 			$scope.reservationBillData.bills[data.bill_number - 1] = {
 				bill_id: data.id,
 				bill_number: data.bill_number,
-				total_amount: 0,
+				total_amount: '0.00',
 				routed_entity_type: null,
 				guest_image: $scope.reservationBillData.bills[0].guest_image
 			};

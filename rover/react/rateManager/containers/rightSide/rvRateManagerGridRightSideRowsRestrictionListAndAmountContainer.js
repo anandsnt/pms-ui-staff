@@ -83,8 +83,11 @@ const mapStateToRateManagerGridRightSideRowsRestrictionListAndAmountContainerPro
         mode: state.mode,
         dateList: convertDateListForRestrictionAndAmountView(state.dates, state.businessDate),
         dates: state.dates,
-        clickedOnRoomTypeAndAmountCell: state.callBacksFromAngular.clickedOnRoomTypeAndAmountCell
+        clickedOnRoomTypeAndAmountCell: state.callBacksFromAngular.clickedOnRoomTypeAndAmountCell,
+        showAvailability: state.showAvailability
     };
+
+   
 };
 
 const mapDispatchToRateManagerGridRightSideRowsRestrictionListAndAmountContainerContainer = (stateProps, dispatchProps, ownProps) => {

@@ -1,4 +1,4 @@
-const RateManagerGridRightSideRowsRestrictionListAndAmountComponent = ({ onTdClick, mode, roomTypeRowsData, dateList  }) => (
+const RateManagerGridRightSideRowsRestrictionListAndAmountComponent = ({ onTdClick, mode, roomTypeRowsData, dateList, showAvailability  }) => (
 	<tbody>
 		{roomTypeRowsData.map((rowData, rowIndex) => 
 			<tr key={'key-' + rowIndex}
@@ -59,7 +59,9 @@ const RateManagerGridRightSideRowsRestrictionListAndAmountComponent = ({ onTdCli
 								 			:
 								 			(
 							 					<div className={'cell-content ' + (dateList[colIndex].isPastDate ? 'isHistory-cell-content': '')}>
-							 						
+												 	{
+														showAvailability && <RateManagerCellAvailabilityComponent availability={rowData.availabilityList[colIndex]} />
+													}
 								 					<span 
 								 						className=
 								 							{'rate-single' + 

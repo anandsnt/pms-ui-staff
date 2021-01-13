@@ -114,7 +114,7 @@
                     </select>
                 </div>
             </div>
-            <div class="entry" ng-show="notRunOnce()">
+            <div class="entry" ng-show="notRunOnce()" ng-class="{'overlay': shallDisableRepeatsEvery()}">
                 <label for="schedule-repeats-every">Repeats Every</label>
                 <div class="entry-data entry-first">
                     <input id="schedule-repeats-every" 
