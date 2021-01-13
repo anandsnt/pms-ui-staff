@@ -296,12 +296,12 @@
                 <div class="entry-data entry-first">
                     <label for="schedule-ends-on-number" class="radio inline">
                         <span class="icon-form icon-radio" ng-class="{ 'checked': scheduleParams.scheduleEndsOn === 'NUMBER' }"></span>
-                        <input type="radio" name="ends-on" checked ng-model="scheduleParams.scheduleEndsOn" value="NUMBER">
+                        <input id="schedule-ends-on-number" type="radio" name="ends-on" checked ng-model="scheduleParams.scheduleEndsOn" value="NUMBER">
                         After
                     </label>
                 </div>
                 <div class="entry-data entry-second with-label">
-                    <input id="schedule-ends-on-number" type="number" placeholder="No." ng-model="scheduleParams.ends_on_after">
+                    <input  type="number" placeholder="No." ng-model="scheduleParams.ends_on_after">
                     <span class="label" ng-bind="getRepeatPer()"></span>
                 </div>
                 <!-- next -->

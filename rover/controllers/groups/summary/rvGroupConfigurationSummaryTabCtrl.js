@@ -1703,6 +1703,12 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             }
         };
 
+        var updateGroupSummaryMementoId = function() {
+            $scope.$emit('GROUP_SUMMARY_UNIQUE_ID_SET', {
+                uniqId: $scope.groupConfigData.summary.uniqId
+            });
+        };
+
         var fetchApplicableRates = function(isFromInit) {
             var onFetchRatesSuccess = function(data) {
                     var sumData = $scope.groupSummaryData;
@@ -1726,12 +1732,14 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                                 rate.name = rate.name + ' (' + rate.contract_name + ')';
                                 if (rate.id === $scope.groupConfigData.summary.rate && rate.contract_id === $scope.groupConfigData.summary.contract_id) {
                                     $scope.groupConfigData.summary.uniqId = rate.uniqId;
+                                    updateGroupSummaryMementoId();
                                 }
                             }
                             else {
                                 rate.uniqId = rate.id + ':';
                                 if (rate.id === $scope.groupConfigData.summary.rate) {
                                     $scope.groupConfigData.summary.uniqId = rate.uniqId;
+                                    updateGroupSummaryMementoId();
                                 }
                             }
                             sumData.rateSelectDataObject.push(rate);
@@ -1749,6 +1757,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                     }
                     if ($scope.groupConfigData.summary.rate === '-1') {
                         $scope.groupConfigData.summary.uniqId = '-1';
+                        updateGroupSummaryMementoId();
                     }
                     summaryMemento.uniqId = $scope.groupConfigData.summary.uniqId;
                     if (isFromInit) {

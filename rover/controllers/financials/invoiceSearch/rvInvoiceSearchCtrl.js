@@ -109,7 +109,10 @@ sntRover.controller('RVInvoiceSearchController',
 		$scope.searchInvoice = (page) => {
 
 			$timeout(function() {
-				if ($scope.shouldShowReservationInvoices()) {
+			if ($scope.shouldShowReservationInvoices() && $rootScope.isDepositInvoiceEnabled) {
+				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER_RESERVATION_DEPOSIT');
+			}
+			else if ($scope.shouldShowReservationInvoices()) {
 				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER_RESERVATION');
 			}
 			if ($scope.shouldShowAccountInvoices()) {

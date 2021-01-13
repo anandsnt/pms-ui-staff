@@ -55,6 +55,13 @@
                                <!-- ... repeat L104 for each details entry
                                  If adjusted, show like this:
                                 <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
+                                <span class="converted-currency" ng-if="item.converted_currency">
+                                    <span ng-if="item.debit_converted_amount" ng-bind-html="item.debit_converted_amount | sntCurrency:this:item.converted_currency"></span>
+                                    <span ng-if="item.credit_converted_amount" ng-bind-html="item.credit_converted_amount | sntCurrency:this:item.converted_currency"></span>
+                                </span>
+                                <span class="converted-currency smaller" ng-if="item.conversion_rate">
+                                     <span class="currency">{{item.conversion_rate}}</span>
+                                </span>
                             </td>
                             <td>
                                 <strong class="cell-row">{{item.charge_code}}</strong>
@@ -62,22 +69,10 @@
                             </td>
                             <td class="align-right" ng-if="item.debit !== '' && item.debit !== null" >
                                 <span ng-bind-html="item.debit | sntCurrency:this"></span>
-                                <span class="converted-currency" ng-if="item.converted_currency">
-                                    <span ng-bind-html="item.debit_converted_amount | sntCurrency:this:item.converted_currency"></span>
-                                </span>
-                                <span class="converted-currency smaller" ng-if="item.conversion_rate">
-                                     <span class="currency">{{item.conversion_rate}}</span>
-                                </span>
                             </td>
                             <td class="align-right" ng-if="item.debit === '' || item.debit === null"> &nbsp;</td>
                             <td class="align-right" ng-if="item.credit !== '' && item.credit !== null">
                                 <span ng-bind-html="item.credit | sntCurrency:this"></span>
-                                <span class="converted-currency" ng-if="item.converted_currency">
-                                    <span ng-bind-html="item.credit_converted_amount | sntCurrency:this:item.converted_currency"></span>
-                                </span>
-                                <span class="converted-currency smaller" ng-if="item.conversion_rate">
-                                     <span class="currency">{{item.conversion_rate}}</span>
-                                </span>
                             </td>
                             <td class="align-right" ng-if="item.credit === '' || item.credit === null"> &nbsp;</td>
                         </tr>
@@ -137,6 +132,13 @@
                            <!-- ... repeat L104 for each details entry
                              If adjusted, show like this:
                             <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
+                            <span class="converted-currency" ng-if="item.converted_currency">
+                                <span ng-if="item.debit_converted_amount" ng-bind-html="item.debit_converted_amount | sntCurrency:this:item.converted_currency"></span>
+                                <span ng-if="item.credit_converted_amount" ng-bind-html="item.credit_converted_amount | sntCurrency:this:item.converted_currency"></span>
+                            </span>
+                            <span class="converted-currency smaller" ng-if="item.conversion_rate">
+                                 <span class="currency">{{item.conversion_rate}}</span>
+                            </span>
                         </td>
                         <td>
                             <strong class="cell-row">{{item.charge_code}}</strong>
@@ -144,23 +146,11 @@
                         </td>
                         <td class="align-right" ng-if="item.debit !== '' && item.debit !== null" >
                             <span ng-bind-html="item.debit | sntCurrency:this"></span>
-                            <span class="converted-currency" ng-if="item.converted_currency">
-                                <span ng-bind-html="item.debit_converted_amount | sntCurrency:this:item.converted_currency"></span>
-                            </span>
-                            <span class="converted-currency smaller" ng-if="item.conversion_rate">
-                                 <span class="currency">{{item.conversion_rate}}</span>
-                            </span>
                         </td>
 
                         <td class="align-right" ng-if="item.debit === '' || item.debit === null"> &nbsp;</td>
                          <td class="align-right" ng-if="item.credit !== '' && item.credit !== null">
                             <span ng-bind-html="item.credit | sntCurrency:this"></span>
-                            <span class="converted-currency" ng-if="item.converted_currency">
-                                <span ng-bind-html="item.credit_converted_amount | sntCurrency:this:item.converted_currency"></span>
-                            </span>
-                            <span class="converted-currency smaller" ng-if="item.conversion_rate">
-                                 <span class="currency">{{item.conversion_rate}}</span>
-                            </span>
                         </td>
                         <td class="align-right" ng-if="item.credit === '' || item.credit === null"> &nbsp;</td>
                         </td>
