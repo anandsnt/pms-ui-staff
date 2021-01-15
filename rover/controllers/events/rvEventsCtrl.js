@@ -26,7 +26,7 @@ function ($scope, $filter, eventsSrv, eventTypes, $rootScope, ngDialog, $timeout
      */
     that.startDateSelected = function() {
         $scope.filter.startDate = $scope.filterStartDate;
-
+        $scope.endDateOptions.minDate = $scope.filter.startDate;
         // we have to search on changing the start date
         $scope.search();
     };
@@ -40,7 +40,8 @@ function ($scope, $filter, eventsSrv, eventTypes, $rootScope, ngDialog, $timeout
      */
     that.endDateSelected = function() {
         $scope.filter.endDate = $scope.filterEndDate;
-
+        $scope.startDateOptions.maxDate = $scope.filter.endDate;
+        
         // we have to search on changing the end date
         $scope.search();
     };
@@ -72,7 +73,8 @@ function ($scope, $filter, eventsSrv, eventTypes, $rootScope, ngDialog, $timeout
 
         // date picker options - Departute
         $scope.endDateOptions = _.extend({
-            onSelect: that.endDateSelected
+            onSelect: that.endDateSelected,
+            minDate: tzIndependentDate($rootScope.businessDate)
         }, that.getCommonDateOptions());
 
         $scope.filterStartDate = tzIndependentDate($rootScope.businessDate);
@@ -450,6 +452,16 @@ function ($scope, $filter, eventsSrv, eventTypes, $rootScope, ngDialog, $timeout
     };
 
     /**
+     * Reset filter min/max dates
+     */
+    that.resetFilterMinMaxDates = function () {
+        $scope.startDateOptions.minDate = null;
+        $scope.startDateOptions.maxDate = null;
+        $scope.endDateOptions.minDate = null;
+        $scope.endDateOptions.maxDate = null;
+    };
+
+    /**
      * Clear top level filters
      * @param {Object} event - event object
      * @param {String} fieldName - filter field name
@@ -465,8 +477,14 @@ function ($scope, $filter, eventsSrv, eventTypes, $rootScope, ngDialog, $timeout
 
         if (modelName === 'startDate') {
             $scope.filterStartDate = null;
+            if (!$scope.filterStartDate && !$scope.filterEndDate) {
+                that.resetFilterMinMaxDates();
+            }
         } else if (modelName === 'endDate') {
             $scope.filterEndDate = null;
+            if (!$scope.filterStartDate && !$scope.filterEndDate) {
+                that.resetFilterMinMaxDates();
+            }
         } else if (modelName === 'start') {
             $scope.eventDates.start = null;
         } else if (modelName === 'end') {
