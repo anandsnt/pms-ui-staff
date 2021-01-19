@@ -596,6 +596,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
             // 14 days are shown by default.
             $scope.timeLineEndDate = moment($scope.timeLineStartDate).add(perPage, 'days');
+            $scope.timeLineEndDate = $scope.timeLineEndDate.toDate();
             // restrict end_date in request to shoulder boundary
             if ($scope.timeLineEndDate > summary.shoulder_to_date) {
                 $scope.timeLineEndDate = summary.shoulder_to_date;
