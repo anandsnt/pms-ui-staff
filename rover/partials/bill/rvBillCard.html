@@ -192,9 +192,9 @@
 										<div class="toggle" ng-class="{'active': $index == showAddonIndex}">
 											<span class="expense"> {{addons.title}}</span>
 											<span class="price" ng-show="addons.package_type != 'PACKAGES'">{{addons.package_type}}</span>
-											<span class="price" ng-show="addons.package_type == 'PACKAGES'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='MULTI'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='INCL'"><span class="currency">{{currencySymbol}}</span>{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span>
-											<span class="price" ng-hide="addons.package_type == 'PACKAGES'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='MULTI'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='INCL'">{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span>
-											<span class="price" ng-hide="addons.package_type == 'PACKAGES'">{{addons.amount}}</span>
+											<span class="price" ng-show="addons.package_type == 'PACKAGES' && caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount) !='MULTI' && caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount) !='INCL'"><span class="currency">{{currencySymbol}}</span>{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span>
+											<span class="price" ng-show="addons.package_type == 'PACKAGES' && (caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount) =='MULTI' || caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount) =='INCL')">{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span>
+											<span class="price" ng-hide="addons.package_type == 'PACKAGES'"><span class="currency">{{currencySymbol}}</span>{{addons.amount}}</span>
 										</div>
 									</li>
 

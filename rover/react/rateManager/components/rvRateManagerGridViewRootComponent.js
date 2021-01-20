@@ -143,7 +143,7 @@ const RateManagerGridViewRootComponent = createClass ({
 						}
 					}
 				}
-			}, 0);
+			}, 200);
 		}
 	},
 
@@ -160,8 +160,10 @@ const RateManagerGridViewRootComponent = createClass ({
 			return false;
 		}
 
+		var shouldShowAvailability = this.props.showAvailability && ((this.props.mode === RM_RX_CONST.ROOM_TYPE_VIEW_MODE) || (this.props.mode === RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE));
+
 		return (
-			<div className={this.props.wrapperClass}>
+			<div className={this.props.wrapperClass + (shouldShowAvailability ? ' show-availability' : '')}>
 				<RateManagerGridLeftSideContainer/>
 				{	!this.props.showHierarchyHeader &&
 					<RateManagerGridRightSideHeaderContainer/>
@@ -172,9 +174,11 @@ const RateManagerGridViewRootComponent = createClass ({
 				{	this.props.showHierarchyHeader && (this.props.hierarchyRestrictionClass !== '') &&
 					<div onClick={() => this.props.handleToggler()} className={'calendar-rate-table-handle ' + this.props.frozenPanelClass + this.props.hierarchyRestrictionClass}></div>
 				}
+				
 				<RateManagerGridRightSideBottomComponent
 				hierarchyRestrictionClass={this.props.frozenPanelClass + this.props.hierarchyRestrictionClass}/>
 				<RateManagerBottomRestrictionListContainer/>
+				
 			</div>
 		);		
 	}

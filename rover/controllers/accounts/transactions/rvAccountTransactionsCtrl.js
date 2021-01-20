@@ -870,7 +870,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		/*
 		 * open popup for selecting edit/split/remove transaction
 		 */
-		$scope.openActionsPopup = function(id, desc, amount, type, credits, reference_text, show_ref_on_invoice) {
+		$scope.openActionsPopup = function(id, desc, amount, type, credits, reference_text, show_ref_on_invoice, show_split_payment) {
 
 			$scope.errorMessage = "";
 			// hide edit and remove options in case type is  payment
@@ -880,6 +880,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.selectedTransaction.desc = desc;
 			$scope.reference_text = reference_text;
 			$scope.show_ref_on_invoice = show_ref_on_invoice;
+			$scope.show_split_payment = show_split_payment;
 
 			if (amount) {
 				$scope.selectedTransaction.amount = amount;

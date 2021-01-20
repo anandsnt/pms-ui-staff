@@ -6,7 +6,8 @@
     #find-allotment,
     #rooms,
     #find-guests,
-    #find-invoices {
+    #find-invoices,
+    #find-events {
        &.no-results {
             .wrapper,
             .search-results { height: 100%; }
@@ -551,6 +552,156 @@
                             padding-left: 50px;
                         }
                     }
+                }
+            }
+        }
+    }
+
+    #find-events {
+        &.no-results {
+            .find-cards-header { .hide(); }
+            .scrollable { height: 100%; }
+            .events-col { height: 100%; }
+        }
+
+        &:not(.no-results) {
+            #flexbox > .parent(row, '', '', '' );
+            
+            .scrollable {
+                position: relative;
+                .calc-height( 100, 60 );
+
+                .iScrollVerticalScrollbar {
+                    top: 0px;
+                    bottom: 10px;
+                    right: 7px;
+                }
+
+                .search-results {
+                    padding-top: 0;
+                }
+
+                .wrapper {
+                    padding-bottom: 20px;
+                }
+            }
+
+            .events-col {
+                .scrollable {
+                    .calc-height( 100, 120 );
+                }
+            }
+
+            &.no-pagination {
+                .events-col {
+                    .scrollable {
+                        .calc-height( 100, 60 );
+                    }
+                }
+            }
+        }
+
+        .events-col {
+            position: relative;
+            .show();
+            .square(100%);
+        }
+
+        .event-details {
+            width: 315px;
+            padding-top: 20px;
+            padding-right: 20px;
+            .hide();
+
+            .report-col {
+                width: 100%;
+
+                h3 {
+                    margin-top: 20px;
+                }
+                
+                .notice { 
+                    margin: 0 20px 10px;
+                }
+
+                .column-actions {
+                    padding: 20px;
+
+                    .button {
+                        font-size: 14px;
+                    }
+                }
+
+                .entry:not(:last-child) {
+                    margin-bottom: 0;
+                    .box-shadow(none);
+                }
+
+                .entry {
+                    textarea {
+                        background-color: @grey1;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        &.cols-2 {
+            .events-col {
+                .calc-width(100, 315);
+
+                .find-events-header {
+                    li {
+                        &.event {
+                            .calc-width( 100, 280 );
+                        }
+                    }
+                }
+
+                .search-results {
+                    li:not(.no-content).find-event {
+                        .data{
+                            .calc-width( 100, 280 );
+                        }
+                    }
+                }
+            }
+
+            .event-details {
+                .show();
+            }
+
+            
+        }
+
+        .find-events-header {
+            padding: 15px 40px;
+            height: 60px;
+            font-size: 14px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: @grey3;
+            .float;
+
+            li {
+                margin: 0;
+                line-height: 30px;
+                .pull-left;
+
+                &.event {
+                    .calc-width( 100, 380 );
+                }
+
+                &.type {
+                    width: 140px;
+                    padding-left: 20px;
+                }
+
+                &.start-date,
+                &.end-date,
+                &.dates {
+                    width: 100px;
+                    text-align: right;
                 }
             }
         }
@@ -4363,6 +4514,82 @@
                     color: @grey3;
                     text-transform: uppercase;
                     #flexbox > .parent(column wrap, center, '', flex-end);
+                }
+            }
+
+            /** Events **/
+            &.find-event {
+
+                a,
+                .faux-anchor {
+                    padding: 10px 20px;
+                    height: 60px;
+                    overflow: hidden;
+                    #flexbox > .parent(row, '', center, '');
+
+                    &:not(.active) {
+                        background-repeat: no-repeat;
+                        background-position: 98% 50%;
+                        background-image: @arrowRight;
+
+                        @media @highdpi {
+                            background-image: @arrowRight2x; 
+                            background-size: 14px 14px;
+                        }
+                    }
+
+                    &.active {
+                        color: @white;
+                        .gradient(@orangeEnd, @orangeStart);
+
+                        .highlight,
+                        .description {
+                            color: @white;
+                        }
+                    }
+                }
+
+                .data {
+                    .calc-width(100, 380);
+
+                    h2 {
+                        font-size: 18px;
+                        line-height: 18px;
+                    }
+
+                    .description {
+                        display: block;
+                        font-size: 14px;
+                        line-height: 16px;
+                        text-transform: uppercase;
+                        margin-top: 5px;
+                        color: @grey3;
+                        .nowrap();
+                    }
+                }
+                
+                .type {
+                    font-size: 14px;
+                    text-transform: uppercase;
+                    line-height: 16px;
+                    width: 140px;
+                    padding-left: 20px;
+                }
+
+                .start-date,
+                .end-date,
+                .dates {
+                    text-align: right;
+                    font-size: 14px;
+                    text-transform: uppercase;
+                    line-height: 16px;
+                    width: 100px;
+                }
+
+                .dates {
+                    span {
+                        display: block;
+                    }
                 }
             }
         }

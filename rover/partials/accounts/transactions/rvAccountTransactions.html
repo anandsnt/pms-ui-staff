@@ -285,7 +285,7 @@
 											</div>
 										</td>
 										<td>
-											<button type="button" ng-class="{'overlay': !billData.is_active }"  class="button purple with-icon only-icon" click-touch="openActionsPopup(feesData.id,feesData.description,feesData.fees,feesData.type.value,feesData.credits, feesData.reference_text_on_edit, feesData.show_ref_on_invoice)" ng-show="showEditChargeButton(feesData.type.value)" ng-if = "!feesData.is_group_by_ref">
+											<button type="button" ng-class="{'overlay': !billData.is_active }"  class="button purple with-icon only-icon" click-touch="openActionsPopup(feesData.id,feesData.description,feesData.fees,feesData.type.value,feesData.credits, feesData.reference_text_on_edit, feesData.show_ref_on_invoice, feesData.show_split_payment)" ng-show="showEditChargeButton(feesData.type.value)" ng-if = "!feesData.is_group_by_ref">
 												<span class="icons icon-pencil"></span>
 												{{'EDIT' |translate}}
 											</button>

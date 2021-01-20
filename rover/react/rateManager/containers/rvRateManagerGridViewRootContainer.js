@@ -33,7 +33,10 @@ const mapStateToRateManagerGridViewRootComponentProps = (state) => {
         hierarchyRestrictionClass: state.hierarchyRestrictionClass,
         showHierarchyHeader: hierarchyRestrictionsActive(state),
         toggleFunction: state.callBacksFromAngular && state.callBacksFromAngular.handlePanelToggle,
-        frozenPanelClass: state.frozenPanelClass
+        frozenPanelClass: state.frozenPanelClass,
+        houseAvailability: state.houseAvailability,
+        showAvailability: state.showAvailability,
+        eventsCount: state.eventsCount
     };
 };
 
@@ -48,6 +51,10 @@ const mapDispatchToRateManagerGridViewRootComponentProps = (stateProps, dispatch
 
     if(stateProps.mode === RM_RX_CONST.RATE_VIEW_MODE && !isLastPage){
         wrapperClass += ' load-bottom';
+    }
+
+    if ((stateProps.mode === RM_RX_CONST.RATE_VIEW_MODE) || (stateProps.mode === RM_RX_CONST.RATE_TYPE_VIEW_MODE)) {
+        wrapperClass += ' with-availability';
     }
 
     if (stateProps.toggleFunction) {
