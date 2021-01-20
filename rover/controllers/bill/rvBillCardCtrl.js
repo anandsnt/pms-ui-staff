@@ -3474,6 +3474,9 @@ sntRover.controller('RVbillCardController',
 	};
 	var receiptPrintCompleted = function() {
 		$scope.printReceiptActive = false;
+		$("header .logo").removeClass('logo-hide');
+		$("header .h2").removeClass('text-hide');
+		$("body #loading").html('<div id="loading-spinner" ></div>');
 	};
 
 	/*
