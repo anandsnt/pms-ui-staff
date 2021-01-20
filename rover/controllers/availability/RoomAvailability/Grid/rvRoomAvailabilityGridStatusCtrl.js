@@ -21,6 +21,7 @@ angular.module('sntRover')
                 $scope.toggleStatusOf['occupancy'] = false;
                 $scope.toggleStatusOf['roomInventory'] = false;
                 $scope.toggleStatusOf['bar'] = false;
+                $scope.showShowGroupAllotmentTotals = false;
             };
 
             // we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
