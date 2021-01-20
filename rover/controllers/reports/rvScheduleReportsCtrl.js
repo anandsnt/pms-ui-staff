@@ -1050,7 +1050,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         processDisplayFilters(filter);
                     }
                 } else if (filter.value === 'RATE') {
-                    reportUtils.fillRateTypesAndRatesForScheduledReports($scope.filters, $scope.selectedEntityDetails.filter_values);
+                    reportUtils.fillRateTypesAndRatesForScheduledReports($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
                 } else if (filter.value === 'COMPLETION_STATUS') {
                     reportUtils.fillCompletionStatus($scope.filters);
                 } else if (filter.value === 'DEPARTMENT_ASSIGNED') {
