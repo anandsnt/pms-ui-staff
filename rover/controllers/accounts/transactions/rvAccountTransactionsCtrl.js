@@ -189,7 +189,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.shouldShowVoidBill = function() {
 			
 			return !$scope.transactionsDetails.bills[$scope.currentActiveBill].is_active && 
-			$scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount === '0.0' && 
+			parseInt($scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount) === 0 && 
 			!$scope.transactionsDetails.bills[$scope.currentActiveBill].is_db_payment_exists && 
 			 $scope.transactionsDetails.is_void_bill_enabled && 
 			!$scope.transactionsDetails.bills[$scope.currentActiveBill].is_voided && 
@@ -393,7 +393,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		that.generateFolioNumber = function (billId, balanceAmount, isFolioNumberExists, billIndex) {
 
 			$scope.shouldGenerateFolioNumber = false;
-			if (balanceAmount === "0.0" && !isFolioNumberExists) {
+			if (parseInt(balanceAmount) === 0 && !isFolioNumberExists) {
 
 				var successCallBackOfGenerateFolioNumber = function(data) {
 					if ($scope.transactionsDetails.is_bill_lock_enabled) {
@@ -425,13 +425,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			var currentActiveBill = $scope.transactionsDetails.bills[$scope.currentActiveBill];
 
 			// Balance amount must be zero and only after payment success - call black box api
-			if (currentActiveBill.balance_amount === "0.0" && $scope.isFromPaymentScreen) {
+			if (parseInt(currentActiveBill.balance_amount) === 0 && $scope.isFromPaymentScreen) {
 				$scope.isFromPaymentScreen = false;
 				if ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation) {
 					requestControlDigitsFromBlackBox();
 				}
 			} 
-			if (currentActiveBill.balance_amount === "0.0") {
+			if (parseInt(currentActiveBill.balance_amount) === 0) {
 				if ($scope.shouldGenerateFolioNumber) {
 					that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.balance_amount, currentActiveBill.is_folio_number_exists, $scope.currentActiveBill);
 				}
@@ -1373,7 +1373,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.isFolioNumberExists = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists;
 			$scope.reservationBillData = $scope.transactionsDetails;
 			if ($scope.transactionsDetails.bills[$scope.currentActiveBill].is_transactions_exist 
-				&& $scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount === "0.00"
+				&& parseInt($scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount) === 0
 				&& $scope.transactionsDetails.is_bill_lock_enabled 
 				&& $scope.transactionsDetails.bills[$scope.currentActiveBill].is_active) {
 				$scope.isInvoiceStepOneActive = true;
