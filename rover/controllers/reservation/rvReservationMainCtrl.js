@@ -145,6 +145,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             $scope.otherData.showOverbookingAlert = baseSearchData.settings.show_overbooking_alert;
 
             $scope.otherData.isAddonEnabled = baseSearchData.settings.is_addon_on;
+            $scope.otherData.booking_max_stay_length = baseSearchData.settings.max_stay_length || 92;
 
             $scope.guestCardData = {};
             $scope.guestCardData.cardHeaderImage = "/assets/images/avatar-trans.png";

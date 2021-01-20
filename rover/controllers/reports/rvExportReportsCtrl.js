@@ -3,7 +3,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
     '$scope',
     'RVreportsSrv',
     'RVReportUtilsFac',
-    'RVReportParamsConst',    
+    'RVReportParamsConst',
     '$filter',
     '$timeout',
     'ngDialog',
@@ -24,6 +24,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         var THIRD_COLUMN_SCROLL = 'THIRD_COLUMN_SCROLL';
         var FOURTH_COLUMN_SCROLL = 'FOURTH_COLUMN_SCROLL';
         const SHOW_ERROR_MSG_EVENT = 'SHOW_ERROR_MSG_EVENT';
+
+        var runDuringEodScheduleFrequencyId;
 
         var setupScrolls = function() {
             var scrollerOptions = {
@@ -69,7 +71,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ( value === FREQ_VALUES.RUN_ONCE ) {
                 occurance += 'once';
             } else {
-                if ( item.repeats_every === 0 ) {
+                if ( item.repeats_every === 0 || !item.repeats_every) {
                     occurance += description.toLowerCase();
                 } else {
                     occurance += 'after every ' + item.repeats_every + ' ';
@@ -243,7 +245,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 params.starts_on = $filter('date')($scope.scheduleParams.starts_on, 'yyyy/MM/dd');
             }
 
-            if ( $scope.scheduleParams.frequency_id === runOnceId ) {
+            if ( ($scope.scheduleParams.frequency_id === runOnceId) || ($scope.scheduleParams.frequency_id === runDuringEodScheduleFrequencyId)) {
                 params.repeats_every = null;
             } else if ( $scope.scheduleParams.repeats_every ) {
                 params.repeats_every = $scope.scheduleParams.repeats_every;
@@ -393,7 +395,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 params.starts_on = $filter('date')($scope.scheduleParams.starts_on, 'yyyy/MM/dd');
             }
 
-            if ( $scope.scheduleParams.frequency_id === runOnceId ) {
+            if (($scope.scheduleParams.frequency_id === runOnceId) || ($scope.scheduleParams.frequency_id === runDuringEodScheduleFrequencyId)) {
                 params.repeats_every = null;
             } else if ( $scope.scheduleParams.repeats_every ) {
                 params.repeats_every = $scope.scheduleParams.repeats_every;
@@ -454,7 +456,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ($scope.scheduleParams.includeTitleHeader) {
                 params.include_title_header = $scope.scheduleParams.includeTitleHeader;
             }
-            
+
 
             $scope.invokeApi( reportsSrv.updateSchedule, params, success, failed );
         };
@@ -622,7 +624,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             var weeklyOnly = _.find($scope.originalScheduleFrequency, { value: 'WEEKLY' }),
                 monthlyOnly = _.find($scope.originalScheduleFrequency, { value: 'MONTHLY' }),
-                hourlyOnly = _.find($scope.originalScheduleFrequency, { value: 'HOURLY' });
+                hourlyOnly = _.find($scope.originalScheduleFrequency, { value: 'HOURLY' }),
+                runDuringEod = _.find($scope.originalScheduleFrequency, { value: 'RUN_DURING_EOD'});
 
             $scope.scheduleFrequency = [];
             $scope.scheduleFreqType = [];
@@ -747,6 +750,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             if ( forRunOnceOnly[item.report.title] ) {
                 $scope.scheduleFrequency.push(runOnceOnly);
+            }
+
+            if ($rootScope.isStandAlone) {
+                $scope.scheduleFrequency.push(runDuringEod);
             }
         };
 
@@ -952,7 +959,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : null;
             $scope.scheduleParams.format_id = $scope.selectedEntityDetails.format ? $scope.selectedEntityDetails.format.id : getFileFormatId();
-            
+
             if ($scope.scheduleParams.delivery_id === 'CLOUD_DRIVE') {
                 $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.cloud_drive_type;
             }
@@ -970,7 +977,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             }
 
             $scope.scheduleParams.includeTitleHeader = $scope.selectedEntityDetails.include_title_header;
-            
+
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOTS);
         };
 
@@ -979,6 +986,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             var success = function(payload) {
                 $scope.originalScheduleFrequency = payload.scheduleFrequency;
+                runDuringEodScheduleFrequencyId = (_.find($scope.originalScheduleFrequency, { value: 'RUN_DURING_EOD'})).id;
                 $scope.originalScheduleTimePeriods = payload.scheduleTimePeriods;
                 $scope.$parent.$parent.schedulesList = [];
                 $scope.$parent.$parent.schedulableReports = [];
@@ -1551,10 +1559,17 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                     return object.value === 'CSV';
                 });
             }
-            
+
 
             return selectedEntity.report && (selectedEntity.report.title === 'Journal Export' && $rootScope.isGOBDExportEnabled);
 
+        };
+
+        /**
+         * Disable repeats every section
+         */
+        $scope.shallDisableRepeatsEvery = () => {
+            return $scope.originalScheduleFrequency && ($scope.scheduleParams.frequency_id === (_.find($scope.originalScheduleFrequency, {value: 'RUN_DURING_EOD'})).id);
         };
 
         /**

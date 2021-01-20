@@ -3,6 +3,6 @@ const rateManagerPanelClassReducer = (state, action) => {
         case RM_RX_CONST.HIERARCHY_FROZEN_PANEL_TOGGLED:
             return action.frozenPanelClosed ? '' : 'opened ';
         default:
-            return '';
+            return state.frozenPanelClass;
     }
 };

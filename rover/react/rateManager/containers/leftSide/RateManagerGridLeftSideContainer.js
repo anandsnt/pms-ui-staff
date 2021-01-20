@@ -27,7 +27,8 @@ const mapStateToRateManagerGridLeftFirstRowComponentProps = (state) => {
     hideTopHeader: hideTopHeader,
     hierarchyCount: hierarchyCount,
     hierarchyClass: state.hierarchyRestrictionClass,
-    panelToggleClass: state.frozenPanelClass
+    panelToggleClass: state.frozenPanelClass,
+    mode: state.mode
   }
 };
 

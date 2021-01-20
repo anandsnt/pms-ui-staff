@@ -1,0 +1,56 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
+    <div class="modal-content form new-event">
+        <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()">
+            <span class="icons icon-close invert"></span>
+        </button>
+        
+        <span class="h2 message">New Event</span>
+
+        <div class="error notice" ng-if="errorMsg">
+            <span>{{errorMsg}}</span>
+          </div>
+
+        <div class="holder">
+            <div class="entry">
+                <label for="event-type">Type</label>
+                <div class="select">
+                    <select id="event-type" ng-model="eventData.eventType" ng-change="onFieldChange(eventData.eventType, 'eventType')" ng-class="{'error': fieldErrors.eventType}">
+                        <option value=''>Select Event Type</option>
+                        <option ng-repeat="event in eventTypes" value="{{event.id}}">{{event.description}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    
+        <div class="entry full-width">
+            <label for="event-type">Name</label>
+            <input type="text" placeholder="Enter Event Name" ng-model="eventData.eventName" ng-change="onFieldChange(eventData.eventName, 'eventName')" ng-class="{'error': fieldErrors.eventName}" maxlength="255">
+        </div>
+    
+        <div class="entry full-width">
+            <label for="event-type">Description <span>(Optional)</span></label>
+            <textarea placeholder="Enter Event Description" ng-model="eventData.description" ng-change="onFieldChange(eventData.description, 'description')" ng-class="{'error': fieldErrors.description}" maxlength="255"></textarea>
+        </div>
+    
+        <div class="holder">
+            <div class="entry margin has-datepicker">
+                <label for="sale-date">Start Date</label>
+                
+                <input id="from-date" ui-date="eventStartDateOptions" ng-model="eventDates.start" type="text" class="datepicker" value="" readonly ng-change="onFieldChange(eventDates.start, 'startDate')"
+                ng-class="{'error': fieldErrors.startDate}" placeholder="Select Date"/>
+            </div>
+            <div class="entry margin has-datepicker">
+                <label for="sale-date">End Date</label>
+                
+                <input id="to-date" ui-date="eventEndDateOptions" ng-model="eventDates.end" type="text" class="datepicker" value="" readonly ng-change="onFieldChange(eventDates.end, 'endDate')"
+                ng-class="{'error': fieldErrors.endDate}" placeholder="Select Date"/>
+            </div>
+        </div>
+    
+        <div class="actions">
+            <button type="button" id="cancel" class="button blank modal-close" ng-click="closeDialog()">Cancel</button>
+            <button type="button" id="save" class="button green modal-close" ng-click="onCreateEvent()">Add Event</button>
+    
+        </div>
+    </div>
+</div>
