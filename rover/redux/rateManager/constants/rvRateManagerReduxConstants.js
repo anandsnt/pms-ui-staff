@@ -39,5 +39,6 @@ const RM_RX_CONST = {
         RM_Room_Type_View                 : 'All Room Types',
         RM_Rate_Type_View                 : 'All Rate Types',
         RM_Single_Rate_Expandable_View    : 'All Room Types'
-	}
+	},
+	SHOW_AVAILABILITY: 'RM_Show_Availability'
 };

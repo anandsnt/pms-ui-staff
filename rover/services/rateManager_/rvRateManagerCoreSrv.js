@@ -178,6 +178,11 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 }));
             }
 
+            
+            promises.push(service.fetchRoomTypeAvailability(params).then((data) => {
+                response.roomTypeAvailability = data;
+            }));
+
             $q.all(promises).then(() => {
                 deferred.resolve(response);
             });
@@ -220,6 +225,11 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                     response.roomTypes = data;
                 }));
             }
+
+            promises.push(service.fetchRoomTypeAvailability(params).then((data) => {
+                response.roomTypeAvailability = data;
+            }));
+
             $q.all(promises).then((data) => {
                 deferred.resolve(response);
             });
@@ -693,6 +703,122 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             });
 
             return deferred.promise;
+        };
+
+        /**
+         * Fetch house availability for the given date range
+         * @param {Object} params - hold the request params
+         * @return {Promise}
+         */
+        service.fetchHouseAvailability = (params) => {
+            var url = '/api/availability_main',
+                deferred = $q.defer();
+            
+            BaseWebSrvV2.getJSON(url, params).then((data) => {
+                deferred.resolve(data.results);
+            }, (error) => {
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+
+        };
+
+        /**
+         * Fetch room type availability for the given date range
+         * @param {Object} params - hold the request params
+         * @return {Promise}
+         */
+        service.fetchRoomTypeAvailability = (params) => {
+            var url = '/api/availability/room_types',
+                deferred = $q.defer(),
+                requestParams = {
+                    from_date: params.from_date,
+                    to_date: params.to_date,
+                    is_include_overbooking: false
+                };
+            
+            BaseWebSrvV2.getJSON(url, requestParams).then((data) => {
+                deferred.resolve(data.results);
+            }, (error) => {
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+
+        };
+
+        /**
+         * Fetch house events count for a date range
+         * @param {Object} params - hold the request params
+         * @return {Promise}
+         */
+        service.fetchEventsCount = (params) => {
+            var url = '/api/house_events/count_per_day',
+                deferred = $q.defer(),
+                requestParams = {
+                    start_date: params.from_date,
+                    end_date: params.to_date                    
+                };
+            
+            BaseWebSrvV2.postJSON(url, requestParams).then((response) => {
+                // For maintaining the same structure, when this is fetched along with house availability
+                // we have given this structure
+                var eventData = {};
+
+                eventData.eventsCount = response.data;
+                deferred.resolve(eventData);
+            }, (error) => {
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+
+        };
+
+        /**
+         * Fetch house availability and house events count for the given date range
+         * @param {Object} params - hold the request params
+         * @return {Promise}
+         */
+        service.fetchHouseAvailabilityAndEventsCount = (params) => {
+            var deferred = $q.defer(),
+                promises = [],
+                response = {};
+
+            promises.push(service.fetchHouseAvailability(params).then((data) => {
+                response.houseAvailability = data;
+            }));
+
+            promises.push(service.fetchEventsCount(params).then((data) => {
+                response.eventsCount = data.eventsCount;
+            }));
+            
+            $q.all(promises).then(() => {
+                deferred.resolve(response);
+            });
+
+            return deferred.promise;
+
+        };
+
+        /**
+         * Fetch house availability and house events count for the given date range
+         * @param {Object} params - hold the request params
+         * @return {Promise}
+         */
+        service.fetchHouseEventsByDate = (params) => {
+            var url = '/api/house_events/list',
+                deferred = $q.defer();                
+            
+            BaseWebSrvV2.postJSON(url, params).then((response) => {
+                deferred.resolve(response.data);
+            }, (error) => {
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+
         };
 
     }

@@ -345,10 +345,12 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 dateOffset = 1;
                 $scope.reservationData.numNights = '';
             }
-            if (dateOffset > RESV_LIMIT) {
-                dateOffset = RESV_LIMIT;
+            if (dateOffset > $scope.otherData.booking_max_stay_length) {
+                dateOffset = $scope.otherData.booking_max_stay_length;
+                var enteredNumberOfNights = angular.copy($scope.reservationData.numNights);
+
                 $scope.reservationData.numNights = '';
-                $scope.errorMessage = ["Maximum number of nights of " + RESV_LIMIT + " exceeded"];
+                $scope.errorMessage = [enteredNumberOfNights + " nights exceeds the maximum length of stay setting of " + dateOffset + " nights"];
             }
             var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
 
@@ -963,7 +965,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 dateString = $filter('date')(dateObj, 'yyyy-MM-dd'),
                 dateParts = dateString.match(/(\d+)/g);
 
-            return new Date(dateParts[0], parseInt(dateParts[1]) - 1, parseInt(dateParts[2], 10) + RESV_LIMIT);
+            return new Date(dateParts[0], parseInt(dateParts[1]) - 1, parseInt(dateParts[2], 10) + $scope.otherData.booking_max_stay_length);
         };
 
 

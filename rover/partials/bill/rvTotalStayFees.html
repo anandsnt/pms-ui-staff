@@ -317,7 +317,7 @@
 					</div>
 				</td>
 				<td ng-if="isStandAlone">
-					<button type="button" ng-show="showEditChargeButton(feesData.type.value)" class="button with-icon only-icon purple edit" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits, feesData.reference_text_on_edit, feesData.show_ref_on_invoice)" ng-if = "!feesData.is_group_by_ref" ng-disabled="!billData.is_active" ng-class="{ 'overlay' : !billData.is_active }">
+					<button type="button" ng-show="showEditChargeButton(feesData.type.value)" class="button with-icon only-icon purple edit" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits, feesData.reference_text_on_edit, feesData.show_ref_on_invoice, feesData.show_split_payment)" ng-if = "!feesData.is_group_by_ref" ng-disabled="!billData.is_active" ng-class="{ 'overlay' : !billData.is_active }">
 
 						<span class="icons icon-pencil"></span>
 						<span translate>EDIT</span>

@@ -61,7 +61,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 					'card_code': paymentResponse.credit_card_type ? paymentResponse.credit_card_type.toLowerCase() : 'credit-card',
 					'ending_with': paymentResponse.ending_with,
 					'expiry_date': paymentResponse.expiry_date,
-					'card_name': '',
+					'card_name': paymentResponse.card_name,
 					'token': paymentResponse.token
 				}
 			});
@@ -176,7 +176,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 							'card_code': cardType.toLowerCase(),
 							'ending_with': response.ending_with,
 							'expiry_date': response.expiry_date,
-							'card_name': '',
+							'card_name': response.card_name,
 							'is_swiped': response.is_swiped
 						}
 					});

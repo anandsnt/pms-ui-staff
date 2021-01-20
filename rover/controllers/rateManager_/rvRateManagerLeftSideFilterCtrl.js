@@ -14,6 +14,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
     'RMFilterOptionsSrv',
     'RateMngrCalendarSrv',
     '$q',
+    'rvRateManagerCoreSrv',
     function($scope,
              $filter,
              ngDialog,
@@ -25,7 +26,8 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
              rvRateManagerEventConstants,
              RMFilterOptionsSrv,
              RateMngrCalendarSrv,
-             $q) {
+             $q,
+             rvRateManagerCoreSrv) {
 
       BaseCtrl.call(this, $scope);
 
@@ -518,12 +520,8 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
           .then(successFetchOfFillAndSetRateRateTypesAndSortOptions, failedToFillAndSetRateRateTypesAndSortOptions);
       };
 
-      /**
-       * This method handles on-click of the SHOW RATES BUTTON
-       */
-      $scope.clickedOnShowRates = () => {
+      var prepareDataForViewUpdate = (results) => {
         var selectedRateTypeList;
-        // PAGINATION stuff will be handled from RateManagerCtrl
 
         if ($scope.chosenTab === 'RATES') {
           selectedRateTypeList = [];
@@ -531,6 +529,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         if ($scope.chosenTab === 'RATE_TYPES') {
           selectedRateTypeList = $scope.selectedRateTypesFromRTT;
         }
+
         var valuesChoosed = {
           fromDate: $scope.fromDate,
           toDate: $scope.toDate,
@@ -546,10 +545,50 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
 
           selectedCards: $scope.selectedCards,
 
-          fromLeftFilter: true
+          fromLeftFilter: true,
+          houseAvailability: results.houseAvailability || [],
+          eventsCount: results.eventsCount || []
         };
 
         $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, valuesChoosed);
+      };
+
+
+      var fetchHouseAvailabilityAndEventsCount = () => {
+
+        $scope.callAPI(rvRateManagerCoreSrv.fetchHouseAvailabilityAndEventsCount, {
+          params: {
+            from_date: $filter('date')($scope.fromDate, $rootScope.dateFormatForAPI),
+            to_date: $filter('date')($scope.toDate, $rootScope.dateFormatForAPI),
+            is_include_overbooking: false
+          },
+          successCallBack: prepareDataForViewUpdate
+        });
+
+      };
+
+      var fetchHouseEventsCount = () => {
+
+        $scope.callAPI(rvRateManagerCoreSrv.fetchEventsCount, {
+          params: {
+            from_date: $filter('date')($scope.fromDate, $rootScope.dateFormatForAPI),
+            to_date: $filter('date')($scope.toDate, $rootScope.dateFormatForAPI)
+          },
+          successCallBack: prepareDataForViewUpdate
+        });
+
+      };
+
+      /**
+       * This method handles on-click of the SHOW RATES BUTTON
+       */
+      $scope.clickedOnShowRates = () => {
+        if ($scope.chosenTab === 'RATES' || $scope.chosenTab === 'RATE_TYPES') {
+          fetchHouseAvailabilityAndEventsCount();
+        } else {
+          fetchHouseEventsCount();
+        }
+        
       };
 
       /**
