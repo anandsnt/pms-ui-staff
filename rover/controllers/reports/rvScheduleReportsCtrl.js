@@ -1396,6 +1396,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 minDate: tzIndependentDate($rootScope.businessDate),
                 onSelect: function(value) {
                     $scope.endsOnOptions.minDate = value;
+                    if($scope.scheduleParams.ends_on_date < $scope.scheduleParams.starts_on)
+                    {
+                        $scope.scheduleParams.ends_on_date = $scope.scheduleParams.starts_on;
+                    }
                 }
             }, datePickerCommon);
             $scope.scheduleParams.starts_on = reportUtils.processDate(startsOn).today;
@@ -1406,7 +1410,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 }
             }, datePickerCommon);
             $scope.scheduleParams.ends_on_date = reportUtils.processDate(endsOnDate).today;
-
+            
             $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : null;
 
             if ($scope.scheduleParams.delivery_id === 'CLOUD_DRIVE') {
