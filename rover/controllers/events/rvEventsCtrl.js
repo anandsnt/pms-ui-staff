@@ -78,7 +78,7 @@ function ($scope, $filter, eventsSrv, eventTypes, $rootScope, ngDialog, $timeout
         }, that.getCommonDateOptions());
 
         $scope.filterStartDate = tzIndependentDate($rootScope.businessDate);
-        $scope.filter.design = $scope.filterStartDate;
+        $scope.filter.startDate = $scope.filterStartDate;
     };
 
     /**
@@ -318,15 +318,32 @@ function ($scope, $filter, eventsSrv, eventTypes, $rootScope, ngDialog, $timeout
         }
         event.active = true;
         $scope.lastSelectedEvent = event;
+        $scope.eventDates.start = new tzIndependentDate(event.startDate);
+        $scope.eventDates.end = new tzIndependentDate(event.endDate);
+
         $scope.eventData = dclone(event);
+        $scope.eventData.disableStartDate = $scope.eventDates.start < tzIndependentDate($rootScope.businessDate);
+        $scope.eventData.disableEndDate = $scope.eventDates.end < tzIndependentDate($rootScope.businessDate);
         $scope.errorMsg = '';
 
         that.setErrorFields();
         
-        $scope.eventDates.start = new tzIndependentDate($scope.eventData.startDate);
-        $scope.eventDates.end = new tzIndependentDate($scope.eventData.endDate);
+        if ($scope.eventData.disableStartDate) {
+            $scope.eventStartDateOptions.minDate = null;
+            $scope.eventStartDateOptions.maxDate = null;
+        } else {
+            $scope.eventStartDateOptions.minDate = tzIndependentDate($rootScope.businessDate);
+            $scope.eventStartDateOptions.maxDate = null;
+        }
 
-        that.resetEventMinMaxDates();
+        if ($scope.eventData.disableEndDate) {
+            $scope.eventEndDateOptions.minDate = null;
+            $scope.eventEndDateOptions.maxDate = null;  
+        } else {
+            $scope.eventEndDateOptions.minDate = tzIndependentDate($rootScope.businessDate);
+            $scope.eventEndDateOptions.maxDate = null;
+        }
+
         $scope.shouldShowEventDetails = true;
 
         that.refreshEventDetailsScroller();
