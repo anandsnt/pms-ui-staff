@@ -62,7 +62,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             // resetting the calendar date's to actual one
             $scope.groupConfigData.summary.block_from = new tzIndependentDate(summaryMemento.block_from);
             $scope.groupConfigData.summary.block_to = new tzIndependentDate(summaryMemento.block_to);
-
+            $scope.groupConfigData.summary.shoulder_from_date = new tzIndependentDate(summaryMemento.shoulder_from_date);
             // setting the min date for end Date
             $scope.toDateOptions.minDate = $scope.groupConfigData.summary.block_from;
 
@@ -109,6 +109,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                     failureCallBack: failureCallBackOfMoveButton,
                     cancelPopupCallBack: cancelCallBackofDateChange
                 };
+            
+            $scope.actionStatus.isMoveBtnClicked = false;
 
             $scope.changeDatesActions.clickedOnMoveSaveButton (options);
         };
@@ -131,6 +133,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
 
             $scope.changeDatesActions.clickedOnMoveButton ();
             $scope.isShoulderDateDisabled = true;
+            $scope.actionStatus.isMoveBtnClicked = true;
 
         };
 
@@ -143,7 +146,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 {
                     disabled: false
                 });
-
+            
+            $scope.actionStatus.isMoveBtnClicked = false;
             $scope.reloadPage();
         };
 
@@ -1791,6 +1795,10 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             if (activeTab !== 'SUMMARY') {
                 return;
             }
+
+            // Reset the flag when coming back from other tabs
+            $scope.isShoulderDateDisabled = false;
+
             if (!$scope.isInAddMode()) {
                 $scope.$emit('FETCH_SUMMARY');
 
@@ -2162,5 +2170,10 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         $scope.addListener('DATE_CHANGE_FAILED', function() {
             fetchApplicableRates();
         });
+
+        $scope.addListener('RESET_DATE_PICKERS', function() {
+            resetDatePickers();
+        });
+        
     }
 ]);
