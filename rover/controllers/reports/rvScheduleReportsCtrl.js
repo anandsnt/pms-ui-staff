@@ -1396,7 +1396,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 minDate: tzIndependentDate($rootScope.businessDate),
                 onSelect: function(value) {
                     $scope.endsOnOptions.minDate = value;
-                    if($scope.scheduleParams.ends_on_date < $scope.scheduleParams.starts_on)
+                    if ($scope.scheduleParams.ends_on_date < $scope.scheduleParams.starts_on)
                     {
                         $scope.scheduleParams.ends_on_date = $scope.scheduleParams.starts_on;
                     }
