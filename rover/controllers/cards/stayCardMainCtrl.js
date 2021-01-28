@@ -520,7 +520,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			} else {
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 					"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
-					"confirmationId": $stateParams.confirmationId,
+					"confirmationId": $stateParams.confirmationId || $scope.reservationData.confirmNum,
 					"isrefresh": false
 				});
 			}
