@@ -2542,7 +2542,33 @@ angular.module('reportsModule')
             };
 
             // Fill rate types and rates for scheduled reports
-            factory.fillRateTypesAndRatesForScheduledReports = function (filter, filterValues) {
+            factory.fillRateTypesAndRatesForScheduledReports = function (filter, filterValues, reportName) {
+                var getSelectAllValForRateTypes = (rateTypes) => {
+                        var selectAll = false;
+
+                        if (filterValues && !!filterValues.rate_type_ids) {
+                            selectAll = filterValues.rate_type_ids.length === rateTypes.length;
+                        } else if (filterValues && !filterValues.rate_type_ids) {
+                            selectAll = false;
+                        } else if (!filterValues && (reportName === reportNames['DAILY_PRODUCTION_RATE'])) {
+                            selectAll = true; 
+                        }
+
+                        return selectAll;
+                    },
+                    getSelectAllValForRates = (rates) => {
+                        var selectAll = false;
+
+                        if (filterValues && !!filterValues.rate_ids) {
+                            selectAll = filterValues.rate_ids.length === rates.length;
+                        } else if (filterValues && !filterValues.rate_ids) {
+                            selectAll = false;
+                        } else if (!filterValues && (reportName === reportNames['DAILY_PRODUCTION_RATE'])) {
+                            selectAll = true; 
+                        }
+
+                        return selectAll;
+                    };
                 var populateRateTypesAndRates = function (data) {
                     var rateTypes = extractRateTypesFromRateTypesAndRateList(data),
                         rates = extractRatesFromRateTypesAndRateList(data),
@@ -2554,6 +2580,10 @@ angular.module('reportsModule')
                             selectedRateType = _.findWhere(rateTypes, { rate_type_id: id });
                             selectedRateType.selected = true;
                         });
+                    } else if (!filterValues && (reportName === reportNames['DAILY_PRODUCTION_RATE'])) {
+                        _.each(rateTypes, (rateType) => {
+                            rateType.selected = true;
+                        });
                     }
 
                     if (filterValues && filterValues.rate_ids) {
@@ -2561,12 +2591,16 @@ angular.module('reportsModule')
                             selectedRate = _.findWhere(rates, { id: id });
                             selectedRate.selected = true;
                         });
+                    } else if (!filterValues && (reportName === reportNames['DAILY_PRODUCTION_RATE'])) {
+                        _.each(rates, (rate) => {
+                            rate.selected = true;
+                        });
                     }
 
                     filter.hasRateTypeFilter = {
                         data: rateTypes,
                         options: {
-                            selectAll: filterValues && filterValues.rate_type_ids && filterValues.rate_type_ids.length === 0,
+                            selectAll: getSelectAllValForRateTypes(rateTypes),
                             hasSearch: true,
                             key: 'name'
                         }
@@ -2575,7 +2609,7 @@ angular.module('reportsModule')
                     filter.hasRateFilter = {
                         data: rates,
                         options: {
-                            selectAll: filterValues && filterValues.rate_ids && filterValues.rate_ids.length === 0,
+                            selectAll: getSelectAllValForRates(rates),
                             hasSearch: true,
                             key: 'name'
                         }
