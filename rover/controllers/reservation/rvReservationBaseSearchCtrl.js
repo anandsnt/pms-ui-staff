@@ -313,6 +313,21 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.reservationData.tabs[0].roomTypeId = $stateParams.selectedRoomTypeId;
                 $scope.reservationData.rooms[0].roomTypeId = $stateParams.selectedRoomTypeId;
             }
+
+            if ($stateParams.numNights) {
+                var numNights = parseInt($stateParams.numNights);
+
+                if (numNights <= $scope.otherData.booking_max_stay_length) {
+                    $scope.reservationData.numNights = numNights; 
+                    var arrDate = tzIndependentDate($scope.reservationData.arrivalDate);
+
+                    var newDay = arrDate.getDate() + parseInt(numNights);
+                    
+                    arrDate.setDate(newDay);
+                    $scope.reservationData.departureDate = dateFilter(arrDate, 'yyyy-MM-dd');
+                }
+                
+            }
             
             if ($scope.reservationData.departureDate === '') {
                 $scope.setDepartureDate();
