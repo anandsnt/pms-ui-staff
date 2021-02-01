@@ -35,11 +35,19 @@ angular.module('login').controller('loginRootCtrl', ['$scope', function($scope) 
  * Login Controller - Handles login and local storage on succesfull login
  * Redirects to specific ur on succesfull login
  */
-angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', '$timeout', 'marketingItems', '$rootScope', function($scope, loginSrv, $window, $state, resetSrv, ngDialog, $timeout, marketingItems, $rootScope) {
+angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', '$timeout', '$rootScope', function($scope, loginSrv, $window, $state, resetSrv, ngDialog, $timeout, $rootScope) {
 	 $scope.data = {};
 	 $scope.data.roverVersion = "";
-	 // CICO-65478 Marketing items that is shown in login screen
-	 $scope.marketingItems = marketingItems;
+
+	if (!location.href.match('select_property')) {
+	    $window.localStorage.removeItem('jwt');
+	}
+
+	$scope.marketingItems = [];
+	loginSrv.getMarketingItems(function(data) {
+	    $scope.marketingItems = data;
+	});
+
 	 $rootScope.isModalShowing = false;
 
 
