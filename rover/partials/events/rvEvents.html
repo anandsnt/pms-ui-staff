@@ -168,7 +168,7 @@
                         <label for="event-start">
                             Start Date
                         </label>
-                        <div class="has-datepicker">
+                        <div class="has-datepicker" ng-class="{'overlay': eventData.disableStartDate}">
                             <!-- add .visible to show clear button -->
                             <button class="clear-query" ng-class="{'visible': eventDates.start}" ng-click="clearFilter($event, 'startDate', eventData, 'start', false, true)">
                                 <span class="icons icon-clear-search">Clear query</span>
@@ -181,6 +181,7 @@
                                 ng-model="eventDates.start"
                                 ng-change="onFieldChange(eventDates.start, 'startDate')"
                                 ng-class="{'error': fieldErrors.startDate}"
+                                ng-disabled="eventData.disableStartDate"
                                 placeholder="Select Date">
                                                 
                         </div>
@@ -189,7 +190,7 @@
                         <label for="event-end">
                             End Date
                         </label>
-                        <div class="has-datepicker">
+                        <div class="has-datepicker" ng-class="{'overlay': eventData.disableEndDate }">
                              <!-- add .visible to show clear button -->
                             <button class="clear-query" ng-class="{'visible': eventDates.end}" ng-click="clearFilter($event, 'endDate', eventData, 'end', false, true)">
                                 <span class="icons icon-clear-search">Clear query</span>
@@ -202,6 +203,7 @@
                                 ui-date="eventEndDateOptions"
                                 ng-change="onFieldChange(eventDates.end, 'endDate')"
                                 ng-class="{'error': fieldErrors.endDate}"
+                                ng-disabled="eventData.disableEndDate"
                                 placeholder="Select Date">
                         </div>
                     </div>

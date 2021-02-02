@@ -18,12 +18,17 @@ angular.module('sntRover').service('rvPermissionSrv',
 
                     url = '/api/permissions';
 
-                rvBaseWebSrvV2.getJSON(url).then(function (data) {
-                    roverPermissions = data.permissions;
-                    deferred.resolve(data);
-                }, function (data) {
-                    deferred.reject(data);
-                });
+                if (!roverPermissions) {
+                    rvBaseWebSrvV2.getJSON(url).then(function (data) {
+                        roverPermissions = data.permissions;
+                        deferred.resolve(data);
+                    }, function (data) {
+                        deferred.reject(data);
+                    });
+                } else {
+                    deferred.resolve(roverPermissions); 
+                }
+                
                 return deferred.promise;
             };
 

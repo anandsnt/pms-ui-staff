@@ -28,7 +28,7 @@
     <span ng-show="feeData.showFee" class="total">
           Total:
           <strong ng-if="!payment.isRateSuppressed">
-              {{payment.selectedPaymentCurrencySymbol}}{{feeData.totalOfValueAndFee}}
+              {{payment.selectedPaymentCurrencySymbol}}{{feeData.totalOfValueAndFee | number: 2}}
           </strong>
     </span>
 </div>

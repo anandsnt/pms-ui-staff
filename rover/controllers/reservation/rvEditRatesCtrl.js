@@ -70,12 +70,14 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 				 var isRateModified = false;
 
 				_.each(room.stayDates, function(stayDate, idx) {
-					if (stayDatesOriginal[idx] && ( stayDatesOriginal[idx].rateDetails.modified_amount !== stayDate.rateDetails.modified_amount) ) {
-						isRateModified = true;
-					}
-					stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.modified_amount).toFixed(2);
-					if (isNaN(stayDate.rateDetails.modified_amount)) {
-						stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.actual_amount).toFixed(2);
+					if (stayDatesOriginal[idx] && stayDatesOriginal[idx].rateDetails) {
+						if (stayDatesOriginal[idx] && (stayDatesOriginal[idx].rateDetails.modified_amount !== stayDate.rateDetails.modified_amount)) {
+							isRateModified = true;
+						}
+						stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.modified_amount).toFixed(2);
+						if (isNaN(stayDate.rateDetails.modified_amount)) {
+							stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.actual_amount).toFixed(2);
+						}
 					}
 				});
 
