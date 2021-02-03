@@ -141,7 +141,7 @@ angular.module('login').service('loginSrv',
             };
 
             // Get marketing items from WP service
-            service.getMarketingItems = function() {
+            service.getMarketingItems = function(successCallback) {
                 var url = 'https://www.stayntouch.com/wp-json/snt/v1/rover_banners',
                     deferred = $q.defer();
 
@@ -153,6 +153,7 @@ angular.module('login').service('loginSrv',
                     }
                 }).
                 then(function (response) {
+                    successCallback(response.data);
                     deferred.resolve(response.data);
                 }, function () {
                     deferred.resolve([]);
