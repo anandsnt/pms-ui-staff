@@ -1001,6 +1001,9 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				$scope.initGuestCard(cardData);
                 $scope.callAPI(RVGuestCardsSrv.fetchGuestDetailsInformation, {
                     successCallBack: function(data) {
+                    	if ($scope.reservationData.guest && $scope.reservationData.guest.id) {
+                			$scope.reservationData.guest.id = cardData.id;
+						}
                         fetchGuestCardDataSuccessCallback(data);
                     },
                     failureCallBack: function(errorMessage) {
