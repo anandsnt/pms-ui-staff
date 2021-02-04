@@ -3694,6 +3694,8 @@
                 &:first-child {
                     h3,
                     .info { visibility: visible; }
+                   
+                    height: 35pt;
                 }
             }
         }
@@ -3744,6 +3746,14 @@
                 font-weight: 600;
                 .show;
                 width: 5cm;
+            }
+           
+            .room-type {
+                width: 100%;
+                flex-shrink: 0;
+                flex-grow: 1;
+                flex: auto;
+                order: 10;
             }
 
             .icon-ok-10 {
