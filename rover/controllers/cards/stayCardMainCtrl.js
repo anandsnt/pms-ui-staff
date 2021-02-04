@@ -520,7 +520,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			} else {
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 					"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
-					"confirmationId": $stateParams.confirmationId,
+					"confirmationId": $stateParams.confirmationId || $scope.reservationData.confirmNum,
 					"isrefresh": false
 				});
 			}
@@ -1001,6 +1001,9 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				$scope.initGuestCard(cardData);
                 $scope.callAPI(RVGuestCardsSrv.fetchGuestDetailsInformation, {
                     successCallBack: function(data) {
+                    	if ($scope.reservationData.guest && $scope.reservationData.guest.id) {
+                			$scope.reservationData.guest.id = cardData.id;
+						}
                         fetchGuestCardDataSuccessCallback(data);
                     },
                     failureCallBack: function(errorMessage) {
