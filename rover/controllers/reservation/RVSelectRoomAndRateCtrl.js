@@ -452,6 +452,14 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				if ($scope.stateCheck.stayDatesMode && $scope.reservationData.numNights > 1 && $scope.reservationData.currentSelectedRateCurrencyId !== "") {
 					payLoad.rate_currency_id = $scope.reservationData.currentSelectedRateCurrencyId;
 				}
+
+				if (ROOMS && ROOMS.length &&
+					ROOMS[0].stayDates && ROOMS[0].stayDates[ARRIVAL_DATE] &&
+					ROOMS[0].stayDates[ARRIVAL_DATE].rate &&
+					ROOMS[0].stayDates[ARRIVAL_DATE].rate.id) {
+					payLoad.arrivalDateRateId = ROOMS[0].stayDates[ARRIVAL_DATE].rate.id;
+				}
+
 				$scope.callAPI(RVRoomRatesSrv.fetchRateADRs, {
 					params: payLoad,
 					successCallBack: cb
