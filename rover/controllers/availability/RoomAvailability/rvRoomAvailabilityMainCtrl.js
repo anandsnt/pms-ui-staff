@@ -178,7 +178,8 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	$scope.navigateToCreateReservation = function(roomTypeInfo, dates, selectedDateIdx) {
 		$state.go('rover.reservation.search', {
 			selectedArrivalDate: dates[selectedDateIdx].date,
-			selectedRoomTypeId: roomTypeInfo.id
+			selectedRoomTypeId: roomTypeInfo.id,
+			numNights: 1
 		});
 		$scope.$emit('CLOSE_AVAILIBILTY_SLIDER');
 	};

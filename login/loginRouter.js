@@ -43,12 +43,6 @@ login.config([
                     }
                 }],
             resolve: {
-                marketingItems: function(loginSrv, $window) {
-                    if (!location.href.match('select_property')) {
-                        $window.localStorage.removeItem('jwt');
-                    }
-                    return loginSrv.getMarketingItems(); 
-                },
                 errors: [
                     'resetSrv', function (resetSrv) {
                         if (location.href.match('activation_period_expired=true')) {
