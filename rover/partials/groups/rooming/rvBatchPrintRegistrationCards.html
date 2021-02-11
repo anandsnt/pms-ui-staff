@@ -144,8 +144,9 @@
     </table>
     <table class="terms-signature page-break">
         <tr>
-            <td colspan="2" class="terms">{{ printRegCardData.terms_conditions }}</td>
+            <td colspan="2" class="terms" data-ng-bind-html="trustAsHtml(printRegCardData.terms_conditions)"></td>
         </tr>
+        
         <tr>
             <td>
                 <span class="signature">
