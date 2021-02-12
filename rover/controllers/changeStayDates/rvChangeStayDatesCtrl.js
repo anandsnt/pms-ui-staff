@@ -906,6 +906,14 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			// Reset validDays array
             $scope.stayDetails.validDays = [];
 
+            _.each($scope.stayDetails.calendarDetails.available_dates, function(availableDateData) {
+                _.each($scope.stayDetails.calendarDetails.stay_dates, function(stayDateData) {
+                    if (availableDateData.date === stayDateData.date) {
+                        availableDateData.rate = stayDateData.rate;
+                    }
+                });
+            });
+
             $($scope.stayDetails.calendarDetails.available_dates).each(function(index) {				
                 var preventOverbookHouse = !this.is_house_available && !canOverbookHouse && $rootScope.isStandAlone,
                     preventOverbookRoomType = !this.is_room_type_available && !canOverbookRoomType,
