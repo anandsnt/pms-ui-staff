@@ -990,6 +990,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.$broadcast("UPDATE_WINDOW");
 			} 
 			$scope.closeDialog();
+			$scope.printBillCardActive = false;
 			$("body #loading").html('<div id="loading-spinner" ></div>');
 			$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab)
 			sntActivity.stop("PRINT_STARTED");

@@ -48,7 +48,8 @@ angular.module('sntRover').controller('guestCardController', [
         // init activeCard as the companyCard
         $scope.activeCard = "companyCard";
         $scope.isPrintArStatement = false;
-        var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+        var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates',
+            staycardState = 'rover.reservation.staycard.reservationcard.reservationdetails';
 
         BaseCtrl.call(this, $scope);
         GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
@@ -1738,8 +1739,10 @@ angular.module('sntRover').controller('guestCardController', [
             // we are in card adding mode
             switchToNomralCardViewingMode();
 
+            $scope.initAllotmentCard(selectedAllotment.id);
+
             // we need to upadte the rate and other associated field, to do that, we are reloading the staycard
-            if ($scope.isInStayCardScreen()) {
+            if ($state.current.name === staycardState) {
                 $scope.reloadTheStaycard();
             }
         };

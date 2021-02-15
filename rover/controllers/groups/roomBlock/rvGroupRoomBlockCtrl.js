@@ -863,6 +863,16 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                 }
 
                 return maxDate;
+            },
+            // Get default end date min date
+            getEndDateMinDate = function(startDate) {
+                var minDate = startDate;
+
+                if (!startDate || (startDate < tzIndependentDate($rootScope.businessDate))) {
+                    minDate = new tzIndependentDate($rootScope.businessDate);
+                } 
+
+                return minDate;
             };
 
 		/**
@@ -919,7 +929,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 			// date picker options - End Date
             $scope.endDateOptions = _.extend({
-                minDate: $scope.startDate !== '' ? new tzIndependentDate($scope.startDate) : new tzIndependentDate($rootScope.businessDate),
+                minDate: getEndDateMinDate($scope.startDate),
                 disabled: shouldDisableEndDatePicker(),
                 onSelect: onEndDatePicked
             }, commonDateOptions);
