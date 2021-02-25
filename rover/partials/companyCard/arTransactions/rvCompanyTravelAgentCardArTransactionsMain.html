@@ -19,6 +19,14 @@
                 <button type="submit" name="submit" class="icons icon-search">Search</button>
                 <input name="ar-transaction-query" id="arTransactionQuery" class="query" placeholder="Search by Name, Room No. or Confirmation No. or AR Invoice No." type="search" autocomplete="off" ng-keyup="queryEntered()" ng-model="filterData.query" />
             </div>
+            <div class="entry sort" ng-if = "showSortFilter">
+                <div class="select with-label">
+                    <label>Sorting ASC</label>
+                    <select ng-model="filterData.sortField" ng-change="changedSortBy()">
+                        <option ng-repeat="item in filterData.sortOptions" value="{{item.value}}">{{item.name}}</option>
+                    </select>
+                </div>
+            </div>
             <div class="entry dates">
                 <div class="entry-data has-datepicker">
                     <label for="ar-transaction-date-from">From</label>
