@@ -103,6 +103,10 @@ sntRover.controller('RVPostChargeControllerV2',
 				$scope.invokeApi( RVPostChargeSrvV2.searchChargeItems, params, successCallBackFetchChargeCodes );
 			};
 
+			$scope.$on("$destroy", function() {
+				$scope.selectedChargeItemHash = {};
+            });
+
 			// Setting pagination object
 			$scope.postChargePaginationObj = {
 				id: 'POST_CHARGE_PAGINATION',
