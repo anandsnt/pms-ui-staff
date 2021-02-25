@@ -3333,7 +3333,7 @@
                                 box-shadow: none;
 
                                 &.search {
-                                    .calc-width(100, 260);
+                                    .calc-width(100, 410);
 
                                     input {
                                         font-size: 18px;
@@ -3353,6 +3353,29 @@
                                     }
 
                                     .entry-data { width: 120px; }
+                                }
+                                
+                                &.sort {
+                                    width: 150px;
+                                }
+
+                                .select {
+                                    &.with-label {
+                                        position: relative;
+
+                                        select {
+                                            padding: 10px 30px 0 10px;
+                                        }
+
+                                        label {
+                                            position: absolute;
+                                            top: 0;
+                                            left: 10px;
+                                            font-size: 12px;
+                                            text-transform: uppercase;
+                                            color: @grey3;
+                                        }
+                                    }
                                 }
                             }
                         }
