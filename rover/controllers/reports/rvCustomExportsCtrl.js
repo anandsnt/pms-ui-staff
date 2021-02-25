@@ -125,6 +125,20 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             return occurance;
         };
 
+        var areReportFilersValid = () => {
+            // For Financial Transacton report, we need to ensure that the duration filter is always selected with some value
+            // for other reports, we need to ignore this validation
+            if ($scope.selectedEntityDetails.report.title === 'Financial Transaction') {
+                var durationFilter = _.find($scope.filterData.appliedFilters, (filter) => {
+                    return filter.isDuration;
+                });
+
+                return durationFilter && durationFilter.selectedFirstLevel && durationFilter.selectedSecondLevel;
+            }
+
+            return true;
+        };
+
         var validateSchedule = function() {
             
             var hasFrequency = function() {
@@ -150,7 +164,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     return $scope.selectedColumns.length;  
                 };
 
-            return hasFrequency() && hasValidDistribution() && hasExportName() && hasOutputFormat() && hasSelectedColumns();
+            return hasFrequency() && hasValidDistribution() && hasExportName() && hasOutputFormat() && hasSelectedColumns() && areReportFilersValid();
         };
 
         var fillValidationErrors = function() {
@@ -171,6 +185,10 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             }
             if (!$scope.customExportsScheduleParams.format) {
                 $scope.createErrors.push('No format selected');
+            }
+
+            if(!areReportFilersValid()) {
+                 $scope.createErrors.push('No Duration Filter Selected');
             }
         };
         
