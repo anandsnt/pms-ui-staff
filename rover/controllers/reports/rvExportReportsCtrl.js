@@ -711,7 +711,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Criterion Hospitality CC Export': true,
                 'Cancellations by Arrival Date': true,
                 'Cancellations by Cancel Date': true,
-                'HESTA Switzerland': true
+                'HESTA Switzerland': true,
+                'Austria Residence Country Export': true
             };
 
             var forHourly = {
