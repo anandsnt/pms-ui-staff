@@ -6,7 +6,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
         SharedMethodsBaseCtrl.call (this, $scope, $rootScope, RVAutomaticEmailSrv, ngDialog);
 
-        $scope.isSubmitButtonEnabled = false;
+        $scope.isSubmitButtonEnabled = false; 
 
         if ($scope.reservationData.reservationId !== '') {
             $scope.isSubmitButtonEnabled = true;
@@ -704,7 +704,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 } else {
                     $scope.depositData = $scope.reservationData.depositData;
                 }
-                $scope.fetchDemoGraphics();
             }
             else {
                 if (!$scope.reservationData.depositData) {
@@ -721,7 +720,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 }
                 createReservation();
             }
-
+            $scope.fetchDemoGraphics();
             $scope.otherData.isGuestPrimaryEmailChecked = ($scope.reservationData.guest.email !== null && $scope.reservationData.guest.email !== "") ? true : false;
             $scope.otherData.isGuestAdditionalEmailChecked = false;
             $scope.reservationData.paymentMethods = paymentMethods;
