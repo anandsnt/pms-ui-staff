@@ -5,18 +5,17 @@
             <ul>
                 <li>
                     Closing Balance
-                    <span ng-show="balanceData.deposit_closing_balance !== null"><span class="currency">{{currencySymbol}}</span>{{balanceData.deposit_closing_balance | number:2}}</span>
+                    <span ng-show="balanceData.deposit_closing_balance !== null" ng-bind-html="balanceData.deposit_closing_balance | sntCurrency:this"></span>
                 </li>
                 <li>
                     EOD Report Balance
-                    <span class="next-view" ng-show="balanceData.deposit_report_balance !== null"><span class="currency">{{currencySymbol}}</span>{{balanceData.deposit_report_balance | number:2}}</span> <!-- Clicking this should open Deposit Summary Report, with the back button text "Journal" -->
+                    <span class="next-view" ng-show="balanceData.deposit_report_balance !== null" ng-bind-html="balanceData.deposit_report_balance | sntCurrency:this"></span> <!-- Clicking this should open Deposit Summary Report, with the back button text "Journal" -->
                 </li>
                 <li>
                     Balance Check
                     <i class="icons icon-action icon-completed" ng-if="balanceData.deposit_balance_difference === 0"></i>
                     <!-- If there's difference, show this instead of L53: -->
-                    <span class="color-red" ng-if="balanceData.deposit_balance_difference !== 0"> 
-                        <span class="currency">{{currencySymbol}}</span>{{balanceData.deposit_balance_difference | number:2}}
+                    <span class="color-red" ng-if="balanceData.deposit_balance_difference !== 0" ng-bind-html="balanceData.deposit_balance_difference | sntCurrency:this"></span>
                     </span> 
                 </li>
             </ul>
@@ -26,17 +25,15 @@
             <h3>Guest Ledger</h3>
             <ul>
                 <li>
-                    <span ng-show="balanceData.guest_closing_balance !== null"><span class="currency">{{currencySymbol}}</span>{{balanceData.guest_closing_balance | number:2}}</span>
+                    <span ng-show="balanceData.guest_closing_balance !== null" ng-bind-html="balanceData.guest_closing_balance | sntCurrency:this"></span>
                 </li>
                 <li>
-                    <span class="next-view" ng-show="balanceData.guest_report_balance !== null"><span class="currency">{{currencySymbol}}</span>{{balanceData.guest_report_balance | number:2}}</span> <!-- Clicking this should open Guest Balance Report, with the back button text "Journal" -->
+                    <span class="next-view" ng-show="balanceData.guest_report_balance !== null" ng-bind-html="balanceData.guest_report_balance | sntCurrency:this"></span> <!-- Clicking this should open Guest Balance Report, with the back button text "Journal" -->
                 </li>
                 <li>
                     <i class="icons icon-action icon-completed" ng-if="balanceData.guest_balance_difference === 0"></i>
                     <!-- If there's difference, show this instead of L70: -->
-                    <span class="color-red" ng-if="balanceData.guest_balance_difference !== 0">
-                        <span class="currency">{{currencySymbol}}</span>{{balanceData.guest_balance_difference | number:2}}
-                    </span> 
+                    <span class="color-red" ng-if="balanceData.guest_balance_difference !== 0" ng-bind-html="balanceData.guest_balance_difference | sntCurrency:this"></span>
                 </li>
             </ul>
         </div>
@@ -45,10 +42,10 @@
             <h3>A/R Ledger</h3>
             <ul>
                 <li>
-                    <span><span class="currency">{{currencySymbol}}</span>{{balanceData.ar_closing_balance}}</span>
+                    <span ng-bind-html="balanceData.ar_closing_balance | sntCurrency:this"></span>
                 </li>
                 <li>
-                    <span class="next-view"><span class="currency">{{currencySymbol}}</span>{{balanceData.ar_report_balance}}</span> <!-- Clicking this should open A/R Summary Report, with the back button text "Journal" -->
+                    <span class="next-view" ng-bind-html="balanceData.ar_report_balance | sntCurrency:this"></span> <!-- Clicking this should open A/R Summary Report, with the back button text "Journal" -->
                 </li>
                 <li>
                     <i class="icons icon-action icon-completed"></i>
@@ -64,21 +61,21 @@
                     <button type="button" class="button white has-arrow next-view" ng-click="clickedNavigationToSearch('OPEN_BILL_CHECKOUT')">
                         <i class="guest-status departed"></i>
                         <span class="label">Checked out</span>
-                        <span class="currency">{{currencySymbol}}</span> {{balanceData.checkout_with_balance | number:2}}
+                        <span ng-bind-html="balanceData.checkout_with_balance | sntCurrency:this"></span>
                     </button>
                 </li>
                 <li ng-if="false">
                     <button type="button" class="button white has-arrow next-view" ng-click="clickedNavigationToSearch('NOSHOW')">
                         <i class="guest-status no-show"></i>
                         <span class="label">No Show</span>
-                        <span class="currency">{{currencySymbol}}</span> {{balanceData.no_show_with_balance | number:2}}
+                        <span ng-bind-html="balanceData.no_show_with_balance | sntCurrency:this"></span>
                     </button>
                 </li>
                 <li ng-if="false">
                     <button type="button" class="button white has-arrow next-view" ng-click="clickedNavigationToSearch('CANCELED')">
                         <i class="guest-status cancel"></i>
                         <span class="label">Cancellations</span>
-                        <span class="currency">{{currencySymbol}}</span> {{balanceData.cancellation_with_balance | number:2}}
+                        <span ng-bind-html="balanceData.cancellation_with_balance | sntCurrency:this"></span>
                     </button>
                 </li>
             </ul>

@@ -59,7 +59,7 @@
                     <td ng-repeat="bar in data.bestAvailabilityRates track by $index">
                        <div class="inner">
                             <span class="rate-value" ng-if="bar == 'C'">C</span>
-                            <span class="rate-value" ng-if="bar != 'C'"> {{bar | currency:currencySymbol:2}}</span>
+                            <span class="rate-value" ng-if="bar != 'C'"> <span ng-bind-html="bar | sntCurrency:this"></span></span>
                         </div>
                     </td>
                 </tr>
@@ -73,7 +73,7 @@
                         </button>
                         <button type="button" class="button white rate-value" ng-if="bar.amount !== 'C' && bar.amount !== null" ng-click="navigateToCreateReservation(bar, data.dates, $index)">
                             <!-- When clicked open "Create Reservation" screen with dates, room type and rate preselected -->
-                            {{bar.amount | currency:currencySymbol:2}}
+                            <span ng-bind-html="bar.amount | sntCurrency:this"></span>
                         </button>
                     </td>
                 </tr>
