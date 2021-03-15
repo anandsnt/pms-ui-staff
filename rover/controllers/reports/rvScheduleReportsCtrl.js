@@ -2017,13 +2017,15 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     selectedEntity.report.title === reportNames['ADDON_FORECAST'] || 
                     selectedEntity.report.title === reportNames['FORECAST_GUEST_GROUPS'] ||
                     selectedEntity.report.title === reportNames['MARKET_SEGMENT_STAT_REPORT'] || 
-                    selectedEntity.report.title === reportNames['A/R_AGING'] || 
                     selectedEntity.report.title === reportNames['COMPLIMENTARY_ROOM_REPORT'] || 
                     selectedEntity.report.title === reportNames['CANCELLATION_NO_SHOW'])) {
                 $scope.scheduleFormat = _.filter(originalScheduleFormats, function(object) {
                     return object.value === 'CSV';
                 });
-            } else if (selectedEntity.report && selectedEntity.report.title === reportNames['GUEST_BALANCE_REPORT']) {
+            } else if (selectedEntity.report && (
+                selectedEntity.report.title === reportNames['GUEST_BALANCE_REPORT'] ||
+                selectedEntity.report.title === reportNames['A/R_AGING']
+            )) {
                 $scope.scheduleFormat = _.filter(originalScheduleFormats, function(object) {
                     return object.value === 'CSV' || object.value === 'PDF';
                 });
