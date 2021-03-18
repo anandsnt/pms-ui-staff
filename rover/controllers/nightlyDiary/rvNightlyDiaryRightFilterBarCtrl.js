@@ -219,7 +219,7 @@ angular.module('sntRover')
                         };
 
                         $scope.$emit('SHOW_ASSIGN_ROOM_SLOTS', newData );
-
+						$scope.diaryData.isReservationSelected = false;
 						if (screen.width < 1600 && filterData.type === 'ASSIGN_ROOM') {
 							$scope.$emit('TOGGLE_FILTER_TOP', 'UNASSIGNED_RESERVATION');
 						}
