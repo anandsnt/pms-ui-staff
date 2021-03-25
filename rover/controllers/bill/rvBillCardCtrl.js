@@ -2729,6 +2729,7 @@ sntRover.controller('RVbillCardController',
 	var finalInvoiceSettlement = function(data, isPrint) {
 		var settleInvoiceSuccess = function() {
 				$scope.shouldGenerateFinalInvoice = false;
+				$scope.getBillData($scope.currentActiveBill);
 				if (isPrint) {
 					printBill(data);
 				} else {
