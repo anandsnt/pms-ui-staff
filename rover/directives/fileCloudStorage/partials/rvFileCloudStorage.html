@@ -51,7 +51,7 @@
 							<h4>{{note.posted_user_first_name}} {{note.posted_user_last_name}}</h4>
 							<time datetime="">
 							<span class="time">{{note.time}}</span>
-							<span class="date">{{formatDateForUI(note.date)}}</span>
+							<span class="date">{{note.date | date:dateFormat}}</span>
 							</time>
 							<button type="button"
 							class="icons icon-trash"
