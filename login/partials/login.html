@@ -3,7 +3,7 @@
 	<img src="/assets/images/logo_snt_latest.png" alt="" class="login__logo" ng-click="showDebugOptions()"/>
 
 	<form accept-charset="UTF-8" ng-submit="submit()" autocomplete="off" class="login__content" id="login-form" method="post" name="login-form" novalidate>
-		<h1>Welcome to Rover.</h1>
+		<h1>Welcome to StayNTouch</h1>
 		<div class="notice error" ng-show="errorMessage!=''">
 			{{errorMessage[0]}}
 		</div>
@@ -27,13 +27,13 @@
 			<input autocomplete="off" id="password" ng-model="data.password" name="password" placeholder="Enter your password" type="password" value="{{data.password}}" tabindex="2" />
 		</div>
 		<div class="action">
-            <button type="submit" class="button green" tabindex="3">Sign In To Rover</button>            
+            <button type="submit" class="button green" tabindex="3">Sign In </button>            
         </div>
 	</form>
 	<div class="login__footer">
 		<p>For questions please contact your hotel administrator or visit the <a href="https://stayntouch.freshdesk.com/support/home" target="_blank">StayNTouch Support Portal</a> for more information.</p>
 		<p>For system performance issues see <a href="https://status.stayntouch.com/" target="_blank">StayNTouch System Status</a> page.</p>
-		<p class="muted">Rover Version {{data.roverVersion}} includes software developed by the Puma Web Server, Memcached & ImageMagick Studio LLC.</p>
+		<p class="muted">Version {{data.roverVersion}} includes software developed by the Puma Web Server, Memcached & ImageMagick Studio LLC.</p>
 	</div>
 </div>
 <div id="marketing" role="aside">
