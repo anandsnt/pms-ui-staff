@@ -2037,6 +2037,8 @@ sntRover.controller('RVbillCardController',
 
 	// To handle success callback of complete checkout
 	$scope.completeCheckoutSuccessCallback = function(response) {
+		// Once we checkout we need to fetch summary bill details which is already done in moveCharges event	
+		$scope.$emit('moveChargeSuccsess', {}); 
 		$scope.showSuccessPopup(response);
 		$timeout(function() {
 			// slight delay on-success so user doesnt re-click review & checkout again and initiate an error
@@ -2729,6 +2731,7 @@ sntRover.controller('RVbillCardController',
 	var finalInvoiceSettlement = function(data, isPrint) {
 		var settleInvoiceSuccess = function() {
 				$scope.shouldGenerateFinalInvoice = false;
+				$scope.getBillData($scope.currentActiveBill);
 				if (isPrint) {
 					printBill(data);
 				} else {
