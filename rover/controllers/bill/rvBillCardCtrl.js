@@ -3223,9 +3223,23 @@ sntRover.controller('RVbillCardController',
 		}
 
 		var reservationStatus = $scope.reservationBillData.reservation_status;
+		var newBillValue = data.toBill;
 
 		var fetchSuccessCallback = function(reservationBillDataFetched) {
-			$scope.reservationBillData.bills = reservationBillDataFetched.bills;
+			// set bill header value after move bill
+			angular.forEach(reservationBillDataFetched.bills, function(data) {
+				// Identify the new bill
+				if (parseInt(data.bill_id) === parseInt(newBillValue)) {
+					$scope.reservationBillData.bills[parseInt(data.bill_number) - 1] = {
+						bill_id: data.bill_id,
+						bill_number: data.bill_number,
+						total_amount: data.total_amount,
+						routed_entity_type: data.routed_entity_type,
+						guest_image: data.guest_image
+					};
+				}
+
+			});
 			$scope.getBillData($scope.currentActiveBill);
 		},
 		dataToSend = {
@@ -3233,7 +3247,7 @@ sntRover.controller('RVbillCardController',
 			successCallBack: fetchSuccessCallback
 		};
 
-		$scope.callAPI(RVBillCardSrv.fetch, dataToSend);
+		$scope.callAPI(RVBillCardSrv.fetchReservationBillData, dataToSend);
 	});
 
 	/**
