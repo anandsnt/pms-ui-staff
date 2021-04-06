@@ -4,9 +4,8 @@ angular.module('sntRover').controller('guestCardController', [
         var resizableMinHeight = 90,
             resizableMaxHeight = $(window).height() - resizableMinHeight,
             DEBOUNCE_DELAY = 1500,
+            that = this,
             updateContactInfo = function() {
-                var that = this;
-
                 that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
                 var saveUserInfoFailureCallback = function () {
                     $scope.$emit('contactInfoError', true);
@@ -387,9 +386,7 @@ angular.module('sntRover').controller('guestCardController', [
         });
 
         $scope.updateContactInfo = function() {
-            $scope.timerHandler = $timeout(function () {
-                updateContactInfo();
-            }, DEBOUNCE_DELAY);
+            updateContactInfo();
         };
 
         /**
