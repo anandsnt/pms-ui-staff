@@ -215,6 +215,12 @@ angular.module('sntRover').controller('guestCardController', [
             $scope.hasPermissionToCreateCCard = rvPermissionSrv.getPermissionValue('CREATE_COMPANY_CARD');
         };
 
+        $scope.emailTabKey = function(event) {
+            event.preventDefault();
+            $scope.openGuestCard();
+            document.getElementById('titleId') ? document.getElementById('titleId').getElementsByTagName('input')['0'].focus() : "";  
+        };
+
         $scope.$on("swipeAtGuestCard", function() {
             $scope.guestCardTabSwitch("guest-credit");
         });
