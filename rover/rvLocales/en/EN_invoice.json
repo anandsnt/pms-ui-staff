@@ -30,4 +30,4 @@
 "SEARCH_PLACE_HOLDER_WITHOUT_FOLIO_NUMBER": "Search by Invoice No., Account/Guest Name",
 "SEARCH_PLACE_HOLDER_WITH_RECEIPTS_RESERVATION": "Search by Receipt No., Guest Name",
 "SEARCH_PLACE_HOLDER_WITH_RECEIPTS_ACCOUNTS": "Search by Receipt No., Account Name",
-"SEARCH_PLACE_HOLDER_WITH_AR_INVOICE": "Search by AR Invoice No., Name or Balance"
+"SEARCH_PLACE_HOLDER_WITH_AR_INVOICE": "Search by AR Invoice No."
