@@ -4,9 +4,8 @@ angular.module('sntRover').controller('guestCardController', [
         var resizableMinHeight = 90,
             resizableMaxHeight = $(window).height() - resizableMinHeight,
             DEBOUNCE_DELAY = 1500,
+            that = this,
             updateContactInfo = function() {
-                var that = this;
-
                 that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
                 var saveUserInfoFailureCallback = function () {
                     $scope.$emit('contactInfoError', true);
@@ -211,9 +210,21 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.contactInfoError = false;
                 $scope.eventTimestamp = "";
                 var preventClicking = false;
+                if (!$scope.guestCardData.contactInfo.address.state) {
+                    $scope.guestCardData.contactInfo.address.state = $scope.reservationData.guest.address.state;
+                }
+                if (!$scope.guestCardData.contactInfo.address.city) {
+                    $scope.guestCardData.contactInfo.address.city = $scope.reservationData.guest.address.city;
+                }
             }
             $scope.hasPermissionToCreateTACard = rvPermissionSrv.getPermissionValue('CREATE_TRAVEL_AGENT_CARD');
             $scope.hasPermissionToCreateCCard = rvPermissionSrv.getPermissionValue('CREATE_COMPANY_CARD');
+        };
+
+        $scope.emailTabKey = function(event) {
+            event.preventDefault();
+            $scope.openGuestCard();
+            document.getElementById('titleId') ? document.getElementById('titleId').getElementsByTagName('input')['0'].focus() : "";  
         };
 
         $scope.$on("swipeAtGuestCard", function() {
@@ -387,9 +398,7 @@ angular.module('sntRover').controller('guestCardController', [
         });
 
         $scope.updateContactInfo = function() {
-            $scope.timerHandler = $timeout(function () {
-                updateContactInfo();
-            }, DEBOUNCE_DELAY);
+            updateContactInfo();
         };
 
         /**

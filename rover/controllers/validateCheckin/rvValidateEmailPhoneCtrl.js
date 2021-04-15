@@ -252,7 +252,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
 	};
 	$scope.submitAndGoToCheckin = function() {
 
-        if ($scope.shouldEnableSubmitButton()) {
+        if ($scope.shouldEnableSubmitButton() && $scope.isDemographicsFormValid()) {
 			$scope.saveData.guest_id = $scope.guestCardData.guestId;
 	        $scope.saveData.user_id = $scope.guestCardData.userId;
 	        var isValidDataExist = false;
