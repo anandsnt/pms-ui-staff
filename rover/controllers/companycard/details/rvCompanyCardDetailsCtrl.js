@@ -339,7 +339,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		});
 
 		$scope.deleteArAccount = function() {
-
+			$scope.errorMessage = "";
 			ngDialog.open({
 				template: '/assets/partials/companyCard/rvCompanyCardDeleteARaccountPopup.html',
 				className: 'ngdialog-theme-default1 calendar-single1',
