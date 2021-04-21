@@ -8,13 +8,42 @@ angular.module('sntRover').service('rvHouseEventsListSrv', [
      * @param {Object} params - hold the request params
      * @return {Promise}
      */
-    this.fetchHouseEventsByDate = (params) => {
+    this.fetchHouseEventsByDate = function(params) {
         var url = '/api/house_events/list',
             deferred = $q.defer();                
         
-        rvBaseWebSrvV2.postJSON(url, params).then((response) => {
+        rvBaseWebSrvV2.postJSON(url, params).then(function(response) {
             deferred.resolve(response.data);
-        }, (error) => {
+        }, function(error) {
+            deferred.reject(error);
+        });
+
+        return deferred.promise;
+
+    };
+
+    /**
+     * Fetch house events count for a date range
+     * @param {Object} params - hold the request params
+     * @return {Promise}
+     */
+    this.fetchEventsCount = function(startDate, endDate) {
+        var url = '/api/house_events/count_per_day',
+            deferred = $q.defer(),
+            requestParams = {
+                start_date: startDate,
+                end_date: endDate                    
+            };
+        
+        rvBaseWebSrvV2.postJSON(url, requestParams).then(function(response) {
+            var formattedData = {};
+
+            _.each(response.data, function(event) {
+                formattedData[event.date] = event.count;
+            });
+            
+            deferred.resolve(formattedData);
+        }, function(error) {
             deferred.reject(error);
         });
 

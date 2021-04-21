@@ -1492,6 +1492,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			// we need the copy of selected_room_type, we ned to use these to show save/discard button
             $scope.copy_selected_room_types_and_bookings = util.deepCopy(data.results);
 
+            $scope.eventsCount = data.eventsCount;
+
             $scope.getTotalBookedRooms();
 
             // Need to update the timeline date options if shoulder dates have changed
@@ -2348,6 +2350,28 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             }
 
             return false;
+        };
+
+        /**
+         * Show events list popup
+         * @param {Number} eventsCount events count
+         * @param {Date} selectedDate selected date
+         * @return {void}
+         */
+        $scope.showEventsListPopup = function(eventsCount, selectedDate) {
+            if (!eventsCount) {
+                return;
+            }
+
+            $scope.selectedEventDisplayDate = selectedDate;
+            ngDialog.open({
+                template: '/assets/partials/popups/rvEventsListPopup.html',
+                scope: $scope,
+                controller: 'rvEventsListPopupCtrl',
+                className: 'ngdialog-theme-default',
+                closeByDocument: false,
+                closeByEscape: true
+            });
         };
 
 

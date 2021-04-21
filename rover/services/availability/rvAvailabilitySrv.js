@@ -1026,7 +1026,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 				});
 			
 				that.data.gridData.eventsCount = formattedData;
-                deferred.resolve({});
+                deferred.resolve(formattedData);
             }, (error) => {
                 deferred.reject(error);
             });
