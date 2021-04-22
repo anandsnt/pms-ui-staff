@@ -107,6 +107,11 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			return deferred.promise;
 		};
 
+		/**
+		 * Get the group inventories
+		 * @param {Object} param  - request params
+		 * @return {Promise}
+		 */
 		this.getGroupInventories = function(param) {
 			var deferred = $q.defer(),
 				url = '/api/groups/' + param.group_id + '/inventories';
