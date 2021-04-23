@@ -14,6 +14,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
                                                 && $scope.reservationBillData.is_bill_lock_enabled;
     $scope.billFormat.isInformationalInvoiceDisabled = $scope.isSettledBill
                                                 && $scope.reservationBillData.is_bill_lock_enabled;
+    $scope.disableToggleAccount = false;
     /*
     *  Get the request params for bill settings info
     */
@@ -140,7 +141,19 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             if (response.data && response.data.default_bill_settings) {
                 response.data.default_bill_settings = response.data.default_bill_settings.toString();
             }
-
+            /** CICO-80096
+             * Disable the invoice company/TA toggle based on the direct bill settlement account type 
+             */
+            if(response.data && response.data.bill_paid_account_type) {
+                if(response.data.bill_paid_account_type === 'COMPANY') {
+                    $scope.isCompanyCardInvoice = true;
+                    $scope.disableToggleAccount = true;
+                } else if(response.data.bill_paid_account_type === 'TRAVELAGENT') {
+                    $scope.isCompanyCardInvoice = false;
+                    $scope.disableToggleAccount = true;
+                }
+                 
+            }
             $scope.data = response.data;
             $scope.setEmailAddress();
         };
