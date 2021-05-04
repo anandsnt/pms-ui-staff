@@ -10,7 +10,8 @@ sntRover.controller('rvEventsListPopupCtrl', [
         BaseCtrl.call(this, $scope);
 
         var EVENTS_LIST_SCROLLER = 'events-list-scroller';
-    
+        
+        // Set scroller for the popup 
         var setScroller = function () {
                 var scrollerOptions = {
                     tap: true,
@@ -19,12 +20,14 @@ sntRover.controller('rvEventsListPopupCtrl', [
 
                 $scope.setScroller(EVENTS_LIST_SCROLLER, scrollerOptions);
             },
+            // Refresh scroller
             refreshScroller = function () {
                 $timeout(() => {
                     $scope.refreshScroller(EVENTS_LIST_SCROLLER);
                 }, 100);
             
             },
+            // Fetch house events list for the given date
             fetchHouseEventsList = () => {
                 var onHouseEventsFetchSuccess = (data) => {
                         $scope.eventsData = data;
@@ -44,23 +47,12 @@ sntRover.controller('rvEventsListPopupCtrl', [
                 $scope.callAPI(rvEventsListSrv.fetchHouseEventsByDate, options);
             };
         
-    // Close the dialog
+        // Close the dialog
         $scope.closeDialog = () => {
             ngDialog.close();
-            //document.activeElement.blur();
-
-            // $rootScope.modalClosing = true;
-            // $timeout(() => {
-            //     ngDialog.close();
-            //     $rootScope.modalClosing = false;
-            //     window.scrollTo(0, 0);
-            //     document.getElementById('rate-manager').scrollTop = 0;
-            //     document.getElementsByClassName('pinnedLeft-list')[0].scrollTop = 0;
-            //     $scope.$apply();
-            // }, 700);
         };
     
-    
+        // Initialize the controller
         var init = () => {
             $scope.displayDate = $filter('date')(new tzIndependentDate($scope.selectedEventDisplayDate), 'EEEE, dd MMMM yyyy');
             setScroller();

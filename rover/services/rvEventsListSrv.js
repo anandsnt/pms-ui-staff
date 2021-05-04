@@ -2,8 +2,6 @@ angular.module('sntRover').service('rvEventsListSrv', [
     '$q',
     'rvBaseWebSrvV2',
     function ($q, rvBaseWebSrvV2) {
-    
-    var that = this;
 
     /**
      * Fetch house events count for the given date

@@ -955,8 +955,6 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			}, function (error) {
 				deferred.reject(error);
 			});
-
-			
 			
 			return deferred.promise;
 
