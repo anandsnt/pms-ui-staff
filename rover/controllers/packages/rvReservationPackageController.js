@@ -135,11 +135,16 @@ sntRover.controller('RVReservationPackageController',
 				if (!$scope.selectedPurchesedAddon.end_date) {
 					$scope.selectedPurchesedAddon.end_date = $scope.addonPostingDate.endDate;
 				}
-				updateDaysOfWeek();
+				
 				if (typeof $scope.selectedPurchesedAddon.selected_post_days === 'undefined') {
 					$scope.selectedPurchesedAddon.selected_post_days = {};
 					$scope.togglePostDaysSelectionForAddon(true);
 				}
+				$scope.selectedPurchesedAddon.startDateObj = tzIndependentDate($scope.selectedPurchesedAddon.start_date);
+				$scope.selectedPurchesedAddon.endDateObj = tzIndependentDate($scope.selectedPurchesedAddon.end_date);
+
+				updateDaysOfWeek();
+
 				var startDate = $filter('date')($scope.selectedPurchesedAddon.start_date, $rootScope.dateFormat),
 					endDate = $filter('date')($scope.selectedPurchesedAddon.end_date, $rootScope.dateFormat);
 
@@ -322,8 +327,18 @@ sntRover.controller('RVReservationPackageController',
 
 		var setPostingData = function() {
 			angular.forEach($scope.packageData.existing_packages, function(existing_package) {
-				existing_package.start_date = $filter('date')(tzIndependentDate(existing_package.start_date), $rootScope.dateFormatForAPI);
-				existing_package.end_date = $filter('date')(tzIndependentDate(existing_package.end_date), $rootScope.dateFormatForAPI);
+				if (existing_package.startDateObj) {
+					existing_package.start_date = $filter('date')(tzIndependentDate(existing_package.startDateObj), $rootScope.dateFormatForAPI);
+				}
+				else {
+					existing_package.start_date = $filter('date')(tzIndependentDate(existing_package.start_date), $rootScope.dateFormatForAPI);
+				}
+				if (existing_package.endDateObj) {
+					existing_package.end_date = $filter('date')(tzIndependentDate(existing_package.endDateObj), $rootScope.dateFormatForAPI);
+				}
+				else {
+					existing_package.end_date = $filter('date')(tzIndependentDate(existing_package.end_date), $rootScope.dateFormatForAPI);
+				}
 
                 angular.forEach(existing_package.post_instances, function(item) {
 	                var postDate = new Date(item.post_date),
@@ -338,8 +353,8 @@ sntRover.controller('RVReservationPackageController',
 		var updateDaysOfWeek = function() {
 
 			$scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-			var start_date = tzIndependentDate($filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.start_date), 'yyyy-MM-dd' )),
-				end_date = tzIndependentDate($filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.end_date), 'yyyy-MM-dd' )),
+			var start_date = $scope.selectedPurchesedAddon.startDateObj,
+				end_date = $scope.selectedPurchesedAddon.endDateObj,
 				noOfDays, startDayIndex;
 
 			noOfDays = (moment(end_date) - moment(start_date)) / 86400000;
