@@ -1,4 +1,4 @@
-angular.module('sntRover').service('rvEventsListSrv', [
+angular.module('sntRover').service('rvHouseEventsListSrv', [
     '$q',
     'rvBaseWebSrvV2',
     function ($q, rvBaseWebSrvV2) {

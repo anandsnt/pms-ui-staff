@@ -382,21 +382,21 @@ angular.module('sntRover')
             });
 
             /**
-             * Show events list popup
+             * Show house events list popup
              * @param {String} date - selected date
              * @param {Number} eventsCount - events count
              * @return {void} 
              */
-            $scope.showEventsListPopup = function(date, eventsCount) {
+            $scope.showHouseEventsListPopup = function(date, eventsCount) {
                 if (!eventsCount) {
                     return;
                 }
 
                 $scope.selectedEventDisplayDate = date;
                 ngDialog.open({
-                    template: '/assets/partials/popups/rvEventsListPopup.html',
+                    template: '/assets/partials/popups/rvHouseEventsListPopup.html',
                     scope: $scope,
-                    controller: 'rvEventsListPopupCtrl',
+                    controller: 'rvHouseEventsListPopupCtrl',
                     className: 'ngdialog-theme-default',
                     closeByDocument: false,
                     closeByEscape: true

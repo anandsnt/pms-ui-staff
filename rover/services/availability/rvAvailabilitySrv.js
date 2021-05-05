@@ -944,7 +944,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 			that.fetchAvailabilityDetails(params).then(function() {
 				promises.push(that.fetchBARs(params));
-				promises.push(that.fetchEventsCount(params));
+				promises.push(that.fetchHouseEventsCount(params));
 
 				$q.all(promises).then(function() {
 					deferred.resolve(true);
@@ -1010,7 +1010,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
          * @param {Object} params - hold the request params
          * @return {Promise}
          */
-        this.fetchEventsCount = (params) => {
+        this.fetchHouseEventsCount = (params) => {
             var url = '/api/house_events/count_per_day',
                 deferred = $q.defer(),
                 requestParams = {

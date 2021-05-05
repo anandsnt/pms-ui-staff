@@ -1,11 +1,11 @@
-sntRover.controller('rvEventsListPopupCtrl', [
+sntRover.controller('rvHouseEventsListPopupCtrl', [
     '$scope',
     '$rootScope',
     '$timeout',
-    'rvEventsListSrv',
+    'rvHouseEventsListSrv',
     'ngDialog',
     '$filter',
-    function($scope, $rootScope, $timeout, rvEventsListSrv, ngDialog, $filter) {
+    function($scope, $rootScope, $timeout, rvHouseEventsListSrv, ngDialog, $filter) {
 
         BaseCtrl.call(this, $scope);
 
@@ -44,7 +44,7 @@ sntRover.controller('rvEventsListPopupCtrl', [
                         }
                     };
             
-                $scope.callAPI(rvEventsListSrv.fetchHouseEventsByDate, options);
+                $scope.callAPI(rvHouseEventsListSrv.fetchHouseEventsByDate, options);
             };
         
         // Close the dialog
