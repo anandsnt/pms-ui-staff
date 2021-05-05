@@ -2353,21 +2353,21 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
         };
 
         /**
-         * Show events list popup
+         * Show house events list popup
          * @param {Number} eventsCount events count
          * @param {Date} selectedDate selected date
          * @return {void}
          */
-        $scope.showEventsListPopup = function(eventsCount, selectedDate) {
+        $scope.showHouseEventsListPopup = function(eventsCount, selectedDate) {
             if (!eventsCount) {
                 return;
             }
 
             $scope.selectedEventDisplayDate = selectedDate;
             ngDialog.open({
-                template: '/assets/partials/popups/rvEventsListPopup.html',
+                template: '/assets/partials/popups/rvHouseEventsListPopup.html',
                 scope: $scope,
-                controller: 'rvEventsListPopupCtrl',
+                controller: 'rvHouseEventsListPopupCtrl',
                 className: 'ngdialog-theme-default',
                 closeByDocument: false,
                 closeByEscape: true

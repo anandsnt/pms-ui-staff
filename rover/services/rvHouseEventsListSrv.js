@@ -27,15 +27,11 @@ angular.module('sntRover').service('rvHouseEventsListSrv', [
      * @param {Object} params - hold the request params
      * @return {Promise}
      */
-    this.fetchEventsCount = function(startDate, endDate) {
+    this.fetchHouseEventsCount = function(params) {
         var url = '/api/house_events/count_per_day',
-            deferred = $q.defer(),
-            requestParams = {
-                start_date: startDate,
-                end_date: endDate                    
-            };
+            deferred = $q.defer();            
         
-        rvBaseWebSrvV2.postJSON(url, requestParams).then(function(response) {
+        rvBaseWebSrvV2.postJSON(url, params).then(function(response) {
             var formattedData = {};
 
             _.each(response.data, function(event) {
