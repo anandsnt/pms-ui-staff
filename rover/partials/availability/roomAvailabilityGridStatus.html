@@ -9,7 +9,11 @@
 			<thead>
 				<tr>
 					<th class="heading"></th>
-					<th  ng-repeat="eachDate in data.dates track by $index">
+		
+					<th  ng-repeat="eachDate in data.dates track by $index" 
+						ng-class="{'has-event-block': data.eventsCount[eachDate.date] > 0}" 
+						data-events="{{data.eventsCount[eachDate.date]}}"
+						ng-click="showHouseEventsListPopup(eachDate.date, data.eventsCount[eachDate.date])">
 						<div class="inner"  ng-class="{'weekend': eachDate.isWeekend}">
 							<span ng-bind="eachDate.date|date:dayInWeek"></span>
 							{{eachDate.date|date:shortMonthAndDate}}
