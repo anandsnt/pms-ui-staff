@@ -28,22 +28,21 @@ angular.module('sntRover').service('rvHouseEventsListSrv', [
      */
     this.fetchHouseEventsCount = function(params) {
         var url = '/api/house_events/count_per_day',
-            deferred = $q.defer();            
-        
-        rvBaseWebSrvV2.postJSON(url, params).then(function(response) {
+            deferred = $q.defer();
+
+        rvBaseWebSrvV2.getJSON(url, params).then(function(response) {
             var formattedData = {};
 
             _.each(response.data, function(event) {
                 formattedData[event.date] = event.count;
             });
-            
+
             deferred.resolve(formattedData);
         }, function(error) {
             deferred.reject(error);
         });
 
         return deferred.promise;
-
     };
 
 }]);

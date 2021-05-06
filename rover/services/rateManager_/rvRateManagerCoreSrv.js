@@ -758,10 +758,10 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 deferred = $q.defer(),
                 requestParams = {
                     start_date: params.from_date,
-                    end_date: params.to_date                    
+                    end_date: params.to_date
                 };
-            
-            BaseWebSrvV2.postJSON(url, requestParams).then((response) => {
+
+            BaseWebSrvV2.getJSON(url, requestParams).then((response) => {
                 // For maintaining the same structure, when this is fetched along with house availability
                 // we have given this structure
                 var eventData = {};
@@ -773,7 +773,6 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             });
 
             return deferred.promise;
-
         };
 
         /**
