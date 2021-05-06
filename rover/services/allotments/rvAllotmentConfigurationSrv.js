@@ -1,5 +1,5 @@
-angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccountsConfigurationSrv', 'rvEventsListSrv',
-	function($q, rvBaseWebSrvV2, rvAccountsConfigurationSrv, rvEventsListSrv) {
+angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccountsConfigurationSrv', 'rvHouseEventsListSrv',
+	function($q, rvBaseWebSrvV2, rvAccountsConfigurationSrv, rvHouseEventsListSrv) {
 
 		var self = this;
 
@@ -156,7 +156,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 				deferred = $q.defer();
 
 			promises.push(self.getAllotmentInventories(params));
-			promises.push(rvEventsListSrv.fetchEventsCount(params.start_date, params.end_date));
+			promises.push(rvHouseEventsListSrv.fetchHouseEventsCount(params));
 
 			$q.all(promises).then(function(response) {
 				var data = response[0];
