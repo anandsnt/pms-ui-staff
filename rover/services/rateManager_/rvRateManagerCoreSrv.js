@@ -808,17 +808,16 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
          * @return {Promise}
          */
         service.fetchHouseEventsByDate = (params) => {
-            var url = '/api/house_events/list',
-                deferred = $q.defer();                
-            
-            BaseWebSrvV2.postJSON(url, params).then((response) => {
+            var url = '/api/house_events',
+                deferred = $q.defer();
+
+            BaseWebSrvV2.getJSON(url, params).then((response) => {
                 deferred.resolve(response.data);
             }, (error) => {
                 deferred.reject(error);
             });
 
             return deferred.promise;
-
         };
 
     }

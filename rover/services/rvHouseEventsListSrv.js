@@ -9,17 +9,16 @@ angular.module('sntRover').service('rvHouseEventsListSrv', [
      * @return {Promise}
      */
     this.fetchHouseEventsByDate = function(params) {
-        var url = '/api/house_events/list',
-            deferred = $q.defer();                
-        
-        rvBaseWebSrvV2.postJSON(url, params).then(function(response) {
+        var url = '/api/house_events',
+            deferred = $q.defer();
+
+        rvBaseWebSrvV2.getJSON(url, params).then(function(response) {
             deferred.resolve(response.data);
         }, function(error) {
             deferred.reject(error);
         });
 
         return deferred.promise;
-
     };
 
     /**
