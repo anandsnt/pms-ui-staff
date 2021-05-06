@@ -22,18 +22,18 @@ sntRover.controller('rvHouseEventsListPopupCtrl', [
             },
             // Refresh scroller
             refreshScroller = function () {
-                $timeout(() => {
+                $timeout(function() {
                     $scope.refreshScroller(EVENTS_LIST_SCROLLER);
                 }, 100);
             
             },
             // Fetch house events list for the given date
-            fetchHouseEventsList = () => {
-                var onHouseEventsFetchSuccess = (data) => {
+            fetchHouseEventsList = function() {
+                var onHouseEventsFetchSuccess = function(data) {
                         $scope.eventsData = data;
                         refreshScroller();
                     },
-                    onHouseEventsFetchFailure = () => {
+                    onHouseEventsFetchFailure = function() {
                         $scope.eventsData = [];
                     },
                     options = {
@@ -48,12 +48,12 @@ sntRover.controller('rvHouseEventsListPopupCtrl', [
             };
         
         // Close the dialog
-        $scope.closeDialog = () => {
+        $scope.closeDialog = function() {
             ngDialog.close();
         };
     
         // Initialize the controller
-        var init = () => {
+        var init = function() {
             $scope.displayDate = $filter('date')(new tzIndependentDate($scope.selectedEventDisplayDate), 'EEEE, dd MMMM yyyy');
             setScroller();
             fetchHouseEventsList();
