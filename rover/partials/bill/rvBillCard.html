@@ -345,9 +345,9 @@
 										<td class="charge-code">
 											{{ allowanceEntry.charge_code }}
 										</td>
-										<td class="column-allowance" ng-if="allowanceEntry.type === 'CONSUMED'">
+										<td class="column-allowance" ng-if="allowanceEntry.type === 'CONSUMED' || allowanceEntry.type === 'UNUSED ALLOWANCE / ALLOWANCE LOSS'">
 										</td>
-										<td class="column-allowance" ng-if="allowanceEntry.type !== 'CONSUMED'">
+										<td class="column-allowance" ng-if="allowanceEntry.type !== 'CONSUMED' && allowanceEntry.type !== 'UNUSED ALLOWANCE / ALLOWANCE LOSS'">
 											{{ allowanceEntry.description }}
 											<span class="value" ng-if="allowanceEntry.type === 'ALLOWANCE LOAD'">{{ allowanceEntry.allowance_load_value }}</span>
 											<span class="icons time check-in rotate-down"></span>
@@ -355,9 +355,9 @@
 										<td class="amount">
 											<span class="currency">{{ currencySymbol }}</span>{{ allowanceEntry.amount | number:2 }}
 										</td>
-										<td class="column-allowance" ng-if="allowanceEntry.type !== 'CONSUMED'">
+										<td class="column-allowance" ng-if="allowanceEntry.type !== 'CONSUMED' && allowanceEntry.type !== 'UNUSED ALLOWANCE / ALLOWANCE LOSS'">
 										</td>
-										<td class="column-allowance" ng-if="allowanceEntry.type === 'CONSUMED'">
+										<td class="column-allowance" ng-if="allowanceEntry.type === 'CONSUMED' || allowanceEntry.type === 'UNUSED ALLOWANCE / ALLOWANCE LOSS'">
 											{{ allowanceEntry.description }} <span class="icons time {{ allowanceEntry.amount > 0 ? 'check-in' : 'check-out' }} rotate-up"></span>
 										</td>
 									</tr>
