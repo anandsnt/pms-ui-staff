@@ -1843,11 +1843,15 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						transferState();
 					}
 				}
-			}
+            }
 		};
 
 		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- ADDONS & OVERBOOKING
-
+		 
+	    $scope.isBookingRestricted = function(restriction) {
+			return ((restriction.length ? _.find(restriction, 'is_on_rate') : false) && !rvPermissionSrv.getPermissionValue('BOOK_RESTRICTED_ROOM_RATE'));
+		};
+		
 		$scope.selectAddon = function() {
 			alertAddonOverbooking(true);
 		};
