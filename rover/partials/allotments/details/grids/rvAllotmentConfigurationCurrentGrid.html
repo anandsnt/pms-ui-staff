@@ -90,7 +90,10 @@
 
     <ul class="wrapper" style="width:{{getWidthForCurrentViewTimeLine()}};">
         <li ng-repeat="occupancy in allotmentConfigData.roomblock.selected_room_types_and_occupanies" ng-class="{'with-button': !$index}">
-            <div class="inner">
+            <div class="inner"
+                ng-class="{'has-event-block' : eventsCount[occupancy.date] > 0}"
+                data-events="{{eventsCount[occupancy.date]}}"
+                ng-click="showHouseEventsListPopup(eventsCount[occupancy.date], occupancy.date)">
                 <span>{{ ::formatDateForUI(occupancy.date, fulldayInWeek) }}</span>
                 <strong>{{ ::formatDateForUI(occupancy.date, monthAndDate) }}</strong>
                 <em><i>{{ ::occupancy.occupancy }}</i><i>% Occupancy</i></em>

@@ -1,5 +1,5 @@
-angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccountsConfigurationSrv',
-	function($q, rvBaseWebSrvV2, rvAccountsConfigurationSrv) {
+angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccountsConfigurationSrv', 'rvHouseEventsListSrv',
+	function($q, rvBaseWebSrvV2, rvAccountsConfigurationSrv, rvHouseEventsListSrv) {
 
 		var self = this;
 
@@ -106,12 +106,13 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 
 			return deferred.promise;
 		};
+
 		/**
-		 * Function to get Room Block Grid Details
-		 * @param {param} -group id
-		 * @return {Promise} -
+		 * Get the group inventories
+		 * @param {Object} param  - request params
+		 * @return {Promise}
 		 */
-		this.getRoomBlockGridDetails = function(param) {
+		this.getGroupInventories = function(param) {
 			var deferred = $q.defer(),
 				url = '/api/groups/' + param.group_id + '/inventories';
 
@@ -123,6 +124,30 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 					deferred.reject(errorMessage);
 				}
 			);
+
+			return deferred.promise;
+		};
+		/**
+		 * Function to get Room Block Grid Details
+		 * @param {param} -group id
+		 * @return {Promise} -
+		 */
+		this.getRoomBlockGridDetails = function(params) {
+			var promises = [],
+				deferred = $q.defer();
+
+			promises.push(self.getGroupInventories(params));
+			promises.push(rvHouseEventsListSrv.fetchHouseEventsCount(params));
+
+			$q.all(promises).then(function(response) {
+				var data = response[0];
+
+				data.eventsCount = response[1];
+
+				deferred.resolve(data);
+			}, function() {
+				deferred.reject({});
+			});
 
 			return deferred.promise;
 		};

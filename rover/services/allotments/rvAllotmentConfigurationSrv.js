@@ -1,5 +1,5 @@
-angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccountsConfigurationSrv',
-	function($q, rvBaseWebSrvV2, rvAccountsConfigurationSrv) {
+angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccountsConfigurationSrv', 'rvHouseEventsListSrv',
+	function($q, rvBaseWebSrvV2, rvAccountsConfigurationSrv, rvHouseEventsListSrv) {
 
 		var self = this;
 
@@ -126,11 +126,11 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 		};
 
 		/**
-		 * Function to get Room Block Grid Details
-		 * @param {param} -allotment id
-		 * @return {Promise} -
+		 * Get the allotment inventories
+		 * @param {Object} param  - request params
+		 * @return {Promise}
 		 */
-		this.getRoomBlockGridDetails = function(param) {
+		this.getAllotmentInventories = function(param) {
 			var deferred = $q.defer(),
 				url = '/api/allotments/' + param.allotment_id + '/inventories';
 
@@ -142,6 +142,31 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 					deferred.reject(errorMessage);
 				}
 			);
+
+			return deferred.promise;
+		};
+
+		/**
+		 * Function to get Room Block Grid Details
+		 * @param {param} -allotment id
+		 * @return {Promise} -
+		 */
+		this.getRoomBlockGridDetails = function(params) {
+			var promises = [],
+				deferred = $q.defer();
+
+			promises.push(self.getAllotmentInventories(params));
+			promises.push(rvHouseEventsListSrv.fetchHouseEventsCount(params));
+
+			$q.all(promises).then(function(response) {
+				var data = response[0];
+
+				data.eventsCount = response[1];
+
+				deferred.resolve(data);
+			}, function() {
+				deferred.reject({});
+			});
 
 			return deferred.promise;
 		};

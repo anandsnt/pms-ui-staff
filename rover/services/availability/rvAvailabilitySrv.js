@@ -939,15 +939,19 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		 * @return {Promise}
 		 */
 		this.fetchAvailabilityAndBestAvailableRates = function (params) {
-			var deferred = $q.defer();				
+			var deferred = $q.defer(),
+				promises = [];				
 
 			that.fetchAvailabilityDetails(params).then(function() {
-				that.fetchBARs(params).then(function() {
-					deferred.resolve();
-				}, function (error) {
-					deferred.reject(error);
-				});
+				promises.push(that.fetchBARs(params));
+				promises.push(that.fetchHouseEventsCount(params));
 
+				$q.all(promises).then(function() {
+					deferred.resolve(true);
+				}, function(errorMessage) {
+					deferred.reject(errorMessage);
+				});
+				
 			}, function (error) {
 				deferred.reject(error);
 			});
@@ -1000,4 +1004,35 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			
 			return deferred.promise;
 		};
+
+		/**
+         * Fetch house events count for a date range
+         * @param {Object} params - hold the request params
+         * @return {Promise}
+         */
+        this.fetchHouseEventsCount = function(params) {
+            var url = '/api/house_events/count_per_day',
+                deferred = $q.defer(),
+                requestParams = {
+                    start_date: params.from_date,
+                    end_date: params.to_date                    
+                };
+            
+			rvBaseWebSrvV2.postJSON(url, requestParams).then(function(response) {
+				var formattedData = {};
+
+				_.each(response.data, function(event) {
+					formattedData[event.date] = event.count;
+				});
+			
+				that.data.gridData.eventsCount = formattedData;
+                deferred.resolve({});
+            }, function(error) {
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+
+		};
+		
     }]);
