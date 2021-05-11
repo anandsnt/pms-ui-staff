@@ -1367,10 +1367,17 @@ angular.module('sntRover')
                     });
                 };
 
+                // Add listener for updating house events count
                 $scope.addListener('UPDATE_EVENTS_COUNT', () =>{
                     fetchHouseEventsCount($scope.diaryData.fromDate, $scope.diaryData.toDate);
                 });
 
+                /**
+                 * Fetch house events count
+                 * @param {String} startDate - start date
+                 * @param {String} endDate - end date
+                 * @return {void}
+                 */
                 var fetchHouseEventsCount = (startDate, endDate) => {
                     var onHouseEventsCountFetchSuccess = (response) => {
                             $scope.diaryData.eventsCount = response;
@@ -1380,6 +1387,7 @@ angular.module('sntRover')
                             $scope.diaryData.eventsCount = {};
                             renderDiaryView();
                         };
+
                     $scope.callAPI(rvHouseEventsListSrv.fetchHouseEventsCount, {
                         params: {
                             start_date: startDate,
