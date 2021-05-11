@@ -1,0 +1,14 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak ng-click="clearErrorMessage();">
+    <div class="modal-content alert">
+        <button id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert" ng-click="closeDialog()"></span></button>
+    
+        <span class="icons icon-popup-alert"></span>
+        <span class="h2 message">Invoice cannot be issued right now</span>
+        
+        <div class="notice">Fiskilazation is still in progress, please try again in a minute</div>
+    
+        <div class="actions">
+            <button type="button" id="cancel" class="button blank inline" ng-click="closeDialog()">Close window</button>
+        </div>
+    </div>
+</div>
