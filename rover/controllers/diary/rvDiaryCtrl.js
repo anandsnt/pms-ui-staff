@@ -23,7 +23,7 @@ angular.module('sntRover')
         '$interval',
         'sntActivity',
         'rvHouseEventsListSrv',
-        'eventsCount',
+        'houseEventsCount',
         function(
 			$scope,
 			$rootScope,
@@ -47,7 +47,7 @@ angular.module('sntRover')
             $interval,
             sntActivity,
             rvHouseEventsListSrv,
-            eventsCount
+            houseEventsCount
 		) {
             $scope.$emit('showLoader');
             BaseCtrl.call(this, $scope);
@@ -300,6 +300,7 @@ angular.module('sntRover')
 
                 propertyTime.hotel_time.date = going_date;
 
+                // Process date change
                 var processDateChange = function() {
                     if (!isOnEditMode) {
                         $scope.gridProps.filter.arrival_date = going_date;
@@ -336,27 +337,7 @@ angular.module('sntRover')
                     onSuccess: onHouseEventsCountFetchSuccess,
                     onFailure: processDateChange
                 });
-
-                // if (!isOnEditMode) {
-                //     $scope.gridProps.filter.arrival_date = going_date;
-                //     if (!$scope.$$phase) {
-                //         $scope.$apply();
-                //     }
-                //     return true;
-                // }
-                // else if (isOnEditMode) {
-                //     var choosedReservation = util.copyReservation ($scope.gridProps.currentResizeItem);
-
-				//     // we are only allowing the RESERVED/CHECKING-IN reservations date transfer
-                //     if (choosedReservation.reservation_status === 'reserved' || choosedReservation.reservation_status === 'check-in' ) {
-                //         dateSelectedInEditMode (choosedReservation, going_date);
-                //     }
-                //     else {
-                //         $scope.message = ['ONLY FUTURE/CHECKING-IN RESERVATION IS ALLOWED TO MOVE'];
-                //         openMessageShowingPopup();
-                //         return;
-                //     }
-                // }
+                
             };
 
             /**
@@ -442,11 +423,11 @@ angular.module('sntRover')
             /**
              * Get events count
              */
-            this.getEventsCount = function() {
+            this.getHouseEventsCount = function() {
                 var count = 0;
 
-                if (eventsCount && !_.isEmpty(eventsCount)) {
-                    count = eventsCount[(_.keys(eventsCount))[0]] ;
+                if (houseEventsCount && !_.isEmpty(houseEventsCount)) {
+                    count = houseEventsCount[(_.keys(houseEventsCount))[0]] ;
                 }
 
                 return count;
@@ -702,7 +683,7 @@ angular.module('sntRover')
                     statusClass: '',
                     processDate: ''
                 },
-                eventsCount: that.getEventsCount()
+                eventsCount: that.getHouseEventsCount()
             };
 
             // CICO-79422 auto-lock D-diary on autoAssign initiated from N-diary: START

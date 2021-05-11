@@ -24,7 +24,7 @@ angular
                 }
                 return rvDiarySrv.load(rvDiarySrv.properDateTimeCreation(start_date), rvDiarySrv.ArrivalFromCreateReservation());
             },
-            eventsCount: function($rootScope, $filter, rvHouseEventsListSrv, propertyTime) {
+            houseEventsCount: function($rootScope, $filter, rvHouseEventsListSrv, propertyTime) {
                 var params = {
                     start_date: $filter('date')(propertyTime.hotel_time.date, $rootScope.dateFormatForAPI),
                     end_date: $filter('date')(propertyTime.hotel_time.date, $rootScope.dateFormatForAPI)
