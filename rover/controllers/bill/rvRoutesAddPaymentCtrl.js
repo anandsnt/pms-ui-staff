@@ -71,7 +71,13 @@ sntRover.controller('rvRoutesAddPaymentCtrl', ['$scope', '$rootScope', '$filter'
                 $scope.$parent.$emit('hideLoader');
                 $scope.$emit('displayErrorMessage', errorMessage);
             };
-            var paymentParams = {"direct_bill": true};
+
+			var isAllowDirectDebit = true;
+			
+			if ($scope.selectedEntity.entity_type === 'COMPANY_CARD' || $scope.selectedEntity.entity_type === 'TRAVEL_AGENT') {
+				isAllowDirectDebit = $scope.selectedEntity.is_allow_direct_debit;
+			}
+            var paymentParams = {"direct_bill": isAllowDirectDebit };
 
             $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, successCallback, errorCallback);
     };
