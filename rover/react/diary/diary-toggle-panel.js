@@ -23,9 +23,22 @@ var TogglePanel = React.createClass({
 	render: function() {
 		var self = this;
 
+		var eventsDOM = null;
+
+		if (this.props.eventsCount && this.props.eventsCount > 0) {
+			eventsDOM = React.DOM.button({
+				className: 'button white events-button',
+				onClick: self.props.showEventsPopup
+			},
+				React.DOM.span({
+					className: 'events-count'
+				}, this.props.eventsCount ), ' Events');
+		}
+
 		return React.DOM.div({
 			className: 'diary-toggle'
 		},
+		eventsDOM,
 		React.createElement( Toggle, {
 			mode: this.state.mode,
 			__onClick: self.__onClick

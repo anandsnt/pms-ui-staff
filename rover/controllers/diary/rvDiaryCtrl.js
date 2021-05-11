@@ -22,6 +22,8 @@ angular.module('sntRover')
         'baseSearchData',
         '$interval',
         'sntActivity',
+        'rvHouseEventsListSrv',
+        'houseEventsCount',
         function(
 			$scope,
 			$rootScope,
@@ -43,10 +45,14 @@ angular.module('sntRover')
 			RVReservationSummarySrv,
             baseSearchData,
             $interval,
-            sntActivity
+            sntActivity,
+            rvHouseEventsListSrv,
+            houseEventsCount
 		) {
             $scope.$emit('showLoader');
             BaseCtrl.call(this, $scope);
+
+            var that = this;
 
             // changing the header
             // chnaging the heading of the page
@@ -256,6 +262,27 @@ angular.module('sntRover')
                         date1.getDate() !== date2.getDate();
             };
 
+            /**
+             * Show house events list popup
+             * @param {Number} eventsCount events count
+             * @param {Date} selectedDate selected date
+             * @return {void}
+             */
+            $scope.showHouseEventsListPopup = function(eventsCount) {
+                if (!eventsCount) {
+                    return;
+                }
+                $scope.selectedEventDisplayDate = $filter('date')($scope.gridProps.filter.arrival_date, $rootScope.dateFormatForAPI);
+                ngDialog.open({
+                    template: '/assets/partials/popups/rvHouseEventsListPopup.html',
+                    scope: $scope,
+                    controller: 'rvHouseEventsListPopupCtrl',
+                    className: 'ngdialog-theme-default',
+                    closeByDocument: false,
+                    closeByEscape: true
+                });
+            };
+
             /* --------------------------------------------------*/
             /* BEGIN CONFIGURATION
             /*--------------------------------------------------*/
@@ -273,26 +300,44 @@ angular.module('sntRover')
 
                 propertyTime.hotel_time.date = going_date;
 
-                if (!isOnEditMode) {
-                    $scope.gridProps.filter.arrival_date = going_date;
-                    if (!$scope.$$phase) {
-                        $scope.$apply();
+                // Process date change
+                var processDateChange = function() {
+                    if (!isOnEditMode) {
+                        $scope.gridProps.filter.arrival_date = going_date;
+                        if (!$scope.$$phase) {
+                            $scope.$apply();
+                        }
+                        return true;
                     }
-                    return true;
-                }
-                else if (isOnEditMode) {
-                    var choosedReservation = util.copyReservation ($scope.gridProps.currentResizeItem);
+                    else if (isOnEditMode) {
+                        var choosedReservation = util.copyReservation ($scope.gridProps.currentResizeItem);
+    
+                        // we are only allowing the RESERVED/CHECKING-IN reservations date transfer
+                        if (choosedReservation.reservation_status === 'reserved' || choosedReservation.reservation_status === 'check-in' ) {
+                            dateSelectedInEditMode (choosedReservation, going_date);
+                        }
+                        else {
+                            $scope.message = ['ONLY FUTURE/CHECKING-IN RESERVATION IS ALLOWED TO MOVE'];
+                            openMessageShowingPopup();
+                            return;
+                        }
+                    } 
+                };
 
-				    // we are only allowing the RESERVED/CHECKING-IN reservations date transfer
-                    if (choosedReservation.reservation_status === 'reserved' || choosedReservation.reservation_status === 'check-in' ) {
-                        dateSelectedInEditMode (choosedReservation, going_date);
-                    }
-                    else {
-                        $scope.message = ['ONLY FUTURE/CHECKING-IN RESERVATION IS ALLOWED TO MOVE'];
-                        openMessageShowingPopup();
-                        return;
-                    }
-                }
+                var onHouseEventsCountFetchSuccess = function (response) {
+                    $scope.gridProps.eventsCount = response[$filter('date')(going_date, $rootScope.dateFormatForAPI)];
+                    processDateChange();
+                };
+
+                $scope.callAPI(rvHouseEventsListSrv.fetchHouseEventsCount, {
+                    params: {
+                        start_date: $filter('date')(going_date, $rootScope.dateFormatForAPI),
+                        end_date: $filter('date')(going_date, $rootScope.dateFormatForAPI)
+                    }, 
+                    onSuccess: onHouseEventsCountFetchSuccess,
+                    onFailure: processDateChange
+                });
+                
             };
 
             /**
@@ -374,6 +419,19 @@ angular.module('sntRover')
                     }); 
                 }
             }; 
+
+            /**
+             * Get events count
+             */
+            this.getHouseEventsCount = function() {
+                var count = 0;
+
+                if (houseEventsCount && !_.isEmpty(houseEventsCount)) {
+                    count = houseEventsCount[(_.keys(houseEventsCount))[0]] ;
+                }
+
+                return count;
+            };
 
             /* --------------------------------------------------*/
             /* BEGIN CONFIGURATION
@@ -624,7 +682,8 @@ angular.module('sntRover')
                     statusDescription: '',
                     statusClass: '',
                     processDate: ''
-                }
+                },
+                eventsCount: that.getHouseEventsCount()
             };
 
             // CICO-79422 auto-lock D-diary on autoAssign initiated from N-diary: START
