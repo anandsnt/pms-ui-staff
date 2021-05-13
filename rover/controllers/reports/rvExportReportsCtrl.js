@@ -3,7 +3,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
     '$scope',
     'RVreportsSrv',
     'RVReportUtilsFac',
-    'RVReportParamsConst',    
+    'RVReportParamsConst',
     '$filter',
     '$timeout',
     'ngDialog',
@@ -456,7 +456,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ($scope.scheduleParams.includeTitleHeader) {
                 params.include_title_header = $scope.scheduleParams.includeTitleHeader;
             }
-            
+
 
             $scope.invokeApi( reportsSrv.updateSchedule, params, success, failed );
         };
@@ -947,6 +947,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 minDate: tzIndependentDate($rootScope.businessDate),
                 onSelect: function(value) {
                     $scope.endsOnOptions.minDate = value;
+                    if ($scope.scheduleParams.ends_on_date < $scope.scheduleParams.starts_on) {
+                        $scope.scheduleParams.ends_on_date = $scope.scheduleParams.starts_on;
+                    }
                 }
             }, datePickerCommon);
             $scope.scheduleParams.starts_on = reportUtils.processDate(startsOn).today;
@@ -960,7 +963,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : null;
             $scope.scheduleParams.format_id = $scope.selectedEntityDetails.format ? $scope.selectedEntityDetails.format.id : getFileFormatId();
-            
+
             if ($scope.scheduleParams.delivery_id === 'CLOUD_DRIVE') {
                 $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.cloud_drive_type;
             }
@@ -978,7 +981,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             }
 
             $scope.scheduleParams.includeTitleHeader = $scope.selectedEntityDetails.include_title_header;
-            
+
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOTS);
         };
 
@@ -1560,7 +1563,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                     return object.value === 'CSV';
                 });
             }
-            
+
 
             return selectedEntity.report && (selectedEntity.report.title === 'Journal Export' && $rootScope.isGOBDExportEnabled);
 

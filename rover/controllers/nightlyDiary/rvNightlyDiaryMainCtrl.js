@@ -15,6 +15,7 @@ angular.module('sntRover')
             'rvPermissionSrv',
             'rvUtilSrv',
             '$interval',
+            'rvHouseEventsListSrv',
             function (
                 $scope,
                 $rootScope,
@@ -30,7 +31,8 @@ angular.module('sntRover')
                 unassignedReservationList,
                 rvPermissionSrv,
                 rvUtilSrv,
-                $interval
+                $interval,
+                rvHouseEventsListSrv
             ) {
 
                 BaseCtrl.call(this, $scope);
@@ -233,7 +235,8 @@ angular.module('sntRover')
                         isReservationSelected: false,
                         selectedUnassignedReservation: {},
                         roomAssignmentFilters: {},
-                        isCancelledMoveOrAssign: false
+                        isCancelledMoveOrAssign: false,
+                        eventsCount: {}
                     };
                     $scope.currentSelectedReservation = {};
                     $scope.currentSelectedRoom = {};
@@ -1343,9 +1346,67 @@ angular.module('sntRover')
                 );
 
                 /**
+                 * Show events list popup
+                 * @param {Number} eventsCount events count
+                 * @param {Date} selectedDate selected date
+                 * @return {void}
+                 */
+                $scope.showHouseEventsListPopup = function(eventsCount, selectedDate) {
+                    if (!eventsCount) {
+                        return;
+                    }
+
+                    $scope.selectedEventDisplayDate = selectedDate;
+                    ngDialog.open({
+                        template: '/assets/partials/popups/rvHouseEventsListPopup.html',
+                        scope: $scope,
+                        controller: 'rvHouseEventsListPopupCtrl',
+                        className: 'ngdialog-theme-default',
+                        closeByDocument: false,
+                        closeByEscape: true
+                    });
+                };
+
+                // Add listener for updating house events count
+                $scope.addListener('UPDATE_EVENTS_COUNT', () =>{
+                    fetchHouseEventsCount($scope.diaryData.fromDate, $scope.diaryData.toDate);
+                });
+
+                /**
+                 * Fetch house events count
+                 * @param {String} startDate - start date
+                 * @param {String} endDate - end date
+                 * @return {void}
+                 */
+                var fetchHouseEventsCount = (startDate, endDate) => {
+                    var onHouseEventsCountFetchSuccess = (response) => {
+                            $scope.diaryData.eventsCount = response;
+                            renderDiaryView();
+                        },
+                        onHouseEventsCountFetchFailure = () => {
+                            $scope.diaryData.eventsCount = {};
+                            renderDiaryView();
+                        };
+
+                    $scope.callAPI(rvHouseEventsListSrv.fetchHouseEventsCount, {
+                        params: {
+                            start_date: startDate,
+                            end_date: endDate
+                        },
+                        onSuccess: onHouseEventsCountFetchSuccess,
+                        onFailure: onHouseEventsCountFetchFailure
+                    });
+                };
+
+                /**
                  * initialisation function
                  */
                 (() => {
-                    renderDiaryView();
+                    var startDate = $filter('date')(tzIndependentDate($stateParams.start_date), $rootScope.dateFormatForAPI),
+                        endDateMoment = moment(tzIndependentDate($stateParams.start_date)).add(6, 'days'),
+                        endDate = $filter('date')(endDateMoment.toDate(), $rootScope.dateFormatForAPI);
+
+                        fetchHouseEventsCount(startDate, endDate);
+
                 })();
             }]);

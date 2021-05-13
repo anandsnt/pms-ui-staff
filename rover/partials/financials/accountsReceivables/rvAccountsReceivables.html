@@ -11,7 +11,7 @@
         <div class="entry options">
             <div class="input with-label">
                 <label for="min-amount">{{'MIN_AMOUNT' | translate}}({{currencySymbol}})</label>
-                <input ng-model="filterData.minAmount" ng-change="changedMinAmount()" type="text">
+                <input ng-model="filterData.minAmount" ng-change="changedMinAmount()" type="text" ng-model-options="{ debounce: 500 }">
             </div>
 
             <div class="select with-label larger-select">

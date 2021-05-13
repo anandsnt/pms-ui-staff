@@ -5,7 +5,8 @@ angular.module('sntRover')
         '$q',
         '$window',
         '$timeout',
-        function ($scope, rvAvailabilitySrv, $q, $window, $timeout) {
+        'ngDialog',
+        function ($scope, rvAvailabilitySrv, $q, $window, $timeout, ngDialog) {
             var AVAILABILITY_GRID_PERIOD_14 = 14,
                 AVAILABILITY_GRID_PERIOD_30 = 30;
 
@@ -379,5 +380,27 @@ angular.module('sntRover')
             angular.forEach(listeners, function(listener) {
                 $scope.$on('$destroy', listener);
             });
+
+            /**
+             * Show house events list popup
+             * @param {String} date - selected date
+             * @param {Number} eventsCount - events count
+             * @return {void} 
+             */
+            $scope.showHouseEventsListPopup = function(date, eventsCount) {
+                if (!eventsCount) {
+                    return;
+                }
+
+                $scope.selectedEventDisplayDate = date;
+                ngDialog.open({
+                    template: '/assets/partials/popups/rvHouseEventsListPopup.html',
+                    scope: $scope,
+                    controller: 'rvHouseEventsListPopupCtrl',
+                    className: 'ngdialog-theme-default',
+                    closeByDocument: false,
+                    closeByEscape: true
+                });
+            };
         }
     ]);

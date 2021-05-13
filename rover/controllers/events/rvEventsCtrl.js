@@ -216,16 +216,19 @@ function ($scope, $filter, eventsSrv, eventTypes, $rootScope, ngDialog, $timeout
      * @return {void}
      */
     $scope.search = function (page) {
+        var startDate = _.isEmpty($scope.filter.startDate) ? $scope.filter.startDate : tzIndependentDate($scope.filter.startDate),
+            endDate   = _.isEmpty($scope.filter.endDate) ? $scope.filter.endDate : tzIndependentDate($scope.filter.endDate);
+
         // Close the edit view while navigating between pages
         $scope.shouldShowEventDetails = false;
-
         $scope.page = page || 1;
+
         $scope.callAPI(eventsSrv.searchEvents, {
             params: {
                 name: $scope.filter.eventName,
                 house_event_type_id: $scope.filter.eventType,
-                start_date: $filter('date')(tzIndependentDate($scope.filter.startDate), $rootScope.dateFormatForAPI),
-                end_date: $filter('date')(tzIndependentDate($scope.filter.endDate), $rootScope.dateFormatForAPI),
+                start_date: $filter('date')(startDate, $rootScope.dateFormatForAPI),
+                end_date: $filter('date')(endDate, $rootScope.dateFormatForAPI),
                 per_page: PER_PAGE,
                 page: $scope.page
             },
