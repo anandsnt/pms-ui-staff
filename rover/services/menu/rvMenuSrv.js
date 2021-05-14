@@ -294,7 +294,7 @@ angular.module('sntRover').service('rvMenuSrv',
 					hidden: !shouldShowSellLimits()
 		        }, {
 					title: "MENU_EVENTS",
-					action: "rover.events",
+					action: "rover.houseEvents",
 					menuIndex: "events",
 					hidden: this.hideMenuOnPermission('EVENTS')			
 		        }]

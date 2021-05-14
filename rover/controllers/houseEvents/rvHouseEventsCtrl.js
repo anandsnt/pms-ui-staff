@@ -1,7 +1,7 @@
-angular.module('eventsModule').controller('eventsController', [
+angular.module('houseEventsModule').controller('houseEventsController', [
 '$scope', 
 '$filter',
-'RVEventsSrv',
+'RVHouseEventsSrv',
 'eventTypes',
 '$rootScope',
 'ngDialog',
@@ -153,7 +153,7 @@ function ($scope, $filter, eventsSrv, eventTypes, $rootScope, ngDialog, $timeout
         $scope.shouldShowEventDetails = false;
         
         ngDialog.open({
-            template: '/assets/partials/events/rvAddEventPopup.html',
+            template: '/assets/partials/houseEvents/rvAddHouseEventPopup.html',
             className: '',
             scope: $scope
         });
@@ -436,7 +436,7 @@ function ($scope, $filter, eventsSrv, eventTypes, $rootScope, ngDialog, $timeout
      */
     $scope.showDeleteConfirmationPopup = function () {
         ngDialog.open({
-            template: '/assets/partials/events/rvDeleteEventConfirmationPopup.html',
+            template: '/assets/partials/houseEvents/rvDeleteHouseEventConfirmationPopup.html',
             className: '',
             scope: $scope
         });
