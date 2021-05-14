@@ -141,20 +141,20 @@
                             <a ng-click="editReservationRates(room, $index)">
                                 <em>{{room.rateName}}</em>
                                 <span class="price">
-                                    <label ng-if="!room.isSuppressed && !reservationData.isHourly">{{reservationData.rateCurrency}}{{room.rateAvg | number : 2}}</label>
+                                    <label ng-if="!room.isSuppressed && !reservationData.isHourly"><span ng-bind-html="room.rateAvg | sntCurrency:this:reservationData.rateCurrency"></span></label>
                                     <label ng-if="room.isSuppressed && !reservationData.isHourly">SR</label>
                                     <span ng-if="!reservationData.isHourly" translate>AVG_NIGHT</span>
                                 <span class="total" ng-if="room.isSuppressed">SR</span>
-                                <span class="total" ng-if="!room.isSuppressed">{{reservationData.rateCurrency}}{{room.rateTotal | number : 2}}</span>
+                                <span class="total" ng-if="!room.isSuppressed"><span ng-bind-html="room.rateTotal | sntCurrency:this:reservationData.rateCurrency"></span></span>
                                 </span>
                             </a>
                         </li>
                         <li ng-repeat='addon in room.addons'>
                             <em>{{addon.description}}</em>
                             <span class="price" ng-hide="addon.is_inclusive">
-                                {{reservationData.rateCurrency}}{{ addon.avg_addon_amount | number : 2}}
+                                <span ng-bind-html="addon.avg_addon_amount | sntCurrency:this:reservationData.rateCurrency"></span>
                                 <span translate>EACH</span>
-                            <span class="total">{{reservationData.rateCurrency}}{{ addon.amount | number : 2}}</span>
+                            <span class="total"><span ng-bind-html="addon.amount | sntCurrency:this:reservationData.rateCurrency"></span></span>
                             </span>
                             <!-- CICO-18833 Hide all rate refreneces for inclusive addons (Kees Lek) -->
                             <span class="price" ng-show="addon.is_inclusive">
@@ -222,21 +222,19 @@
                     <li ng-repeat="row in room.taxInformation">
                         <span class="label" translate> {{row.description}} </span>
                         <span class="total" ng-if="reservationData.isRoomRateSuppressed">SR</span>
-                        <span class="total" ng-if="!reservationData.isRoomRateSuppressed">{{reservationData.rateCurrency}}{{ row.amount | number : 2}}</span>
+                        <span class="total" ng-if="!reservationData.isRoomRateSuppressed"><span ng-bind-html="row.amount | sntCurrency:this:reservationData.rateCurrency"></span></span>
                     </li>
                     <li></li>
                 </ul>
                 <ul class="total-stay-cost total-stay-cost-data">
                     <li>
                         <span class="label" translate>TOTAL_TAX</span>
-                        <span class="total" ng-if="!reservationData.isRoomRateSuppressed">{{reservationData.rateCurrency}}{{reservationData.totalTax
-                            | number : 2}}</span>
+                        <span class="total" ng-if="!reservationData.isRoomRateSuppressed"><span ng-bind-html="reservationData.totalTax | sntCurrency:this:reservationData.rateCurrency"></span></span>
                         <span class="total" ng-if="reservationData.isRoomRateSuppressed">SR</span>
                     </li>
                     <li>
                         <span class="label" translate>TOTAL_STAY_COST</span>
-                        <span class="total" ng-if="!reservationData.isRoomRateSuppressed"><strong>{{reservationData.rateCurrency}}{{reservationData.totalStayCost
-                            | number : 2}}</strong>
+                        <span class="total" ng-if="!reservationData.isRoomRateSuppressed"><strong><span ng-bind-html="reservationData.totalStayCost | sntCurrency:this:reservationData.rateCurrency"></span></strong>
                         </span>
                         <span class="total" ng-if="reservationData.isRoomRateSuppressed">SR</span>
                     </li>

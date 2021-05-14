@@ -49,7 +49,7 @@
 						<li ng-class="showActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
 							<a class="bill-toggle" ng-class="{'has-icon': !billTab.is_active && (billTab.is_control_code_exist || billTab.is_folio_number_exists)}" click-touch="setActiveBill($index)" >
 								<div class="price" ng-hide="billTab.is_void_bill || billTab.is_voided"><span>{{'BILL' |translate}} #{{billTab.bill_number}}</span>
-									<span class="currency">{{currencySymbol}}</span>{{billTab.balance_amount}}
+									<span ng-bind-html="billTab.balance_amount | sntCurrency:this"></span>
 								</div>
 								<div class="price" ng-show="billTab.is_void_bill">
 										<span translate>BILL</span>
@@ -103,7 +103,7 @@
 											<li class="active" ng-class="{'today' : (businessDate === day.date)}" ng-repeat="(index, day) in billData.days" ng-show="day.show" click-touch="clickedSummaryDate(day.date)">
 												<a class="toggle" type ="button" ng-class="{'active' : (billData.activeDate === day.date)}">
 													<span class="day">{{day.date | date:'MMM'}} {{day.date | date:'dd'}}</span>
-													<span class="price"><span class="currency">{{currencySymbol}}</span>{{day.total_amount}}</span>
+													<span class="price"><span ng-bind-html="day.total_amount | sntCurrency:this"></span></span>
 												</a>
 											</li>
 										</ul>
