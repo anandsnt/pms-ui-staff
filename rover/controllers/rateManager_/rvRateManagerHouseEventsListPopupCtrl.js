@@ -1,4 +1,4 @@
-sntRover.controller('rvRateManagerEventsListPopupCtrl', [
+sntRover.controller('rvRateManagerHouseEventsListPopupCtrl', [
     '$scope',
     '$rootScope',
     '$timeout',

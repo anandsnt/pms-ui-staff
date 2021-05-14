@@ -1,4 +1,4 @@
-angular.module('eventsModule').service('RVEventsSrv', [
+angular.module('houseEventsModule').service('RVHouseEventsSrv', [
     '$q',
     'rvBaseWebSrvV2',
     function($q, BaseWebSrvV2) {
