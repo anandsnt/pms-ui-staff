@@ -92,6 +92,7 @@
                                 {{ getHKStatus(multiSheetState.allRooms[room.room_index].current_status) }}
                             </span>
                         </div>
+                        <span class="room-type" ng-if="$index === 0">{{getRoomType(room.room_type)}}</span> 
                         <h3>
                             <span class="icons icon-suite" ng-if="multiSheetState.allRooms[room.room_index].is_suite">Suite room</span>
                             {{task.room_no}}
@@ -180,7 +181,7 @@
                             <li class="worksheet-task"
                                 id="assigned-{{ empIndex }}-{{ roomIndex }}-{{ $index }}"
                                 iscroll-stop-propagation
-                                ng-repeat="task in room.room_tasks"
+                                ng-repeat="task in room.room_tasks track by $index"
                                 ng-if="!(multiSheetState.header.work_type_id && task.work_type_id != multiSheetState.header.work_type_id)"
                                 ng-class="{ 'completed-task': task.is_completed}"
                                 data-drag = "{{multiSheetState.dndEnabled}}"
@@ -193,6 +194,7 @@
                                         ng-bind="getReservationStatusValue(multiSheetState.allRooms[room.room_index])"></span>
                                     <span ng-class="getCurrentStatusClass(multiSheetState.allRooms[room.room_index])">{{ getHKStatus(multiSheetState.allRooms[room.room_index].current_status) }}</span>
                                 </div>
+                                <span class="room-type" ng-if="$index === 0">{{getRoomType(room.room_type)}}</span> 
                                 <h3>
                                     <span class="icons icon-suite" ng-show="multiSheetState.allRooms[room.room_index].is_suite">Suite room</span>
                                     {{task.room_no}}
