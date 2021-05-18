@@ -144,11 +144,11 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             /** CICO-80096
              * Disable the invoice company/TA toggle based on the direct bill settlement account type 
              */
-            if(response.data && response.data.bill_paid_account_type) {
-                if(response.data.bill_paid_account_type === 'COMPANY') {
+            if (response.data && response.data.bill_paid_account_type) {
+                if (response.data.bill_paid_account_type === 'COMPANY') {
                     $scope.isCompanyCardInvoice = true;
                     $scope.disableToggleAccount = true;
-                } else if(response.data.bill_paid_account_type === 'TRAVELAGENT') {
+                } else if (response.data.bill_paid_account_type === 'TRAVELAGENT') {
                     $scope.isCompanyCardInvoice = false;
                     $scope.disableToggleAccount = true;
                 }
