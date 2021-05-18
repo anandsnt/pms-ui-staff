@@ -111,10 +111,8 @@
                         </div>
                     </td>
                 </tr>
-            </tbody>
-            <tfoot>
                 <br>
-                <tr>
+                <tr class="totals first-total">
                     <td></td>
                     <td colspan="6"></td>
                     <td><strong>{{printData.translation.total_charge}} </strong></td>
@@ -126,7 +124,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
+                <tr class="totals">
                     <td></td>
                     <td colspan="6"></td>
                     <td><strong>{{printData.translation.total_credits}} </strong></td>
@@ -138,7 +136,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
+                <tr class="totals">
                     <td></td>
                     <td colspan="6"></td>
                     <td ><strong>{{printData.translation.balance}} </strong></td>
@@ -150,7 +148,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
+                <tr class="totals">
                     <td></td>
                     <td colspan="6"></td>
                     <td>{{printData.translation.net_amount}} </td>
@@ -162,7 +160,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr ng-if="!printData.ar_has_enabled_extended_tax_breakdown" ng-repeat="tax in printData.tax_info">
+                <tr class="totals" ng-if="!printData.ar_has_enabled_extended_tax_breakdown" ng-repeat="tax in printData.tax_info">
                     <td></td>
                     <td colspan="6"></td>
                     <td>{{tax.tax_charge_code_desc}} </td>
@@ -174,7 +172,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
+                <tr class="totals">
                     <td></td>
                     <td colspan="6"></td>
                     <td>{{printData.translation.total_incl_tax}} </td>
@@ -186,8 +184,7 @@
                         </div>
                     </td>
                 </tr>
-            </tfoot>
-                       
+            </tbody>                       
         </table>
     </div>
     <strong ng-if="printData.ar_has_enabled_extended_tax_breakdown">{{printData.translation.tax_breakdown}}</strong>
