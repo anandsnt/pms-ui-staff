@@ -6,7 +6,7 @@
 		<span class="text">This will unallocate the payment from this invoice.</span>
 
 		<div class="amount">
-		 	<strong><span class="currency">{{currencySymbol}}</span>{{selectedUnAllocatedItem.amount}}</strong>
+		 	<strong><span ng-bind-html="selectedUnAllocatedItem.amount | sntCurrency:this"></span></strong>
 		 	Allocated {{selectedUnAllocatedItem.allocation_date | date : dateFormat}} {{selectedUnAllocatedItem.allocation_time}}
 		</div>
 		 
@@ -41,7 +41,7 @@
 
 						<div class="balance balance-after">
 							Balance Remaining
-							<strong class="red"><span class="currency">{{currencySymbol}}</span>{{selectedUnAllocatedItem.from_bill.balance_after}}</strong>
+							<strong class="red"><span ng-bind-html="selectedUnAllocatedItem.from_bill.balance_after | sntCurrency:this"></span></strong>
 						</div>
 
 
@@ -81,7 +81,7 @@
 
 					<div class="balance balance-after">
 						Credit After
-						<strong class="green"><span class="currency">{{currencySymbol}}</span>{{selectedUnAllocatedItem.to_payment.credit_after}}</strong>
+						<strong class="green"><span ng-bind-html="selectedUnAllocatedItem.to_payment.credit_after | sntCurrency:this"></span></strong>
 					</div>
 
 
