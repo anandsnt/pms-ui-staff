@@ -82,7 +82,8 @@ module.exports = {
 				controllerRoot + 'errorPopup/rvTimeoutErrorCtrl.js',
 				controllerRoot + 'workstation/rvWorkstationCtrl.js',
                 controllerRoot + 'rvOWSErrorCtrl.js',
-                controllerRoot + 'deviceStatus/rvDeviceStatusCtrl.js',
+				controllerRoot + 'deviceStatus/rvDeviceStatusCtrl.js',
+				controllerRoot + 'rvHouseEventsListPopupCtrl.js',
 
 				serviceRoot + 'baseWebSrvV2.js',
 				serviceRoot + 'rvBaseWebSrv.js',
@@ -101,7 +102,8 @@ module.exports = {
 				serviceRoot + 'housekeeping/rvHkRoomStatusSrv.js',
 				serviceRoot + 'deviceStatus/rvDeviceStatusSrv.js',
 				serviceRoot + 'rvAutomaticEmailSrv.js',
-                serviceRoot + 'analytics/**/*.js',
+				serviceRoot + 'analytics/**/*.js',
+				serviceRoot + 'rvHouseEventsListSrv.js',
 
 				directiveRoot + 'Outside Click handler/outsideClickDirective.js',
 				directiveRoot + 'pagination/*.js',

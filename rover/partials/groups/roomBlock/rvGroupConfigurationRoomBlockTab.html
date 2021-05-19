@@ -202,7 +202,10 @@
 
             <ul style="width:{{getWidthForRoomBlockTimeLine()}};" class="wrapper">
                 <li ng-repeat="occupancy in groupConfigData.summary.selected_room_types_and_occupanies" ng-class="{'shoulder-date': occupancy.is_shoulder_date,'with-button': shouldShowCopyButton(occupancy,$index)}">
-                    <div class="inner">
+                    <div class="inner" 
+                         ng-class="{'has-event-block' : eventsCount[occupancy.date] > 0}"
+                         data-events="{{eventsCount[occupancy.date]}}"
+                         ng-click="showHouseEventsListPopup(eventsCount[occupancy.date], occupancy.date)">
                         <span ng-if="!occupancy.is_shoulder_date">{{getDayOfWeek(occupancy.date, fulldayInWeek)}}</span>
                         <span ng-if="occupancy.is_shoulder_date">{{getDayOfWeek(occupancy.date, fulldayInWeek)}} - {{'SHOULDER' | translate}}</span>
                         <strong>{{formatDateForUI(occupancy.date, monthAndDate)}}</strong>
