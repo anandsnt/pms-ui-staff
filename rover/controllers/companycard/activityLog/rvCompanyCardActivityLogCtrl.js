@@ -36,8 +36,8 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 			action: '',
 			actionsList: [],
 			selectedAction: '',
-			fromDate: $rootScope.businessDate,
-			toDate: $rootScope.businessDate,
+			fromDate: new Date(),
+			toDate: new Date(),
 			query: ''
         };
 
