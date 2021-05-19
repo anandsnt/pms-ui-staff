@@ -1844,6 +1844,20 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             RATE_TIMELINE 	 = 'room_rates_timeline_scroller',
             timer;
 
+        /**
+         * Get scroller object by key
+         * @param {String} key identifier for scroller
+         * @return {Object} scroller object
+         */
+        var getScrollerObject = function (key) {
+            var scrollerObject = $scope.$parent.myScroll && $scope.$parent.myScroll[key];
+
+            if (_.isUndefined(scrollerObject)) {
+                scrollerObject = $scope.myScroll[key];
+            }
+            return scrollerObject;
+        };
+
 		/**
 		 * utiltiy function for setting scroller and things
 		 * return - None
@@ -2359,6 +2373,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
          * @return {void}
          */
         $scope.showHouseEventsListPopup = function(eventsCount, selectedDate) {
+            getScrollerObject(RATE_TIMELINE).disable();
             if (!eventsCount) {
                 return;
             }
