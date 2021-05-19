@@ -142,8 +142,8 @@ module.exports = {
 				filename: roverJsListRoot + 'reportsAnalyticsAssetsList.js',
 				babelify: false
 			},
-			'rover.events': {
-				filename: roverJsListRoot + 'eventsJsAssetList.js',
+			'rover.houseEvents': {
+				filename: roverJsListRoot + 'houseEventsJsAssetList.js',
 				babelify: false
 			}
 		};

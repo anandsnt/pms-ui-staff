@@ -102,12 +102,12 @@
         <!-- upto here -->
         <ul class="totals" ng-class="{'selected' : filterData.selectAll || selectedCommissions.length > 0 || prePaidCommissions.length > 0}">
             <!-- Add class "selected" when selecting all/individual commisions -->
-            <li>{{'RESERVATION_TOTAL_REVENUE' | translate}}<span class="value">{{ currencySymbol }}{{commissionSummary.totalReservationsRevenue | number : 2}}</span></li>
+            <li>{{'RESERVATION_TOTAL_REVENUE' | translate}}<span class="value"><span ng-bind-html="commissionSummary.totalReservationsRevenue | sntCurrency:this"></span></span></li>
             <li ng-if="!isCommissionFilterTabOpened">
-                {{'RESERVATION_COMMISSIONABLE_REVENUE' | translate}}<span class="value">{{ currencySymbol }}{{commissionSummary.totalCommissionableRevenue | number : 2}}</span>
+                {{'RESERVATION_COMMISSIONABLE_REVENUE' | translate}}<span class="value"><span ng-bind-html="commissionSummary.totalCommissionableRevenue | sntCurrency:this"></span></span>
             </li>
-            <li>{{'COMMISSION_TO_DATE' | translate}}<span class="value green">{{ currencySymbol }}{{commissionSummary.totalCommission | number : 2}}</span></li>
-            <li>{{'COMMISSION_OWING' | translate}}<span class="value red">{{ currencySymbol }}{{commissionSummary.totalUnpaidCommission | number : 2}}</span></li>
+            <li>{{'COMMISSION_TO_DATE' | translate}}<span class="value green"><span ng-bind-html="commissionSummary.totalCommission | sntCurrency:this"></span></span></li>
+            <li>{{'COMMISSION_OWING' | translate}}<span class="value red"><span ng-bind-html="commissionSummary.totalUnpaidCommission | sntCurrency:this"></span></span></li>
             <li class="action no-margin">
                 <button type="button" class="button blue with-icon only-icon" ng-click="clickedPrintButton()">
                     <span class="icons icon-print"></span>
@@ -187,15 +187,15 @@
                                 <h2>{{commissionDetail.guest_name}}</h2>
                                 <span class="confirmation">{{commissionDetail.reservation_no}}</span>
                             </div>
-                            <div class="revenue">{{ currencySymbol }}{{commissionDetail.reservation_revenue | number : 2}}</div>
+                            <div class="revenue"><span ng-bind-html="commissionDetail.reservation_revenue | sntCurrency:this"></span></div>
 
-                            <div class="commissionable">{{ currencySymbol }}{{commissionDetail.commission_data.commissionable_revenue | number : 2}}</div>
+                            <div class="commissionable"><span ng-bind-html="commissionDetail.commission_data.commissionable_revenue | sntCurrency:this"></span></div>
 
                             
                             <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
                             <div class="commission" ng-class="{'recalculated':commissionDetail.commission_data.is_recalculated}"><strong>{{commissionDetail.commission_data.rate}}</strong></div>
                             <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
-                            <div class="amount"><strong><span ng-if="commissionDetail.commission_data.amount !== undefined">{{ currencySymbol }}</span>{{commissionDetail.commission_data.amount | number : 2}}</strong></div>
+                            <div class="amount"><strong><span ng-if="commissionDetail.commission_data.amount !== undefined"><span ng-bind-html="commissionDetail.commission_data.amount | sntCurrency:this"></span></strong></div>
                             <!-- 
                                 <div class="value-block tax" ng-show="commissionSummary.taxOnCommissions">{{'COMMISSION_Tax' | translate}}<strong><span ng-if="commissionDetail.commission_data.tax !== undefined">{{ currencySymbol }}</span>{{commissionDetail.commission_data.tax | number : 2}}</strong></div>
                              -->
