@@ -1766,7 +1766,12 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
         $scope.getWidthForRoomBlockTimeLine = function() {
-            return $scope.groupConfigData.summary.selected_room_types_and_occupanies.length * 190 + 140 + 'px';
+            var width = $scope.groupConfigData.summary.selected_room_types_and_occupanies.length * 180 + 40;
+            
+            if ($scope.shouldShowLoadNextSetButton()) {
+				width += 80;
+			}
+			return width + 'px';
         };
 
 		/**
