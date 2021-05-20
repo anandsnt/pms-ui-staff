@@ -231,7 +231,7 @@
             ng-class="{'paginated': houldShowLoadNextSetButton()}">
             <div class="wrapper" style="width:{{getWidthForRoomBlockTimeLine()}};">
                 <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
-                <div class="row" ng-repeat="roomType in groupConfigData.summary.selected_room_types_and_bookings" emit-when="{event: 'ALL_RENDERED', condition: $last}">
+                <div class="row" ng-repeat="roomType in groupConfigData.summary.selected_room_types_and_bookings" emit-when="{event: 'ALL_RENDERED', condition: $last}" ngrepeatend>
                     <!-- REPEAT COLUMN FOR ALL DAYS IN THE BLOCK -->
                     <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                     <div class="column" ng-repeat="dateData in roomType.dates" class="with-button" ng-class="{'shoulder-date': dateData.is_shoulder_date, 'with-button': shouldShowCopyButton(dateData,$index)}">
