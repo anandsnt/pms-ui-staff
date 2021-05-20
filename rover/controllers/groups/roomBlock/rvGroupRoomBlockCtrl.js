@@ -1502,11 +1502,11 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             refreshScroller();
         };
 
-        	/**
+        /**
 		 * Event propogated by ngrepeatend directive
 		 * we used to hide activity indicator & refresh scroller
 		 */
-		$scope.$on('NG_REPEAT_COMPLETED_RENDERING', function(event) {
+		$scope.$on('NG_REPEAT_COMPLETED_RENDERING', function(_event) {
 			$timeout(function() {
 				refreshScroller();
 			}, 0);
