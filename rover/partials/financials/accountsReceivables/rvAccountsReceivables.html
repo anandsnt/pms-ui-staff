@@ -74,7 +74,11 @@
                 <ul class="search-results">
                     <li class="account-ar" ng-repeat="account in arOverviewData.accounts" ui-sref="rover.companycarddetails({id:account.id, type: account.type,origin:'AR_OVERVIEW'})">
                         <a >
-                            <div class="account-image icons" ng-class="{'icon-travel-agent': account.type === 'TRAVELAGENT','icon-company': account.type === 'COMPANY'}"></div>
+                            <div class="account-image icons" ng-if="escapeNull(account.company_logo) == ''" ng-class="{'icon-travel-agent': account.type === 'TRAVELAGENT','icon-company': account.type === 'COMPANY'}"></div>
+                            <figure class="guest-image" ng-if="escapeNull(account.company_logo) !=''">
+                                <img ng-src="{{account.company_logo}}" alt="" />
+                            </figure>
+                        
                             <div class="data">
                                 <h2>{{account.account_name}}</h2>
                                 <strong class="confirmation">{{account.ar_number}}</strong>
