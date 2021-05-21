@@ -947,6 +947,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 minDate: tzIndependentDate($rootScope.businessDate),
                 onSelect: function(value) {
                     $scope.endsOnOptions.minDate = value;
+                    if ($scope.scheduleParams.ends_on_date < $scope.scheduleParams.starts_on) {
+                        $scope.scheduleParams.ends_on_date = $scope.scheduleParams.starts_on;
+                    }
                 }
             }, datePickerCommon);
             $scope.scheduleParams.starts_on = reportUtils.processDate(startsOn).today;

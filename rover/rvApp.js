@@ -38,7 +38,7 @@ var sntRover = angular.module('sntRover', [
         'sntActivityIndicator',
         'overBookingModule',
 		'guestCardModule',
-		'eventsModule',
+		'houseEventsModule',
         'snt.transitionManager',
         'sntCurrencyFilter',
         'sntCanvasUtil',
