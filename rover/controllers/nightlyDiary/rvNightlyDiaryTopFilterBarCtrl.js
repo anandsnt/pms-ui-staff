@@ -139,6 +139,7 @@ angular.module('sntRover')
                 }
                 $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
                 $scope.$emit('UPDATE_RESERVATIONLIST');
+                $scope.$emit('UPDATE_EVENTS_COUNT');
                 isDateChangedFromInitialState = true;
 
                 // CICO-63546 : if user already selects avl tab, and then navigating to past dates 
