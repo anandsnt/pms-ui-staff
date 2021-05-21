@@ -1402,11 +1402,13 @@ angular.module('sntRover')
                  * initialisation function
                  */
                 (() => {
-                    var startDate = $filter('date')(tzIndependentDate($stateParams.start_date), $rootScope.dateFormatForAPI),
-                        endDateMoment = moment(tzIndependentDate($stateParams.start_date)).add(6, 'days'),
+                    var startDate = $stateParams.start_date || (moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')).toDate(),                    
+                        endDateMoment = moment(tzIndependentDate(startDate)).add(6, 'days'),                        
                         endDate = $filter('date')(endDateMoment.toDate(), $rootScope.dateFormatForAPI);
 
-                        fetchHouseEventsCount(startDate, endDate);
+                    startDate = $filter('date')(tzIndependentDate(startDate), $rootScope.dateFormatForAPI);
+
+                    fetchHouseEventsCount(startDate, endDate);
 
                 })();
             }]);
