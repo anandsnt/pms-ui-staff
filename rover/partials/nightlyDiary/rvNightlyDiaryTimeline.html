@@ -2,7 +2,7 @@
 <div class="grid-dates" ng-show="diaryData.numberOfDays === 7">
     <div class="day" 
         ng-repeat="item in diaryData.datesGridData | limitTo: 7" 
-        ng-class="{ 'today':(item.date === diaryData.businessDate ) , 'weekend': item.isWeekend, 'has-event-block': diaryData.eventsCount[item.date] > 0 }" 
+        ng-class="{ 'today':(item.date === diaryData.businessDate ) , 'weekend': item.isWeekend, 'has-event-block border no-radius': diaryData.eventsCount[item.date] > 0 }" 
         data-events="{{diaryData.eventsCount[item.date]}}"
         ng-click="showHouseEventsListPopup(diaryData.eventsCount[item.date], item.date)">
         <span>{{ item.date | date: 'EEEE' }}</span>
