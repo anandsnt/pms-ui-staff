@@ -1402,7 +1402,8 @@ angular.module('sntRover')
                  * initialisation function
                  */
                 (() => {
-                    var startDate = $stateParams.start_date || (moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')).toDate(),                    
+                    var startDate = $stateParams.start_date || (moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')).
+                        toDate(),                    
                         endDateMoment = moment(tzIndependentDate(startDate)).add(6, 'days'),                        
                         endDate = $filter('date')(endDateMoment.toDate(), $rootScope.dateFormatForAPI);
 
