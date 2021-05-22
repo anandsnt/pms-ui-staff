@@ -249,7 +249,8 @@ var DiaryContent = React.createClass({
 								onScrollLoadTriggerLeft: scope.onScrollLoadTriggerLeft,
 								completedRendering: scope.eventAfterRendering,
 								saveReservationOnDrop: scope.saveReservationOnDrop,
-								showRoomStatusAndServiceUpdatePopup: scope.showRoomStatusAndServiceUpdatePopup
+								showRoomStatusAndServiceUpdatePopup: scope.showRoomStatusAndServiceUpdatePopup,
+								showEventsList: scope.showHouseEventsListPopup
 							},
 							currentDragItem: props.currentDragItem,
 							currentResizeItem: props.currentResizeItem,
@@ -290,7 +291,9 @@ var DiaryContent = React.createClass({
 			className: 'diary-container ' + ((state.viewport.hours === 12) ? 'hours-12' : 'hours-24') + /* (props.currentResizeItem*/ (state.edit.active ? ' editing' : '')
 		},
 		React.createElement( TogglePanel, {
-			__toggleRows: self.__toggleRows
+			__toggleRows: self.__toggleRows,
+			showEventsPopup: state.angular_evt.showEventsList,
+			eventsCount: props.eventsCount
 		}),
 		React.createElement( RoomPanel, {
 			refs: 'rooms',

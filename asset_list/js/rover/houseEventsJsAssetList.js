@@ -6,8 +6,8 @@ module.exports = {
 				minifiedFiles: [
 				],
 				nonMinifiedFiles: [
-					servicesRoot + 'events/*.js',
-					controllerRoot + 'events/*.js',
+					servicesRoot + 'houseEvents/*.js',
+					controllerRoot + 'houseEvents/*.js',
 					
 					
                     // Eliminate all spec files

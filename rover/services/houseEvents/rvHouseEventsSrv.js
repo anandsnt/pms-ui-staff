@@ -1,4 +1,4 @@
-angular.module('eventsModule').service('RVEventsSrv', [
+angular.module('houseEventsModule').service('RVHouseEventsSrv', [
     '$q',
     'rvBaseWebSrvV2',
     function($q, BaseWebSrvV2) {
@@ -88,13 +88,13 @@ angular.module('eventsModule').service('RVEventsSrv', [
             that.searchEvents = function (params) {
                 var deferred = $q.defer(),
                     url = '/api/house_events/search';
-        
-                BaseWebSrvV2.postJSON(url, params).then(function (data) {
+
+                BaseWebSrvV2.getJSON(url, params).then(function (data) {
                     deferred.resolve(data);
                 }, function(error) {
                     deferred.reject(error);
                 });
-            
+
                 return deferred.promise;
             };
 
