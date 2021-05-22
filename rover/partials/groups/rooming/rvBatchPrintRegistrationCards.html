@@ -112,14 +112,14 @@
         <tbody>
             <tr ng-repeat="each in groupReservation.daily_instances_info">
                 <td>{{ each.date | date : dateFormat }}</td>
-                <td ng-hide="printRegCardData.hide_rates">{{ each.rate | currency:currencySymbol:2 }}</td>
-                <td ng-hide="printRegCardData.hide_rates">{{ each.tax | currency:currencySymbol:2 }}</td>
+                <td ng-hide="printRegCardData.hide_rates"><span ng-bind-html="each.rate | sntCurrency:this"></span></td>
+                <td ng-hide="printRegCardData.hide_rates"><span ng-bind-html="each.tax | sntCurrency:this"></span></td>
                 <td class="addons" colspan="2">
                     <table>
                         <tr ng-repeat="item in each.addons">
                             <td>{{ item.name }}</td>
                             <td ng-hide="printRegCardData.hide_rates" ng-if="item.price == 'INCLUDED'">{{ item.price }}</td>
-                            <td ng-hide="printRegCardData.hide_rates" ng-if="item.price != 'INCLUDED'">{{ item.price | currency:currencySymbol:2 }}</td>
+                            <td ng-hide="printRegCardData.hide_rates" ng-if="item.price != 'INCLUDED'"><span ng-bind-html="item.price | sntCurrency:this"></span></td>
                         </tr>
                     </table>
                 </td>

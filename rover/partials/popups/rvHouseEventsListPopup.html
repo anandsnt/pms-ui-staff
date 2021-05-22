@@ -1,0 +1,38 @@
+<div id="modal" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+    <div id="events" class="modal-content events">
+        <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
+
+        <div class="title">
+            <span class="h2 message">Events</span>
+            <span class="text">{{displayDate}}</span>
+        </div>
+
+        <!-- create a scroller here -->
+        <div class="events-list scrollable" ng-iscroll="events-list-scroller">
+            <div class="wrapper">
+                <span ng-repeat="(eventType, eventList) in eventsData">
+                    <div class="event-type">
+                        <span class="event-count">{{eventList.length}}</span>
+                        <span class="event-type-title">
+                            {{eventType}}
+                        </span>
+                    </div>
+                    <ul class="event-type-list">
+                        <li class="event" ng-repeat="event in eventList">
+                            <span class="event-end" ng-if="event.end_date">End Date: {{event.end_date | date: dateFormat}}</span>
+                            <h3 class="event-title">{{event.name}}</h3>
+                            <p class="event-description" ng-if="event.description">
+                                {{event.description}}
+                            </p>
+                        </li>
+                    </ul>
+                </span>
+                
+            </div>
+        </div>
+
+        <div class="actions">
+            <button type="button" class="button blank modal-close" ng-click="closeDialog()">Close window</button>
+        </div>
+    </div>
+</div>

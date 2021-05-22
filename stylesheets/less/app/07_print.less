@@ -3675,6 +3675,8 @@
                 &:first-child {
                     h3,
                     .info { visibility: visible; }
+                   
+                    height: 35pt;
                 }
             }
         }
@@ -3725,6 +3727,14 @@
                 font-weight: 600;
                 .show;
                 width: 5cm;
+            }
+           
+            .room-type {
+                width: 100%;
+                flex-shrink: 0;
+                flex-grow: 1;
+                flex: auto;
+                order: 10;
             }
 
             .icon-ok-10 {
@@ -4388,10 +4398,18 @@
         }
 
         .info-container {
+            page-break-inside: avoid;
+            
             .info-left,
             .info-right {
                 .pull-left;
                 width: 50%;
+                word-break: break-word;
+
+                .qr-code {
+                    width: auto;
+                    height: 140px;
+                }
             }
 
             .info-bottom {
@@ -4404,6 +4422,48 @@
             .info-right {
                 text-align: right;
 
+            }
+
+            &.cols-3 {
+
+                .info-left,
+                .info-right {
+                    word-break: break-word;
+                    width: 30%;
+                }
+
+                .info-mid {
+                    width: 40%;
+                    padding-left: 20px;
+                    margin-bottom: 20px;
+                }
+
+                .info-bottom {
+                    .info-left,
+                    .info-right {
+                        width: 50%;
+                    }
+                }
+            }
+
+            &.cols-2 {
+
+                .info-left {
+                    word-break: break-word;
+                    width: 30%;
+                }
+
+                .info-mid {
+                    width: 70%;
+                    padding-left: 20px;
+                    margin-bottom: 20px;
+                }
+
+                .info-bottom {
+                    .info-left {
+                        width: 50%;
+                    }
+                }
             }
 
             &.account-info {

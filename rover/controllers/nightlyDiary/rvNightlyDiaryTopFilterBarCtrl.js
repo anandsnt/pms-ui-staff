@@ -139,6 +139,7 @@ angular.module('sntRover')
                 }
                 $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
                 $scope.$emit('UPDATE_RESERVATIONLIST');
+                $scope.$emit('UPDATE_EVENTS_COUNT');
                 isDateChangedFromInitialState = true;
 
                 // CICO-63546 : if user already selects avl tab, and then navigating to past dates 
@@ -187,6 +188,7 @@ angular.module('sntRover')
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
                 $scope.diaryData.numberOfDays = 21;
             }
+            $scope.$emit('UPDATE_EVENTS_COUNT');
             $scope.$emit('UPDATE_RESERVATIONLIST');
         };
 
@@ -219,6 +221,7 @@ angular.module('sntRover')
             var isRightShift = false;
 
             calculateFromDateAndToDate(isRightShift);
+            $scope.$emit('UPDATE_EVENTS_COUNT');
             $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
             $scope.$emit('UPDATE_RESERVATIONLIST');
         };
@@ -228,6 +231,7 @@ angular.module('sntRover')
             var isRightShift = true;
 
             calculateFromDateAndToDate(isRightShift);
+            $scope.$emit('UPDATE_EVENTS_COUNT');
             $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
             $scope.$emit('UPDATE_RESERVATIONLIST');
         };

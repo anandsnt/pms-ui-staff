@@ -64,13 +64,7 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
                 $scope.contractData.selectedContractId = '';
                 $scope.$emit('fetchContractsList');
             };
-
-            if ($stateParams.id === "add") {
-                accountId = $scope.contactInformation.id;
-            }
-            else {
-                accountId = $stateParams.id;
-            }
+            accountId = $scope.contactInformation.id;
             var options = {
                 params: {
                     'account_id': accountId,

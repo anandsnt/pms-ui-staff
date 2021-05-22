@@ -78,7 +78,7 @@
             </div>
             
             <div class="amount paid">
-                <span class="currency">{{currencySymbol}}</span>{{ paidInvoice.amount | number:2 }}
+                <span ng-bind-html="paidInvoice.amount | sntCurrency:this"></span>
             </div>
  
         </div>
@@ -115,17 +115,19 @@
                             <!-- Lightspeed Data -->
                         </td>
                         <td class="fees">
-                            <span ng-if="debit.fees" class="currency">{{ currencySymbol }}</span>{{ debit.fees | number:2 }}
+                            <span ng-if="debit.fees" ng-bind-html="debit.fees | sntCurrency:this"></span>
                             <!-- Lightspeed Data -->
                             <ul class = 'charge-items' ng-if = "isStandAlone && debit.is_group_by_ref" ng-class = "{'hidden': !debit.isExpanded}">
                                 <li ng-repeat = "object in debit.light_speed_data">
-                                    <span class = "cost"><span class="currency">{{currencySymbol}}</span>{{object.amount | number:2 }}</span>
+                                    <span class = "cost">
+                                        <span ng-bind-html="object.amount | sntCurrency:this"></span>
+                                    </span>
                                 </li>
                             </ul>
                             <!-- Lightspeed Data -->
                         </td>
                         <td class="credits">
-                            <span ng-if="debit.credits" class="currency">{{ currencySymbol }}</span>{{ debit.credits | number:2 }}
+                            <span ng-if="debit.credits" ng-bind-html="debit.credits | sntCurrency:this"></span>
                         </td>
                     </tr>
 
@@ -148,7 +150,7 @@
                         </td>
                         <td class="fees"></td>
                         <td class="credits">
-                            <span class="currency">{{ currencySymbol }}</span>{{ payment.amount | number:2 }}
+                            <span ng-bind-html="payment.amount | sntCurrency:this"></span>
                         </td>
                         <td class="action">
                             <button class="button blank with-icon only-icon open-modal" ng-disabled="arDataObj.is_locked || paidInvoice.is_locked" ng-show="arFlags.hasAllocateUnallocatePermission" ng-click="clickedUnallocateButton(payment)">

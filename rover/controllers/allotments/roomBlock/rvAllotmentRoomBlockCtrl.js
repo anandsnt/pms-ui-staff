@@ -1324,6 +1324,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				// our total pickup count may change on coming from other tab (CICO-16835)
 				$scope.totalPickups = data.total_picked_count;
 
+				$scope.eventsCount = data.eventsCount;
+
 				// we need the copy of selected_room_type, we ned to use these to show save/discard button
 				// not using any more!
 				// $scope.copy_selected_room_types_and_bookings = util.deepCopy(data.results);
@@ -1844,6 +1846,28 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			// call API. date range end will be calculated in next function.
 			$scope.fetchCurrentSetOfRoomBlockData();
 		};
+
+		/**
+         * Show house events list popup
+         * @param {Number} eventsCount events count
+         * @param {Date} selectedDate selected date
+         * @return {void}
+         */
+        $scope.showHouseEventsListPopup = function(eventsCount, selectedDate) {
+            if (!eventsCount) {
+                return;
+            }
+
+            $scope.selectedEventDisplayDate = selectedDate;
+            ngDialog.open({
+                template: '/assets/partials/popups/rvHouseEventsListPopup.html',
+                scope: $scope,
+                controller: 'rvHouseEventsListPopupCtrl',
+                className: 'ngdialog-theme-default',
+                closeByDocument: false,
+                closeByEscape: true
+            });
+        };
 
 		/**
 		 * Function to initialise room block details
