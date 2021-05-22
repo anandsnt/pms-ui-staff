@@ -2012,7 +2012,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     selectedEntity.report.title === reportNames['ROOM_STATUS_REPORT'] ||
                     selectedEntity.report.title === reportNames['RATE_ADJUSTMENTS_REPORT'] || 
                     selectedEntity.report.title === reportNames['ROOMS_OOO_OOS'] || 
-                    selectedEntity.report.title === reportNames['DEPOSIT_SUMMARY'] || 
                     selectedEntity.report.title === reportNames['OCCUPANCY_REVENUE_SUMMARY'] ||
                     selectedEntity.report.title === reportNames['ADDON_FORECAST'] || 
                     selectedEntity.report.title === reportNames['FORECAST_GUEST_GROUPS'] ||
@@ -2023,7 +2022,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.scheduleFormat = _.filter(originalScheduleFormats, function(object) {
                     return object.value === 'CSV';
                 });
-            } else if (selectedEntity.report && selectedEntity.report.title === reportNames['GUEST_BALANCE_REPORT']) {
+            } else if (selectedEntity.report && (selectedEntity.report.title === reportNames['GUEST_BALANCE_REPORT']) ||
+                selectedEntity.report.title === reportNames['DEPOSIT_SUMMARY']) {
                 $scope.scheduleFormat = _.filter(originalScheduleFormats, function(object) {
                     return object.value === 'CSV' || object.value === 'PDF';
                 });
