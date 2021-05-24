@@ -29,7 +29,7 @@
                 <!-- if partially unallocated, show icon -->
                 <span class="icons icon-wallet-green" ng-show="unallocatedCreditTransaction.is_partially_paid"></span>
 
-                <span ng-bind-html="unallocatedCreditTransaction.amount | sntCurrency:this"></span>
+                <span class="currency">{{currencySymbol}}</span>{{unallocatedCreditTransaction.amount | number:2 }}
             </div>
 
             <button ng-show="arFlags.hasAllocateUnallocatePermission" type="button" class="button green" ng-click="clickedAllocateButton($event, $index)">Allocate</button>
