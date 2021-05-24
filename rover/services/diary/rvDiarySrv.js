@@ -740,6 +740,8 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'sntBaseWebSrv', 'rvBase
                                 'room',
                                 'availability_count'
                             ));
+                    }, function() {
+                        q.reject();
                     });
 
 
