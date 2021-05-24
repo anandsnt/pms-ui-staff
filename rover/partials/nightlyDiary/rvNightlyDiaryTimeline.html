@@ -2,11 +2,14 @@
 <div class="grid-dates" ng-show="diaryData.numberOfDays === 7">
     <div class="day" 
         ng-repeat="item in diaryData.datesGridData | limitTo: 7" 
-        ng-class="{ 'today':(item.date === diaryData.businessDate ) , 'weekend': item.isWeekend, 'has-event-block border no-radius': diaryData.eventsCount[item.date] > 0 }" 
-        data-events="{{diaryData.eventsCount[item.date]}}"
+        ng-class="{ 'today':(item.date === diaryData.businessDate ) , 'weekend': item.isWeekend, 'no-radius': diaryData.eventsCount[item.date] > 0 }" 
         ng-click="showHouseEventsListPopup(diaryData.eventsCount[item.date], item.date)">
-        <span>{{ item.date | date: 'EEEE' }}</span>
-        <strong>{{ item.date | date: 'MMMM dd' }}</strong>
+        <div data-events="{{diaryData.eventsCount[item.date]}}" class="has-event-block no-radius" ng-if="diaryData.eventsCount[item.date] > 0">
+            <span>{{ item.date | date: 'EEEE' }}</span>
+            <strong>{{ item.date | date: 'MMMM dd' }}</strong>
+        </div>
+        <span ng-if="!diaryData.eventsCount[item.date] || diaryData.eventsCount[item.date] <= 0">{{ item.date | date: 'EEEE' }}</span>
+        <strong ng-if="!diaryData.eventsCount[item.date] || diaryData.eventsCount[item.date] <= 0">{{ item.date | date: 'MMMM dd' }}</strong>
     </div>
 </div>
 
@@ -18,9 +21,9 @@
         <div class="days">
             <span ng-repeat="item in diaryData.datesGridData" 
                   class="day"
-                  data-events="{{diaryData.eventsCount[item.date]}}" 
+                  data-events="{{diaryData.eventsCount[item.date]}}"
                   ng-class="{ 'today':(item.date === diaryData.businessDate ) , 'weekend': item.isWeekend, 'has-event-block diary-month-day-events': diaryData.eventsCount[item.date] > 0 }"
-                  ng-click="showHouseEventsListPopup(diaryData.eventsCount[item.date], item.date)">{{ item.date | date: 'dd' }}</span>
+                  ng-click="showHouseEventsListPopup(diaryData.eventsCount[item.date], item.date)">{{ item.date | date: 'dd' }} <div class="event-block-count" ng-if="diaryData.eventsCount[item.date] > 0">{{diaryData.eventsCount[item.date]}}</div></span>
         </div>
     </div>
 
@@ -31,9 +34,9 @@
         <div class="days">
             <span ng-repeat="item in diaryData.firstMonthDateList" 
                   class="day" 
-                  data-events="{{diaryData.eventsCount[item.date]}}" 
+                  data-events="{{diaryData.eventsCount[item.date]}}"
                   ng-class="{ 'today':(item.date === diaryData.businessDate ) , 'weekend': item.isWeekend, 'has-event-block diary-month-day-events': diaryData.eventsCount[item.date] > 0 }"
-                  ng-click="showHouseEventsListPopup(diaryData.eventsCount[item.date], item.date)">{{ item.date | date: 'dd' }}</span>
+                  ng-click="showHouseEventsListPopup(diaryData.eventsCount[item.date], item.date)">{{ item.date | date: 'dd' }} <div class="event-block-count" ng-if="diaryData.eventsCount[item.date] > 0">{{diaryData.eventsCount[item.date]}}</div></span>
         </div>
     </div>
 
@@ -43,9 +46,9 @@
         <div class="days">
             <span ng-repeat="item in diaryData.secondMonthDateList" 
                   class="day" 
-                  data-events="{{diaryData.eventsCount[item.date]}}" 
+                  data-events="{{diaryData.eventsCount[item.date]}}"
                   ng-class="{ 'today':(item.date === diaryData.businessDate ) , 'weekend': item.isWeekend, 'has-event-block diary-month-day-events': diaryData.eventsCount[item.date] > 0 }"
-                  ng-click="showHouseEventsListPopup(diaryData.eventsCount[item.date], item.date)">{{ item.date | date: 'dd' }}</span>
+                  ng-click="showHouseEventsListPopup(diaryData.eventsCount[item.date], item.date)">{{ item.date | date: 'dd' }} <div class="event-block-count" ng-if="diaryData.eventsCount[item.date] > 0">{{diaryData.eventsCount[item.date]}}</div></span>
         </div>
     </div>
 </div>
