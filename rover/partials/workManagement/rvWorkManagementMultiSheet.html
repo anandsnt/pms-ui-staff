@@ -92,7 +92,7 @@
                                 {{ getHKStatus(multiSheetState.allRooms[room.room_index].current_status) }}
                             </span>
                         </div>
-                        <span class="room-type" ng-if="$index === 0">{{getRoomType(room.room_type)}}</span> 
+                        <span class="room-type">{{getRoomType(room.room_type)}}</span> 
                         <h3>
                             <span class="icons icon-suite" ng-if="multiSheetState.allRooms[room.room_index].is_suite">Suite room</span>
                             {{task.room_no}}
@@ -189,12 +189,11 @@
                                 data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content .for-lone-task', cancel: '.completed-task'}"
                                 emit-when="{event: 'ALL_RENDER_COMPLETE', condition: ($parent.$parent.$last && $parent.$last && $last)}">
                                 <div class="info">
-                                    <span class="only-print" ng-bind="getRoomType(room.room_type)"></span>
                                     <span ng-class="getReservationStatusClass(multiSheetState.allRooms[room.room_index])"
                                         ng-bind="getReservationStatusValue(multiSheetState.allRooms[room.room_index])"></span>
                                     <span ng-class="getCurrentStatusClass(multiSheetState.allRooms[room.room_index])">{{ getHKStatus(multiSheetState.allRooms[room.room_index].current_status) }}</span>
                                 </div>
-                                <span class="room-type" ng-if="$index === 0">{{getRoomType(room.room_type)}}</span> 
+                                <span class="room-type">{{getRoomType(room.room_type)}}</span> 
                                 <h3>
                                     <span class="icons icon-suite" ng-show="multiSheetState.allRooms[room.room_index].is_suite">Suite room</span>
                                     {{task.room_no}}

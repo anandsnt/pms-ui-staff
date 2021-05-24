@@ -1502,6 +1502,16 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             refreshScroller();
         };
 
+        /**
+		 * Event propogated by ngrepeatend directive
+		 * we used to hide activity indicator & refresh scroller
+		 */
+		$scope.$on('NG_REPEAT_COMPLETED_RENDERING', function() {
+			$timeout(function() {
+				refreshScroller();
+			}, 0);
+		});
+
 		/**
 		 * To fetch room block details
 		 * @param {object} [paginationOptions] [pagination options]
@@ -1766,7 +1776,12 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
         $scope.getWidthForRoomBlockTimeLine = function() {
-            return $scope.groupConfigData.summary.selected_room_types_and_occupanies.length * 190 + 140 + 'px';
+            var width = $scope.groupConfigData.summary.selected_room_types_and_occupanies.length * 180 + 40;
+            
+            if ($scope.shouldShowLoadNextSetButton()) {
+				width += 80;
+			}
+			return width + 'px';
         };
 
 		/**
@@ -1843,6 +1858,20 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             BLOCK_SCROLL = 'room_block_scroller',
             RATE_TIMELINE 	 = 'room_rates_timeline_scroller',
             timer;
+
+        /**
+         * Get scroller object by key
+         * @param {String} key identifier for scroller
+         * @return {Object} scroller object
+         */
+        var getScrollerObject = function (key) {
+            var scrollerObject = $scope.$parent.myScroll && $scope.$parent.myScroll[key];
+
+            if (_.isUndefined(scrollerObject)) {
+                scrollerObject = $scope.myScroll[key];
+            }
+            return scrollerObject;
+        };
 
 		/**
 		 * utiltiy function for setting scroller and things
@@ -1949,8 +1978,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 */
         var refreshScroller = function() {
             $scope.refreshScroller(BLOCK_SCROLL);
-			// CICO-27063 - scroll issue
-			// $scope.refreshScroller(RATE_TIMELINE);
+			$scope.refreshScroller(RATE_TIMELINE);
             $scope.refreshScroller(RATE_GRID_SCROLL);
         };
 
@@ -2359,6 +2387,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
          * @return {void}
          */
         $scope.showHouseEventsListPopup = function(eventsCount, selectedDate) {
+            getScrollerObject(RATE_TIMELINE).disable();
             if (!eventsCount) {
                 return;
             }
