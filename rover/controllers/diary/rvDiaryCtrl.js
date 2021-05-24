@@ -1987,7 +1987,7 @@ angular.module('sntRover')
             });
 
             var callDiaryAPIsAgainstNewDate = function(start_date, end_date, rate_type, arrival_time, room_type) {
-                $scope.$emit('showLoader');
+                sntActivity.start('LOAD_OCC_AVAILABILITY_COUNT');
                 $scope.errorMessage = '';
                 rvDiarySrv.callOccupancyAndAvailabilityCount(start_date, end_date)
 		        .then(function(data) {
@@ -2017,10 +2017,12 @@ angular.module('sntRover')
                             $scope.gridProps.filter.arrival_time = arrival_time ? arrival_time : '00:00';
                             $scope.gridProps.filter.room_type = room_type ? room_type : '';
                         }
-                        $scope.$emit('hideLoader');
+                        sntActivity.stop('LOAD_OCC_AVAILABILITY_COUNT');
                     }
                     // call this anyway - CICO-35739
                     $scope.gridProps.unassignedRoomList.fetchCount();
+                }, function() {
+                    sntActivity.stop('LOAD_OCC_AVAILABILITY_COUNT'); 
                 });
             };
 
