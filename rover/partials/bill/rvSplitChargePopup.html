@@ -4,7 +4,7 @@
         <fieldset id="split-charge" name="split-charge" class="split-charge">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <span class="h2 message" translate>SPLIT_CHARGE</span>
-            <span class="text">{{selectedTransaction.desc}} <strong class="currency">{{currencySymbol}}{{selectedTransaction.amount | number:2}}</strong></span>
+            <span class="text">{{selectedTransaction.desc}} <strong class="currency"><span ng-bind-html="selectedTransaction.amount | sntCurrency:this"></span></strong></span>
 
             <!-- Form -->
             <div class="entry full-width with-switch">
