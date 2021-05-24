@@ -22,8 +22,8 @@
                 </span>
 
                  <span>
-                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type ==='Nightly'"><span ng-bind-html="addon.amount | sntCurrency:this"></span></span>
-                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type !=='Nightly'"><span ng-bind-html="addon.amount | sntCurrency:this"></span></span>
+                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type ==='Nightly'">{{currencySymbol}}{{addon.amount | number : 2}}</span>
+                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type !=='Nightly'">{{currencySymbol}}{{addon.amount | number : 2}}</span>
                 </span>
                      
                

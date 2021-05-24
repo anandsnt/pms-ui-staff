@@ -30,10 +30,10 @@
                                 </time>
                             </div>
                             <div class="amount green" ng-if="type === 'ALLOCATE'">
-                                <span ng-bind-html="::payment.available_amount | sntCurrency:this"></span>
+                                <span class="currency">{{currencySymbol}}</span>{{::payment.available_amount}}
                             </div>
                             <div class="amount green" ng-if="type === 'REFUND'">
-                                <span ng-bind-html="::payment.amount | sntCurrency:this"></span>
+                                <span class="currency">{{currencySymbol}}</span>{{::payment.amount | number: precisonTwo}}
                             </div>
                             <!-- if allocation -->
                             <button ng-show="arFlags.hasAllocateUnallocatePermission && type === 'ALLOCATE'" type="button" class="button green" ng-click="updateAllocatedPayment(payment)">Allocate</button>

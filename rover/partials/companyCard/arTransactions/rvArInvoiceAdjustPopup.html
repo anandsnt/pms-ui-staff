@@ -10,7 +10,7 @@
         <span class="text" ng-show="!selectedTransaction.is_group_by_ref">
             {{adjustData.charge_desc}}
             <!-- if not a grouped charge show this: -->
-            <strong><span ng-bind-html="adjustData.amount | sntCurrency:this"></span></strong>
+            <strong><span class="currency">{{currencySymbol}}</span> {{adjustData.amount}}</strong>
         </span>
         
         <!-- if a grouped charge
@@ -20,7 +20,7 @@
             <div class="select">
                 <select class="placeholder" ng-model="selectCharge">
                     <option value="" class="placeholder">Select a Charge</option>
-                    <option ng-repeat="group in adjustData.charge_details" value="{{group.financial_transaction_id}}">{{group.charge_desc}}(<span ng-bind-html="group.amount | sntCurrency:this"></span>)</option>
+                    <option ng-repeat="group in adjustData.charge_details" value="{{group.financial_transaction_id}}">{{group.charge_desc}}(<span class="currency">{{currencySymbol}}</span> {{group.amount}})</option>                   
                 </select>
              <!--    <select class="placeholder" ng-model="selectCharge" ng-options="group.charge_desc for group in adjustData.charge_details"  ></select> -->
             </div>
