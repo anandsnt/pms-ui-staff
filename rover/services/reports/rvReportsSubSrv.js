@@ -57,8 +57,19 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                         return obj;
                     }, {});
                 }
-                paginatedResult = _.isArray(results) ? results.slice(start, end)
+                if (params.reportTitle === reportNames['TRAVEL_AGENT_COMMISSIONS']) {
+                    if (results.length) {
+                        var reservations = results[0].reservation_details.reservations;
+
+                        results[0].reservation_details.reservations = reservations.length ? reservations.slice(start, end)
+                    : [];
+                    }
+              
+                    paginatedResult = results;
+                } else {
+                    paginatedResult = _.isArray(results) ? results.slice(start, end)
                     : results;
+                }
             
             return paginatedResult;
         };
@@ -83,6 +94,12 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         service.getcachedInboxReportByParams = function(params) {
             var response = angular.copy(service.cachedInboxReport);
 
+            if (params.reportTitle === reportNames['TRAVEL_AGENT_COMMISSIONS']) {
+                const totalCount = response.results.length ? response.results[0].reservation_details.total_reservations : 0;
+                
+                response.results_total_row = totalCount;
+                response.total_count = totalCount;
+            }
             response.results = service.processResults(params);
             response.results_total_row = service.processToatlResultRow(params);
             response.isPaginatedResponse = true;

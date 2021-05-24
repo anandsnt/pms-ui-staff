@@ -2260,8 +2260,18 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 paramsToApi.travel_agent_id = travel_agent_id;
                 paramsToApi.page = pageNo;
+                paramsToApi.from_date = params.fiterFromDate;
+                paramsToApi.to_date = params.filterToDate;
                 paramsToApi.per_page = reportParams['TRAVEL_AGENTS_PER_PAGE_COUNT'];
-                $scope.$broadcast('updateReservations', paramsToApi);
+                paramsToApi.reportTitle = reportNames['TRAVEL_AGENT_COMMISSIONS'];
+                if (chosenReport.generatedReportId) {
+                    var options = {
+                        params: paramsToApi,
+                        successCallBack: self.sucssCallback,
+                        failureCallBack: errorCallback
+                    };
+                    $scope.callAPI(reportsSubSrv.fetchGeneratedReportDetails, options);
+                } 
             };
 
             var responseWithInsidePagination = function (response) {

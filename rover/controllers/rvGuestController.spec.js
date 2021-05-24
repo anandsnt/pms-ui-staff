@@ -28,7 +28,10 @@ describe('guestCardController', function() {
                     'travelAgent': {}
                 },
                 'guestCardData': {
-                    'contactInfo': {}
+                    'contactInfo': {
+                        'address': {},
+                    },
+                    
                 },
                 'viewState': {
                     'identifier': {}
@@ -37,7 +40,12 @@ describe('guestCardController', function() {
                     'business_date': '2017-01-30'
                 },
                 'reservationData': {
-                    'reservation_id': 123
+                    'reservation_id': 123,
+                    'guest' : {
+                        'address': {},
+                    }
+                    
+
                 }
             });
         });

@@ -5457,6 +5457,7 @@ html.is-ipad {
         position: relative;
         cursor: pointer;
         
+        &.diary-month-day-events,
         &.border {
             &:before {
                 border: 2px solid @azure;
@@ -5485,8 +5486,40 @@ html.is-ipad {
             font-size: 12px;
             line-height: 16px;
             text-align: center;
+            border-bottom-left-radius: 3px;
             .show();
             .square(16px);
+            border-bottom-left-radius: 3px;
+        }
+
+        &.diary-month-day-events {
+            padding-right: 16px;
+            padding-left: 2px;
+
+            &:before {
+                border-radius: 0;
+            }
+
+            &:after {
+                top: 2px;
+                border-radius: 0;
+            }
+        }
+    }
+
+    .events-button {
+        width: 160px;
+        font-size: 14px;
+
+        .events-count {
+            background: @azure;
+            color: @white;
+            display: inline-block;
+            min-width: 20px;
+            height: 20px;
+            line-height: 22px;
+            border-radius: 3px;
+            padding: 0 5px;
         }
     }
 }

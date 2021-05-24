@@ -23,7 +23,7 @@ angular.module('sntRover').service('RVBillCardSrv',
 
 		rvBaseWebSrvV2.getJSON(url).then(function(response) {
 
-			if (response.allowance_data && parseInt(response.allowance_data.amount) > 0) {
+			if (response.allowance_data) {
 
 				// show only the following two types in bill
 				var allowedAllowanceTypesForBill = ['ALLOWANCE LOAD'];

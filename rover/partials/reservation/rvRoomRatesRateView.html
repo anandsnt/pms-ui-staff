@@ -26,10 +26,12 @@
                 CURRENT RATE
             </button>
             <button class="button {{rate.buttonClass}}"
+                ng-class="{'grey' : isBookingRestricted(rate.restriction)}"
                 ng-hide="rate.isDefaultRoomTypeSuiteUnavailable || (stateCheck.selectedStayDate.rate.id == rate.id &&
                     (stateCheck.selectedStayDate.roomType.id == rate.defaultRoomTypeId ||
                         reservationData.rooms[activeRoom].roomTypeId == rate.defaultRoomTypeId )) ||
                             restrictIfOverbook(rate.defaultRoomTypeId,rate.id,rate.defaultRoomTypeAvailability)"
+                ng-disabled="isBookingRestricted(rate.restriction)"
                 ng-click="handleBooking(rate.defaultRoomTypeId,rate.id,$event, null, null, null, rate.rateCurrency)" translate>
                 RESV_BOOK
             </button>
@@ -77,7 +79,7 @@
                 <button ng-show="stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id)" class="button white blue-text" ng-click="handleNoEdit($event,room.id,rate.id)">
                     CURRENT RATE
                 </button>
-                <button class="button {{room.buttonClass}}" ng-hide="room.isSuiteUnavailable || (stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id)) || restrictIfOverbook(room.id,rate.id,room.availability)" ng-click="handleBooking(room.id,rate.id, $event, null, null, null, room.rateCurrency)" translate>RESV_BOOK
+                <button class="button {{room.buttonClass}}" ng-class="{'grey' : isBookingRestricted(room.restriction)}" ng-disabled="isBookingRestricted(room.restriction)" ng-hide="room.isSuiteUnavailable || (stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id)) || restrictIfOverbook(room.id,rate.id,room.availability)" ng-click="handleBooking(room.id,rate.id, $event, null, null, null, room.rateCurrency)" translate>RESV_BOOK
                 </button>
             </a>
             <div class="rate-details" ng-if="room.showDays">

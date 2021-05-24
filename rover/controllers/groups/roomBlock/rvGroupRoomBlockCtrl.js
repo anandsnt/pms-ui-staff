@@ -1487,9 +1487,12 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			// our total pickup count may change on coming from other tab (CICO-16835)
             $scope.totalPickups = data.total_picked_count;
             $scope.totalBlockedCount = data.total_blocked;
-
+            $scope.groupConfigData.summary.rooms_total = data.total_blocked;
+            
 			// we need the copy of selected_room_type, we ned to use these to show save/discard button
             $scope.copy_selected_room_types_and_bookings = util.deepCopy(data.results);
+
+            $scope.eventsCount = data.eventsCount;
 
             $scope.getTotalBookedRooms();
 
@@ -1498,6 +1501,16 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			// we changed data, so
             refreshScroller();
         };
+
+        /**
+		 * Event propogated by ngrepeatend directive
+		 * we used to hide activity indicator & refresh scroller
+		 */
+		$scope.$on('NG_REPEAT_COMPLETED_RENDERING', function() {
+			$timeout(function() {
+				refreshScroller();
+			}, 0);
+		});
 
 		/**
 		 * To fetch room block details
@@ -1763,7 +1776,12 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
         $scope.getWidthForRoomBlockTimeLine = function() {
-            return $scope.groupConfigData.summary.selected_room_types_and_occupanies.length * 190 + 140 + 'px';
+            var width = $scope.groupConfigData.summary.selected_room_types_and_occupanies.length * 180 + 40;
+            
+            if ($scope.shouldShowLoadNextSetButton()) {
+				width += 80;
+			}
+			return width + 'px';
         };
 
 		/**
@@ -1840,6 +1858,20 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             BLOCK_SCROLL = 'room_block_scroller',
             RATE_TIMELINE 	 = 'room_rates_timeline_scroller',
             timer;
+
+        /**
+         * Get scroller object by key
+         * @param {String} key identifier for scroller
+         * @return {Object} scroller object
+         */
+        var getScrollerObject = function (key) {
+            var scrollerObject = $scope.$parent.myScroll && $scope.$parent.myScroll[key];
+
+            if (_.isUndefined(scrollerObject)) {
+                scrollerObject = $scope.myScroll[key];
+            }
+            return scrollerObject;
+        };
 
 		/**
 		 * utiltiy function for setting scroller and things
@@ -1946,8 +1978,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 */
         var refreshScroller = function() {
             $scope.refreshScroller(BLOCK_SCROLL);
-			// CICO-27063 - scroll issue
-			// $scope.refreshScroller(RATE_TIMELINE);
+			$scope.refreshScroller(RATE_TIMELINE);
             $scope.refreshScroller(RATE_GRID_SCROLL);
         };
 
@@ -2347,6 +2378,29 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             }
 
             return false;
+        };
+
+        /**
+         * Show house events list popup
+         * @param {Number} eventsCount events count
+         * @param {Date} selectedDate selected date
+         * @return {void}
+         */
+        $scope.showHouseEventsListPopup = function(eventsCount, selectedDate) {
+            getScrollerObject(RATE_TIMELINE).disable();
+            if (!eventsCount) {
+                return;
+            }
+
+            $scope.selectedEventDisplayDate = selectedDate;
+            ngDialog.open({
+                template: '/assets/partials/popups/rvHouseEventsListPopup.html',
+                scope: $scope,
+                controller: 'rvHouseEventsListPopupCtrl',
+                className: 'ngdialog-theme-default',
+                closeByDocument: false,
+                closeByEscape: true
+            });
         };
 
 

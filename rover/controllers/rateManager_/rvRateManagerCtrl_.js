@@ -2640,7 +2640,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             ngDialog.open({
                 template: '/assets/partials/rateManager_/listHouseEventsPopup.html',
                 scope: $scope,
-                controller: 'rvRateManagerEventsListPopupCtrl',
+                controller: 'rvRateManagerHouseEventsListPopupCtrl',
                 className: 'ngdialog-theme-default',
                 closeByDocument: false,
                 closeByEscape: true

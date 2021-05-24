@@ -372,8 +372,11 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         $scope.showGeneratedReportFromInbox = function( selectedreport ) {
             delete selectedreport.filterFromDate;
             delete selectedreport.filterToDate;
-            delete selectedreport.filters.from_date;
-            delete selectedreport.filters.to_date;
+            
+            if (selectedreport.name !== reportNames['TRAVEL_AGENT_COMMISSIONS']) {
+                delete selectedreport.filters.from_date;
+                delete selectedreport.filters.to_date;
+            }
 
             var mainCtrlScope = $scope.$parent;
 
