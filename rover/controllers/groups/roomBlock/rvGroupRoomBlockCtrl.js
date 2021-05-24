@@ -1502,6 +1502,16 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             refreshScroller();
         };
 
+        /**
+		 * Event propogated by ngrepeatend directive
+		 * we used to hide activity indicator & refresh scroller
+		 */
+		$scope.$on('NG_REPEAT_COMPLETED_RENDERING', function() {
+			$timeout(function() {
+				refreshScroller();
+			}, 0);
+		});
+
 		/**
 		 * To fetch room block details
 		 * @param {object} [paginationOptions] [pagination options]
@@ -1968,8 +1978,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 */
         var refreshScroller = function() {
             $scope.refreshScroller(BLOCK_SCROLL);
-			// CICO-27063 - scroll issue
-			// $scope.refreshScroller(RATE_TIMELINE);
+			$scope.refreshScroller(RATE_TIMELINE);
             $scope.refreshScroller(RATE_GRID_SCROLL);
         };
 
