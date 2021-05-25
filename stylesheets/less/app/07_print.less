@@ -2354,6 +2354,31 @@
                         }
                     }
                 }
+
+                &.tax-output {
+                    .pagination { .hide(); }
+
+                    tbody {
+                        tr {
+                            &.row-break:not(:last-child) {
+                                td {
+                                    border-bottom: 8pt solid @grey1;
+                                }
+                            }
+                        }
+                    }
+
+                    tfoot {
+                        tr {
+                            &.totals {
+                                td {
+                                    background: @grey1;
+                                    padding: 4pt 8pt 4pt 4pt
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             &.financial-adjustment-reports {

@@ -1,0 +1,129 @@
+<!-- Report content -->
+<div id="report-content" class="report-content grid scrollable" ng-iscroll="report-details-scroll">
+    <div class="wrapper" ng-controller="RVTaxOutputReportCtrl">
+        <div ng-repeat="category in results" class="receipt-type-container">
+            <ul class="card-meta">
+                <li class="name">{{category.sub_category_type_name}}</li>
+            </ul>
+
+            <table class="balance-reports complimentary-report tax-output">
+                <thead>
+                    <tr>
+                        <th class="payment-receipt-no"><span>Payment Receipt</span></th>
+                        <th class="invoice-no"><span>Invoice</span></th>
+                        <th class="receipt"><span>Receipt</span></th>
+                        <th class="amount"><span>Non VAT amount</span></th>
+                        <th class="amount"><span>Vatable amount</span></th>
+                        <th class="amount"><span>VAT</span></th>
+                        <th class="amount"><span>Total</span></th>
+                        <th class="vat-receipt"><span>Credit VAT Receipt</span></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <!-- Show if there is pagination -->
+                    <tr class="pagination">
+                        <td colspan="8">
+                            <rv-pagination page-options="category.insidePaginationData" page-data="category.sub_category_total.total_sub_category_receipts"></rv-pagination>
+                        </td>
+                    </tr>
+
+                    <!-- If last payment group and last table, add .row-break to have a space between grand total -->
+                    <tr class="totals" ng-class="{'row-break': $last}">
+                        <td colspan="3">
+                            Total
+                        </td>
+                        <td>
+                            {{category.sub_category_total.sub_category_non_vatable_sum}}
+                        </td>
+                        <td>
+                            {{category.sub_category_total.sub_category_vatable_sum}}
+                        </td>
+                        <td>
+                            {{category.sub_category_total.sub_category_vat_sum}}
+                        </td>
+                        <td>
+                            {{category.sub_category_total.sub_category_total_aggregate}}
+                        </td>
+                        <td></td>
+                    </tr>
+
+                    <!-- Show grand total if last payment group and last table -->
+                    <tr class="totals" ng-if="$last">
+                        <td colspan="3">
+                            Grand Total
+                        </td>
+                        <td>
+                            {{calculateNonVatGrandTotal()}}
+                        </td>
+                        <td>
+                            {{calculateVatableAmountGrandTotal()}}
+                        </td>
+                        <td>
+                            {{calculateVatGrandTotal()}}
+                        </td>
+                        <td>
+                            {{calculateGrandTotal()}}
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+                <tbody ng-repeat="receipt in category.receipt_details.receipts">
+                    <tr>
+                        <td rowspan="3" class="payment-receipt-no">
+                            {{receipt.payment_receipt_number}}
+                            <div class="date">
+                                <em>{{receipt.payment_receipt_date | date : dateFormat}}</em>
+                            </div>
+                        </td>
+                        <td class="invoice-no">
+                            {{receipt.invoice_number}}
+                        </td>
+                        <td class="receipt">
+                            {{receipt.payment_type}}
+                        </td>
+                        <td class="amount">
+                            {{receipt.non_vatable_amount}}
+                        </td>
+                        <td class="amount">
+                            {{receipt.vatable_amount}}
+                        </td>
+                        <td class="amount">
+                            {{receipt.vat_amount}}
+                        </td>
+                        <td class="amount">
+                            {{receipt.total_amount}}
+                        </td>
+                        <td class="vat-receipt">
+                            {{receipt.credit_vat_receipt_number}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Remarks
+                        </td>
+                        <td colspan="6">
+                            {{receipt.payment_remarks}}
+                        </td>
+                    </tr>
+                    <tr class="row-break">
+                        <td colspan="2">
+                            Guest / Account: {{receipt.guest_or_account_name}}
+                        </td>
+                        <td>
+                            Tax ID
+                        </td>
+                        <td colspan="2">
+                            {{receipt.tax_id}}
+                        </td>
+                        <td>
+                            Confirmation / Account No
+                        </td>
+                        <td>
+                            {{receipt.confirmation_or_account_number}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>   
+        </div>
+    </div>
+</div>
