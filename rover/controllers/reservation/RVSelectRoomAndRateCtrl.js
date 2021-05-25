@@ -2022,6 +2022,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						_.each(room.restrictions, function(restrictionObject) {
 						   var restrictionKey = restrictionObject.restriction_type_id;
 
+						   if (restrictionKey === 1 || restrictionKey === 2 || restrictionKey === 3) {
+							   restrictionObject.is_on_rate = true;
+						    }
+
 						   restrictionObject.restrictionBgClass = "bg-" + getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 						   // restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 						   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
