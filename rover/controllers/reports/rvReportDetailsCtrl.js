@@ -851,7 +851,14 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.showReportHeader = true;
                     $scope.showPrintOption = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/folioTax/folioTaxReportDetails.html';
-                    break;             
+                    break; 
+
+                case reportNames['TAX_OUTPUT_REPORT']:
+                    $scope.hasReportTotals = true;
+                    $scope.showReportHeader = true;
+                    $scope.showPrintOption = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/taxOutput/rvTaxOutputReport.html';
+                    break;
 
                 default:
                     $scope.hasReportTotals = true;
