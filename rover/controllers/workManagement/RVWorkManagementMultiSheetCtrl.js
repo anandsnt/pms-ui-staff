@@ -1692,6 +1692,25 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
             }
 
             return status;
-        };
+		};
+
+		/**
+		 * Get the first filtered task
+		 * @param {String} filterWorkTypeId - filter work type id
+		 * @param {String} taskWorkTypeId - task work type id
+		 * @param {Array} tasks - array of tasks
+		 * @return {Number} id of the task
+		 */
+		$scope.getFirstFilteredTaskId = function(filterWorkTypeId, taskWorkTypeId, tasks) {
+			if (!filterWorkTypeId) {
+				return ((tasks && tasks.length > 0 && tasks[0].id) || null);
+			}
+			var filteredTask = _.filter(tasks, function(task) {
+					return task.work_type_id == filterWorkTypeId;
+			});
+			
+			return ((filteredTask && filteredTask.length > 0 && filteredTask[0].id) || null);
+
+		};
 	}
 ]);

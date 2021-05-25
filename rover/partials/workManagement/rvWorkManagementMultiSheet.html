@@ -193,7 +193,7 @@
                                         ng-bind="getReservationStatusValue(multiSheetState.allRooms[room.room_index])"></span>
                                     <span ng-class="getCurrentStatusClass(multiSheetState.allRooms[room.room_index])">{{ getHKStatus(multiSheetState.allRooms[room.room_index].current_status) }}</span>
                                 </div>
-                                <span class="room-type">{{getRoomType(room.room_type)}}</span> 
+                                <span class="room-type" ng-class="{'no-print': getFirstFilteredTaskId(multiSheetState.header.work_type_id, task.work_type_id, room.room_tasks) !== task.id}">{{getRoomType(room.room_type)}}</span> 
                                 <h3>
                                     <span class="icons icon-suite" ng-show="multiSheetState.allRooms[room.room_index].is_suite">Suite room</span>
                                     {{task.room_no}}
