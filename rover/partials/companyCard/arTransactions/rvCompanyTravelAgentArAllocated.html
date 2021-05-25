@@ -27,7 +27,7 @@
             <!-- if partially unallocated add .partially-paid -->
             <div class="amount green" ng-class="{'partially-paid': allocatedCreditTransaction.is_partially_paid}">
                 
-                <span ng-bind-html="allocatedCreditTransaction.amount | sntCurrency:this"></span>
+                <span class="currency">{{currencySymbol}}</span>{{allocatedCreditTransaction.amount | number:2 }}
             </div>
         </div>
 
