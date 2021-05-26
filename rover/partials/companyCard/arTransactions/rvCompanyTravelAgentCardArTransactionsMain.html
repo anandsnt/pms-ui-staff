@@ -7,7 +7,8 @@
         <div class="ar-balance">
             <span class="ar-label">AR Balance</span>
             <strong class="ar-amount" ng-class="{'red': arDataObj.arBalance > 0, 'green': arDataObj.arBalance <= 0 }">
-                <span ng-bind-html="arDataObj.arBalance | sntCurrency:this"></span>
+                <span class="currency">{{currencySymbol}}</span>
+                {{arDataObj.arBalance | number:2}}
             </strong>
         </div>
         <div class="search-form has-dates">

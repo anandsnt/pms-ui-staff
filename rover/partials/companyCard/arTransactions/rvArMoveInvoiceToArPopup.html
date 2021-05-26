@@ -34,7 +34,8 @@
 		            </div> 
 				</div>
 				<div class="stay-cost">
-					<span ng-bind-html="moveInvoiceHeaderData.amount | sntCurrency:this"></span>
+					<span class="currency">{{currencySymbol}}</span>
+					{{moveInvoiceHeaderData.amount | number:2 }}
 				</div>
 			</div>
 		</div>
