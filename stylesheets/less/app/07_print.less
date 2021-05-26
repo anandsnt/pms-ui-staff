@@ -4650,6 +4650,24 @@
                         }
                     }
                 }
+               
+                tbody {
+                    tr {
+                        &.totals {
+                            td {
+                                text-align: right;
+                            }
+                        }
+
+                        &:not(.totals)+tr.totals,
+                        &.first-total {
+                            td {
+                                padding: 12pt 0 4pt;
+                                border-top: 1px solid @grey2;
+                            }
+                        }
+                    }
+                }
 
                 &.proforma-details {
                     table-layout: fixed;

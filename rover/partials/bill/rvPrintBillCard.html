@@ -161,8 +161,41 @@
                 <th class="align-right" >{{printData.translation.credit_amount}}</th>
             </tr>
         </thead>
-        <tfoot>
-            <tr>
+        
+        <tbody>
+            <tr ng-repeat="item in printData.charge_details_list">
+                <td>{{item.date | date:dateFormat}}</td>
+                <td class="description">
+                    <strong>{{item.item_description}}</strong>
+                    <span>{{item.description}}</span>
+                    <div class="converted-currency smaller">
+                        {{item.rate_coversion_rate}}
+                    </div>
+                    <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
+                </td>
+                <td ng-if="!item.isCredit" class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && item.invoice_currency_amount !== null">
+                        {{invoiceCurrencySymbol}}{{item.invoice_currency_amount}}
+                    </div>
+
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.rate_converted_amount">
+                        {{item.rate_currency}}{{item.rate_converted_amount}}
+                    </div>
+                </td>
+                <td ng-if="!item.isCredit" class="align-right"></td>
+                <td class="align-right" ng-if="item.isCredit"></td>
+                <td ng-if="item.isCredit" class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}
+
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && item.invoice_currency_amount !== null">
+                        {{invoiceCurrencySymbol}}{{item.invoice_currency_amount}}
+                    </div>
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.rate_converted_amount">
+                        {{item.rate_currency}}{{item.rate_converted_amount}}
+                    </div>
+                </td>
+            </tr>
+
+            <tr class="totals first-total">
                 <td></td>
                 <td></td>
                 <td><strong >{{printData.translation.total_charge}}</strong></td>
@@ -172,7 +205,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr class="totals">
                 <td></td>
                 <td></td>
                 <td><strong >{{printData.translation.total_credits}}<strong></td>
@@ -182,7 +215,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr class="totals">
                 <td></td>
                 <td></td>
                 <td ><strong>{{printData.translation.net_amount}}</strong></td>
@@ -192,7 +225,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr class="totals">
                 <td></td>
                 <td></td>
                 <td><strong >{{printData.translation.balance}}</strong></td>
@@ -203,7 +236,7 @@
                 </td>
             </tr>
 
-            <tr ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="item in printData.tax_details">
+            <tr class="totals" ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="item in printData.tax_details">
                 <td></td>
                 <td></td>
                 <td>
@@ -216,40 +249,6 @@
                     </div>
                 </td>
             </tr>
-        </tfoot>
-        <tbody>
-            <tr ng-repeat="item in printData.charge_details_list">
-                <td>{{item.date | date:dateFormat}}</td>
-                <td class="description">
-                    <strong>{{item.item_description}}</strong>
-                    <span>{{item.description}}</span>
-                    <div class="converted-currency smaller">
-                        {{item.rate_coversion_rate}}
-                    </div>
-                    <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
-                </td>
-                <td ng-if="!item.isCredit" class="align-right"><span ng-bind-html="item.amount | sntCurrency:this"></span>
-                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && item.invoice_currency_amount !== null">
-                        <span ng-bind-html="item.invoice_currency_amount | sntCurrency:this:invoiceCurrencySymbol"></span>
-                    </div>
-
-                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.rate_converted_amount">
-                        <span ng-bind-html="item.rate_converted_amount | sntCurrency:this:item.rate_currency"></span>
-                    </div>
-                </td>
-                <td ng-if="!item.isCredit" class="align-right"></td>
-                <td class="align-right" ng-if="item.isCredit"></td>
-                <td ng-if="item.isCredit" class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}
-
-                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && item.invoice_currency_amount !== null">
-                        <span ng-bind-html="item.invoice_currency_amount | sntCurrency:this:invoiceCurrencySymbol"></span>
-                    </div>
-                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.rate_converted_amount">
-                        <span ng-bind-html="item.rate_converted_amount | sntCurrency:this:item.rate_currency"></span>
-                    </div>
-                </td>
-            </tr>
-
         </tbody>
     </table>
 </div>
