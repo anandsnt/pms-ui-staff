@@ -70,7 +70,7 @@
                         <div class="invoice-info">
                             <div class="number">{{::invoiceReservationData.bills[0].invoice_no}}</div> <!-- Wrap search match with <span class="highlight"></span> -->
                             <div class="balance"> <!-- Add class 'text-red' if amount is 0 -->
-                                <span class="currency">{{::currencySymbol}}</span>{{::invoiceReservationData.bills[0].balance | number: precisonTwo }}
+                                <span ng-bind-html="::invoiceReservationData.bills[0].balance | sntCurrency:this"></span>
                             </div>
                         </div>
                     </div>
@@ -122,7 +122,7 @@
                         <div class="invoice-info">
                             <div class="number">{{bill.invoice_no}}</div> <!-- Wrap search match with <span class="highlight"></span> -->
                             <div class="balance"> <!-- Add class 'text-red' if amount is 0 -->
-                                <span class="currency">{{::currencySymbol}}</span>{{::bill.balance | number: precisonTwo }}
+                                <span ng-bind-html="::bill.balance | sntCurrency:this"></span>
                             </div>
                         </div>
                     </div>
@@ -168,7 +168,7 @@
                                     </td>
                                     <td class="amount receipt-number">{{transactions.receipt_no}}</td>
                                     <td class="amount credits">
-                                        <span class="currency">{{::currencySymbol}}</span>{{transactions.credits}}
+                                        <span ng-bind-html="transactions.credits | sntCurrency:this"></span>
                                         <button type="button" class="button with-icon only-icon blue open-modal" ng-click="clickedReceiptIcon(invoiceReservationData.associated_item.type, transactions.id, transactions.bill_id)">
                                             <span class="icons icon-invoice"></span>
                                         </button>
