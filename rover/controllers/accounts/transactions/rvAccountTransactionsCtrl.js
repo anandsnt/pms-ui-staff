@@ -971,20 +971,16 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				finalInvoiceSettlement(params, false);
 			} else {
 				var mailSent = function(data) {
-						if (data.is_invoice_issued) {
-							// Handle mail Sent Success
-							$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
-							$scope.status = "success";
+						// Handle mail Sent Success
+						$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+						$scope.status = "success";
 
-							if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
-								$scope.$broadcast("UPDATE_WINDOW");
-							} else {
-								$scope.showEmailSentStatusPopup();
-							}
-							$scope.switchTabTo('TRANSACTIONS');
+						if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
+							$scope.$broadcast("UPDATE_WINDOW");
 						} else {
-							showInvoicePendingInfoPopup();
+							$scope.showEmailSentStatusPopup();
 						}
+						$scope.switchTabTo('TRANSACTIONS');
 					},
 					mailFailed = function(errorMessage) {
 						$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
@@ -1019,18 +1015,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.callAPI(RVBillCardSrv.settleFinalInvoice, options);
 		};		
-
-			/*
-		*	Method to show Invoice pending while fiskilazation in progress.
-		*	This is for EFSTA only.
-		*/
-		var showInvoicePendingInfoPopup = function() {
-			ngDialog.open({
-				template: '/assets/partials/popups/billFormat/rvInvoicePendingInfoPopup.html',
-				className: '',
-				scope: $scope
-			});
-		};
 
 		$scope.clickedEmail = function(requestParams) {
 			$scope.sendEmail(requestParams);
@@ -1114,37 +1098,33 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 							copyInvoiceLabel = responseData.posting_account_invoice_copy_label || responseData.translation.copy_of_invoice;
 							responseData.invoiceLabel = copyInvoiceLabel.replace("#count", copyCount);
 						}
-						if (responseData.is_invoice_issued) {
-							$scope.invoiceActive = true;
-							$scope.printData = responseData;
-							$scope.errorMessage = "";
+						$scope.invoiceActive = true;
+						$scope.printData = responseData;
+						$scope.errorMessage = "";
 
-							$('.nav-bar').addClass('no-print');
-							$('.cards-header').addClass('no-print');
-							$('.card-tabs-nav').addClass('no-print');
-							$("body #loading").html("");
+						$('.nav-bar').addClass('no-print');
+						$('.cards-header').addClass('no-print');
+						$('.card-tabs-nav').addClass('no-print');
+						$("body #loading").html("");
 
-							// this will show the popup with full report
-							$timeout(function() {
+						// this will show the popup with full report
+						$timeout(function() {
 
-								if (sntapp.cordovaLoaded) {
-									cordova.exec(accountsPrintCompleted,
-										function(error) {
-											accountsPrintCompleted();
-										}, 'RVCardPlugin', 'printWebView', []);
-								}
-								else
-								{
-									$timeout(function() {
-										window.print();
+							if (sntapp.cordovaLoaded) {
+								cordova.exec(accountsPrintCompleted,
+									function(error) {
 										accountsPrintCompleted();
-									}, timeDelay); // CICO-61122 
-								}
+									}, 'RVCardPlugin', 'printWebView', []);
+							}
+							else
+							{
+								$timeout(function() {
+									window.print();
+									accountsPrintCompleted();
+								}, timeDelay); // CICO-61122 
+							}
 
-							}, 100);
-						} else {
-							showInvoicePendingInfoPopup();
-						}
+						}, 100);
 				};
 
 				var printBillFailure = function(errorData) {

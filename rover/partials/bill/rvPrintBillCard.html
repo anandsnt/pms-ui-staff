@@ -6,11 +6,8 @@
     <span ng-bind-html="printData.hotel_address" ng-if="printData.show_hotel_address"></span>
     <span class="type" ng-if="!printData.is_proforma_invoice">{{printData.invoiceLabel}}</span>
     <span class="type" ng-if="printData.is_proforma_invoice" >{{printData.translation.proforma_invoice}}</span>
-    <span class="type" ng-if="printData.invoice_qr_code_location === 'HEADER' && (printData.is_deposit_invoice || !printData.is_informational_invoice) && printData.qr_code !== '' && printData.qr_code !== null">
-        <br/><img ng-src="{{printData.qr_code}}" alt="" class="qr-code" />
-    </span>
-    <span class="type" ng-if="printData.invoice_qr_code_location === 'HEADER' && !printData.is_proforma_invoice && !printData.is_deposit_invoice && printData.efsta_fiskal_signature_data.qr_code !== '' && printData.efsta_fiskal_signature_data.qr_code !== null">
-        <br/><img ng-src="{{printData.efsta_fiskal_signature_data.qr_code}}" alt="" class="qr-code" />
+    <span class="type" ng-if="(printData.is_deposit_invoice || !printData.is_informational_invoice) && printData.qr_code !== '' && printData.qr_code !== null">
+        <br/><img ng-src="{{printData.qr_code}}" alt="" class="qr-code" /> 
     </span>
 </div>
 
@@ -71,7 +68,6 @@
         <strong >{{printData.translation.room_number}}:</strong>{{printData.room_number}}<br/>
         <strong >{{printData.translation.confirmation_number}}:</strong>{{printData.confirmation_number}}<br/>
         <strong ng-if="printData.tax_number">{{printData.translation.tax_number}}:</strong>{{printData.tax_number}}
-        <strong ng-if="printData.invoice_currency_code">{{printData.translation.invoice_currency}}:</strong>{{printData.invoice_currency_code}}<br/>
         <br/>
 
     </div>
@@ -360,32 +356,6 @@
         </tr>
     </tbody>
 </table>
-
-<div class="info-container" >
-    <div class="info-left" ng-show="!printData.is_informational_invoice && !printData.is_proforma_invoice && !printData.is_deposit_invoice">
-        <div>
-            <strong>{{printData.translation.tse_transaction_id}}:</strong>{{printData.efsta_fiskal_signature_data.t_id}}<br/>
-            <strong>{{printData.translation.tse_transaction_start}}:</strong>{{printData.efsta_fiskal_signature_data.start_date | date:dateFormat}}<br/>
-            <strong>{{printData.translation.tse_transaction_end}}:</strong>{{printData.efsta_fiskal_signature_data.end_date | date:dateFormat}}<br/>
-            <strong>{{printData.translation.tse_serial_number}}:</strong>{{printData.efsta_fiskal_signature_data.serial_number}}<br/>
-            <strong>{{printData.translation.tse_sign_counter}}:</strong>{{printData.efsta_fiskal_signature_data.sign_counter}}<br/>
-            <strong>{{printData.translation.tse_signature}}:</strong>{{printData.efsta_fiskal_signature_data.signature}}<br/>
-        </div>
-    </div>
-    <div class="info-right">
-        <div ng-show="printData.invoice_qr_code_location === 'FOOTER' && !printData.is_proforma_invoice && !printData.is_deposit_invoice">
-            <span class="type" ng-if="printData.efsta_fiskal_signature_data.qr_code">
-                <br/><img ng-src="{{printData.efsta_fiskal_signature_data.qr_code}}" alt="" class="qr-code" /> 
-            </span>
-        </div>
-        <div ng-show="printData.invoice_qr_code_location === 'FOOTER' && (printData.is_deposit_invoice || !printData.is_informational_invoice)">
-            <span class="type" ng-if="printData.qr_code">
-                <br/><img ng-src="{{printData.qr_code}}" alt="" class="qr-code" />
-            </span>
-        </div>
-    </div>
-    <div class="info-bottom"></div>
-</div>
 
 <div ng-if="printData.is_from_cards" class="invoice-footer text-center" ng-bind-html="trustAsHtml(printData.ar_invoice_billing_text)">
 </div>

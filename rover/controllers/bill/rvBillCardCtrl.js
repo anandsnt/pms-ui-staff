@@ -2688,18 +2688,6 @@ sntRover.controller('RVbillCardController',
 
 	};
 
-	/*
-	 *	Method to show Invoice pending while fiskilazation in progress.
-	 *	This is for EFSTA only.
-	 */
-	var showInvoicePendingInfoPopup = function() {
-		ngDialog.open({
-			template: '/assets/partials/popups/billFormat/rvInvoicePendingInfoPopup.html',
-			className: '',
-			scope: $scope
-		});
-	};
-
 /* ----------- edit/remove/split ends here ---------------*/
 
 	$scope.clickedEmail = function(data) {
@@ -2710,14 +2698,9 @@ sntRover.controller('RVbillCardController',
 			var sendEmailSuccessCallback = function(successData) {
 				$scope.$emit('hideLoader');
 				$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
-				if (successData.is_invoice_issued) {
-					$scope.status = "success";
-					$scope.showEmailSentStatusPopup();
-					$scope.reloadCurrentActiveBill();
-				}
-				else {
-					showInvoicePendingInfoPopup();
-				}
+				$scope.status = "success";
+				$scope.showEmailSentStatusPopup();
+				$scope.reloadCurrentActiveBill();
 			};
 			var sendEmailFailureCallback = function(errorData) {
 				$scope.$emit('hideLoader');
@@ -2842,40 +2825,35 @@ sntRover.controller('RVbillCardController',
 						successData.invoiceLabel = copyLabel.replace("#count", copyCount);
 					}
 
-					if (successData.is_invoice_issued) {
-						$scope.printData = successData;
-						$scope.errorMessage = "";
+					$scope.printData = successData;
+					$scope.errorMessage = "";
 
-						// CICO-9569 to solve the hotel logo issue
-						$("header .logo").addClass('logo-hide');
-						$("header .h2").addClass('text-hide');
-						$("body #loading").html("");// CICO-56119
+					// CICO-9569 to solve the hotel logo issue
+					$("header .logo").addClass('logo-hide');
+					$("header .h2").addClass('text-hide');
+					$("body #loading").html("");// CICO-56119
 
-						// add the orientation
+                    // add the orientation
 
-						addPrintOrientation();
-						/*
-						*	======[ READY TO PRINT ]======
-						*/
-						$timeout(function() {
-							/*
-							*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-							*/
-							$window.print();
-							if (sntapp.cordovaLoaded) {
-								cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-							}
-							/*
-							*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-							*/
-							$timeout(function() {
-								billCardPrintCompleted();
-							}, 3000);
-						}, 700);
-					}
-					else {
-						showInvoicePendingInfoPopup();
-					}
+                    addPrintOrientation();
+                    /*
+                     *	======[ READY TO PRINT ]======
+                     */
+                    $timeout(function() {
+                        /*
+                         *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+                         */
+                        $window.print();
+                        if (sntapp.cordovaLoaded) {
+                            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                        }
+                        /*
+                         *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+                         */
+                        $timeout(function() {
+                            billCardPrintCompleted();
+                        }, 3000);
+                    }, 700);
 			};
 
 			var printDataFailureCallback = function(errorData) {
