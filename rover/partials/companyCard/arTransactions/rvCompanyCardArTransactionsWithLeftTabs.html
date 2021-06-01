@@ -4,19 +4,19 @@
         <!-- Add .active on click & show appropriate billing-content-->
         <li ng-class="{'active': arFlags.currentSelectedArTab === 'balance'}" ng-click="switchArTransactionTab('balance')">
             Open Bills
-            <strong ng-class="{'red': arDataObj.unpaidAmount > 0, 'green': arDataObj.unpaidAmount <= 0 }"><span class="currency">{{currencySymbol}}</span>{{arDataObj.unpaidAmount | number:2}}</strong>
+            <strong ng-class="{'red': arDataObj.unpaidAmount > 0, 'green': arDataObj.unpaidAmount <= 0 }"><span ng-bind-html="arDataObj.unpaidAmount | sntCurrency:this"></span></strong>
         </li>
         <li ng-class="{'active': arFlags.currentSelectedArTab === 'paid-bills'}" ng-click="switchArTransactionTab('paid-bills')">
             Paid Bills
-            <strong> <span class="currency">{{currencySymbol}}</span>{{arDataObj.paidAmount | number:2}}</strong>
+            <strong> <span ng-bind-html="arDataObj.paidAmount | sntCurrency:this"></span></strong>
         </li>
         <li ng-class="{'active': arFlags.currentSelectedArTab === 'unallocated'}"  ng-click="switchArTransactionTab('unallocated')">
             Credit
-            <strong ng-class="{'red': arDataObj.unallocatedCredit < 0, 'green': arDataObj.unallocatedCredit >= 0 }"> <span class="currency">{{currencySymbol}}</span>{{arDataObj.unallocatedCredit | number:2}}</strong>
+            <strong ng-class="{'red': arDataObj.unallocatedCredit < 0, 'green': arDataObj.unallocatedCredit >= 0 }"> <span ng-bind-html="arDataObj.unallocatedCredit | sntCurrency:this"></span></strong>
         </li>
         <li ng-class="{'active': arFlags.currentSelectedArTab === 'allocated'}"  ng-click="switchArTransactionTab('allocated')">
             Allocated
-            <strong> <span class="currency">{{currencySymbol}}</span>{{arDataObj.allocatedCredit | number:2}}</strong>
+            <strong> <span ng-bind-html="arDataObj.allocatedCredit | sntCurrency:this"></span></strong>
         </li>
     </ul>
     <button type="button" class="button green" ng-click="addPayment()">Add Payment</button>
@@ -71,11 +71,11 @@
             <ul class="balance">
                 <li>
                     Available
-                    <strong class="red"> <span class="currency">{{currencySymbol}}</span>{{arDataObj.availableAmount | number:2}}</strong>
+                    <strong class="red"> <span ng-bind-html="arDataObj.availableAmount | sntCurrency:this"></span></strong>
                 </li>
                 <li>
                     Allocated
-                    <strong class="green"> <span class="currency">{{currencySymbol}}</span>{{arDataObj.totalAllocatedAmount | number:2}}</strong>
+                    <strong class="green"> <span ng-bind-html="arDataObj.totalAllocatedAmount | sntCurrency:this"></span></strong>
                 </li>
             </ul>
 
