@@ -1030,6 +1030,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				className: '',
 				scope: $scope
 			});
+			// reload tabs
+			$scope.switchTabTo('TRANSACTIONS');
 		};
 
 		$scope.clickedEmail = function(requestParams) {
