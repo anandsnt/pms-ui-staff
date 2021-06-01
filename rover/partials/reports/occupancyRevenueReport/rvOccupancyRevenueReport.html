@@ -145,25 +145,25 @@
                                                 </td>
                                             </tr> -->
                                             <tr ng-repeat="revenue in stateStore.revenues track by $index">
-                                                    <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}><span class="currency">
-                                                            {{ getValue(revenue.key,$index) | currency:currencySymbol:2 }}</span>
+                                                    <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
+                                                        <span ng-bind-html="getValue(revenue.key,$index) | sntCurrency:this"></span>
                                                     </td>
                                             </tr>
 
                                             <tr ng-show="showDayUseComponent" ng-repeat="revenue in stateStore.dayUseRevenue track by $index">
-                                                <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}><span class="currency">
-                                                        {{ getValue(revenue.key,$index) | currency:currencySymbol:2 }}</span>
+                                                <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
+                                                        <span ng-bind-html="getValue(revenue.key,$index) | sntCurrency:this"></span>
                                                 </td>
                                             </tr>
 
                                             <!-- <tr ng-show="showDayUseComponent">
-                                                <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}><span class="currency">
-                                                        {{ getValue("day_use_adr_inclusive_complimentary_rooms",$index) | currency:currencySymbol:2 }}</span>
+                                                <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
+                                                        <span ng-bind-html="getValue("day_use_adr_inclusive_complimentary_rooms",$index) | sntCurrency:this"> }}</span>
                                                 </td>
                                             </tr>
                                             <tr ng-show="showDayUseComponent">
-                                                <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}><span class="currency">
-                                                        {{ getValue("day_use_adr_exclusive_complimentary_rooms",$index) | currency:currencySymbol:2 }}</span>
+                                                <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
+                                                        <span ng-bind-html="getValue("day_use_adr_exclusive_complimentary_rooms",$index) | sntCurrency:this"></span>
                                                 </td>
                                             </tr> -->
                                             
@@ -171,8 +171,8 @@
                                                 <th ng-repeat="date in selectedDays track by $index" colspan="{{1 + !!chosenLastYear + !!chosenVariance}}">{{date | date : shortMonthAndDate }}</th>
                                             </tr>
                                             <tr ng-repeat="market in markets.data" ng-show="market.selected" ng-init="outerIndex = $index">
-                                                    <td ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)"><span class="currency">
-                                                            {{getMarketRevenueValue(outerIndex,$index) | currency:currencySymbol:2 }}</span>
+                                                    <td ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)">
+                                                        <span ng-bind-html="getMarketRevenueValue(outerIndex,$index) | sntCurrency:this"></span>
                                                     </td>
                                             </tr>
                                             <!-- <li ng-show="marketExists && results.day_use_market_revenue"><strong>Day Use Room Revenue by Market</strong></li> -->
@@ -180,8 +180,8 @@
                                                 <th ng-repeat="date in selectedDays track by $index" colspan="{{1 + !!chosenLastYear + !!chosenVariance}}">{{date | date : shortMonthAndDate }}</th>
                                             </tr>
                                             <tr ng-repeat="market in markets.data" ng-show="showDayUseComponent && market.selected" ng-init="outerIndex = $index">
-                                                <td ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)"><span class="currency">
-                                                        {{getDayUseMarketRevenueValue(outerIndex,$index) | currency:currencySymbol:2 }}</span>
+                                                <td ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)">
+                                                        <span ng-bind-html="getDayUseMarketRevenueValue(outerIndex,$index) | sntCurrency:this"></span>
                                                 </td>
                                             </tr>
 
@@ -190,7 +190,7 @@
                                             </tr>
                                             <tr ng-repeat="chargeGroup in results.charge_groups" ng-init="outerIndex = $index">
                                                     <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
-                                                            <span class="currency">{{getChargeCodeValue(outerIndex,$index) | currency:currencySymbol:2 }}</span>
+                                                        <span ng-bind-html="getChargeCodeValue(outerIndex,$index) | sntCurrency:this"></span>
                                                     </td>
                                             </tr>
                                             <tr ng-show="showDayUseComponent">
@@ -198,17 +198,17 @@
                                             </tr>
                                             <tr ng-repeat="chargeGroup in results.day_use_charge_groups" ng-show="showDayUseComponent" ng-init="outerIndex = $index">
                                                     <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
-                                                            <span class="currency">{{getChargeCodeDayUseValue(outerIndex,$index) | currency:currencySymbol:2 }}</span>
+                                                        <span ng-bind-html="getChargeCodeDayUseValue(outerIndex,$index) | sntCurrency:this"></span>
                                                     </td>
                                             </tr>
                                             <tr ng-repeat="revenueTotal in stateStore.revenueTotals">
                                                     <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
-                                                            <strong><span class="currency">{{getValue(revenueTotal.key,$index) | currency:currencySymbol:2 }}</span></strong>
+                                                        <span ng-bind-html="getValue(revenueTotal.key,$index) | sntCurrency:this"></span></strong>
                                                     </td>
                                             </tr>
                                             <tr ng-show="showDayUseComponent">
                                                 <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
-                                                        <strong><span class="currency">{{getValue("total_day_use_revenue",$index) | currency:currencySymbol:2 }}</span></strong>
+                                                        <strong><span ng-bind-html='getValue("total_day_use_revenue",$index) | sntCurrency:this'></span></strong>
                                                 </td>
                                             </tr>
                                     </tbody>

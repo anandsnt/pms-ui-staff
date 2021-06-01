@@ -20,23 +20,23 @@ This is why: http://stackoverflow.com/questions/17441254/why-angularjs-currency-
         </div>
     </td>
     <td ng-if="each.isReport">{{ each.stay_date | date : dateFormat }}</td>
-    <td ng-if="each.isReport" ng-class="{ red: each.original_amount < 0 }"><span class="currency">{{ each.original_amount | currency:currencySymbol:2 }}</span></td>
-    <td ng-if="each.isReport" ng-class="{ red: each.adjusted_amount < 0 }"><span class="currency">{{ each.adjusted_amount | currency:currencySymbol:2 }}</span></td>
-    <td ng-if="each.isReport" ng-class="{ red: each.variance < 0 }"><span class="currency">{{ each.variance | currency:currencySymbol:2 }}</span></td>
+    <td ng-if="each.isReport" ng-class="{ red: each.original_amount < 0 }"><span ng-bind-html="each.original_amount | sntCurrency:this"></span></td>
+    <td ng-if="each.isReport" ng-class="{ red: each.adjusted_amount < 0 }"><span ng-bind-html="each.adjusted_amount | sntCurrency:this"></span></td>
+    <td ng-if="each.isReport" ng-class="{ red: each.variance < 0 }"><span ng-bind-html="each.variance | sntCurrency:this"></span></td>
     <td ng-if="each.isReport" class="info">{{ each.reason }}</td>
     <td ng-if="each.isReport">{{ each.adjusted_by }}</td>
 
 
     <td ng-if="each.isSubReport">{{ each.stay_date | date : dateFormat }}</td>
-    <td ng-if="each.isSubReport" ng-class="{ red: each.original_amount < 0 }"><span class="currency">{{ each.original_amount | currency:currencySymbol:2 }}</span></td>
-    <td ng-if="each.isSubReport" ng-class="{ red: each.adjusted_amount < 0 }"><span class="currency">{{ each.adjusted_amount | currency:currencySymbol:2 }}</span></td>
-    <td ng-if="each.isSubReport" ng-class="{ red: each.variance < 0 }"><span class="currency">{{ each.variance | currency:currencySymbol:2 }}</span></td>
+    <td ng-if="each.isSubReport" ng-class="{ red: each.original_amount < 0 }"><span ng-bind-html="each.original_amount | sntCurrency:this"></span></td>
+    <td ng-if="each.isSubReport" ng-class="{ red: each.adjusted_amount < 0 }"><span ng-bind-html="each.adjusted_amount | sntCurrency:this"></span></td>
+    <td ng-if="each.isSubReport" ng-class="{ red: each.variance < 0 }"><span ng-bind-html="each.variance | sntCurrency:this"></span></td>
     <td ng-if="each.isSubReport" class="info">{{ each.reason }}</td>
     <td ng-if="each.isSubReport">{{ each.adjusted_by }}</td>
 
 
     <td ng-if="each.isSubTotal"><strong>Total</strong></td>
-    <td ng-if="each.isSubTotal"><strong><span class="currency">{{ each.original_amount | currency:currencySymbol:2 }}</span></strong></td>
-    <td ng-if="each.isSubTotal"><strong><span class="currency">{{ each.adjusted_amount | currency:currencySymbol:2 }}</span></strong></td>
-    <td ng-if="each.isSubTotal" ng-class="{ red: each.variance < 0, green: each.variance > 0 }" colspan="3"><strong><span class="currency">{{ each.variance | currency:currencySymbol:2 }}</span></strong></td>
+    <td ng-if="each.isSubTotal"><strong><span ng-bind-html="each.original_amount | sntCurrency:this"></span></strong></td>
+    <td ng-if="each.isSubTotal"><strong><span ng-bind-html="each.adjusted_amount | sntCurrency:this"></span></strong></td>
+    <td ng-if="each.isSubTotal" ng-class="{ red: each.variance < 0, green: each.variance > 0 }" colspan="3"><strong><span ng-bind-html="each.variance | sntCurrency:this"></span></strong></td>
 </tr>
