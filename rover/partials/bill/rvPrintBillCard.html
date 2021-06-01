@@ -9,7 +9,7 @@
     <span class="type" ng-if="printData.invoice_qr_code_location === 'HEADER' && (printData.is_deposit_invoice || !printData.is_informational_invoice) && printData.qr_code !== '' && printData.qr_code !== null">
         <br/><img ng-src="{{printData.qr_code}}" alt="" class="qr-code" />
     </span>
-    <span class="type" ng-if="printData.invoice_qr_code_location === 'HEADER' && !printData.is_proforma_invoice && !printData.is_deposit_invoice && printData.efsta_fiskal_signature_data.qr_code !== '' && printData.efsta_fiskal_signature_data.qr_code !== null">
+    <span class="type" ng-if="printData.invoice_qr_code_location === 'HEADER' && !printData.is_informational_invoice && !printData.is_proforma_invoice && !printData.is_deposit_invoice && printData.efsta_fiskal_signature_data.qr_code !== '' && printData.efsta_fiskal_signature_data.qr_code !== null">
         <br/><img ng-src="{{printData.efsta_fiskal_signature_data.qr_code}}" alt="" class="qr-code" />
     </span>
 </div>
@@ -372,7 +372,7 @@
         </div>
     </div>
     <div class="info-right">
-        <div ng-show="printData.invoice_qr_code_location === 'FOOTER' && !printData.is_proforma_invoice && !printData.is_deposit_invoice">
+        <div ng-show="printData.invoice_qr_code_location === 'FOOTER' && !printData.is_informational_invoice && !printData.is_proforma_invoice && !printData.is_deposit_invoice">
             <span class="type" ng-if="printData.efsta_fiskal_signature_data.qr_code">
                 <br/><img ng-src="{{printData.efsta_fiskal_signature_data.qr_code}}" alt="" class="qr-code" /> 
             </span>
