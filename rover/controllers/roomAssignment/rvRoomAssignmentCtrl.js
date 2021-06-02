@@ -1089,7 +1089,7 @@ sntRover.controller('RVroomAssignmentController', [
 					className: 'ngdialog-theme-default',
 					scope: $scope
 				});
-		} else if ($rootScope.isUpsellTurnedOn){
+		} else if ($rootScope.isUpsellTurnedOn) {
 			$scope.openApplyChargeDialog();
 		}
 	};
