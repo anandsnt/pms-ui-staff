@@ -1,0 +1,113 @@
+.journal-header,
+.journal-print,
+.journal-footer-print {
+    display: none;
+}
+
+.journal-header-print {
+    background-color: rgba(0,0,0,.1);
+    padding: 10px;
+    margin-bottom: 10px;
+
+    li {
+        font-size: 14px;
+        text-transform: uppercase;
+        line-height: 20px;
+        text-align: center;
+        color: @grey3; 
+    }
+
+    span {
+        display: block;
+        font-size: 28px;
+        font-weight: 300;
+        color: @textColor;
+    }
+}
+
+.journal-content {
+    padding: 0 10px;
+    height: 100%;
+
+    h3 {
+        font-size: 18px;
+        font-weight: 600;
+        text-align: center;
+        background: transparent;
+        background-image: none !important;
+        pointer-events: none;
+        margin: 20px 0 10px;
+    }
+
+    ul:not(.journal-footer-print) {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-column-gap: 10px;
+        grid-row-gap: 10px;
+    }
+
+    li {
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+        font-size: 14px;
+        line-height: 20px;
+        text-transform: uppercase;
+        text-align: center;
+        color: @grey3; 
+
+        span:not(.currency) {
+            font-size: 28px;
+            font-weight: 300;                   
+            color: @textColor;
+            text-indent: 0;
+            .nowrap();
+            .show;
+        }
+    }
+
+    .journal-summary:not(.first) {
+        li {
+            position: relative;
+            padding-top: 20px;
+            text-indent: 9999px;
+
+            &:before {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 20px;
+                font-size: 14px;
+                text-transform: uppercase;
+                text-align: center;
+                color: @grey3;
+                text-indent: 0;
+            }
+
+            &:first-child {
+                &:before {
+                    content: 'Opening';
+                }
+            }
+
+            &:nth-child(2) {
+                &:before {
+                    content: 'Debit';
+                }
+            }
+
+            &:nth-child(3) {
+                &:before {
+                    content: 'Credit';
+                }
+            }
+
+            &:nth-child(4) {
+                &:before {
+                    content: 'Scoring';
+                }
+            }
+        }
+    }
+}
