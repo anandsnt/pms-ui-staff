@@ -17,6 +17,7 @@ sntRover.controller('reservationActionsController', [
     'rvUtilSrv',
     'RVBillCardSrv',
     'RVGuestCardsSrv',
+    'RVGAHelperSrv',
     '$stateParams',
     function($rootScope,
         $scope,
@@ -36,6 +37,7 @@ sntRover.controller('reservationActionsController', [
         rvUtilSrv,
         RVBillCardSrv,
         RVGuestCardsSrv,
+        RVGAHelperSrv,
         $stateParams) {
 
 				BaseCtrl.call(this, $scope);
@@ -652,6 +654,7 @@ sntRover.controller('reservationActionsController', [
          *
          **************************************************************************/
         $scope.goToCheckin = function() {
+            RVGAHelperSrv.startEventTiming('CHECKIN', $scope.reservationData.reservation_card.reservation_id, $scope.reservationData.reservation_card.confirmation_num);
             if ($scope.isGuestIdRequiredForCheckin()) {
                 $scope.toggleGuests(true);
                 return;
