@@ -161,7 +161,7 @@
                 <th class="align-right" >{{printData.translation.credit_amount}}</th>
             </tr>
         </thead>
-        
+
         <tbody>
             <tr ng-repeat="item in printData.charge_details_list">
                 <td>{{item.date | date:dateFormat}}</td>
@@ -374,7 +374,7 @@
     <div class="info-right">
         <div ng-show="printData.invoice_qr_code_location === 'FOOTER' && !printData.is_informational_invoice && !printData.is_proforma_invoice && !printData.is_deposit_invoice">
             <span class="type" ng-if="printData.efsta_fiskal_signature_data.qr_code">
-                <br/><img ng-src="{{printData.efsta_fiskal_signature_data.qr_code}}" alt="" class="qr-code" /> 
+                <br/><img ng-src="{{printData.efsta_fiskal_signature_data.qr_code}}" alt="" class="qr-code" />
             </span>
         </div>
         <div ng-show="printData.invoice_qr_code_location === 'FOOTER' && (printData.is_deposit_invoice || !printData.is_informational_invoice)">
