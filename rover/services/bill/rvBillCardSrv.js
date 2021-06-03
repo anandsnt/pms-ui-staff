@@ -185,25 +185,26 @@ angular.module('sntRover').service('RVBillCardSrv',
 		var deferred = $q.defer();
 		var url = '/staff/checkin';
 
-		RVBaseWebSrv.postJSON(url, params).then(function(data) {
+		RVBaseWebSrv.postJSON(url, params).then(function(response) {
 			RVGAHelperSrv.sendEventToGA('CHECKIN', params.reservation_id);
-			deferred.resolve(data);
-		}, function(data) {
-			deferred.reject(data);
+			deferred.resolve(response);
+		}, function(error) {
+			deferred.reject(error);
 		});
 
 		return deferred.promise;
 	};
 
-	this.completeCheckout = function(data) {
+	this.completeCheckout = function(params) {
 		var deferred = $q.defer();
 		var url = '/staff/checkout';
 
-			RVBaseWebSrv.postJSON(url, data).then(function(data) {
-			   	 deferred.resolve(data);
-			}, function(data) {
-			    deferred.reject(data);
-			});
+		RVBaseWebSrv.postJSON(url, params).then(function(response) {
+			RVGAHelperSrv.sendEventToGA('CHECKOUT', params.reservation_id);
+			deferred.resolve(response);
+		}, function(error) {
+			deferred.reject(error);
+		});
 
 		return deferred.promise;
 	};
