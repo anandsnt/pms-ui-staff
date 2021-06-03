@@ -157,62 +157,7 @@
                 <th class="align-right" >{{printData.translation.credit_amount}}</th>
             </tr>
         </thead>
-        <tfoot>
-            <tr>
-                <td></td>
-                <td></td>
-                <td><strong >{{printData.translation.total_charge}}</strong></td>
-                <td ><strong>{{currencySymbol}}{{printData.total_fees}}</strong>
-                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && printData.invoice_currency_total_fees !== null">
-                        {{invoiceCurrencySymbol}}{{printData.invoice_currency_total_fees}}
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td><strong >{{printData.translation.total_credits}}<strong></td>
-                <td><strong>{{currencySymbol}}{{printData.credits}} </strong>
-                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && printData.invoice_currency_credits !== null">
-                        {{invoiceCurrencySymbol}}{{printData.invoice_currency_credits}}
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td ><strong>{{printData.translation.net_amount}}</strong></td>
-                <td><strong>{{currencySymbol}}{{printData.net_amount}}</strong>
-                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && printData.invoice_currency_net_amount !== null">
-                        {{invoiceCurrencySymbol}}{{printData.invoice_currency_net_amount}}
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td><strong >{{printData.translation.balance}}</strong></td>
-                <td><strong>{{currencySymbol}}{{printData.balance}} </strong>
-                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && printData.invoice_currency_balance !== null">
-                        {{invoiceCurrencySymbol}}{{printData.invoice_currency_balance}}
-                    </div>
-                </td>
-            </tr>
-
-            <tr ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="item in printData.tax_details">
-                <td></td>
-                <td></td>
-                <td>
-                    {{item.description}}
-                </td>
-                <td>
-                    {{currencySymbol}}{{item.amount | number: precisonTwo}}
-                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && printData.invoice_currency_net_amount !== null">
-                        {{invoiceCurrencySymbol}}{{item.invoice_currency_amount}}
-                    </div>
-                </td>
-            </tr>
-        </tfoot>
+        
         <tbody>
             <tr ng-repeat="item in printData.charge_details_list">
                 <td>{{item.date | date:dateFormat}}</td>
@@ -246,6 +191,60 @@
                 </td>
             </tr>
 
+            <tr class="totals first-total">
+                <td></td>
+                <td></td>
+                <td><strong >{{printData.translation.total_charge}}</strong></td>
+                <td ><strong>{{currencySymbol}}{{printData.total_fees}}</strong>
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && printData.invoice_currency_total_fees !== null">
+                        {{invoiceCurrencySymbol}}{{printData.invoice_currency_total_fees}}
+                    </div>
+                </td>
+            </tr>
+            <tr class="totals">
+                <td></td>
+                <td></td>
+                <td><strong >{{printData.translation.total_credits}}<strong></td>
+                <td><strong>{{currencySymbol}}{{printData.credits}} </strong>
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && printData.invoice_currency_credits !== null">
+                        {{invoiceCurrencySymbol}}{{printData.invoice_currency_credits}}
+                    </div>
+                </td>
+            </tr>
+            <tr class="totals">
+                <td></td>
+                <td></td>
+                <td ><strong>{{printData.translation.net_amount}}</strong></td>
+                <td><strong>{{currencySymbol}}{{printData.net_amount}}</strong>
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && printData.invoice_currency_net_amount !== null">
+                        {{invoiceCurrencySymbol}}{{printData.invoice_currency_net_amount}}
+                    </div>
+                </td>
+            </tr>
+            <tr class="totals">
+                <td></td>
+                <td></td>
+                <td><strong >{{printData.translation.balance}}</strong></td>
+                <td><strong>{{currencySymbol}}{{printData.balance}} </strong>
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && printData.invoice_currency_balance !== null">
+                        {{invoiceCurrencySymbol}}{{printData.invoice_currency_balance}}
+                    </div>
+                </td>
+            </tr>
+
+            <tr class="totals" ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="item in printData.tax_details">
+                <td></td>
+                <td></td>
+                <td>
+                    {{item.description}}
+                </td>
+                <td>
+                    {{currencySymbol}}{{item.amount | number: precisonTwo}}
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && printData.invoice_currency_net_amount !== null">
+                        {{invoiceCurrencySymbol}}{{item.invoice_currency_amount}}
+                    </div>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>
