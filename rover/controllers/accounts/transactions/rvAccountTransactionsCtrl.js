@@ -970,6 +970,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 				finalInvoiceSettlement(params, false);
 			} else {
+				$scope.closeDialog();
 				var mailSent = function(data) {
 						if (data.is_invoice_issued) {
 							// Handle mail Sent Success
@@ -1039,6 +1040,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		$scope.clickedPrint = function(requestParams) {
+			$scope.closeDialog();
 			sntActivity.start("PRINT_STARTED");
 			printBillCard(requestParams);
 		};
