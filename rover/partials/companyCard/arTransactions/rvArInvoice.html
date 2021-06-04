@@ -253,7 +253,7 @@
     </table>
 
     <div class="info-container" >
-        <div class="info-left" ng-show="!printData.is_informational_invoice && !printData.is_proforma_invoice && !printData.is_deposit_invoice && printData.efsta_fiskal_signature_data.qr_code !== '' && printData.efsta_fiskal_signature_data.qr_code !== null">
+        <div class="info-left" ng-show="!printData.is_informational_invoice && !printData.is_proforma_invoice && !printData.is_deposit_invoice && !isEmpty(printData.efsta_fiskal_signature_data) && printData.efsta_fiskal_signature_data.qr_code !== '' && printData.efsta_fiskal_signature_data.qr_code !== null">
             <div>
                 <strong>{{printData.translation.tse_transaction_id}}:</strong>{{printData.efsta_fiskal_signature_data.t_id}}<br/>
                 <strong>{{printData.translation.tse_transaction_start}}:</strong>{{printData.efsta_fiskal_signature_data.start_date | date:dateFormat}}<br/>
