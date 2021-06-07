@@ -984,6 +984,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 							}
 							$scope.switchTabTo('TRANSACTIONS');
 						} else {
+							$scope.switchTabTo('TRANSACTIONS');
 							showInvoicePendingInfoPopup();
 						}
 					},
@@ -1031,8 +1032,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				className: '',
 				scope: $scope
 			});
-			// reload tabs
-			$scope.switchTabTo('TRANSACTIONS');
 		};
 
 		$scope.clickedEmail = function(requestParams) {
@@ -1147,6 +1146,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 							}, 100);
 						} else {
+							// reload tabs
+							$scope.switchTabTo('TRANSACTIONS');
 							showInvoicePendingInfoPopup();
 						}
 				};

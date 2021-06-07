@@ -968,6 +968,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					$scope.showEmailSentStatusPopup();
 					$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab);
 				} else {
+					$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab);
 					showInvoicePendingInfoPopup();
 				}
 			},
@@ -1007,7 +1008,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.closeDialog();
 			$scope.printBillCardActive = false;
 			$("body #loading").html('<div id="loading-spinner" ></div>');
-			$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab)
+			$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab);
 			sntActivity.stop("PRINT_STARTED");
 
 		};
@@ -1103,6 +1104,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 							}
 						}, 700);
 					} else {
+						$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab);
 						showInvoicePendingInfoPopup();
 					}
 			};
