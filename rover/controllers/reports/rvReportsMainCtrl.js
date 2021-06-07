@@ -1898,28 +1898,28 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 };
             }
     
-                // include payment type
-                if (report.hasOwnProperty('hasPaymentType')) {
-                    selected = _.where(report['hasPaymentType']['data'], { selected: true });
-    
-                    if (selected.length > 0) {
-                        key = reportParams['PAYMENT_TYPES'];
-                        params[key] = [];
-                        /**/
-                        _.each(selected, function (each) {
-                            params[key].push(each.id.toString());
-                            /**/
-                            if (changeAppliedFilter) {
-                                $scope.appliedFilter.payment_types.push(each.value);
-                            }
-                        });
+            // include payment type
+            if (report.hasOwnProperty('hasPaymentType')) {
+                selected = _.where(report['hasPaymentType']['data'], { selected: true });
 
-                        // in case if all status are selected
-                        if (changeAppliedFilter && report['hasPaymentType']['data'].length === selected.length) {
-                            $scope.appliedFilter.payment_types = [''];
+                if (selected.length > 0) {
+                    key = reportParams['PAYMENT_TYPES'];
+                    params[key] = [];
+                    /**/
+                    _.each(selected, function (each) {
+                        params[key].push(each.id.toString());
+                        /**/
+                        if (changeAppliedFilter) {
+                            $scope.appliedFilter.payment_types.push(each.value);
                         }
+                    });
+                    // in case if all status are selected
+                    if (changeAppliedFilter && report['hasPaymentType']['data'].length === selected.length) {
+                        $scope.appliedFilter.payment_types = ['All Payments'];
+                        delete params[key];
                     }
                 }
+            }
                 
 
             // include travel agents

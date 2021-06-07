@@ -1,0 +1,134 @@
+<!-- Report content -->
+<div ng-show="hasNoResults" class="report-content no-content">
+    <div class="info">
+        <span class="icon-no-content icon-reports"></span>
+        <strong class="h1">No reports found</strong>
+        <span class="h2">Try changing search criteria or modify dates</span>
+    </div>
+</div>
+
+<section id="report-details" class="content reports-wrapper" role="main">
+    <!-- Report content -->
+    <div id="report-content" class="report-content journal-content scrollable" ng-hide="hasNoResults" ng-iscroll="report-details-scroll" ng-controller="RVFinancialTransPaymentReportCtrl">
+        <div class="wrapper">
+            <div id="journal-grid" class="journal-grid">
+                <ul class="grid-header payment">
+                    <li class="name">Payment Type</li>
+                    <li class="code">Charge Code</li>
+                    <li class="number">Number</li>
+                    <li class="value">Amount</li>
+                </ul>
+            
+                <!-- First level - payment types -->
+                <div class="grid-group" ng-repeat="(index1 ,level1) in results">
+                    <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowFirstLevel(index1)}" class="payment-title active toggle">
+                        <strong class="name">{{level1.payment_type}}</strong>
+                        <span class="code">{{level1.charge_code}}</span>
+                        <span class="number">{{level1.number}}</span>
+                        <span class="value"><span class="currency">{{currencySymbol}}</span> {{ level1.amount | number: precisonTwo}}</span>
+                    </a>
+
+                    <!-- Second level - credit cards - if Payment type is Credit Card -->
+                    <div id="{payment-type-id}" class="grid-charge" ng-if="level1.payment_type == 'Credit Card'" ng-repeat="(index2, level2) in level1.credit_cards" ng-show="level1.active">
+                        <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active, 'has-arrow':checkHasArrowSecondLevel(index1,index2)}" class="payment-title active toggle">
+                            <span class="code">{{level2.charge_code}}</span>
+                            <strong class="name">{{level2.credit_card}}</strong>
+                            <span class="value"><span class="currency">{{currencySymbol}}</span> {{level2.amount | number: precisonTwo}}</span>
+                        </a>
+
+                        <!-- Third level - transactions -->
+                        <table id="{'payment-method-id' or 'payment-type-id'}" class="grid-items" ng-show="level2.active">
+                            <thead>
+                                <tr>
+                                    <th>Room</th>
+                                    <th class="cell-reservation">Reservation</th>
+                                    <th>Invoice / Folio No.</th>
+                                    <th>Date & Time</th>
+                                    <th class="cell-details">Details</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th class="align-right">Credit</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="level3 in level2.transactions">
+                                <tr>
+                                    <td>{{level3.room}}<br/>{{level3.account_no}}</td>
+                                    <td>
+                                        <strong  class="cell-row">{{level3.name}}<br/>{{level3.account_name}}</strong>
+                                        <span  class="cell-row">{{level3.reservation_number}}</span>
+                                    </td>
+                                    <td>{{level3.invoice_or_folio}}</td>
+                                    <td>
+                                        <span class="cell-row">{{level3.date}}</span>
+                                        <span class="cell-row">{{level3.time}}</span>
+                                    </td>
+                                    <td>
+                                        <span ng-bind-html="level3.details"></span>
+                                        <!-- If adjusted, show like this:
+                                        <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
+                                        <span class="converted-currency smaller" ng-if="level3.conversion_rate">
+                                                <span class="currency">{{level3.conversion_rate}}</span>
+                                        </span>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="align-right" ng-show="item.credit !== '' && item.credit !== null">
+                                        <span ng-bind-html="level3.credit | sntCurrency:this"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                
+
+                    <!-- Second level -transactions - if Payment type is not Credit Card -->
+                    <div class="grid-charge" ng-if="level1.payment_type !== 'Credit Card'" ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowFirstLevel(index1)}">
+                        <table  class="grid-items" ng-show="level1.active">
+                            <thead>
+                                <tr>
+                                    <th>Room</th>
+                                    <th class="cell-reservation">Reservation</th>
+                                    <th>Invoice / Folio No.</th>
+                                    <th>Date & Time</th>
+                                    <th class="cell-details">Details</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th class="align-right">Credit</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="(index2, level2) in level1.transactions">
+                                <td>{{level2.room}}<br/>{{level2.account_no}}</td>
+                                <td>
+                                    <strong class="cell-row">{{level2.name}}<br/>{{level2.account_name}}</strong>
+                                    <em class="cell-row grey-text" >{{level2.accompany_guest_name}}</em>
+                                    <span class="cell-row">{{level2.reservation_number}}</span>
+                                </td>
+                                <td>{{level2.invoice_or_folio}}</td>
+                                <td>
+                                    <span class="cell-row">{{level2.date}}</span>
+                                    <span class="cell-row grey-text">{{level2.time}}</span>
+                                </td>
+                                <td>
+                                    <span class="cell-row" ng-bind-html="level2.details"></span>
+                                    <!-- If adjusted, show like this:
+                                    <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
+                                    <span class="converted-currency smaller" ng-if="level2.conversion_rate">
+                                            <span class="currency">{{level2.conversion_rate}}</span>
+                                    </span>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td class="align-right" ng-show="item.credit !== '' && item.credit !== null">
+                                    <span ng-bind-html="level2.credit | sntCurrency:this"></span>
+                                </td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="grid-footer" ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></div>
+            </div>
+        </div>  
+    </div>
+</section>
+
+

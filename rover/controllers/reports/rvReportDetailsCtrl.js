@@ -253,6 +253,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.isBalanceReport = true;
                     break;
 
+                case reportNames['FINANCIAL_TRANSACTION_PAYMENT_REPORT']:
                 case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
                     $scope.hasPagination = false;
                     break;
@@ -794,7 +795,14 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.showReportHeader = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/financialTransactionsAdjustmentReport/reportMain.html';
                     break;
-
+                
+                case reportNames['FINANCIAL_TRANSACTION_PAYMENT_REPORT']:
+                    $scope.hasReportTotals = true;
+                    $scope.showReportHeader = true;
+                    $scope.showPrintOption = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/financialTransactionsPaymentReport/reportDetails.html';
+                    break;
+    
                 case reportNames['CREDIT_CHECK_REPORT']:
                     $scope.hasReportTotals = true;
                     $scope.showReportHeader = true;
