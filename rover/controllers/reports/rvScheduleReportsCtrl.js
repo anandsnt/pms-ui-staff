@@ -2019,6 +2019,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     return object.value === 'CSV';
                 });
             } else if (selectedEntity.report && (
+                selectedEntity.report.title === reportNames['ROOMS_OOO_OOS'] || 
                 selectedEntity.report.title === reportNames['GUEST_BALANCE_REPORT'] ||
                 selectedEntity.report.title === reportNames['DEPOSIT_SUMMARY'] || 
                 selectedEntity.report.title === reportNames['FORECAST_BY_DATE'] ||
