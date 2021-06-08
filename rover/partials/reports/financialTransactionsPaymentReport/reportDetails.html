@@ -67,7 +67,7 @@
                                         <!-- If adjusted, show like this:
                                         <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
                                         <span class="converted-currency smaller" ng-if="level3.conversion_rate">
-                                                <span class="currency">{{level3.conversion_rate}}</span>
+                                            <span ng-bind-html="level3.conversion_rate | sntCurrency:this"></span>
                                         </span>
                                     </td>
                                     <td></td>
@@ -113,7 +113,7 @@
                                     <!-- If adjusted, show like this:
                                     <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
                                     <span class="converted-currency smaller" ng-if="level2.conversion_rate">
-                                            <span class="currency">{{level2.conversion_rate}}</span>
+                                        <span ng-bind-html="level2.conversion_rate | sntCurrency:this"></span>
                                     </span>
                                 </td>
                                 <td></td>
