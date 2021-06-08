@@ -190,9 +190,6 @@
 
 <!-- Financial Transactions - Payment Report -->
 <ul ng-if="isThisReport( 'FINANCIAL_TRANSACTION_PAYMENT_REPORT' )" class="totals">
-    <li>Department<span ng-if="appliedFilter.assigned_departments.length>1">Multiple</span><span ng-if="appliedFilter.assigned_departments.length == 1">{{appliedFilter.assigned_departments[0]}}</span></li>
-    <li>Employees<span ng-if="appliedFilter.users.length>1">Multiple</span><span ng-if="appliedFilter.users.length == 1">{{appliedFilter.users[0]}}</span></li>
-    <li>Payment Types<span ng-if="appliedFilter.payment_types.length>1">Multiple</span><span ng-if="appliedFilter.payment_types.length == 1">{{appliedFilter.payment_types[0]}}</span></li>
     <li>Total<span><strong><span class="currency">{{currencySymbol}}</span>{{summaryCounts.total_payment}}</strong></span></li>
 </ul>
 

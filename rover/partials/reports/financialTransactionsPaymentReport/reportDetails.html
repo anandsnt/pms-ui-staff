@@ -21,23 +21,23 @@
             
                 <!-- First level - payment types -->
                 <div class="grid-group" ng-repeat="(index1 ,level1) in results">
-                    <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowFirstLevel(index1)}" class="payment-title active toggle">
+                    <a ng-click="clickedFirstLevel(index1)" class="payment-title active toggle">
                         <strong class="name">{{level1.payment_type}}</strong>
                         <span class="code">{{level1.charge_code}}</span>
                         <span class="number">{{level1.number}}</span>
-                        <span class="value"><span class="currency">{{currencySymbol}}</span> {{ level1.amount | number: precisonTwo}}</span>
+                        <span class="value"><span ng-bind-html="level1.amount | sntCurrency:this"></span>
                     </a>
 
                     <!-- Second level - credit cards - if Payment type is Credit Card -->
-                    <div id="{payment-type-id}" class="grid-charge" ng-if="level1.payment_type == 'Credit Card'" ng-repeat="(index2, level2) in level1.credit_cards" ng-show="level1.active">
-                        <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active, 'has-arrow':checkHasArrowSecondLevel(index1,index2)}" class="payment-title active toggle">
+                    <div id="{payment-type-id}" class="grid-charge" ng-if="level1.payment_type == 'Credit Card'" ng-repeat="(index2, level2) in level1.credit_cards">
+                        <a ng-click="clickedSecondLevel(index1 ,index2)" class="payment-title active toggle">
                             <span class="code">{{level2.charge_code}}</span>
                             <strong class="name">{{level2.credit_card}}</strong>
-                            <span class="value"><span class="currency">{{currencySymbol}}</span> {{level2.amount | number: precisonTwo}}</span>
+                            <span class="value"><span ng-bind-html="level2.amount | sntCurrency:this"></span></span>
                         </a>
 
                         <!-- Third level - transactions -->
-                        <table id="{'payment-method-id' or 'payment-type-id'}" class="grid-items" ng-show="level2.active">
+                        <table id="{'payment-method-id' or 'payment-type-id'}" class="grid-items">
                             <thead>
                                 <tr>
                                     <th>Room</th>
@@ -82,8 +82,8 @@
                 
 
                     <!-- Second level -transactions - if Payment type is not Credit Card -->
-                    <div class="grid-charge" ng-if="level1.payment_type !== 'Credit Card'" ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowFirstLevel(index1)}">
-                        <table  class="grid-items" ng-show="level1.active">
+                    <div class="grid-charge active" ng-if="level1.payment_type !== 'Credit Card'" ng-click="clickedFirstLevel(index1)">
+                        <table  class="grid-items">
                             <thead>
                                 <tr>
                                     <th>Room</th>
@@ -125,7 +125,6 @@
                         </table>
                     </div>
                 </div>
-                <div class="grid-footer" ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></div>
             </div>
         </div>  
     </div>

@@ -1910,7 +1910,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         params[key].push(each.id.toString());
                         /**/
                         if (changeAppliedFilter) {
-                            $scope.appliedFilter.payment_types.push(each.value);
+                            $scope.appliedFilter.payment_types.push(each.description);
                         }
                     });
                     // in case if all status are selected
