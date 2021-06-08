@@ -21,7 +21,7 @@
             
                 <!-- First level - payment types -->
                 <div class="grid-group" ng-repeat="(index1 ,level1) in results">
-                    <a ng-click="clickedFirstLevel(index1)" class="payment-title active toggle">
+                    <a class="payment-title active toggle">
                         <strong class="name">{{level1.payment_type}}</strong>
                         <span class="code">{{level1.charge_code}}</span>
                         <span class="number">{{level1.number}}</span>
@@ -30,7 +30,7 @@
 
                     <!-- Second level - credit cards - if Payment type is Credit Card -->
                     <div id="{payment-type-id}" class="grid-charge" ng-if="level1.payment_type == 'Credit Card'" ng-repeat="(index2, level2) in level1.credit_cards">
-                        <a ng-click="clickedSecondLevel(index1 ,index2)" class="payment-title active toggle">
+                        <a class="payment-title active toggle">
                             <span class="code">{{level2.charge_code}}</span>
                             <strong class="name">{{level2.credit_card}}</strong>
                             <span class="value"><span ng-bind-html="level2.amount | sntCurrency:this"></span></span>
@@ -82,7 +82,7 @@
                 
 
                     <!-- Second level -transactions - if Payment type is not Credit Card -->
-                    <div class="grid-charge active" ng-if="level1.payment_type !== 'Credit Card'" ng-click="clickedFirstLevel(index1)">
+                    <div class="grid-charge active" ng-if="level1.payment_type !== 'Credit Card'">
                         <table  class="grid-items">
                             <thead>
                                 <tr>

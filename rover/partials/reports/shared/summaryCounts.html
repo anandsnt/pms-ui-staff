@@ -190,7 +190,7 @@
 
 <!-- Financial Transactions - Payment Report -->
 <ul ng-if="isThisReport( 'FINANCIAL_TRANSACTION_PAYMENT_REPORT' )" class="totals">
-    <li>Total<span><strong><span ng-bind-html="summaryCounts.total_payment | sntCurrency:this"></span></strong></span></li>
+    <li>Total<span ng-bind-html="summaryCounts.total_payment | sntCurrency:this"></span></li>
 </ul>
 
 <!-- Guest/Account Deposit Balance Summary Report -->
