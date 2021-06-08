@@ -20,8 +20,7 @@ module.exports = function(gulp, $, options) {
 	            starttag: '<!-- inject:less:{{ext}} -->',
 	            transform: function(filepath, file, i, length) {
 	            	console.log('Rover injecting css file (' + (fileName) + ") to "  + ROVER_HTML_FILE);
-	                arguments[0] = URL_APPENDER + "/" + file.relative;
-	                return $.inject.transform.apply($.inject.transform, arguments);
+	                return "<link rel='stylesheet' href='" + URL_APPENDER + "/" + file.relative + "' media='print, screen and (min-width: 768px)'>";
 	            }
        		}))
        		.pipe(gulp.dest(ROVER_TEMPLATE_ROOT, { overwrite: true }));
