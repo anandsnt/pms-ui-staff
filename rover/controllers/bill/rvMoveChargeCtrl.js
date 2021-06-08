@@ -210,7 +210,9 @@ sntRover.controller('RVMoveChargeCtrl',
 				$scope.$emit("hideLoader");
 				response.data.toBill = $scope.targetBillId;
 				$scope.$emit('moveChargeSuccsess', response.data);
-				$scope.closeDialog();
+				if (!response.data.is_move_charges_inprogress) {
+					$scope.closeDialog();
+				}
 			};
 			var failureCallback = function(data) {
 

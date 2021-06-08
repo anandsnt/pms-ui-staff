@@ -449,7 +449,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		/*
 		 * success method move charge
 		 */
-		var moveChargeSuccess = $scope.$on('moveChargeSuccsess', function(event) {
+		var moveChargeSuccess = $scope.$on('moveChargeSuccsess', function(event, response) {
 
 			var chargesMoved = function(data) {
 					onTransactionFetchSuccess(data);
@@ -462,7 +462,16 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					successCallBack: chargesMoved
 				};
 
-			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, options);
+			if (response.is_move_charges_inprogress) {
+				ngDialog.open({
+					template: '/assets/partials/bill/rvMoveAllChargesInprogress.html',
+					className: '',
+					scope: $scope
+				});
+			}
+			else {
+				$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, options);
+			}
 		});
 
 		$scope.$on('$destroy', moveChargeSuccess);
