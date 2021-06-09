@@ -90,7 +90,8 @@
             <strong >{{printData.translation.departure_date}}:</strong>{{printData.departure_date | date:dateFormat}}<br/>
             <strong >{{printData.translation.room_number}}:</strong>{{printData.room_number}}<br/>
             <strong >{{printData.translation.confirmation_number}}:</strong>{{printData.confirmation_number}}<br/>
-            <strong >{{printData.translation.number_of_guests}}:</strong>{{printData.no_of_guests}}<br/><br/>
+            <strong >{{printData.translation.number_of_guests}}:</strong>{{printData.no_of_guests}}<br/>
+            <strong ng-if="printData.invoice_currency_code">{{printData.translation.invoice_currency}}:</strong>{{printData.invoice_currency_code}}<br/><br/>
         </div>
     </div>
     <div class="info-bottom float">
