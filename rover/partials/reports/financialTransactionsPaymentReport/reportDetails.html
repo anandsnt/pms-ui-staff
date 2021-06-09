@@ -20,7 +20,7 @@
                 </ul>
             
                 <!-- First level - payment types -->
-                <div class="grid-group" ng-repeat="(index1 ,level1) in results">
+                <div class="grid-group" ng-repeat="level1 in results">
                     <a class="payment-title active toggle">
                         <strong class="name">{{level1.payment_type}}</strong>
                         <span class="code">{{level1.charge_code}}</span>
@@ -29,7 +29,7 @@
                     </a>
 
                     <!-- Second level - credit cards - if Payment type is Credit Card -->
-                    <div id="{payment-type-id}" class="grid-charge" ng-if="level1.payment_type == 'Credit Card'" ng-repeat="(index2, level2) in level1.credit_cards">
+                    <div class="grid-charge" ng-if="level1.payment_type == 'Credit Card'" ng-repeat="level2 in level1.credit_cards">
                         <a class="payment-title active toggle">
                             <span class="code">{{level2.charge_code}}</span>
                             <strong class="name">{{level2.credit_card}}</strong>
@@ -37,7 +37,7 @@
                         </a>
 
                         <!-- Third level - transactions -->
-                        <table id="{'payment-method-id' or 'payment-type-id'}" class="grid-items">
+                        <table class="grid-items">
                             <thead>
                                 <tr>
                                     <th>Room</th>
@@ -60,19 +60,22 @@
                                     <td>{{level3.invoice_or_folio}}</td>
                                     <td>
                                         <span class="cell-row">{{level3.date}}</span>
-                                        <span class="cell-row">{{level3.time}}</span>
+                                        <span class="cell-row grey-text">{{level3.time}}</span>
                                     </td>
                                     <td>
                                         <span ng-bind-html="level3.details"></span>
                                         <!-- If adjusted, show like this:
                                         <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
+                                        <span class="converted-currency" ng-if="level3.converted_currency">
+                                            <span ng-bind-html="level3.debit_converted_amount | sntCurrency:this:converted_currency"></span>
+                                        </span>
                                         <span class="converted-currency smaller" ng-if="level3.conversion_rate">
-                                            <span ng-bind-html="level3.conversion_rate | sntCurrency:this"></span>
+                                            <span>{{level3.conversion_rate}}</span>
                                         </span>
                                     </td>
                                     <td></td>
                                     <td></td>
-                                    <td class="align-right" ng-show="item.credit !== '' && item.credit !== null">
+                                    <td class="align-right">
                                         <span ng-bind-html="level3.credit | sntCurrency:this"></span>
                                     </td>
                                 </tr>
@@ -96,7 +99,7 @@
                                     <th class="align-right">Credit</th>
                                 </tr>
                             </thead>
-                            <tbody ng-repeat="(index2, level2) in level1.transactions">
+                            <tbody ng-repeat="level2 in level1.transactions">
                                 <td>{{level2.room}}<br/>{{level2.account_no}}</td>
                                 <td>
                                     <strong class="cell-row">{{level2.name}}<br/>{{level2.account_name}}</strong>
@@ -112,8 +115,11 @@
                                     <span class="cell-row" ng-bind-html="level2.details"></span>
                                     <!-- If adjusted, show like this:
                                     <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
+                                    <span class="converted-currency" ng-if="level2.converted_currency">
+                                        <span ng-bind-html="level2.debit_converted_amount | sntCurrency:this:converted_currency"></span>
+                                    </span>
                                     <span class="converted-currency smaller" ng-if="level2.conversion_rate">
-                                        <span ng-bind-html="level2.conversion_rate | sntCurrency:this"></span>
+                                        <span>{{level2.conversion_rate}}</span>
                                     </span>
                                 </td>
                                 <td></td>

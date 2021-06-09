@@ -979,7 +979,7 @@ angular.module('reportsModule')
                         requested++;
                         reportsSubSrv.fetchFloors()
                             .then(fillFloors);
-                    } else if ('INCLUDE_DEPARTMENTS' === filter.value && !filter.filled || 'DEPARTMENT_ASSIGNED' === filter.value && !filter.filled) {
+                    } else if ('INCLUDE_DEPARTMENTS' === filter.value && !filter.filled) {
                         requested++;
                         reportsSubSrv.fetchDepartments()
                             .then(fillDepartments);
@@ -1510,7 +1510,7 @@ angular.module('reportsModule')
                     });
 
                     _.each(reportList, function (report) {
-                        foundFilter = _.find(report['filters'], { value: 'INCLUDE_DEPARTMENTS' }) ? _.find(report['filters'], { value: 'INCLUDE_DEPARTMENTS' }) : _.find(report['filters'], { value: 'DEPARTMENT_ASSIGNED' })
+                        foundFilter = _.find(report['filters'], { value: 'INCLUDE_DEPARTMENTS' });
                         if (!!foundFilter) {
                             foundFilter['filled'] = true;
 
