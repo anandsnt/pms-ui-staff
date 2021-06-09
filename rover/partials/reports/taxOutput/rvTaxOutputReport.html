@@ -33,16 +33,16 @@
                             Total
                         </td>
                         <td>
-                            {{category.sub_category_total.sub_category_non_vatable_sum}}
+                            <span ng-bind-html="category.sub_category_total.sub_category_non_vatable_sum | sntCurrency:this"></span>
                         </td>
                         <td>
-                            {{category.sub_category_total.sub_category_vatable_sum}}
+                            <span ng-bind-html="category.sub_category_total.sub_category_vatable_sum | sntCurrency:this"></span>
                         </td>
                         <td>
-                            {{category.sub_category_total.sub_category_vat_sum}}
+                            <span ng-bind-html="category.sub_category_total.sub_category_vat_sum | sntCurrency:this"></span>
                         </td>
                         <td>
-                            {{category.sub_category_total.sub_category_total_aggregate}}
+                            <span ng-bind-html="category.sub_category_total.sub_category_total_aggregate | sntCurrency:this"></span>
                         </td>
                         <td></td>
                     </tr>
@@ -53,16 +53,16 @@
                             Grand Total
                         </td>
                         <td>
-                            {{calculateNonVatGrandTotal()}}
+                            <span ng-bind-html="calculateNonVatGrandTotal() | sntCurrency:this"></span>
                         </td>
                         <td>
-                            {{calculateVatableAmountGrandTotal()}}
+                            <span ng-bind-html="calculateVatableAmountGrandTotal() | sntCurrency:this"></span>
                         </td>
                         <td>
-                            {{calculateVatGrandTotal()}}
+                            <span ng-bind-html="calculateVatGrandTotal() | sntCurrency:this"></span>
                         </td>
                         <td>
-                            {{calculateGrandTotal()}}
+                            <span ng-bind-html="calculateGrandTotal() | sntCurrency:this"></span>
                         </td>
                         <td></td>
                     </tr>
@@ -82,16 +82,16 @@
                             {{receipt.payment_type}}
                         </td>
                         <td class="amount">
-                            {{receipt.non_vatable_amount}}
+                            <span ng-bind-html="receipt.non_vatable_amount | sntCurrency:this"></span>
                         </td>
                         <td class="amount">
-                            {{receipt.vatable_amount}}
+                            <span ng-bind-html="receipt.vatable_amount | sntCurrency:this"></span>
                         </td>
                         <td class="amount">
-                            {{receipt.vat_amount}}
+                            <span ng-bind-html="receipt.vat_amount | sntCurrency:this"></span>
                         </td>
                         <td class="amount">
-                            {{receipt.total_amount}}
+                            <span ng-bind-html="receipt.total_amount | sntCurrency:this"></span>
                         </td>
                         <td class="vat-receipt">
                             {{receipt.credit_vat_receipt_number}}
