@@ -129,5 +129,7 @@ angular.module('reportsModule')
         "FRONT_OFFICE_STATUS": "fo_status_ids",
         "HOUSEKEEPING_STATUS": "hk_status_ids",
         "HK_RESERVATION_STATUSES": "hk_reservation_statuses",
-        "HK_FRONT_OFFICE_STATUSES": "hk_fo_statuses"
+        "HK_FRONT_OFFICE_STATUSES": "hk_fo_statuses",
+        "TRANSACTION_CATEGORY": "transaction_category",
+        "SHOW_EMPLOYEES_INCLUDING_EOD": "show_employee_including_eod"
     });

@@ -645,6 +645,14 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.fetchEmployees = function() {
+            return callApi({
+                name: 'employees',
+                method: 'getJSON',
+                url: '/api/users/active.json?journal=true'
+            });
+        }
+
         service.fetchTaxExemptTypes = function() {
             return callApi({
                 name: 'taxExempts',

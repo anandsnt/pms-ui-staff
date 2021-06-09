@@ -1055,7 +1055,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     'tax_exempt_type_ids': [],
                     'group_code': [],
                     'country_ids': [],
-                    'include_long_stays': []
+                    'include_long_stays': [],
+                    'transaction_category': []
                 };
             }
 
@@ -1768,6 +1769,18 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     }
                 }
             }
+            
+            // include status
+            if (report.hasOwnProperty('hasTransactionCategory')) {
+                
+                var selected = report['hasTransactionCategory']['selected'] ? report['hasTransactionCategory']['selected'] : report['hasTransactionCategory']['data'][0];
+                key = reportParams['TRANSACTION_CATEGORY'];
+                params[key] = selected.id;
+                if (changeAppliedFilter) {
+                    $scope.appliedFilter.transaction_category = selected.value;
+                };
+            }
+
 
             // include hold status
             if (report.hasOwnProperty('hasHoldStatus')) {
