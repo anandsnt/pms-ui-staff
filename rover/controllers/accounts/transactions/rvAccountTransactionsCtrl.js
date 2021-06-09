@@ -984,7 +984,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 							}
 							$scope.switchTabTo('TRANSACTIONS');
 						} else {
-							$scope.switchTabTo('TRANSACTIONS');
 							showInvoicePendingInfoPopup();
 						}
 					},
@@ -1008,6 +1007,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var finalInvoiceSettlement = function(data, isPrint) {
 			var settleInvoiceSuccess = function() {
 					$scope.shouldGenerateFinalInvoice = false;
+					getTransactionDetails();
 					if (isPrint) {
 						printBillCard(data);
 					} else {
@@ -1146,8 +1146,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 							}, 100);
 						} else {
-							// reload tabs
-							$scope.switchTabTo('TRANSACTIONS');
 							showInvoicePendingInfoPopup();
 						}
 				};

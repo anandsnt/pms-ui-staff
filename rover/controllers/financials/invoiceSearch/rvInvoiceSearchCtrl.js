@@ -397,6 +397,7 @@ sntRover.controller('RVInvoiceSearchController',
 		var finalInvoiceSettlement = function(data, isPrint) {
 			var settleInvoiceSuccess = function() {
 					$scope.shouldGenerateFinalInvoice = false;
+					$scope.searchInvoice($scope.currentActivePage);
 					if (isPrint) {
 						that.printBill(data);
 					} else {
