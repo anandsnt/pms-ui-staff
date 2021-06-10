@@ -83,9 +83,9 @@
             <tr>
                 <td colspan="2"><strong>{{receiptPrintData.receipt_translations.total_amount}}</strong></td>
                 <td>
-                    <strong><span class="currency">{{receiptPrintData.currency_symbol}}</span>{{receiptPrintData.payments.total_amount | number: precisonTwo }}</strong>
+                    <strong><span ng-bind-html="receiptPrintData.payments.total_amount | sntCurrency:this:receiptPrintData.currency_symbol"></span></strong>
                     <div class="converted-currency" ng-if="receiptPrintData.payments.total_converted_amount !== '' && receiptPrintData.payments.total_converted_amount !== null && invoiceCurrencySymbol !='' ">
-                        <span class="currency">{{receiptPrintData.converted_currency_symbol}}</span>{{receiptPrintData.payments.total_converted_amount | number: precisonTwo }}
+                        <span ng-bind-html="receiptPrintData.payments.total_converted_amount| sntCurrency:this:receiptPrintData.converted_currency_symbol"></span>
                     </div>            
                 </td>
             </tr>           
@@ -99,9 +99,9 @@
                     <span class="reference" ng-if="receiptPrintData.payments.credit_card_details.card_number !== null && receiptPrintData.payments.credit_card_details.card_number !== ''">{{receiptPrintData.payments.credit_card_details.description}} - Ending: {{receiptPrintData.payments.credit_card_details.card_number}}</span>
                 </td>
                 <td class="align-right receipt-amount">
-                    <span class="currency">{{receiptPrintData.currency_symbol}}</span>{{receiptPrintData.payments.amount | number: precisonTwo }}
+                    <span ng-bind-html="receiptPrintData.payments.amount | sntCurrency:this:receiptPrintData.currency_symbol"></span>
                     <div class="converted-currency" ng-if="receiptPrintData.payments.converted_amount !== '' && receiptPrintData.payments.converted_amount !== null && invoiceCurrencySymbol !=='' ">
-                        <span class="currency">{{receiptPrintData.converted_currency_symbol}}</span>{{receiptPrintData.payments.converted_amount | number: precisonTwo }}
+                        <span ng-bind-html="receiptPrintData.payments.converted_amount | sntCurrency:this:receiptPrintData.converted_currency_symbol"></span>
                     </div>
                 </td>
             </tr>
@@ -125,21 +125,22 @@
                     {{receiptPrintData.receipt_translations.tax_exempt}}
                 </td>
                 <td>
+                    <span ng-bind-html="tax_breakdown.gross_amount  | sntCurrency:this"></span>
                     {{currencySymbol}}{{tax_breakdown.gross_amount | number: precisonTwo }}
                     <div class="converted-currency">
-                        {{invoiceCurrencySymbol}}{{tax_breakdown.inv_gross_amount | number: precisonTwo }}
+                        <span ng-bind-html="tax_breakdown.inv_gross_amount | sntCurrency:this:invoiceCurrencySymbol"></span>
                     </div>
                 </td>
                 <td>
-                    {{currencySymbol}}{{tax_breakdown.net_amount | number: precisonTwo }}
+                    <span ng-bind-html="tax_breakdown.net_amount  | sntCurrency:this"></span>
                     <div class="converted-currency">
-                        {{invoiceCurrencySymbol}}{{tax_breakdown.inv_net_amount | number: precisonTwo }}
+                        <span ng-bind-html="tax_breakdown.inv_net_amount  | sntCurrency:this:invoiceCurrencySymbol"></span>
                     </div>
                 </td>
                 <td>
-                    {{currencySymbol}}{{tax_breakdown.tax_amount | number: precisonTwo }}
+                    <span ng-bind-html="tax_breakdown.tax_amount  | sntCurrency:this"></span>
                     <div class="converted-currency">
-                        {{invoiceCurrencySymbol}}{{tax_breakdown.inv_tax_amount | number: precisonTwo }}
+                        <span ng-bind-html="tax_breakdown.inv_tax_amount  | sntCurrency:this:invoiceCurrencySymbol"></span>
                     </div>
                 </td>
             </tr>
@@ -149,21 +150,21 @@
             <tr>
                 <td>Total</td>
                 <td>
-                    {{currencySymbol}}{{receiptPrintData.payments.extended_tax_breakdown.total_gross_amount | number: precisonTwo }}
+                    <span ng-bind-html="receiptPrintData.payments.extended_tax_breakdown.total_gross_amount  | sntCurrency:this"></span>
                     <div class="converted-currency">
-                        {{invoiceCurrencySymbol}}{{receiptPrintData.payments.extended_tax_breakdown.inv_total_gross_amount | number: precisonTwo }}
+                        <span ng-bind-html="receiptPrintData.payments.extended_tax_breakdown.inv_total_gross_amount | sntCurrency:this:invoiceCurrencySymbol"></span>
                     </div>
                 </td>
                 <td>
-                    {{currencySymbol}}{{receiptPrintData.payments.extended_tax_breakdown.total_net_amount | number: precisonTwo }}
+                    <span ng-bind-html="receiptPrintData.payments.extended_tax_breakdown.total_net_amount  | sntCurrency:this"></span>
                     <div class="converted-currency">
-                        {{invoiceCurrencySymbol}}{{receiptPrintData.payments.extended_tax_breakdown.inv_total_net_amount | number: precisonTwo }}
+                        <span ng-bind-html="receiptPrintData.payments.extended_tax_breakdown.inv_total_net_amount  | sntCurrency:this:invoiceCurrencySymbol"></span>
                     </div>
                 </td>
                 <td>
-                    {{currencySymbol}}{{receiptPrintData.payments.extended_tax_breakdown.total_tax_amount | number: precisonTwo }}
+                    <span ng-bind-html="receiptPrintData.payments.extended_tax_breakdown.total_tax_amount | sntCurrency:this"></span>
                     <div class="converted-currency">
-                        {{invoiceCurrencySymbol}}{{receiptPrintData.payments.extended_tax_breakdown.inv_total_tax_amount | number: precisonTwo }}
+                        <span ng-bind-html="receiptPrintData.payments.extended_tax_breakdown.inv_total_tax_amount | sntCurrency:this:invoiceCurrencySymbol"></span>
                     </div>
                 </td>
             </tr>

@@ -11,7 +11,7 @@
     <span ng-show="isShowFees()" class="total">
     	Total:
     	<strong id="total-deposit-amount">
-    		{{currencySymbol}}{{feeData.totalOfValueAndFee}}
+            <span ng-bind-html="feeData.totalOfValueAndFee | sntCurrency:this"></span>
     	</strong>
     </span>
 </div>

@@ -1,6 +1,6 @@
 angular.module('sntRover').service('RVBillCardSrv',
-	['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'sntBaseWebSrv',
-	function($http, $q, BaseWebSrvV2, RVBaseWebSrv, rvBaseWebSrvV2, sntBaseWebSrv) {
+	['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'sntBaseWebSrv', 'RVGAHelperSrv',
+	function($http, $q, BaseWebSrvV2, RVBaseWebSrv, rvBaseWebSrvV2, sntBaseWebSrv, RVGAHelperSrv) {
 
 	var that = this;
 
@@ -181,15 +181,16 @@ angular.module('sntRover').service('RVBillCardSrv',
 		return deferred.promise;
 	};
 
-	this.completeCheckin = function(data) {
+	this.completeCheckin = function(params) {
 		var deferred = $q.defer();
 		var url = '/staff/checkin';
 
-			RVBaseWebSrv.postJSON(url, data).then(function(data) {
-			   	 deferred.resolve(data);
-			}, function(data) {
-			    deferred.reject(data);
-			});
+		RVBaseWebSrv.postJSON(url, params).then(function(data) {
+			RVGAHelperSrv.sendEventToGA('CHECKIN', params.reservation_id);
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
 
 		return deferred.promise;
 	};

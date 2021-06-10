@@ -49,7 +49,7 @@
             <tr>
                 <td colspan="4">
                     {{ 'TOTAL' | translate }}
-                    <strong><span class="currency">{{currencySymbol}}</span>{{ calculateTotalBalance() | number:2 }}</strong>
+                    <strong><span ng-bind-html="calculateTotalBalance() | sntCurrency:this"></span></strong>
                 </td>
                 <td></td>
             </tr>

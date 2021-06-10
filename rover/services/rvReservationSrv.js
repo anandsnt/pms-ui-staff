@@ -1,5 +1,5 @@
-angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', '$rootScope',
-	function($http, $q, RVBaseWebSrv, rvBaseWebSrvV2, $rootScope) {
+angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'RVGAHelperSrv', '$rootScope',
+	function($http, $q, RVBaseWebSrv, rvBaseWebSrvV2, RVGAHelperSrv, $rootScope) {
 
 		this.reservationData = {};
 
@@ -82,6 +82,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 
 				RVBaseWebSrv.getJSON(url).then(function(data) {
 					that.reservationDetails[confirmationNumber] = data;
+					RVGAHelperSrv.sendEventToGA('LOAD_RESERVATION', confirmationNumber);
 					deferred.resolve(data);
 				}, function(data) {
 					deferred.reject(data);

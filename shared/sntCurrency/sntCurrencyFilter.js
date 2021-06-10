@@ -21,9 +21,9 @@ angular.module('sntCurrencyFilter', []).filter('sntCurrency', function() {
 			};
 
 			switch (scope.currencyFormat) {
-				case '1,222,00': 
-					// EG : 1234567.89 => 1,234,567,89
-					paramObj.integerSeperatorType  = 'COMMA';
+				case '1.222,00': 
+					// EG : 1234567.89 => 1.234.567,89
+					paramObj.integerSeperatorType  = 'DOT';
 					paramObj.fractionSeperatorType = 'COMMA';
 					break;
 				case '1,222.00': 

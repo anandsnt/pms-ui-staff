@@ -48,22 +48,19 @@
                 <li class="number">
                     <span translate>OPEN_BALANCE</span>
                     <span class="amount red">
-                        <span class="currency">{{currencySymbol}}</span>
-                        {{arOverviewData.open_balance | number: precisonTwo }}
+                        <span ng-bind-html="arOverviewData.open_balance | sntCurrency:this">
                     </span>
                 </li>
                 <li class="number">
                     <span translate>CREDIT</span>
                     <span class="amount green">
-                        <span class="currency">{{currencySymbol}}</span>
-                        {{arOverviewData.total_credit | number: precisonTwo }}
+                        <span ng-bind-html="arOverviewData.total_credit | sntCurrency:this">
                     </span>
                 </li>
                 <li class="number">
                     <span translate>AR_BALANCE</span>
                     <span class="amount" ng-class="{'red': arOverviewData.ar_balance > 0, 'green': arOverviewData.ar_balance <= 0}">
-                        <span class="currency">{{currencySymbol}}</span>
-                        {{arOverviewData.ar_balance | number: precisonTwo }}
+                        <span ng-bind-html="arOverviewData.ar_balance | sntCurrency:this"></span>
                     </span>
                 </li>
             </ul>
@@ -99,13 +96,13 @@
                                 </div>
                                 <div class="info value">
                                     <strong ng-class="{'green': account.credit >= 0, 'red': account.credit < 0 }">
-                                        {{currencySymbol}} {{account.credit | number: precisonTwo }}
+                                        <span ng-bind-html="account.credit | sntCurrency:this"></span>
                                     </strong>
                                     <span translate>CREDIT</span>
                                 </div>
                                 <div class="info value">
                                     <strong ng-class="{'red': account.current_balance >= 0, 'green': account.current_balance < 0 }">
-                                        {{currencySymbol}} {{account.current_balance | number: precisonTwo }}
+                                        <span ng-bind-html="account.current_balance | sntCurrency:this"></span>
                                     </strong>
                                     <span translate>OPEN_BALANCE</span>
                                 </div>
