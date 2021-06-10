@@ -198,6 +198,7 @@ sntRover.controller('roverController', [
         $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
         $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
         $rootScope.isFolioTaxEnabled = hotelDetails.is_folio_tax_report_enabled;
+        $rootScope.isUpsellTurnedOn = hotelDetails.upsell_settings && !!hotelDetails.upsell_settings.is_upsell_settings_on;
 
          /**
          * CICO-34068

@@ -16,7 +16,8 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 			title: $filter('translate')('ROOM_STATUS'),
 			name: 'rover.housekeeping.roomStatus',
 			param: {
-				page: $stateParams.page
+				page: $stateParams.page,
+				roomStatus: $stateParams.roomStatus
 			}
 		};
 
@@ -142,7 +143,8 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 			$scope.openTab = "Log";
 			$scope.$broadcast('OPEN_LOG');
 			$state.go('rover.housekeeping.roomDetails.log', {
-                id: $scope.roomDetails.id
+				id: $scope.roomDetails.id,
+				roomStatus: $stateParams.roomStatus
             });
 		};
 

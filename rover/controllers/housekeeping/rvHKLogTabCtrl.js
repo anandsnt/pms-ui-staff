@@ -5,14 +5,17 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	'roomDetailsLogData',
 	'$filter',
 	'$timeout',
-	function($scope, $rootScope, RVHkRoomDetailsSrv, roomDetailsLogData, $filter, $timeout) {
+	'$stateParams',
+	function($scope, $rootScope, RVHkRoomDetailsSrv, roomDetailsLogData, $filter, $timeout, $stateParams) {
 
 		BaseCtrl.call(this, $scope);
 		// set the previous state
 		$rootScope.setPrevState = {
 			title: $filter('translate')('ROOM_STATUS'),
 			name: 'rover.housekeeping.roomStatus',
-			param: {}
+			param: {
+				roomStatus: $stateParams.roomStatus
+			}
 		};
 
 		$scope.setScroller('LOG_TAB_SCROLL');
