@@ -984,7 +984,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 							}
 							$scope.switchTabTo('TRANSACTIONS');
 						} else {
-							showInvoicePendingInfoPopup();
+							$timeout(function() {
+								showInvoicePendingInfoPopup();
+							}, 500);
 						}
 					},
 					mailFailed = function(errorMessage) {
