@@ -34,10 +34,10 @@
 	</td>
 	<td ng-if="each.isReport">
 		<span class="data room">{{ each.room_type }}</span>
-		<span class="data rate">{{ each.rate }} / <strong><span class="currency">{{ each.adr | currency:currencySymbol:2 }}</span> ADR</strong></span>
+		<span class="data rate">{{ each.rate }} / <strong><span ng-bind-html="each.adr | sntCurrency:this"></span> ADR</strong></span>
 	</td>
 	<td ng-if="each.isReport" class="balance red"> <!-- Add class "red" or "green" as required -->
-		<span class="currency">{{ each.balance_amount | currency:currencySymbol:2 }}</span>
+		<span ng-bind-html="each.balance_amount | sntCurrency:this"></span>
 	</td>
 
 	<!-- guest data - name, company, travel agent & group name -->

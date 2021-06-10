@@ -9,9 +9,9 @@
     <td>{{ each.occupancy }}</td>
 	<td>{{ each.adults }}</td>
     <td>{{ each.children }}</td>
-	<td><span class="currency">{{ each.total_revenue | currency:currencySymbol:2 }}</span></td>
-	<td class="break"><span class="currency">{{ each.adr | currency:currencySymbol:2 }}</span></td>
-	<td><span class="currency">{{ each.last_year_adr | currency:currencySymbol:2 }}</span></td>
+	<td><span ng-bind-html="each.total_revenue | sntCurrency:this"></span></td>
+	<td class="break"><span ng-bind-html="each.adr | sntCurrency:this"></span></td>
+	<td><span ng-bind-html="each.last_year_adr | sntCurrency:this"></span></td>
     <td>{{ each.last_year_occupancy }}</td>
     <td ng-class="{ 'red': (each.variance * 1) < 0 }">{{ each.variance }}</td>
 </tr>
@@ -23,9 +23,9 @@
 	<td>{{ resultsTotalRow.total_occupancy }}</td>
 	<td>{{ resultsTotalRow.total_adults }}</td>
 	<td>{{ resultsTotalRow.total_children }}</td>
-	<td><span class="currency">{{ resultsTotalRow.total_revenue | currency:currencySymbol:2 }}</span></td>
-	<td class="break"><span class="currency">{{ resultsTotalRow.total_adr | currency:currencySymbol:2 }}</span></td>
-	<td><span class="currency">{{ resultsTotalRow.total_last_year_adr | currency:currencySymbol:2 }}</span></td>
+	<td><span ng-bind-html="resultsTotalRow.total_revenue | sntCurrency:this"></span></td>
+	<td class="break"><span ng-bind-html="resultsTotalRow.total_adr | sntCurrency:this"></span></td>
+	<td><span ng-bind-html="resultsTotalRow.total_last_year_adr | sntCurrency:this"></span></td>
 	<td>{{ resultsTotalRow.total_last_year_occupancy }}</td>
 	<td ng-class="{ 'red': (each.variance * 1) < 0 }">{{ resultsTotalRow.total_variance }}</td>
 </tr>

@@ -41,8 +41,8 @@
                                     <em>{{ addon.description }}</em>
                                 </div>
                                 <div class="price">
-                                    <span class="value">{{addon.rateCurrency}}{{ addon.price | number : 2}}</span>
-                                   <span class="list-price" ng-if="addon.addon_value > 0">VALUE: {{addon.rateCurrency}}{{ addon.addon_value | number : 2}}</span>
+                                    <span class="value"><span ng-bind-html="addon.price | sntCurrency:this:addon.rateCurrency"></span></span>
+                                   <span class="list-price" ng-if="addon.addon_value > 0">VALUE: <span ng-bind-html="addon.addon_value | sntCurrency:this:addon.rateCurrency"></span></span>
                                    <span class="amount-type">{{ addon.amountTypeDesc | uppercase}}</span>
                                    <span class="post-type">{{ addon.postTypeDesc | uppercase}}</span>
                                 </div>

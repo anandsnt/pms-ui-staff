@@ -61,7 +61,7 @@
             <span ng-show="feeData.showFee" class="total">
           Total:
           <strong ng-if="!payment.isRateSuppressed">
-              <span class="currency">{{payment.selectedPaymentCurrencySymbol}}</span>{{feeData.totalOfValueAndFee | number: 2}}
+            <span ng-bind-html="feeData.totalOfValueAndFee | sntCurrency:this:payment.selectedPaymentCurrencySymbol"></span>
           </strong>
           <strong ng-if="payment.isRateSuppressed">
               {{'SUPPRESSED_RATES_TEXT' | translate}}
@@ -96,7 +96,8 @@
         <li ng-if="feeData.showFee">
             Amount paid:
             <span class="value">
-                <i class="currency">{{payment.selectedPaymentCurrencySymbol}}</i>{{payment.amount |number:2}} + <i class="currency">{{payment.selectedPaymentCurrencySymbol}}</i>{{feeData.calculatedFee|number:2}} fee
+                <span ng-bind-html="payment.amount | sntCurrency:this:payment.selectedPaymentCurrencySymbol"></span> + <span ng-bind-html="feeData.calculatedFee | sntCurrency:this:payment.selectedPaymentCurrencySymbol"></span> fee
+                <!-- <i class="currency">{{payment.selectedPaymentCurrencySymbol}}</i>{{payment.amount |number:2}} + <i class="currency">{{payment.selectedPaymentCurrencySymbol}}</i>{{feeData.calculatedFee|number:2}} fee -->
             </span>
         </li>
         <li ng-if="!feeData.showFee">

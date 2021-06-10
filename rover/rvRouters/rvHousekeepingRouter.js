@@ -82,7 +82,8 @@ angular.module('housekeepingModule', [])
                 }
             },
             params: {
-                page: 1
+                page: 1,
+                roomStatus: null
             }
         });
         $stateProvider.state('rover.housekeeping.roomDetails.log', {
@@ -100,6 +101,9 @@ angular.module('housekeepingModule', [])
 
                     return RVHkRoomDetailsSrv.getRoomLog(params);
                 }
+            },
+            params: {
+                roomStatus: null
             }
         });
 

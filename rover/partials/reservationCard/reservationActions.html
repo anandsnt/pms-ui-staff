@@ -45,8 +45,7 @@
         ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)"
         ng-if="isBalanceAmountShown()"
       >
-        {{::currencySymbol}}
-        {{ reservationData.reservation_card.balance_amount | number: 2 }}
+      <span ng-bind-html="reservationData.reservation_card.balance_amount | sntCurrency:this"></span>
       </span>
       <span class="h1" ng-if="!isBalanceAmountShown()">
         {{::('SUPPRESSED_RATES_TEXT' | translate)}}

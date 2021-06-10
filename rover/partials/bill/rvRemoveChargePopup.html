@@ -4,7 +4,7 @@
         <fieldset id="remove-charge" class="remove-charge">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <span class="h2 message" translate>REMOVE_CHARGE</span>
-            <span class="text red">{{selectedTransaction.desc}} <strong>{{currencySymbol}}{{selectedTransaction.amount}}</strong></span>
+            <span class="text red">{{selectedTransaction.desc}} <strong><span ng-bind-html="selectedTransaction.amount | sntCurrency:this"></span></strong></span>
             <div class="entry full-width">
                 <textarea placeholder="{{'REMOVAL_REASON_PLACEHOLDER' | translate}}" rows="2" ng-model="reasonForRemoving"></textarea>
             </div>

@@ -365,7 +365,9 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'CURRENT_MONTH_PLUS_TWO',
                 'CURRENT_MONTH_PLUS_THREE',
                 'LAST_THIRTY_DAYS',
-                'NEXT_THIRTY_DAYS'
+                'NEXT_THIRTY_DAYS',
+                'CURRENT_YEAR',
+                'NEXT_365_DAYS'
              ],
              'Daily Transactions': [
                 'YESTERDAY'                
@@ -418,7 +420,9 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'CURRENT_MONTH',
                 'CURRENT_MONTH_PLUS_ONE',
                 'CURRENT_MONTH_PLUS_TWO',
-                'CURRENT_MONTH_PLUS_THREE'
+                'CURRENT_MONTH_PLUS_THREE',
+                'CURRENT_YEAR',
+                'NEXT_365_DAYS'
              ],
              'Rooms OOO/OOS': [
                 'CURRENT_MONTH',
@@ -561,7 +565,9 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_SEPTEMBER',
                 'LAST_OCTOBER',
                 'LAST_NOVEMBER',
-                'LAST_DECEMBER'
+                'LAST_DECEMBER',
+                'CURRENT_YEAR',
+                'NEXT_365_DAYS'
 
             ],
             'Market Segment Statistics Report': [

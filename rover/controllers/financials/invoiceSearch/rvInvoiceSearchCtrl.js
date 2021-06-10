@@ -378,12 +378,26 @@ sntRover.controller('RVInvoiceSearchController',
 					scope: $scope
 			});
 		};
+
+		/*
+		*	Method to show Invoice pending while fiskilazation in progress.
+		*	This is for EFSTA only.
+		*/
+		var showInvoicePendingInfoPopup = function() {
+			ngDialog.open({
+				template: '/assets/partials/popups/billFormat/rvInvoicePendingInfoPopup.html',
+				className: '',
+				scope: $scope
+			});
+		};
+
 		/*
 		 * Settle invoice
 		 */
 		var finalInvoiceSettlement = function(data, isPrint) {
 			var settleInvoiceSuccess = function() {
 					$scope.shouldGenerateFinalInvoice = false;
+					$scope.searchInvoice($scope.currentActivePage);
 					if (isPrint) {
 						that.printBill(data);
 					} else {
@@ -521,39 +535,42 @@ sntRover.controller('RVInvoiceSearchController',
 							successData.invoiceLabel = getInvoiceCopyLabel(successData, $scope.invoiceSearchFlags.isClickedReservation).replace("#count", copyCount);
 						}
 						
-						$scope.printData = successData;						
-						
-						$scope.errorMessage = "";
-						// CICO-9569 to solve the hotel logo issue
-						$("header .logo").addClass('logo-hide');
-						$("header .h2").addClass('text-hide');
-						$scope.$parent.addNoPrintClass = true;
+						if (successData.is_invoice_issued) {
+							$scope.printData = successData;						
+							
+							$scope.errorMessage = "";
+							// CICO-9569 to solve the hotel logo issue
+							$("header .logo").addClass('logo-hide');
+							$("header .h2").addClass('text-hide');
+							$scope.$parent.addNoPrintClass = true;
 
-						// add the orientation
-						addPrintOrientation();
+							// add the orientation
+							addPrintOrientation();
 
-						/*
-						*	======[ READY TO PRINT ]======
-						*/
-						// this will show the popup with full bill
-						$timeout(function() {
 							/*
-							*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+							*	======[ READY TO PRINT ]======
 							*/
+							// this will show the popup with full bill
+							$timeout(function() {
+								/*
+								*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+								*/
 
-							if (sntapp.cordovaLoaded) {
-								cordova.exec(invoiceSearchPrintCompleted,
-									function() {
-										invoiceSearchPrintCompleted();
-									}, 'RVCardPlugin', 'printWebView', []);
-							}
-							else
-							{
-								window.print();
-								invoiceSearchPrintCompleted();
-							}
-						}, 1000);
-
+								if (sntapp.cordovaLoaded) {
+									cordova.exec(invoiceSearchPrintCompleted,
+										function() {
+											invoiceSearchPrintCompleted();
+										}, 'RVCardPlugin', 'printWebView', []);
+								}
+								else
+								{
+									window.print();
+									invoiceSearchPrintCompleted();
+								}
+							}, 1000);
+						} else {
+							showInvoicePendingInfoPopup();
+						}
 					},
 					printDataFailureCallback = function(errorData) {
 						$scope.errorMessage = errorData;
@@ -585,10 +602,16 @@ sntRover.controller('RVInvoiceSearchController',
 			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 				finalInvoiceSettlement(data, false);
 			} else { 
-				var sendEmailSuccessCallback = function() {
+				var sendEmailSuccessCallback = function(successData) {
 						$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
-						$scope.status = "success";
-						$scope.showEmailSentStatusPopup();
+						if (successData.is_invoice_issued) {
+							$scope.status = "success";
+							$scope.showEmailSentStatusPopup();
+						} else {
+							$timeout(function() {
+								showInvoicePendingInfoPopup();
+							}, 500);
+						}
 					},
 					sendEmailFailureCallback = function() {
 						$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
