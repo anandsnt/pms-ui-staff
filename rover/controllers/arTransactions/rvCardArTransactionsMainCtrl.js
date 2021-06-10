@@ -990,6 +990,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			if ($scope.arDataObj.paidList.length > 0 && requestParams.is_locked) {
 				$scope.item.is_locked  = requestParams.is_locked;
 			}
+			$scope.closeDialog();
 			printBill(requestParams);
 		};
 
