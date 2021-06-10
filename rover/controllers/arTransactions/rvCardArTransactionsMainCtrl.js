@@ -969,7 +969,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab);
 				} else {
 					$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab);
-					showInvoicePendingInfoPopup();
+					$timeout(function() {
+						showInvoicePendingInfoPopup();
+					}, 500);
 				}
 			},
 			sendEmailFailureCallback = function(errorData) {

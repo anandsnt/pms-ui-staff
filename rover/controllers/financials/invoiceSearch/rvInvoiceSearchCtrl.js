@@ -608,7 +608,9 @@ sntRover.controller('RVInvoiceSearchController',
 							$scope.status = "success";
 							$scope.showEmailSentStatusPopup();
 						} else {
-							showInvoicePendingInfoPopup();
+							$timeout(function() {
+								showInvoicePendingInfoPopup();
+							}, 500);
 						}
 					},
 					sendEmailFailureCallback = function() {
