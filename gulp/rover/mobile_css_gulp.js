@@ -1,16 +1,15 @@
 module.exports = function(gulp, $, options) {
 	
-	var rename = require('gulp-rename');
-
 	var DEST_ROOT_PATH      	= options['DEST_ROOT_PATH'],
 		URL_APPENDER            = options['URL_APPENDER'],
 		MANIFEST_DIR 			=  __dirname + "/manifests/",
-	    MOBILE_CSS_FILE  		= 'mobile.css',
+	    MOBILE_CSS_FILE  		= 'rover_mobile.css',
 	    ROVER_TEMPLATE_ROOT     = options['ROVER_TEMPLATE_ROOT'],
 	    ROVER_HTML_FILE     	= options['ROVER_HTML_FILE'],
 	    MOBILE_CSS_MANIFEST_FILE = "mobile_css_manifest.json",
 	    LessPluginCleanCSS 		= require('less-plugin-clean-css'),
-	    LESS_SOURCE_FILE 		= 'stylesheets/mobile.css.less',
+		LESS_SOURCE_FILE 		= 'stylesheets/rover_mobile.css',
+	    runSequence 			= require('run-sequence'),
     	cleancss 				= new LessPluginCleanCSS({ advanced: true }),
 		onError  				= options.onError;
 
@@ -57,10 +56,15 @@ module.exports = function(gulp, $, options) {
 	        .pipe($.less({
 				plugins: [cleancss]
 			}))
-			.pipe(rename(function (path) {
-				path.basename = path.basename.replace('.css', '');
-			}))
 			.pipe(gulp.dest(DEST_ROOT_PATH));
+	});
+
+	// Task for watching mobile less files
+	gulp.task('rover-mobile-watch-less-files', function(){
+		var paths = [LESS_SOURCE_FILE].concat(['stylesheets/**/*.*', 'images/**/*.*', 'cssimg/**/**.*', 'type/**/**.*', 'rover/css/**/*.*']);
+		gulp.watch(paths, function(callback){
+			return runSequence('build-mobile-less-dev', 'copy-rover-base-html');
+		});
 	});
 
 	// Task for Injecting(dev) mobile.css into rover.html
