@@ -4,7 +4,8 @@ angular.module('sntRover').service('RVreportsSubSrv', [
     'rvReportsCache',
     'RVReportMsgsConst',
     'RVReportNamesConst',
-    function($q, rvBaseWebSrvV2, reportsCache, RVReportMsgsConst, reportNames) {
+    '$rootScope',
+    function($q, rvBaseWebSrvV2, reportsCache, RVReportMsgsConst, reportNames, $rootScope) {
         var service = {};
 
         var store = {};
@@ -711,7 +712,18 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 resKey: '',
                 params: params
             });
-        };        
+        };
+
+        service.fetchExternalReferenceList = function(params) {
+            params = params || {};
+            return callApi({
+                name: 'externalReferenceList',
+                method: 'getJSON',
+                url: 'api/reference_values/manual_external_reference_interfaces?workstation_id=' + $rootScope.workstation_id,
+                resKey: 'external_interface_types',
+                params: params
+            });
+        };
 
         // Search groups based on query string
         service.fetchGroups = function(params) {
