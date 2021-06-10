@@ -40,16 +40,6 @@
 					<a ng-click="logout()" class="icon-menu icon-sign-out">Sign Out</a>
 				</li>
 			</ul>
-
-			<ul id="mobile-menu" class="main">
-				<li ng-repeat="mobileMenuItem in mobileMenu" ng-click="$emit('updateSubMenu', [$index, mobileMenuItem])" ng-hide="mobileMenuItem.hidden">
-					<a class="icon-menu {{mobileMenuItem.iconClass}}" ng-class="{'active':selectedMenuIndex!='' && (selectedMenuIndex == mobileMenuItem.menuIndex || (mobileMenuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" translate="{{mobileMenuItem.title}}" ng-if="mobileMenuItem.action != ''" ui-sref="{{mobileMenuItem.action}}"></a>
-					<a class="icon-menu {{mobileMenuItem.iconClass}}" ng-class="{'active':selectedMenuIndex!='' && (selectedMenuIndex == mobileMenuItem.menuIndex || (mobileMenuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" translate="{{mobileMenuItem.title}}" ng-if="mobileMenuItem.action == ''"></a>
-				</li>
-				<li id="sign-out">
-					<a ng-click="logout()" class="icon-menu icon-sign-out">Sign Out</a>
-				</li>
-			</ul>
 		</div>
 	</div>
 </div>
