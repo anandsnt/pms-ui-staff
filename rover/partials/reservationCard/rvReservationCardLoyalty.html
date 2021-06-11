@@ -1,4 +1,4 @@
-<form method="post" id="reservationcard-loyalty" ng-init="loadLoyaltyPrograms()" class="block-item item-loyalty has-button" ng-show='shouldShowLoyalty()'>
+<form method="post" id="reservationcard-loyalty" ng-init="loadLoyaltyPrograms()" class="block-item item-loyalty has-button hide-on-mobile" ng-show='shouldShowLoyalty()'>
 	<h3 class="block-title" translate>LOYALTY_LABEL</h3>
 	<div ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" class="select-item loyalty">
 		<!-- Disable the loyalty select feature for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' %reservations -->

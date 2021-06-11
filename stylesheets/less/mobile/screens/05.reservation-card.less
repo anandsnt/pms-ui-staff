@@ -35,6 +35,10 @@
     		grid-column-gap: 10px;
     		grid-row-gap: 10px;
     		padding: 10px;
+
+            > div {
+                grid-column: 1/span 2;
+            }
     	}
 
     	.iScrollIndicator {
@@ -80,16 +84,26 @@
         }
 
     	.button { 
+            display: flex;
+            flex-flow: column wrap;
+            justify-content: center;
+            align-items: center;
             padding: 0 10px;
             line-height: 1;
             height: 50px;
             width: 100%;
             overflow: hidden;
-            .show();
 
-            &:first-child {
-            	grid-column: 1/span 2;
-            } 
+            &.green,
+            &.red,
+            &.purple,
+            &.bottom-button {
+                grid-column: 1/span 2;
+            }
+
+            &.white {
+                background-color: @grey1;
+            }
 
             &.staycard-button {
             	text-shadow: none;
@@ -486,24 +500,16 @@
             }
         }
 
-        /* Grouped card elements ***/
-        .block-wrapper {
+        /* Notes & Actions ***/
+        .notes-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-column-gap: 10px;
 
-        	/* Notes & Actions ***/
-        	&:first-child {
-        		display: grid;
-        		grid-template-columns: 1fr 1fr;
-        		grid-column-gap: 10px;
-
-        		.item-cards {
-        			grid-column: 1/span 2;
-        		}
-        	}
-
-        	/* Hide Newspaper, HK Tasks, Additional details, 3rd Party & Activity Log ***/
-        	&:nth-last-child(-n+6) {
-        		.hide();
-        	}
+            div:not(.block-item),
+            .item-cards {
+                grid-column: 1/span 2;
+            }
         }
     }    
 }
