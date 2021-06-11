@@ -3,8 +3,7 @@
     top: 50px;
     left: 0;
     z-index: 999;
-    width: 100%;
-    height: 60px !important;
+    .size(60px, 100%);
     .transition(height, .2s, cubic-bezier(.10, .10, .25, .90));
     .show;
 
@@ -270,11 +269,13 @@
     /* No transition while resizing ***/
     &.ui-resizable-resizing { .no-transition(); }
 
+    &:not(.open) {
+        height: 60px !important;
+    }
+
     /* Open ***/
     &.open,
     &.fullscreen {
-        height: calc(~'100% - 50px') !important;
-
         .card-header {
             box-shadow: none;
         }
@@ -286,6 +287,8 @@
 
     /* Fullscreen cards ***/
     &.fullscreen {
+        height: calc(~'100% - 50px') !important;
+
         .card-content { .show; }
     }
 
