@@ -2934,8 +2934,21 @@
                                         justify-content: flex-start;
                                         cursor: pointer;
                                         background: @arrowDown 90% 50% no-repeat;
+                                        
+                                        .type { 
+                                            .hide(); 
+                                            color: @grey3;
+                                            line-height: 1;
+                                        }
 
-                                        &.active { background-image: @arrowUp; }
+                                        &.active { 
+                                            background-image: @arrowUp;
+                                            flex-direction: column;
+                                            align-items: flex-start;
+                                            justify-content: center;
+
+                                            .type { .show(); }
+                                        }
                                     }
 
                                     &.add {
