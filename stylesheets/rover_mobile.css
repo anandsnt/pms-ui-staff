@@ -39,5 +39,14 @@
 
 /* 7. MEDIA QUERIES
 ==========================================================*/
-
 @import "less/common/07-responsive.less";
+
+/* 7. ANGULAR
+==========================================================*/
+@import (inline) 'shared/lib/css/ngDialog.css';
+@import (inline) 'shared/lib/css/ngDialog-theme-default.css';
+@import (inline) 'shared/lib/css/ngDialog-theme-plain.css';
+@import (inline) 'shared/lib/css/ng-table.css';
+@import 'shared/lib/css/date-picker.css.less';
+@import (inline) 'shared/lib/css/advanced_date_picker.css';
+@import (inline) 'shared/lib/css/angular-multi-select.css';
