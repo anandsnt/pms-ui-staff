@@ -59,6 +59,7 @@ angular.module('reportsModule')
         "SHOW_ACTIONABLES": "actions_by",
         "TRAVEL_AGENTS": "travel_agent_ids",
         "TRAVEL_AGENTS_PER_PAGE_COUNT": 25,
+        "RECEIPTS_PER_PAGE_COUNT": 25,
         "RESERVATION_STATUS_ARRAY": "status_ids[]",
         "VAT_YEAR": "year",
         "WITH_VAT_NUMBER": "with_vat_number",
@@ -132,5 +133,6 @@ angular.module('reportsModule')
         "HK_FRONT_OFFICE_STATUSES": "hk_fo_statuses",
         "PAYMENT_TYPES": "payment_types",
         "TRANSACTION_CATEGORY": "transaction_category",
-        "SHOW_EMPLOYEES_INCLUDING_EOD": "show_employee_including_eod"
+        "SHOW_EMPLOYEES_INCLUDING_EOD": "show_employee_including_eod",
+        "TAX_RECEIPT_TYPE_VALUES": "tax_receipt_type_values"
     });

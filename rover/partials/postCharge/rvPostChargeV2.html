@@ -220,7 +220,8 @@
 							<a class="button white" ng-if="each.type === 'ITEM'">
 								<span ng-bind-html="escapeNull(each.name)| highlight:query:false"></span>
 								<span class="price">
-									{{ currencySymbol }} <span class="value">{{ each.unit_price | number : 2 }}</span>
+									<span ng-bind-html="each.unit_price | sntCurrency:this"></span>
+									<!-- {{ currencySymbol }} <span class="value">{{ each.unit_price | number : 2 }}</span> -->
 								</span>
 								<span ng-if="each.count > 0" class="count">{{ each.count }}</span>
 							</a>
@@ -276,10 +277,9 @@
 							<li ng-repeat="each in selectedChargeItemHash" ng-class="{'selected': each.name === selectedChargeItem.name}" ng-click="selectUnselect(each)">
 								{{ each.name }}
 								<span count ng-show="each.count > 1">({{ each.count }})</span>
-								<span class="base">{{'AT' | translate}} {{ currencySymbol }}{{ each.modifiedPrice | number : 2 }} /  {{'UNIT' | translate}}</span>
+								<span class="base">{{'AT' | translate}} <span ng-bind-html="each.modifiedPrice | sntCurrency:this"></span> /  {{'UNIT' | translate}}</span>
 								<span class="price">
-									{{ currencySymbol }}
-									<span class="value">{{ each.total_price | number : 2 }}</span>
+									<span ng-bind-html="each.total_price | sntCurrency:this"></span>
 								</span>
 							</li>
 
@@ -287,7 +287,7 @@
 
 					</div>
 					<p id="total-charge">
-						{{'RESV_TOTAL' | translate}} <span class="price">{{ currencySymbol }} <span class="value">{{ net_total_price | number : 2 }}</span></span>
+						{{'RESV_TOTAL' | translate}} <span class="price"> <span ng-bind-html="net_total_price | sntCurrency:this"></span></span>
 					</p>
 					<div id="numpad" ng-show="selectedChargeItem.item_name || selectedChargeItem.charge_code">
 						<div id="numpad-numbers">

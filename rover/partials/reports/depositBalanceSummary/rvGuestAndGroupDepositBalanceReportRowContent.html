@@ -17,5 +17,5 @@
     <span>{{transaction.charge_description}}</span>
     <span class="reference">{{transaction.charge_code}}</span>
 </td>
-<td class="balance red"><span class="currency">{{transaction.debit | number: 2 }}</span></td>
-<td class="balance green"><span class="currency">{{transaction.credit | number: 2 }}</span></td>
+<td class="balance red"><span ng-bind-html="transaction.debit | sntCurrency:this"></span></td>
+<td class="balance green"><span ng-bind-html="transaction.credit | sntCurrency:this"></span></td>

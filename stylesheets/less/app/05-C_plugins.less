@@ -3971,12 +3971,30 @@
                 .hide();
             }
 
+            .notice-all-charges {
+                width: 300px;
+                margin: 0 auto 20px auto;
+                font-weight: 600;
+
+                label {
+                    margin: 0;
+                }
+            }
+
+            &.with-notice {
+                height: 735px;
+            }
+
             
             &.selected-bill,
             &.selected-account {
                 height: 510px;
                 .actions{
                     .show();
+                }
+
+                &.with-notice {
+                    height: 570px;
                 }
             }
 

@@ -66,7 +66,7 @@
                             <div class="number" ng-if="shouldShowReservationInvoices() && isDepositInvoiceEnabled" ng-bind-html="escapeNull(invoiceReservationData.bills[0].deposit_folio_number)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.bills[0].deposit_folio_number}}</div>
 
                             <div class="balance" ng-class="{'text-red': invoiceReservationData.bills[0].balance === 0}"> <!-- Add class 'text-red' if amount is 0 -->
-                                <span class="currency">{{::currencySymbol}}</span>{{::invoiceReservationData.bills[0].balance | number: precisonTwo }}
+                                <span ng-bind-html="::invoiceReservationData.bills[0].balance | sntCurrency:this"></span>
                             </div>
                             
                         </div>
@@ -117,7 +117,7 @@
                             <div class="number" ng-if="shouldShowReservationInvoices() && isDepositInvoiceEnabled" ng-bind-html="escapeNull(bill.deposit_folio_number)|highlight:invoiceSearchData.query:false">{{::bill.deposit_folio_number}}</div>
 
                             <div class="balance" ng-class="{'text-red': bill.balance === 0}"> <!-- Add class 'text-red' if amount is 0 -->
-                                <span class="currency">{{::currencySymbol}}</span>{{::bill.balance | number: precisonTwo}}
+                                <span ng-bind-html="::bill.balance | sntCurrency:this"></span>
                             </div>
                             
                         </div>

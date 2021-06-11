@@ -24,7 +24,7 @@
 		                    <tr ng-repeat="(date,stayDay) in ngDialogData.room.stayDates" ng-hide="$last && $index > 0">
 		                        <td class="date">{{date  | date : 'EEEE, d MMMM'}}</td>
 		                        <td class="rate" ng-if="stayDay.rateDetails.is_suppressed != 'true' && stayDay.rateDetails.actual_amount != '0.00'" >
-		                        	{{stayDay.rateDetails.rate_currency}}{{stayDay.rateDetails.actual_amount | number : 2}}
+									<span ng-bind-html="stayDay.rateDetails.actual_amount | sntCurrency:this:stayDay.rateDetails.rate_currency"></span>
 		                        </td>
 		                        <td class="rate" ng-if="stayDay.rateDetails.is_suppressed != 'true' && stayDay.rateDetails.actual_amount == '0.00'" >
 		                        	N/A

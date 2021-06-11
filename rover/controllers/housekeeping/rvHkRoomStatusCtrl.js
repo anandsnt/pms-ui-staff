@@ -15,7 +15,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 	'RVWorkManagementSrv',
 	'RVHkRoomDetailsSrv',
 	'rvUtilSrv',
-    'rvPermissionSrv',
+	'rvPermissionSrv',
+	'$stateParams',
 	function(
 		$scope,
 		$rootScope,
@@ -33,7 +34,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		RVWorkManagementSrv,
 		RVHkRoomDetailsSrv,
 		util,
-        rvPermissionSrv
+		rvPermissionSrv,
+		$stateParams
 	) {
 		// hook it up with base ctrl
 		BaseCtrl.call( this, $scope );
@@ -239,7 +241,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					localStorage.setItem( 'roomListScrollTopPos', $_roomsEl.scrollTop );
 					$state.go("rover.housekeeping.roomDetails", {
 						id: room.id,
-						page: $_page
+						page: $_page,
+						roomStatus: $stateParams.roomStatus
 					});
 				}
 			}, 400);

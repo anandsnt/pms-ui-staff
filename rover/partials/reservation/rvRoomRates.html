@@ -65,7 +65,7 @@
                         <div class="data">
                             <h2>{{room.name}}</h2>
                             <span class="recommended" ng-init="upsell = roomAvailability[room.id].averagePerNight - roomAvailability[displayData.roomTypes[0].id].averagePerNight | number: 2" ng-show="displayData.roomTypes.length > 0 && $index > 0 && upsell > 0">
-                                {{ 'RESV_FOR_ONLY' | translate}}&nbsp;{{currencySymbol}}{{upsell|number:2}}&nbsp;{{'RESV_MORE'|translate}}
+                                {{ 'RESV_FOR_ONLY' | translate}}&nbsp;<span ng-bind-html="upsell | sntCurrency:this"></span>&nbsp;{{'RESV_MORE'|translate}}
                             </span>
                             <!-- Use class red when number of available rooms is less than e.g. 5 (not sure how this number should be defined and should it be 0 or some other number). Otherwise use class "green". -->
                             <span class="count red" ng-show="stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].availabilityCount < 5">
@@ -93,7 +93,8 @@
                             <h4 ng-hide="isCorRate(roomAvailability[room.id].defaultRate)" translate>RESV_BEST_RATE</h4>
                             <h4 ng-show="isCorRate(roomAvailability[room.id].defaultRate)" translate>RESV_COR_RATE</h4>
                             <div class="price" ng-if="!roomAvailability[room.id].isSuppressed">
-                                {{currencySymbol}}{{roomAvailability[room.id].averagePerNight | number: 2}}<span translate>RESV_AVG_NIGHT</span>
+                                <span ng-bind-html="roomAvailability[room.id].averagePerNight | sntCurrency:this"></span>
+                                <span translate>RESV_AVG_NIGHT</span>
                             </div>
                             <div class="price" ng-if="roomAvailability[room.id].isSuppressed">
                                 SR<span translate>RESV_AVG_NIGHT</span>
@@ -142,7 +143,7 @@
 
                                 <!-- {restriction-color} can be: red, green, blue, purple and grey -->                                
                                 <div class="price" ng-if="!displayData.allRates[rate].is_suppress_rate_on">
-                                    {{currencySymbol}}{{roomAvailability[room.id].total[rate].average | number: 2}}
+                                    <span ng-bind-html="roomAvailability[room.id].total[rate].average | sntCurrency:this"></span>
                                     <span translate>RESV_AVG_NIGHT</span>
                                 </div>
                                 <div class="price" ng-if="displayData.allRates[rate].is_suppress_rate_on">
@@ -186,7 +187,7 @@
                                     <tfoot>
                                         <tr>
                                             <td colspan="5" class="total-label" translate>RESV_TOTAL_ROOM</td>
-                                            <td class="total-value" ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].total[rate].total | number:2}}</td>
+                                            <td class="total-value" ng-if="!displayData.allRates[rate].is_suppress_rate_on"><span ng-bind-html="roomAvailability[room.id].total[rate].total | sntCurrency:this"></span></td>
                                             <td ng-if="displayData.allRates[rate].is_suppress_rate_on">SR</td>
                                             <td class="edit" ng-hide="true">
                                                 <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
@@ -201,18 +202,18 @@
                                                 {{day.obj | date: fulldayInWeek }}, {{day.obj | date: dateFormat }}
                                             </td>
                                             <!-- Room charge -->
-                                            <td ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].rate | number: 2}}</td>
+                                            <td ng-if="!displayData.allRates[rate].is_suppress_rate_on"><span ng-bind-html="roomAvailability[room.id].ratedetails[day.str][rate].rate | sntCurrency:this"></span></td>
                                             <td ng-if="displayData.allRates[rate].is_suppress_rate_on">SR</td>
                                             <!-- Add on -->
-                                            <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on && !roomAvailability[room.id].ratedetails[day.str][rate].inclusiveAddonsExist">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].addonAmount | number: 2}}</td>
+                                            <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on && !roomAvailability[room.id].ratedetails[day.str][rate].inclusiveAddonsExist"><span ng-bind-html="roomAvailability[room.id].ratedetails[day.str][rate].addonAmount | sntCurrency:this"></span></td>
                                             <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on && !!roomAvailability[room.id].ratedetails[day.str][rate].inclusiveAddonsExist">INCL</td>
                                             <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
                                             <!-- taxes -->
-                                            <td ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].tax.incl | number: 2}}</td>
+                                            <td ng-if="!displayData.allRates[rate].is_suppress_rate_on"><span ng-bind-html="roomAvailability[room.id].ratedetails[day.str][rate].tax.incl | sntCurrency:this"></span></td>
                                             <td ng-if="displayData.allRates[rate].is_suppress_rate_on">SR</td>
-                                            <td ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].tax.excl | number: 2}}</td>
+                                            <td ng-if="!displayData.allRates[rate].is_suppress_rate_on"><span ng-bind-html="roomAvailability[room.id].ratedetails[day.str][rate].tax.excl | sntCurrency:this"></span></td>
                                             <td ng-if="displayData.allRates[rate].is_suppress_rate_on">SR</td>
-                                            <td ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].total | number: 2}}</td>
+                                            <td ng-if="!displayData.allRates[rate].is_suppress_rate_on"><span ng-bind-html="roomAvailability[room.id].ratedetails[day.str][rate].total | sntCurrency:this"></span></td>
                                             <td ng-if="displayData.allRates[rate].is_suppress_rate_on">SR</td>
                                             <td class="edit"></td>
                                         </tr>
@@ -290,7 +291,7 @@
                                   <label ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isAllotmentRate"> in Allotment</label>
                             </span>
                             <div class="price" ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">
-                                {{currencySymbol}}{{roomAvailability[selectedRoom].total[rate.rate.id].average | number:2}}
+                                <span ng-bind-html="roomAvailability[selectedRoom].total[rate.rate.id].average | sntCurrency:this"></span>
                                 <span translate>RESV_AVG_NIGHT</span>
                             </div>
                             <div class="price" ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">
@@ -333,7 +334,7 @@
                             <tfoot>
                                 <tr>
                                     <td colspan="5" class="total-label" translate>RESV_TOTAL_ROOM</td>
-                                    <td class="total-value" ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].total[rate.rate.id].total | number:2}}</td>
+                                    <td class="total-value" ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on"><span ng-bind-html="roomAvailability[selectedRoom].total[rate.rate.id].total | sntCurrency:this"></span></td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
                                     <td class="edit" ng-hide="true">
                                         <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
@@ -348,18 +349,18 @@
                                         {{day.obj | date: fulldayInWeek }}, {{day.obj | date: dateFormat }}
                                     </td>
                                     <!-- Room Charge -->
-                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].rate | number: 2}}</td>
+                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on"><span ng-bind-html="roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].rate | sntCurrency:this"></span></td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
                                     <!-- Add on -->
-                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on && !roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].inclusiveAddonsExist">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].addonAmount | number: 2}}</td>
+                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on && !roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].inclusiveAddonsExist"><span ng-bind-html="roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].addonAmount | sntCurrency:this"></span></td>
                                     <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on && !!roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].inclusiveAddonsExist">INCL</td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
                                     <!-- taxes -->
-                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].tax.incl | number: 2}}</td>
+                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on"><span ng-bind-html="roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].tax.incl | sntCurrency:this"></span></td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
-                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].tax.excl | number: 2}}</td>
+                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on"><span ng-bind-html="roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].tax.excl | sntCurrency:this"></span></td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
-                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].total | number: 2}}</td>
+                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on"><span ng-bind-html="roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].total | sntCurrency:this"></span></td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
                                     <td class="edit"></td>
                                 </tr>

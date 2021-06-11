@@ -5,7 +5,7 @@
 		    	<span class="icons icon-close invert">
 		    </button>
 
-		    <strong class="h3 message" ng-if="!isSRRate">Custom Rate of {{ currencySymbol }} {{ customRate }} applies to this reservation. Rate for current guest count is {{currencySymbol}} {{ rateForCurrentGuest }}
+		    <strong class="h3 message" ng-if="!isSRRate">Custom Rate of <span ng-bind-html="customRate | sntCurrency:this"></span> applies to this reservation. Rate for current guest count is <span ng-bind-html="rateForCurrentGuest | sntCurrency:this"></span>
 		    </strong>
 
 		    <strong class="h3 message" ng-if="!!isSRRate">Custom Rate of SR applies to this reservation. Rate for current guest count is SR

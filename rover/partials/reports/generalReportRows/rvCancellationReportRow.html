@@ -1,7 +1,7 @@
 <tr ng-repeat="each in results track by $index" class="{{ each.className }}">
 	<td ng-if="each.isReport" rowspan="{{ each.rowspan }}"><!-- Add 'rowspan="2"' if note exists -->
 		<span class="data red">{{ each.cancel_date | date:dateFormat }}</span>
-        <span class="data penalty"><span class="currency">{{ each.cancel_penalty | currency:currencySymbol:2 }}</span></span>
+        <span class="data penalty"><span ng-bind-html="each.cancel_penalty | sntCurrency:this"></span></span>
 	</td>
 	<td ng-if="each.isReport">
 		<strong class="title"><a ng-click="gotoStayCard(each)">{{ each.name }}</a></strong>
@@ -29,10 +29,10 @@
 	</td>
 	<td ng-if="each.isReport">
 		<span class="data room">{{ each.room_type }}</span>
-		<span class="data rate">{{ each.rate }} / <strong><span class="currency">{{ each.adr | currency:currencySymbol:2 }}</span> ADR</strong></span>
+		<span class="data rate">{{ each.rate }} / <strong><span ng-bind-html="each.adr | sntCurrency:this"></span> ADR</strong></span>
 	</td>
 	<td class="balance" ng-class="{'red': toFloat(each.balance_amount) !== 0.00, 'green': toFloat(each.balance_amount) === 0.00}">
-		<span class="currency">{{ each.balance_amount | currency:currencySymbol:2 }}</span>
+		<span ng-bind-html="each.balance_amount | sntCurrency:this"></span>
 	</td>
 	<!-- guest data - name, company, travel agent & group name -->
 	<td ng-if="each.isGuestData" class="secondary guest-names">

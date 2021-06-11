@@ -4,7 +4,8 @@ angular.module('sntRover').service('RVreportsSubSrv', [
     'rvReportsCache',
     'RVReportMsgsConst',
     'RVReportNamesConst',
-    function($q, rvBaseWebSrvV2, reportsCache, RVReportMsgsConst, reportNames) {
+    '$rootScope',
+    function($q, rvBaseWebSrvV2, reportsCache, RVReportMsgsConst, reportNames, $rootScope) {
         var service = {};
 
         var store = {};
@@ -242,10 +243,25 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         };
 
         service.fetchGeneratedReportDetails = function(params) {
-            var deferred = $q.defer();
-            var url = '/api/generated_reports/' + params.id + '/view';
-
-            if (params.page === 1) {
+            var deferred = $q.defer(),
+                url = '/api/generated_reports/' + params.id + '/view';
+                
+            if (params.reportTitle === 'Tax Output Report - Tax Payment Receipts') {
+                rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                    if (params.per_page !== 99999 ) {
+                        _.each(data.results, function(subCategory) {
+                            if (subCategory.receipt_details && subCategory.receipt_details.receipts && subCategory.receipt_details.receipts.length > params.per_page) {
+                                subCategory.receipt_details.receipts = subCategory.receipt_details.receipts.slice(0, params.per_page);
+                            }
+                        });
+                    }
+                    service.cachedInboxReport = data;
+                    deferred.resolve(service.getcachedInboxReportByParams(params));
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            }
+            else if (params.page === 1) {
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
                     service.cachedInboxReport = data;
                     deferred.resolve(service.getcachedInboxReportByParams(params));
@@ -255,7 +271,6 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             } else {
                 deferred.resolve(service.getcachedInboxReportByParams(params));
             }
-
             return deferred.promise;
         };
 
@@ -268,12 +283,29 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.getReceiptsOfCategories = function(params) {
+            return callApi({
+                // no name here since we dont want to cache it in the store ever
+                method: 'getJSON',
+                url: 'api/reports/list_tax_payment_receipts',
+                params: params
+            });
+        };
 
         service.fetchActiveUsers = function() {
             return callApi({
                 name: 'activeUsers',
                 method: 'getJSON',
                 url: '/api/users/active'
+            });
+        };
+
+        service.fetchTaxPaymentReceiptTypes = function() {
+            return callApi({
+                name: 'paymentReceiptTypes',
+                method: 'getJSON',
+                url: '/api/payment_receipts/tax_payment_receipt_types',
+                resKey: 'results'
             });
         };
 
@@ -728,7 +760,18 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 resKey: '',
                 params: params
             });
-        };        
+        };
+
+        service.fetchExternalReferenceList = function(params) {
+            params = params || {};
+            return callApi({
+                name: 'externalReferenceList',
+                method: 'getJSON',
+                url: 'api/reference_values/manual_external_reference_interfaces?workstation_id=' + $rootScope.workstation_id,
+                resKey: 'external_interface_types',
+                params: params
+            });
+        };
 
         // Search groups based on query string
         service.fetchGroups = function(params) {
