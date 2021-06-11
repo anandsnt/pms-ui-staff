@@ -651,7 +651,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 method: 'getJSON',
                 url: '/api/users/active.json?journal=true'
             });
-        }
+        };
 
         service.fetchPaymentTypes = function() {
             return callApi({
@@ -660,7 +660,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 url: '/api/hotel_payment_types',
                 resKey: 'results'
             });
-        }
+        };
 
         service.fetchTaxExemptTypes = function() {
             return callApi({

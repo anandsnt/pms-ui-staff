@@ -1427,12 +1427,12 @@ angular.module('reportsModule')
 
                 function fillTransactionCategory() {
                     var customData = [
-                        { id: 1, value: "TOTAL", description: "Total" },
-                        { id: 2, value: "PRE STAY", description: "Pre Stay" },
+                        { id: 1, value: "TOTAL", description: "Total"},
+                        { id: 2, value: "PRE STAY", description: "Pre Stay"},
                         { id: 3, value: "IN HOUSE", description: "In House"},
-                        { id: 4, value: "POST STAY", description: "Post Stay" }
+                        { id: 4, value: "POST STAY", description: "Post Stay"}
                     ],
-                        foundFilter;
+                    foundFilter;
 
                     _.each(reportList, function (report) {
                         foundFilter = _.find(report['filters'], { value: 'TRANSACTION_CATEGORY' });
