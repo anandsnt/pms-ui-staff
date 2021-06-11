@@ -504,6 +504,12 @@
     data="uiChosenReport.hasGuaranteeType.data"
     options="uiChosenReport.hasGuaranteeType.options"></multi-option-selection>
 
+<multi-option-selection ng-show="uiChosenReport.hasTaxPaymentReceiptTypes && uiChosenReport.hasTaxPaymentReceiptTypes.data.length"
+    label="Tax Receipt Type(s)"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasTaxPaymentReceiptTypes.data"
+    options="uiChosenReport.hasTaxPaymentReceiptTypes.options"></multi-option-selection>
+
 <multi-option-selection ng-show="uiChosenReport.hasFloorList && uiChosenReport.hasFloorList.data.length"
     label="Floor"
     on-update="refreshFilterScroll"

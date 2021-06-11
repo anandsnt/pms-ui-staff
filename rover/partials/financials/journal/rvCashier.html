@@ -14,7 +14,7 @@
                     </strong>
                     <strong class="status opened" ng-hide="history.status ==='CLOSED'">
                         {{'OPENED' | translate}}
-                        <span ng-bind="history.user"</span>
+                        <span ng-bind="history.user"></span>
                     </strong>
                     <time datetime="{datetime timestamp}">
                         <span class="time" ng-bind="history.time"></span>
@@ -41,19 +41,19 @@
                 <tbody>
                     <tr>
                         <th scope="row" translate>OPENING_BALANCE_CASH_MSG</th>
-                        <td class="value">{{currencySymbol}}{{details.opening_balance_cash |number:2}}</td>
+                        <td class="value"><span ng-bind-html="details.opening_balance_cash | sntCurrency:this"></span></td>
                     </tr>
                     <tr>
                         <th scope="row" translate>OPENING_BALANCE_CHECK_MSG</th>
-                        <td class="value">{{currencySymbol}} {{details.opening_balance_check |number:2}}</td>
+                        <td class="value"><span ng-bind-html="details.opening_balance_check | sntCurrency:this"></span></td>
                     </tr>
                     <tr>
                         <th scope="row" translate>TOTAL_CASH_RECEIVED_MSG</th>
-                        <td class="value">{{currencySymbol}} {{details.total_cash_received |number:2}}</td>
+                        <td class="value"><span ng-bind-html="details.total_cash_received | sntCurrency:this"></span></td>
                     </tr>
                     <tr>
                         <th scope="row" translate>TOTAL_IN_CHECKS_RECEIVED_MSG</th>
-                        <td class="value">{{currencySymbol}} {{details.total_check_received |number:2}}</td>
+                        <td class="value"><span ng-bind-html="details.total_check_received | sntCurrency:this"></span></td>
                     </tr>
                     <tr>
                         <td class="entry" colspan="2" ng-show="details.status ==='OPEN'">
@@ -62,7 +62,7 @@
                         </td>
 
                         <th scope="row" translate  ng-hide="details.status ==='OPEN'">CASH_SUBMITTED</th>
-                        <td class="value"  ng-hide="details.status ==='OPEN'">{{currencySymbol}} {{details.cash_submitted |number:2}}</td>
+                        <td class="value"  ng-hide="details.status ==='OPEN'"><span ng-bind-html="details.cash_submitted | sntCurrency:this"></span></td>
                     </tr>
                     <tr>
                         <td class="entry" colspan="2" ng-show="details.status ==='OPEN'">  
@@ -71,15 +71,15 @@
                         </td>
 
                         <th scope="row" translate ng-hide="details.status ==='OPEN'">CHECKS_SUBMITTED</th>
-                        <td class="value" ng-hide="details.status ==='OPEN'">{{currencySymbol}} {{details.check_submitted |number:2}}</td>
+                        <td class="value" ng-hide="details.status ==='OPEN'"><span ng-bind-html="details.check_submitted | sntCurrency:this"></span></td>
                     </tr>
                     <tr>
                         <th scope="row" translate>TOTAL_CLOSING_BALANCE_CASH_MSG</th>
-                        <td class="value">{{currencySymbol}} {{totalClosingBalanceInCash | number:2}}</td>
+                        <td class="value"><span ng-bind-html="totalClosingBalanceInCash | sntCurrency:this"></span></td>
                     </tr>
                     <tr>
                         <th scope="row" translate>TOTAL_CLOSING_BALANCE_CHECK_MSG</th>
-                        <td class="value">{{currencySymbol}} {{totalClosingBalanceInCheck | number:2}}</td>
+                        <td class="value"><span ng-bind-html="totalClosingBalanceInCheck | sntCurrency:this"></span></td>
                     </tr>
                 </tbody>
             </table>

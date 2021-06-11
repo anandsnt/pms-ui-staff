@@ -54,11 +54,11 @@
 						<td>{{ bill.bill_number }}</td>
 						<td class="entity-name">{{ bill.entity_name }}</td>
 						<td>{{ bill.payment_method }}</td>
-						<td class="amount"><span class="currency">{{ bill.authorization_amount | currency:currencySymbol:2 }}</span></td>
-						<td class="rate amount">{{item.rate}} / <span class="currency">{{ item.rate_amount | currency:currencySymbol:2 }}</span></td>
-						<td class="amount"><span class="currency">{{ bill.balance_on_bill | currency:currencySymbol:2 }}</span></td>
-						<td class="amount"><span class="currency">{{ bill.projected_charges | currency:currencySymbol:2 }}</span></td>
-						<td class="amount" ng-class="{'red': bill.total_amount > bill.authorization_amount, 'green': bill.total_amount <= bill.authorization_amount }"><span class="currency">{{ bill.total_amount | currency:currencySymbol:2 }}</span></td>
+						<td class="amount"><span ng-bind-html="bill.authorization_amount | sntCurrency:this"></span></td>
+						<td class="rate amount">{{item.rate}} / <span ng-bind-html="item.rate_amount | sntCurrency:this"></span></td>
+						<td class="amount"><span ng-bind-html="bill.balance_on_bill | sntCurrency:this"></span></td>
+						<td class="amount"><span ng-bind-html="bill.projected_charges | sntCurrency:this"></span></td>
+						<td class="amount" ng-class="{'red': bill.total_amount > bill.authorization_amount, 'green': bill.total_amount <= bill.authorization_amount }"><span ng-bind-html="bill.total_amount | sntCurrency:this"></span></td>
 					</tr>
 				</tbody>
 				<tfoot ng-if="$last" ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></tfoot>

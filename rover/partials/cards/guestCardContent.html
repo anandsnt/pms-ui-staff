@@ -11,8 +11,8 @@
             <li ng-class="{'ui-tabs-active': current == 'guest-like'}" click-touch="guestCardTabSwitch('guest-like')">
                 <a id="guest-like" ng-class="{'error':likesInfoError}">Likes</a>
             </li>
-            <li ng-class="{'ui-tabs-active': current == 'guest-credit'}" click-touch="guestCardTabSwitch('guest-credit')">
-                <a id="guest-credit">Credit Cards &amp; Payment</a>
+            <li ng-class="{'ui-tabs-active': current == 'guest-wallet'}" click-touch="guestCardTabSwitch('guest-wallet')">
+                <a id="guest-wallet">Wallet</a>
             </li>
             <li ng-class="{'ui-tabs-active': current == 'guest-loyalty'}" click-touch="guestCardTabSwitch('guest-loyalty')" ng-hide='!loyaltyTabEnabled' ng-show='loyaltyTabEnabled' >
                 <a id="guest-loyalty">Loyalty</a>

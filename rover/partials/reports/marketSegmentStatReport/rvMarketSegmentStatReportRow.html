@@ -25,13 +25,13 @@
 <tr ng-if="item.length" ng-repeat="each in item track by $index" ng-class="{ 'undefined': hasSubString('undefined', each.code) }">
 	<td class="code break">{{ each.code }}</td>
 
-	<td ng-show='!isRoomRevenueSelected'><span class="currency">{{ each.other_revenue_today | currency:currencySymbol:2 }}</span></td>
-	<td ng-show='!isRoomRevenueSelected'><span class="currency">{{ each.other_revenue_mtd | currency:currencySymbol:2 }}</span></td>
-	<td class="break" ng-show='!isRoomRevenueSelected'><span class="currency">{{ each.other_revenue_ytd | currency:currencySymbol:2 }}</span></td>
+	<td ng-show='!isRoomRevenueSelected'><span ng-bind-html="each.other_revenue_today | sntCurrency:this"></span></td>
+	<td ng-show='!isRoomRevenueSelected'><span ng-bind-html="each.other_revenue_mtd | sntCurrency:this"></span></td>
+	<td class="break" ng-show='!isRoomRevenueSelected'><span ng-bind-html="each.other_revenue_ytd | sntCurrency:this"></span></td>
 
-	<td ng-show='isRoomRevenueSelected'><span class="currency">{{ each.revenue_today | currency:currencySymbol:2 }}</span></td>
-	<td ng-show='isRoomRevenueSelected'><span class="currency">{{ each.revenue_mtd | currency:currencySymbol:2 }}</span></td>
-	<td class="break" ng-show='isRoomRevenueSelected'><span class="currency">{{ each.revenue_ytd | currency:currencySymbol:2 }}</span></td>
+	<td ng-show='isRoomRevenueSelected'><span ng-bind-html="each.revenue_today | sntCurrency:this"></span></td>
+	<td ng-show='isRoomRevenueSelected'><span ng-bind-html="each.revenue_mtd | sntCurrency:this"></span></td>
+	<td class="break" ng-show='isRoomRevenueSelected'><span ng-bind-html="each.revenue_ytd | sntCurrency:this"></span></td>
 
 	<td ng-show='isBookingsSelected'>{{ each.bookings_today }}</td>
 	<td ng-show='isBookingsSelected'>{{ each.bookings_mtd }}</td>
@@ -45,9 +45,9 @@
 	<td>{{ each.room_nights_mtd }}</td>
 	<td class="break">{{ each.room_nights_ytd }}</td>
 
-	<td><span class="currency">{{ each.adr_today | currency:currencySymbol:2 }}</span></td>
-	<td><span class="currency">{{ each.adr_mtd | currency:currencySymbol:2 }}</span></td>
-	<td class="break"><span class="currency">{{ each.adr_ytd | currency:currencySymbol:2 }}</span></td>
+	<td><span ng-bind-html="each.adr_today | sntCurrency:this"></span></td>
+	<td><span ng-bind-html="each.adr_mtd | sntCurrency:this"></span></td>
+	<td class="break"><span ng-bind-html="each.adr_ytd | sntCurrency:this"></span></td>
 
 	<td>{{ each.percentage_today }}%</td>
 	<td>{{ each.percentage_mtd }}%</td>

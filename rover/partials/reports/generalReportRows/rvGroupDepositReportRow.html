@@ -18,23 +18,23 @@
 	<td ng-if="each.isReport" ng-class="{ 'red': each.deposit_payment_status == 'PAST DUE', 'green': each.deposit_payment_status == 'PAID' }">{{ each.deposit_payment_status }}</td>
 	<!-- Uncomment if group has due date and due amount -->
     <!-- <td ng-if="each.isReport">{{ each.due_date | date : dateFormat }}</td>
-    <td ng-if="each.isReport">{{ each.deposit_due_amount | currency:currencySymbol:2 }}</td> -->
+    <td ng-if="each.isReport"><span ng-bind-html="each.deposit_due_amount | sntCurrency:this"></span></td> -->
     <td ng-if="each.isReport">{{ each.paid_date | date : dateFormat }}</td>
-    <td ng-if="each.isReport"><span class="currency">{{ each.paid_amount | currency:currencySymbol:2 }}</span></td>
+    <td ng-if="each.isReport"><span ng-bind-html="each.paid_amount | sntCurrency:this"></span></td>
 
 
 	<td ng-if="each.isSubReport" ng-class="{ 'red': each.deposit_payment_status == 'PAST DUE', 'green': each.deposit_payment_status == 'PAID' }">{{ each.deposit_payment_status }}</td>
 	<!-- Uncomment if group has due date and due amount -->
     <!-- <td ng-if="each.isSubReport">{{ each.due_date | date : dateFormat }}</td>
-    <td ng-if="each.isSubReport">{{ each.deposit_due_amount | currency:currencySymbol:2 }}</td> -->
+    <td ng-if="each.isSubReport"><span ng-bind-html="each.deposit_due_amount | sntCurrency:this"></span></td> -->
     <td ng-if="each.isSubReport">{{ each.paid_date | date : dateFormat }}</td>
-    <td ng-if="each.isSubReport"><span class="currency">{{ each.paid_amount | currency:currencySymbol:2 }}</span></td>
+    <td ng-if="each.isSubReport"><span ng-bind-html="each.paid_amount | sntCurrency:this"></span></td>
 
 
     <td ng-if="each.isSubTotal"></td>
     <!-- Uncomment if group has total due amount -->
     <!-- <td ng-if="each.isSubTotal"><strong>Total Due</strong></td>
-	<td ng-if="each.isSubTotal"class="red"><strong>{{ each.deposit_due_amount | currency:currencySymbol:2 }}</strong></td> -->
+	<td ng-if="each.isSubTotal"class="red"><strong><span ng-bind-html="each.deposit_due_amount | sntCurrency:this"></span></strong></td> -->
 	<td ng-if="each.isSubTotal"><strong>Total Paid</strong></td>
-	<td ng-if="each.isSubTotal" class="green"><strong><span class="currency">{{ each.paid_amount | currency:currencySymbol:2 }}</span></strong></td>
+	<td ng-if="each.isSubTotal" class="green"><strong><span ng-bind-html="each.paid_amount | sntCurrency:this"></span></strong></td>
 </tr>

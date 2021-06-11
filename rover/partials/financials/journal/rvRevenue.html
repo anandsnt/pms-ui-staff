@@ -2,7 +2,7 @@
 <ul class="journal-header-print">
     <li>
         Revenue
-        <span><span class="currency">{{currencySymbol}}</span> {{ data.revenueData.total_revenue | number: precisonTwo}}</span>
+        <span ng-bind-html="data.revenueData.total_revenue | sntCurrency:this"></span>
     </li>
 </ul>
 <span ng-controller="RVJournalRevenueController" ng-click="clickedOnRevenue($event)">
@@ -35,7 +35,7 @@
                         <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowFirstLevel(index1)}" class="revenue-title toggle">
                             <strong class="name">{{level1.name}}</strong>
                             <span class="number" >{{escapeNullData(level1.number)}}</span>
-                            <span class="value"><span class="currency">{{currencySymbol}}</span> {{ level1.total | number: precisonTwo}}</span>
+                            <span class="value" ng-bind-html="level1.total | sntCurrency:this"></span>
                         </a>
                         <!-- Second level - charge codes -->
                         <div ng-show="level1.active" ng-repeat="(index2 ,level2) in level1.charge_codes" class="grid-charge">
@@ -43,7 +43,7 @@
                             <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active , 'has-arrow':checkHasArrowSecondLevel(index1, index2)}" class="revenue-title toggle">
                                 <span class="code short-text">{{level2.code}}</span>
                                 <strong class="name">{{level2.name}}</strong>
-                                <span class="value"><span class="currency">{{currencySymbol}}</span> {{ level2.total | number: precisonTwo}}</span>
+                                <span class="value" ng-bind-html="level2.total | sntCurrency:this"></span>
                             </a>
 
                             <!-- Third level - transactions  -->
@@ -99,7 +99,7 @@
                     </div>
 
                     <div class="grid-footer">
-                        <p class="payment"><span translate>TOTAL</span> <span class="currency">{{currencySymbol}}</span> {{ data.revenueData.total_revenue | number: precisonTwo}}</p>
+                        <p class="payment"><span translate>TOTAL</span> <span ng-bind-html="data.revenueData.total_revenue | sntCurrency:this"></span></p>
                     </div>
                 </div>
 

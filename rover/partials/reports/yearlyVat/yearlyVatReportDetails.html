@@ -16,8 +16,8 @@
         <a class="title-1 toggle vat-report active" ng-show="results.with_vat_id"> <!-- Toggle class 'active' when clicked -->
 
             <strong>Cards With Tax ID</strong>
-            <span><span class="currency">{{currencySymbol}}</span>{{results.with_vat_id.total_revenue | number: precisonTwo }}</span>
-            <span><span class="currency">{{currencySymbol}}</span>{{results.with_vat_id.total_vat | number: precisonTwo }}</span>
+            <span><span ng-bind-html="results.with_vat_id.total_revenue | sntCurrency:this"></span>
+            <span><span ng-bind-html="results.with_vat_id.total_vat | sntCurrency:this"></span>
         </a>
         <div id="with-vat-id" class="grid-content vat-report" > <!-- Toggle class hidden when L89-L93 is clicked -->
                 
@@ -26,8 +26,8 @@
                 <a href="#with-vat-company" class="title-2 toggle vat-report active" ng-class="{'active': accountsWithVatId.isCollapsed}" ng-repeat-start="accountsWithVatId in results.with_vat_id.accounts"> <!-- Toggle class 'active' when clicked -->
                     <strong ng-show="accountsWithVatId.account_type === 'COMPANY'">Companies </strong>
                     <strong ng-show="accountsWithVatId.account_type === 'TRAVELAGENT'">Travel Agents </strong>
-                    <span><span class="currency">{{currencySymbol}}</span>{{accountsWithVatId.total_revenue | number: precisonTwo }}</span>
-                    <span><span class="currency">{{currencySymbol}}</span>{{accountsWithVatId.total_vat | number: precisonTwo }}</span>
+                    <span><span ng-bind-html="accountsWithVatId.total_revenue | sntCurrency:this"></span>
+                    <span><span ng-bind-html="accountsWithVatId.total_vat | sntCurrency:this"></span>
                 </a>
                 <table id="with-vat-company" class="grid-content" ng-repeat-end> <!-- Toggle class hidden when L97-L101 is clicked -->
                     <thead>
@@ -44,8 +44,8 @@
                             <td class="number">{{revenueData.vat_id}}</td>
                             <td class="number">{{revenueData.ar_number}}</td>
                             <td>{{revenueData.name}}</td>
-                            <td class="revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.revenue | number: precisonTwo }}</td>
-                            <td class="revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.vat | number: precisonTwo }}</td>
+                            <td class="revenue"><span ng-bind-html="revenueData.revenue | sntCurrency:this"></span></td>
+                            <td class="revenue"><span ng-bind-html="revenueData.vat | sntCurrency:this"></span></td>
                         </tr>
                        <!-- ... repeat L112-L118 for every company-->
                     </tbody>
@@ -59,8 +59,8 @@
 
                 
                 <strong> Cards Without Tax ID</strong>
-                <span><span class="currency">{{currencySymbol}}</span>{{results.without_vat_id.total_revenue | number: precisonTwo }}</span>
-                <span><span class="currency">{{currencySymbol}}</span>{{results.without_vat_id.total_vat | number: precisonTwo }}</span>
+                <span><span ng-bind-html="results.without_vat_id.total_revenue | sntCurrency:this"></span>
+                <span><span ng-bind-html="results.without_vat_id.total_vat | sntCurrency:this"></span>
             </a>
       
         <div id="without-vat-id" class="grid-content vat-report" > <!-- Toggle class hidden when L136-L140 is clicked -->
@@ -71,8 +71,8 @@
                     <strong ng-show="accountsWithOutVatId.account_type === 'COMPANY'">Companies</strong>
                     <strong ng-show="accountsWithOutVatId.account_type === 'TRAVELAGENT'">Travel Agents </strong>
 
-                    <span><span class="currency">{{currencySymbol}}</span>{{accountsWithOutVatId.total_revenue | number: precisonTwo }}</span>
-                    <span><span class="currency">{{currencySymbol}}</span>{{accountsWithOutVatId.total_vat | number: precisonTwo }}</span>
+                    <span><span ng-bind-html="accountsWithOutVatId.total_revenue | sntCurrency:this"></span>
+                    <span><span ng-bind-html="accountsWithOutVatId.total_vat | sntCurrency:this"></span>
                 </a>
                 <table id="with-vat-company" class="grid-content vat-report" ng-repeat-end> <!-- Toggle class hidden when L97-L101 is clicked -->
                     <thead>
@@ -89,8 +89,8 @@
                             <td >{{revenueData.vat_id}}</td>
                             <td >{{revenueData.ar_number}}</td>
                             <td>{{revenueData.name}}</td>
-                            <td class="revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.revenue | number: precisonTwo }}</td>
-                            <td class="revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.vat | number: precisonTwo }}</td>
+                            <td class="revenue"><span ng-bind-html="revenueData.revenue | sntCurrency:this"></span></td>
+                            <td class="revenue"><span ng-bind-html="revenueData.vat | sntCurrency:this"></span></td>
                         </tr>
                        <!-- ... repeat L112-L118 for every company-->
                     </tbody>

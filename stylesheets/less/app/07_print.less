@@ -2354,6 +2354,55 @@
                         }
                     }
                 }
+
+                &.tax-output {
+                    .pagination { .hide(); }
+
+                    tbody {
+                        tr {
+                            &.row-break:not(:last-child) {
+                                td {
+                                    border-bottom: 8pt solid @grey1;
+                                }
+                            }
+
+                        
+                        
+                            &:not(.row-break) {
+                                td:not([rowspan]) {
+                                    border-bottom: 1px solid @grey2;
+                                }
+
+                                td[rowspan] {
+                                    border-bottom: 8pt solid @grey1;
+                                }
+    
+                                td {
+                                    .date {
+                                        font-size: 6pt;
+                                        margin-top: 2pt;
+                                        color: @grey3;
+                                        width: 100%;
+                                        float: none;
+                                        .show();
+                                    }
+                                }
+                            }
+                        }
+                        
+                    }
+
+                    tfoot {
+                        tr {
+                            &.totals {
+                                td {
+                                    background: @grey1;
+                                    padding: 4pt 8pt 4pt 4pt
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             &.financial-adjustment-reports {
@@ -4398,10 +4447,18 @@
         }
 
         .info-container {
+            page-break-inside: avoid;
+            
             .info-left,
             .info-right {
                 .pull-left;
                 width: 50%;
+                word-break: break-word;
+
+                .qr-code {
+                    width: auto;
+                    height: 140px;
+                }
             }
 
             .info-bottom {
@@ -4414,6 +4471,48 @@
             .info-right {
                 text-align: right;
 
+            }
+
+            &.cols-3 {
+
+                .info-left,
+                .info-right {
+                    word-break: break-word;
+                    width: 30%;
+                }
+
+                .info-mid {
+                    width: 40%;
+                    padding-left: 20px;
+                    margin-bottom: 20px;
+                }
+
+                .info-bottom {
+                    .info-left,
+                    .info-right {
+                        width: 50%;
+                    }
+                }
+            }
+
+            &.cols-2 {
+
+                .info-left {
+                    word-break: break-word;
+                    width: 30%;
+                }
+
+                .info-mid {
+                    width: 70%;
+                    padding-left: 20px;
+                    margin-bottom: 20px;
+                }
+
+                .info-bottom {
+                    .info-left {
+                        width: 50%;
+                    }
+                }
             }
 
             &.account-info {
