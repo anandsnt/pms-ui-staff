@@ -132,7 +132,7 @@
             .results {
                 position: relative;
                 overflow: hidden;
-                height: calc(100% - 60px);
+                height: calc(~'100% - 60px');
 
                 .scrollable {
                     width: 100%;
@@ -217,7 +217,7 @@
                 }
 
                 &.with-pagination {
-                    height: calc(100% - 120px);
+                    height: calc(~'100% - 120px');
                 }
             }
         }
@@ -231,7 +231,7 @@
             .wrapper {
                 display: flex;
                 flex-flow: row wrap;
-                height: calc(100% - 70px);
+                height: calc(~'100% - 70px');
             }
 
             .available-title {
@@ -322,8 +322,8 @@
             .wrapper > li {
                 line-height: 10px;
                 margin: 10px;
-                height: calc(100% - 10px);
-                width: calc(100vw - 20px);
+                height: calc(~'100% - 10px');
+                width: calc(~'100vw - 20px');
                 overflow: hidden;
                 #border-radius > .rounded();
                 .box-shadow();
@@ -333,7 +333,7 @@
         }
 
         &.has-room { 
-            height: calc(100% - 60px);
+            height: calc(~'100% - 60px');
         } 
 
         &.only-upgrades {
