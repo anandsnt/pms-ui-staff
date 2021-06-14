@@ -101,246 +101,94 @@
             padding: 0 0 60px 0 !important;
             .float;
 
-            @media screen and (min-width:600px) and (max-width:767px) {
-                width: 590px !important;
-                height: 750px !important
-            }
-
             .content-left,
             .content-right {
                 position: relative;
                 overflow: hidden;
+                padding: 10px 0;
                 height: 100%;
                 width: 100%;
-                .pull-left;
+                float: none;
+                z-index: 900;
             }
 
             .content-left {
-                padding: 20px 0;
                 background: rgba(0,0,0,.05);
                 
-                .entry {
+                .entry,
+                .select {
                     .show;
                 }
-
+                
                 .search-form {
-                    text-align: left;
-                    height: 100px;
-                    padding: 0 0 10px 0;
-                    margin: 0 20px 10px 20px;
-                    overflow: hidden;
-                    background: transparent;
+                    display: grid;
+                    grid-template-columns: .7fr 1.3fr;
+                    grid-column-gap: 10px;
                     border-bottom: 2px solid rgba(0,0,0,.1);
-                    #flexbox > .parent( column, '', '', '' );
-
-                    .select {
-                        width: 100%;
-                        .show;
-                        select { height: 40px; }
+                    
+                    &:before,
+                    &:after {
+                        display: none;
                     }
-
+                    
+                    .select,
                     .entry {
-                        margin-top: 10px;
-                        width: 100%;
-                    }
-                }
-
-                .scrollable {
-                    position: absolute;
-                    left: 20px;
-                    top: 130px;
-                    .calc-width(100, 20);
-                    .calc-height(100, 200);
-
-                    li {
-                        margin: 0 20px 10px 0;
-
-                        .button {
-                            position: relative;
-                            text-align: left;
-                            text-transform: none;
-                            line-height: 26px;
-                            min-height: 50px;
-                            padding: 12px 120px 6px 10px;
-
-                            .highlight { color: @logoPrimary; }
-
-                            .count {
-                                position: absolute;
-                                top: 15px;
-                                right: 100px;
-                                color: @white;
-                                background: @logoPrimary;
-                                text-align: center;
-                                font-size: 12px;
-                                line-height: 20px;
-                                font-weight: 600;
-                                padding: 0 7px;
-                                .show;
-                                .size(20px, auto);
-                                #border-radius > .rounded(20px);
-                            }
-
-                            .price {
-                                position: absolute;
-                                top: 0;
-                                right: 10px;
-                                font-size: 24px;
-                                line-height: 50px;
-                                font-weight: 300;
-                            }
-                        }
-                    }
-
-                    .iScrollVerticalScrollbar {
-                        top: 0;
-                        right: 7px;
-                        bottom: 0;
-                    }
-                }
-
-                .search-pagination {
-                    p { .pull-left; }
-
-                    .button {
-                        font-size: 16px;
-                        line-height: 40px;
-                        .size(40px, 120px);
-                    }
-                }
-
-                .numbers-pagination {
-                    -webkit-justify-content: center;
-                    justify-content: center;
-
-                    .button {
-                        font-size: 14px;
-                        line-height: 40px;
-                        .square(40px);
+                        float: none;
+                        width: auto;
+                        height: 40px;
                     }
                 }
             }
 
             .content-right {
-                position: relative;
-                padding: 10px 0 20px 20px;
-                .hide;
-                .box-shadow(0 -2px 2px rgba(0,0,0,.3));
+                .hide();
 
-                /* Elements ***/
-                .scrollable {
-                    position: relative;
-                    padding-right: 20px;
+                .scrollable,
+                #total-charge,
+                .form {
+                    padding-right: 10px;
+                    padding-left: 10px;
                     width: 100%;
-                    .transition();
-
-                    > .wrapper {
-                        padding-bottom: 2px;
-                    }
-
-                    li {
-                        position: relative;
-                        padding: 6px 80px 6px 0;
-                        text-align: left;
-                        line-height: 1;
-                        font-weight: 600;
-                        cursor: pointer;
-                        margin-bottom: 0;
-                        .transition();
-
-                        span {
-                            color: @grey3;
-                            font-weight: 400;
-                            .transition();
-
-                            &.base {
-                                font-size: 14px;
-                                .show;
-                            }
-
-                            &.price,
-                            &.value { color: @textColor; }
-
-                            &.price {
-                                position: absolute;
-                                top: 6px;
-                                right: 0;
-                            }
-                        }
-
-                        &:not(:last-child) {
-                            .box-shadow(inset 0 -1px 0 rgba(0,0,0,.1));
-                        }
-
-                        &.selected {
-                            margin: 5px 0;
-                            padding-left: 10px;
-                            background-color: @white;
-                            #border-radius > .rounded();
-                            .box-shadow();
-                            .show;
-
-                            .price {
-                                right: 10px;
-                            }
-                        }
-                    }
-
-                    .iScrollVerticalScrollbar {
-                        top: 0;
-                        right: 5px;
-                        bottom: 0;
-                    }
                 }
-
-                #total-charge {
-                    margin-top: 10px;
-                    padding-top: 10px;
-                    font-weight: 600;
-                    line-height: 30px;
-                    text-transform: uppercase;
-                    .box-shadow(inset 0 2px 0 rgba(0,0,0,.1));
-                    .calc-width(100, 20);
-                    .float;
-
-                    .price {
-                        font-size: 30px;
-                        font-weight: 300;
-                        .pull-right;
-                    }
+                
+                #total-charge,
+                .form {
+                    position: static;
                 }
-
+                
                 #numpad {
                     position: static;
+                    bottom: 0;
+                    left: 0;
                     width: 100%;
                     height: auto;
-                    margin-bottom: 10px;
-
+                    padding: 10px;
+            
                     .numpad-title {
                         font-size: 14px;
                         font-weight: 600;
                         text-transform: uppercase;
                     }
-
+            
                     .button {
                         display: inline-block;
                         padding: 0;
                         .square(50px);
                     }
-
+            
                     #numpad-numbers {
                         width: 100%;
                         padding-right: 10px;
                         #flexbox > .parent( row wrap, '', '', '' );
-
+            
                         .button {
                             font-size: 30px;
                             font-weight: 400;
                             margin: 0 6px 10px 0;
                             order: 10;
-
+            
                             &.small { font-size: 18px; }
-
+            
                             &[value="0"] {
                                 order: 0;
                             }
@@ -373,17 +221,17 @@
                             }
                         }
                     }
-
+            
                     #numpad-options {
                         width: 100%;
                         padding-right: 20px;
                         #flexbox > .parent( row wrap, '', '', '' );
-
+            
                         .button {
                             font-size: 16px;
                             font-weight: 600;
                             margin: 0 6px 10px 0;
-
+            
                             &.selected {
                                 color: @white;
                                 text-shadow: 1px 1px 0 rgba(0,0,0,.15);
@@ -393,86 +241,25 @@
                         }
                     }
                 }
-
-                .form {
-                    width: 100%;
-                    padding-right: 20px;
-                    position: static;
-
-                    label {
-                        margin-bottom: 0;
-
-                        &:not(.checkbox) {
-                            font-weight: 600;
-                        }
-                    }
-
-                    .checkbox {
-                        font-size: 14px;
-                        text-transform: uppercase;
-                    }
-
-                    .button {
-                        font-size: 16px;
-                        width: 50%;
-                        padding: 0 10px;
-                        .pull-left;
-                    }
-
-                    .actions {
-                        padding-top: 20px;
-                        .box-shadow(inset 0 2px 0 rgba(0,0,0,.1));
-                    }
-                }
-
-                /* Case 1 - No content ***/
-                .no-content {
-                    position: static;
-                    .calc-height(100, 80);
-
-                    .h1 {
-                        font-size: 24px;
-                        margin: 0;
-                    }
-                }
-
+                                
                 /* Case 2 - Showing grid of added items ***/
                 .grid-only {
-                    .scrollable {
-                       max-height: 455px;
-                    }
-
-                    #numpad,
-                    .form .entry {
-                        .hide();
-                    }
-
-                    .form {
-                         
-
-                        .actions {
-                            text-align: center;
-                        }
-
-                        .button {
-                            display: inline-block;
-                            float: none;
-                            width: auto;
-                        }
-                    }
+                    overflow-y: scroll;
+                    scroll-behavior: smooth;
                 }
-
+                
                 /* Case 3 - Showing selected charge details ***/
-                .charge-details {
+                .charge-details {  
+                    overflow-y: scroll;
+                    scroll-behavior: smooth;
                     .calc-height(100, 50);
-                    overflow: scroll;
-
+            
                     .scrollable {
-                        max-height: 255px;
+                        max-height: 160px;
                     }
                 }
             }
-
+            
             .mobile-actions {
                 position: absolute;
                 bottom: 0;
@@ -480,6 +267,9 @@
                 width: 100%;
                 padding: 10px 10px;
                 height: 60px;
+                background-color: @white;
+                box-shadow: 0 -1px 2px rgba(0,0,0,.2);
+                z-index: 999;
                 #flexbox > .parent( row, space-between, '', '' );
 
                 .button {
@@ -491,6 +281,7 @@
             }
 
             &.show-charges {
+                
                 .content-right {
                     .show;
                 }
@@ -502,7 +293,7 @@
 
             &.extended {
                 position: relative;
-                padding-top: 80px !important;
+                padding-top: 60px !important;
 
                 .inner-overlay {
                     position: absolute;
@@ -533,26 +324,26 @@
                 }
 
                 .cards {
-                    top: 0;
-                    height: 80px;
 
                     .cards-wrapper {
 
                         /* Card headers ***/
                         .cards-header {
-                            height: 80px;
+                            height: 60px;
+                            
                             .card-header {
-                                height: 80px;
 
                                 .card-search-form {
                                     width: 100%;
-                                    height: 70px;
 
                                     .holder {
                                         display: block;
                                         height: auto;
 
                                         .entry {
+                                            display: grid;
+                                            grid-template-columns: 80px 1fr;
+                                            grid-column-gap: 10px; 
                                             width: 100%;
                                         }
                                     }
@@ -561,25 +352,21 @@
                                         color: @white;
                                         width: 100%;
                                         font-size: 16px;
-                                        height: 30px;
+                                        height: 40px;
+                                        padding: 0 10px;
                                         .show;
-                                        .placeholder-text(16px, 20px, 700, rgba(255,255,255,.6), normal);
+                                        .placeholder-text(16px, 40px, 700, rgba(255,255,255,.6), normal);
 
  
                                         &.long-name { width: 100%; }
                                         &.active {  color: @logoPrimary; }
-
-                                        &:first-child {
-                                            margin-bottom: 5px;
-                                        }
                                     }
                                 }
 
                                 .card-details {
-                                    height: 50px;
                                     position: relative;
-                                    width: 100%;
                                     margin: 0;
+                                    .calc-width(100, 80);
                                     .show;
 
                                     .holder {
@@ -616,8 +403,6 @@
                                         }
 
                                         &.data {
-                                            height: auto;
-                                            .calc-width(100, 140);
 
                                             span {
                                                 font-size: 14px;
@@ -641,35 +426,44 @@
 
                                 .card-actions {
                                     grid-column: span 2;
+                                    padding-top: 10px;
                                     width: 100%;
                                     .hide;
                                     .pull-right;
 
                                     .button {
-                                        line-height: 38px;
-                                        margin-top: 5px;
+                                        font-size: 16px;
+                                        line-height: 40px;
+                                        margin-top: 0;
                                     }
-
+                                    
                                     &.visible {
                                         .show;
                                         position: absolute;
-                                        width: 130px;
-                                        bottom: 10px;
+                                        width: 80px;
+                                        height: 30px;
+                                        bottom: 15px;
                                         right: 10px;
+                                        padding-top: 0;
 
                                         .button {
                                             height: 30px;
                                             line-height: 30px;
+                                            margin: 0;
                                             font-size: 14px;
+                                            padding: 0 10px
                                         }
                                     }
                                 }
+                                
+                                
                             }
                         }
 
                         /* Search card content ***/
                         .cards-content {
-                            .calc-height(100, 130);
+                            padding: 0;
+                            .calc-height(100, 110);
 
                             .card-content {
                                 &.card-search {
@@ -690,31 +484,24 @@
                     }
 
                     &.open {
+                        max-height: 100% !important;
                         height: 100%;
+                        z-index: 1040;
 
                         .cards-wrapper {
 
-                            /* Card headers ***/
                             .cards-header {
-                                height: 130px;
+                                height: 110px;
+                                
                                 .card-header {
                                     .card-actions { .show; }
                                 }
                             }
+                            
+                            .cards-content { 
+                                padding: 0 10px 10px 10px;
+                            }
                         }
-                    }
-                }
-
-                .grid-only {
-                    .scrollable {
-                       max-height: 355px;
-                    }
-                }
-
-                .charge-details {
-                    
-                    .scrollable {
-                        max-height: 120px;
                     }
                 }
             }

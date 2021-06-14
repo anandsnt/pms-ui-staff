@@ -49,7 +49,7 @@
 				    <header class="cards-header">
 				    	<div class="card-header">
 				    		<!-- 1.search -->
-				    		<div ng-show="!isCardAttched">
+				    		<section ng-show="!isCardAttched">
 					        	<figure class="guest-image">
 						            <img src="/assets/images/avatar-trans.png" alt="" />
 						            <span class="search-indicator"></span>
@@ -65,9 +65,9 @@
 						        <div class="card-actions">
 							    	<button type="button" class="button white red-text" ng-click="clickedCancel()" translate>CANCEL</button>
 							    </div>
-						    </div>
+						    </section>
 						    <!-- 2. Card attached -->
-						    <div ng-show="isCardAttched">
+						    <section ng-show="isCardAttched">
 
 				            	<figure class="guest-image" ng-show="cardAttached.images.length!=0 " ng-class="{'accompany': cardAttached.images.length >1}">
 									<img ng-repeat="image in cardAttached.images"
@@ -94,7 +94,7 @@
 						        <div class="card-actions visible">
 						            <button type="button" class="button red" ng-click="clickedDetachCard()" translate>DETACH_CARD</button>
 						        </div>
-						    </div>
+						    </section>
 					    </div>
 				    </header>
 
