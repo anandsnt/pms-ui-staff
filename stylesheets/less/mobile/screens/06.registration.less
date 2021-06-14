@@ -37,41 +37,10 @@
         top: 50px !important; 
     }
 
-    /* Billing information 
+    /* Billing information ***/
     .billing-information {
-        clear: both;
-        padding: 0;
-        .show;
-
-        table {
-            width: 100%;
-            font-size: 14px;
-            line-height: 21px;
-            table-layout: fixed;
-            text-transform: uppercase;
-            border-collapse: collapse;
-            margin: 0;
-
-            tr {
-                th,
-                td { padding: 5px 10px; }
-
-                th {
-                    font-weight: 600;
-                    background: rgba(0,0,0,.05);
-
-                   &:first-child {
-                        width: 120px;
-                        #border-radius > .left-top();
-                    }
-
-                    &:nth-child(2) { width: 120px; }
-
-                    &:last-child { #border-radius > .right-top(); }
-                }
-            }
-        }
-    } ***/
+        display: none !important;
+    }
 
     /* Registration summary ***/
     .registration-summary {
@@ -257,18 +226,9 @@
             }*/
         }
 
-        /*.incoming-billing {
-            position: absolute;
-            top: 10px;
-            right: 0;
-            font-size: 15px;
-            line-height: 40px;
-            text-transform: uppercase;
-            padding-right: 15px;
-            background: @arrowUp no-repeat 100% 45%;
-
-            &.active { background-image: @arrowDown; }
-        }*/
+        .incoming-billing {
+            display: none !important;
+        }
 
 
         /* Registration summary tabs ***/
@@ -543,7 +503,7 @@
 
                         &.active {
                             background-color: @white;
-                            grid-template-columns: 3fr 1fr 40px;
+                            grid-template-columns: 1fr 1fr 40px;
                         }
                     }    
 
@@ -560,7 +520,7 @@
 
                         &.total-value {
                             font-weight: 600;
-                            justify-content: flex-start;
+                            justify-content: flex-end;
 
                             strong {
                                 color: @logoPrimary;
