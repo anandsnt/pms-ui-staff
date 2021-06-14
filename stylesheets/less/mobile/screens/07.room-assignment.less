@@ -14,8 +14,9 @@
 
         /* Room nubmer ***/
         .room-number {
-            font-size: 28px;
-            margin-right: 20px;
+            font-size: 24px;
+            line-height: 40px;
+            margin-right: 10px;
 
             &.room-green { color: @green; }
             &.room-red { color: @red; }
@@ -142,6 +143,13 @@
                     .wrapper {
                         padding: 10px;
                     }
+                }
+
+                .no-content {
+                    display: flex;
+                    flex-flow: column wrap;
+                    justify-content: center;
+                    align-items: center;
                 }
 
                 /* Room attributes ***/
@@ -362,7 +370,7 @@
         position: absolute;
         bottom: 0;
         left: 0;
-        padding: 10px;
+        padding: 0 10px;
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -377,10 +385,12 @@
             padding: 0 10px;
             height: 40px;
             max-width: 50%;
+            margin: 10px 0;
 
             &:not(:first-child) {
                 margin-left: 10px;
             }            
         }
+
     }
 }
