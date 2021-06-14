@@ -1762,22 +1762,25 @@ body {
 .actions-content {
     position: relative;
     overflow: hidden;
-    #flexbox > .display();
+    display: flex;
     flex-direction: column;;
 
     &.content {
         top: 50px;
-        .calc-height(100,110);
         transition: none;
     }
 
     &:not(.show-right-content) {
+        .calc-height(100, 110);
+        
         .content-right {
             .hide();
         }
     }
 
     &.show-right-content {
+        .calc-height(100, 50);
+        
         .content-left {
             .hide();
         }
@@ -1804,13 +1807,6 @@ body {
         .scrollable {
             z-index: 90;
             .calc-height(100, 60);
-
-            /*.iScrollVerticalScrollbar {
-                left: 5px;
-                right: auto;
-
-                .iScrollIndicator { background: rgba(0,0,0,.1); }
-            }*/
 
             li {
                 position: relative;
@@ -2007,7 +2003,7 @@ body {
             margin: 10px;
             background: @white;
             text-align: center;
-            height: calc(~'100% - 80px');
+            .calc-height(100, 80);
 
 
             h3 {
@@ -2016,7 +2012,7 @@ body {
             }
 
             .action-summary {
-                height: calc(~'100% - 40px');
+                .calc-height(100, 40);
 
                 .iScrollVerticalScrollbar {
                     right: 0;
@@ -2289,12 +2285,12 @@ body {
     position: absolute;
     left: 0;
     bottom: 0;
-    padding: 10px 20px;
-    overflow: hidden;
-    z-index: 200;
+    padding: 10px;
     background: @grey2 @darkTexture repeat;
+    display: flex;
+    flex-flow: row wrap;
+    z-index: 9990;
     .size(60px, 100%);
-    .float;
     .box-shadow(0 -1px 1px rgba(0,0,0,.2));
 
     .switch {
@@ -2303,7 +2299,6 @@ body {
         padding-right: 10px;
         .show;
         .size(40px, 80px);
-        .pull-left;
 
         .icons {
             position: absolute;
@@ -2348,16 +2343,34 @@ body {
     }
 
     .select {
+        margin: 0 10px;
         height: 40px;
-        padding-left: 20px;
         .calc-width(100,220);
-        .pull-left;
     }
 
-    .button { 
-        width: 120px;
+    .button,
+    .back-button { 
         font-size: 14px;
-        .pull-right; 
+    }
+    
+    .button {
+        width: 120px;
+    }
+    
+    .back-button {
+        position: fixed;
+        top: 5px; 
+        left: 45px;
+    }
+    
+    &.show-right-content {
+        padding: 0;
+        height: 0;
+        
+        .switch,
+        .button {
+            .hide();
+        }
     }
 }
 
