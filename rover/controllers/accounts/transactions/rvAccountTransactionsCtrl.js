@@ -296,6 +296,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.moveChargeData.displayName = accountName;
 				$scope.moveChargeData.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
 				$scope.moveChargeData.fromBillId = billTabsData[$scope.currentActiveBill].bill_id;
+				$scope.moveChargeData.is_move_all_charges = false;
+				$scope.moveChargeData.total_count = $scope.transactionsDetails.bills[$scope.currentActiveBill].total_count;
 
 
 				if (chargeCodes.length > 0) {
@@ -447,7 +449,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		/*
 		 * success method move charge
 		 */
-		var moveChargeSuccess = $scope.$on('moveChargeSuccsess', function(event) {
+		var moveChargeSuccess = $scope.$on('moveChargeSuccsess', function(event, response) {
 
 			var chargesMoved = function(data) {
 					onTransactionFetchSuccess(data);
@@ -460,7 +462,16 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					successCallBack: chargesMoved
 				};
 
-			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, options);
+			if (response.is_move_charges_inprogress) {
+				ngDialog.open({
+					template: '/assets/partials/bill/rvMoveAllChargesInprogress.html',
+					className: '',
+					scope: $scope
+				});
+			}
+			else {
+				$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, options);
+			}
 		});
 
 		$scope.$on('$destroy', moveChargeSuccess);
@@ -970,6 +981,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 				finalInvoiceSettlement(params, false);
 			} else {
+				$scope.closeDialog();
 				var mailSent = function(data) {
 						if (data.is_invoice_issued) {
 							// Handle mail Sent Success
@@ -983,7 +995,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 							}
 							$scope.switchTabTo('TRANSACTIONS');
 						} else {
-							showInvoicePendingInfoPopup();
+							$timeout(function() {
+								showInvoicePendingInfoPopup();
+							}, 500);
 						}
 					},
 					mailFailed = function(errorMessage) {
@@ -1006,6 +1020,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var finalInvoiceSettlement = function(data, isPrint) {
 			var settleInvoiceSuccess = function() {
 					$scope.shouldGenerateFinalInvoice = false;
+					getTransactionDetails();
 					if (isPrint) {
 						printBillCard(data);
 					} else {
@@ -1037,6 +1052,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		$scope.clickedPrint = function(requestParams) {
+			$scope.closeDialog();
 			sntActivity.start("PRINT_STARTED");
 			printBillCard(requestParams);
 		};

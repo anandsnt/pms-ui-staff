@@ -90,7 +90,8 @@
             <strong >{{printData.translation.departure_date}}:</strong>{{printData.departure_date | date:dateFormat}}<br/>
             <strong >{{printData.translation.room_number}}:</strong>{{printData.room_number}}<br/>
             <strong >{{printData.translation.confirmation_number}}:</strong>{{printData.confirmation_number}}<br/>
-            <strong >{{printData.translation.number_of_guests}}:</strong>{{printData.no_of_guests}}<br/><br/>
+            <strong >{{printData.translation.number_of_guests}}:</strong>{{printData.no_of_guests}}<br/>
+            <strong ng-if="printData.invoice_currency_code">{{printData.translation.invoice_currency}}:</strong>{{printData.invoice_currency_code}}<br/><br/>
         </div>
     </div>
     <div class="info-bottom float">
@@ -161,7 +162,7 @@
                 <th class="align-right" >{{printData.translation.credit_amount}}</th>
             </tr>
         </thead>
-        
+
         <tbody>
             <tr ng-repeat="item in printData.charge_details_list">
                 <td>{{item.date | date:dateFormat}}</td>
@@ -361,7 +362,7 @@
 </table>
 
 <div class="info-container" >
-    <div class="info-left" ng-show="!printData.is_informational_invoice && !printData.is_proforma_invoice && !printData.is_deposit_invoice">
+    <div class="info-left" ng-show="!printData.is_informational_invoice && !printData.is_proforma_invoice && !printData.is_deposit_invoice && !isEmpty(printData.efsta_fiskal_signature_data) && printData.efsta_fiskal_signature_data.qr_code !== '' && printData.efsta_fiskal_signature_data.qr_code !== null">
         <div>
             <strong>{{printData.translation.tse_transaction_id}}:</strong>{{printData.efsta_fiskal_signature_data.t_id}}<br/>
             <strong>{{printData.translation.tse_transaction_start}}:</strong>{{printData.efsta_fiskal_signature_data.start_date | date:dateFormat}}<br/>
@@ -374,7 +375,7 @@
     <div class="info-right">
         <div ng-show="printData.invoice_qr_code_location === 'FOOTER' && !printData.is_informational_invoice && !printData.is_proforma_invoice && !printData.is_deposit_invoice">
             <span class="type" ng-if="printData.efsta_fiskal_signature_data.qr_code">
-                <br/><img ng-src="{{printData.efsta_fiskal_signature_data.qr_code}}" alt="" class="qr-code" /> 
+                <br/><img ng-src="{{printData.efsta_fiskal_signature_data.qr_code}}" alt="" class="qr-code" />
             </span>
         </div>
         <div ng-show="printData.invoice_qr_code_location === 'FOOTER' && (printData.is_deposit_invoice || !printData.is_informational_invoice)">
