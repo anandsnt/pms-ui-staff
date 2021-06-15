@@ -17,6 +17,16 @@
                 ng-class="{ 'grey': disableButtons,
                             'green': !disableButtons
                           }"
+                ng-if="isRoomViewActive"
+                translate>SAVE
+            </button>
+            <button type="button" class="button"
+                ng-click="clickedOnMassRateUpdateButton(ngDialogData)"
+                ng-disabled="disableButtons"
+                ng-class="{ 'grey': disableButtons,
+                            'green': !disableButtons
+                          }"
+                ng-if="!isRoomViewActive"
                 translate>SAVE
             </button>
             <button type="button" class="button blank"

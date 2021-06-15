@@ -170,9 +170,13 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 			$scope.closeDialog();
 		};
 
-		var successCallBackOfSaveNewRoomTypesAndRates = function(data) {
-			$scope.fetchCurrentSetOfRoomBlockData();
-			$scope.closeDialog();
+		var successCallBackOfSaveNewRoomTypesAndRates = function() {
+            if ($scope.isRoomViewActive) {
+                $scope.fetchCurrentSetOfRoomBlockData();
+            } else {
+                $scope.fetchRoomTypesDailyRates();
+            }
+            $scope.closeDialog();
 		};
 
 		var failureCallBackOfSaveNewRoomTypesAndRates = function(error) {

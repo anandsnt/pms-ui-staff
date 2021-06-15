@@ -100,10 +100,74 @@
         <!-- Load next 14 days, remove class "hidden" when user reaches end of horizontal scroll -->
         <button type="button" class="next-dates"
             ng-class="{ 'hidden': !shouldShowLoadNextSetButton() }"
-            ng-click="fetchNextSetOfRoomBlockData()">
+            ng-click="fetchNextSetOfRoomBlockData()"
+            ng-if="isRoomViewActive">
             {{'GROUP_NEXT_SET' | translate}}
             <span class="has-arrow next-view"></span>
         </button>
+        <button type="button" class="next-dates"
+            ng-class="{ 'hidden': !shouldShowLoadNextSetButton() }"
+            ng-click="fetchNextSetOfRoomTypesRateData()"
+            ng-if="!isRoomViewActive">
+            {{'GROUP_NEXT_SET' | translate}}
+            <span class="has-arrow next-view"></span>
+        </button>
+        <!-- Add class .room-block-actions-rates when showing rates -->
+        <div class="room-block-actions" 
+            ng-class="{'room-block-actions-rates': !isRoomViewActive}"
+            ng-show="shouldShowRoomsRates()"> <!-- Add class "hidden" when group is disabled -->
+            <button type="button" class="button green"
+                ng-click = "clickedOnSaveButton()"
+                ng-class="{'hidden': !shouldShowSaveButton()}"
+                ng-if="isRoomViewActive"
+                translate>
+                Save Changes
+            </button> <!-- Hidden until change is made in the grid -->
+            <button type="button" class="button blank"
+                ng-click = "clickedOnDiscardButton()"
+                ng-class="{'hidden': !shouldShowDiscardButton()}"
+                ng-if="isRoomViewActive"
+                translate>
+                Cancel Changes
+            </button>
+            <button type="button" class="button green"
+                ng-click = "saveRoomTypesDailyRates()"
+                ng-class="{'hidden': !hasRateChanged}"
+                ng-if="!isRoomViewActive"
+                translate>
+                Save Changes
+            </button> <!-- Hidden until change is made in the grid -->
+            <button type="button" class="button blank"
+                ng-click = "clickedOnDiscardButtonInRatesView()"
+                ng-class="{'hidden': !hasRateChanged}"
+                ng-if="!isRoomViewActive"
+                translate>
+                Cancel Changes
+            </button> 
+            <!-- Hidden until change is made in the grid -->
+        
+            <!-- On by default when showing rooms -->
+            <!-- Add .hidden if a change was made in the grid and remove .hidden when saved or clicked on Cancel Changes above-->
+            <div class="switch-button" 
+                ng-class="{'on': isRoomViewActive, 'hidden': hasBookingDataChanged || hasRateChanged}">
+                <input id="group-block-type-switch" value="1" type="checkbox" ng-model="isRoomViewActive" ng-click="toggleRoomRateBtn()">
+                <label class="data-off">
+                    <span class="value">Rooms</span>
+                    <span class="switch-icon">Rates</span>
+                </label>
+                <label class="data-on">
+                    <span class="switch-icon">Rooms</span>
+                    <span class="value">Rates</span>
+                </label>
+            </div>
+            
+            <!-- Add .hidden if a change was made in the grid and remove .hidden when saved or clicked on Cancel Changes above-->
+            <button type="button" class="add-new-button"
+                ng-class="{'hidden': hasBookingDataChanged || hasRateChanged}"
+                ng-click="clickedOnAddRoomsAndRatesButton()">+ Add New
+            </button>
+
+        </div>  
         <!-- If new group and/or room block have not been set: -->
         <div class="no-content" ng-hide="shouldHideAddRoomsButton()">
             <div class="info">
@@ -117,34 +181,10 @@
                 <!-- // Button should have class "hidden" until block is created -->
             </div>
         </div>
-        <!-- Room block actions -->
-        <div class="room-block-actions" ng-show="shouldShowRoomsRates()">
-            <button type="button" class="button green"
-                tabindex="-1"
-                ng-click = "clickedOnSaveButton()"
-                ng-class="{'hidden': !shouldShowSaveButton()}"
-                translate>
-                SAVE
-            </button>
-            <!-- Hidden until change is made in the grid -->
-            <button type="button" class="button red hidden"
-                tabindex="-1"
-                ng-click = "clickedOnDiscardButton()"
-                ng-class="{'hidden': !shouldShowDiscardButton()}"
-                translate>
-                DISCARD
-            </button>
-            <!-- Hidden until change is made in the grid -->
-            <button type="butotn" class="button blue"
-                tabindex="-1"
-                ng-click="clickedOnAddRoomsAndRatesButton()"
-                translate>
-                ROOMS_AND_RATES
-            </button>
-        </div>
+        
         <!-- Room block room types -->
         <div class="room-block-sidebar scrollable" ng-show="shouldShowRoomsRates()"
-            ng-iscroll="room_block_scroller">
+            ng-iscroll="room_block_scroller" ng-class="{'room-block-grid-rates' : !isRoomViewActive}">
             <div class="wrapper">
                 <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
                 <div ng-class="{'open' : roomtype_rate.isCollapsed}"
@@ -152,7 +192,8 @@
                     ng-repeat="roomtype_rate in groupConfigData.summary.selected_room_types_and_bookings"
                     ui-jq="accordion"
                     ui-options="accordionInitiallyNotCollapsedOptions"
-                    ng-init="roomtype_rate.isCollapsed = true">
+                    ng-init="roomtype_rate.isCollapsed = true"
+                    ng-if="isRoomViewActive">
 
                     <!-- Toggle class "active" when clicked/tapped -->
                     <p class="line line-toggle"
@@ -192,16 +233,43 @@
                         <li class="line small add" ng-if="!shouldShowAddTrippleButton(roomtype_rate) && !shouldShowAddQuadrupleButton(roomtype_rate) "></li>                        
                     </ul>
                 </div>
+                <div ng-class="{'open' : roomtype_rate.isCollapsed}"
+                    class="row end"
+                    ng-repeat="roomtype_rate in groupConfigData.summary.selected_room_types_and_daily_rates"
+                    ui-jq="accordion"
+                    ui-options="accordionInitiallyNotCollapsedOptions"
+                    ng-init="roomtype_rate.isCollapsed = true"
+                    ng-if="!isRoomViewActive">
+
+                    <!-- Toggle class "active" when clicked/tapped -->
+                    <p class="line line-toggle"
+                        ng-class="{'active' : roomtype_rate.isCollapsed}"
+                        ng-click="roomtype_rate.isCollapsed = !roomtype_rate.isCollapsed">
+                        {{roomtype_rate.room_type_name}}  <span class="type" ng-if="!isRoomViewActive">Bar (Single)</span>
+                    </p>
+                    <!-- Toggle class "hidden" when .line-toggle is clicked/tapped -->
+                    <ul ng-class="{'hidden' : !roomtype_rate.isCollapsed}">
+                        <!-- CICO-26729: Show for borrowed room type -->
+                        <li class="line" translate ng-hide="shouldHideSingleEntryRow()">SINGLE</li>
+                        <li class="line" translate ng-hide="shouldHideDoubleEntryRow()">DOUBLE</li>
+                        <li class="line"
+                            translate>
+                            ONE_MORE_ADULT
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
         <!-- Room block days -->
         <div class="room-block-timeline scrollable"
             ng-iscroll="room_rates_timeline_scroller"
             ng-show="shouldShowRoomsRates()"
-            ng-class="{'paginated': shouldShowLoadNextSetButton()}">
+            ng-class="{'paginated': shouldShowLoadNextSetButton(), 'room-block-timeline-rates': !isRoomViewActive}">
 
             <ul style="width:{{getWidthForRoomBlockTimeLine()}};" class="wrapper">
-                <li ng-repeat="occupancy in groupConfigData.summary.selected_room_types_and_occupanies" ng-class="{'shoulder-date': occupancy.is_shoulder_date,'with-button': shouldShowCopyButton(occupancy,$index)}">
+                <li ng-repeat="occupancy in groupConfigData.summary.selected_room_types_and_occupanies" 
+                    ng-if="isRoomViewActive" 
+                    ng-class="{'shoulder-date': occupancy.is_shoulder_date,'with-button': shouldShowCopyButton(occupancy,$index)}">
                     <div class="inner" 
                          ng-class="{'has-event-block' : eventsCount[occupancy.date] > 0}"
                          data-events="{{eventsCount[occupancy.date]}}"
@@ -211,7 +279,7 @@
                         <strong>{{formatDateForUI(occupancy.date, monthAndDate)}}</strong>
                         <em>{{occupancy.occupancy}}% Occupancy</em>
                     </div>
-                    <div class="column">
+                    <div class="column" ng-if="isRoomViewActive">
                         <div class="line small">
                             <em class="cell">Total</em>
                             <em class="cell">Pick-up</em>
@@ -223,15 +291,30 @@
                         </div>
                     </div>
                 </li>
+                <li ng-repeat="occupancy in groupConfigData.summary.selected_room_types_rate_view_occupancies"
+                    ng-if="!isRoomViewActive" 
+                    ng-class="{'shoulder-date': occupancy.is_shoulder_date,'with-button': shouldShowCopyButton(occupancy,$index)}">
+                    <div class="inner" 
+                         ng-class="{'has-event-block' : eventsCount[occupancy.date] > 0}"
+                         data-events="{{eventsCount[occupancy.date]}}"
+                         ng-click="showHouseEventsListPopup(eventsCount[occupancy.date], occupancy.date)">
+                        <span ng-if="!occupancy.is_shoulder_date">{{getDayOfWeek(occupancy.date, fulldayInWeek)}}</span>
+                        <span ng-if="occupancy.is_shoulder_date">{{getDayOfWeek(occupancy.date, fulldayInWeek)}} - {{'SHOULDER' | translate}}</span>
+                        <strong>{{formatDateForUI(occupancy.date, monthAndDate)}}</strong>
+                        <em>{{occupancy.occupancy}}% Occupancy</em>
+                    </div>
+                </li>
             </ul>
         </div>
         <!-- Room block grid -->
         <div class="room-block-grid scrollable" ng-iscroll="room_rates_grid_scroller"
             ng-show="shouldShowRoomsRates()"
-            ng-class="{'paginated': houldShowLoadNextSetButton()}">
+            ng-class="{'paginated': houldShowLoadNextSetButton(), 'room-block-grid-rates': !isRoomViewActive}">
             <div class="wrapper" style="width:{{getWidthForRoomBlockTimeLine()}};">
                 <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
-                <div class="row" ng-repeat="roomType in groupConfigData.summary.selected_room_types_and_bookings" emit-when="{event: 'ALL_RENDERED', condition: $last}" ngrepeatend>
+                <div class="row" ng-repeat="roomType in groupConfigData.summary.selected_room_types_and_bookings" 
+                    emit-when="{event: 'ALL_RENDERED', condition: $last}" 
+                    ng-if="isRoomViewActive" ngrepeatend>
                     <!-- REPEAT COLUMN FOR ALL DAYS IN THE BLOCK -->
                     <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                     <div class="column" ng-repeat="dateData in roomType.dates" class="with-button" ng-class="{'shoulder-date': dateData.is_shoulder_date, 'with-button': shouldShowCopyButton(dateData,$index)}">
@@ -353,6 +436,82 @@
                             </button>
                         </div>
                         <!-- <div class="line small cellspan hidden"> -->
+                        <div class="line small cellspan" ng-class="{'hidden' : !roomType.isCollapsed}">
+                            <em class="cellspan">
+                                {{'AVAILABILITY_GROUP'|translate}}
+                                    <span
+                                    ng-class="{'green': (dateData.availability>0),
+                                    'red': (dateData.availability==0) }">
+                                        {{dateData.availability}}
+                                    </span>
+                                </em>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" 
+                    ng-repeat="roomType in groupConfigData.summary.selected_room_types_and_daily_rates" 
+                    emit-when="{event: 'RENDERING_COMPLETE', condition: $last}" 
+                    ngrepeatend 
+                    ng-if="!isRoomViewActive">
+                    <div class="column" ng-repeat="dateData in roomType.dates" class="with-button" ng-class="{'shoulder-date': dateData.is_shoulder_date, 'with-button': shouldShowCopyButton(dateData,$index)}">
+                        <div class="line small" ng-class="{'hidden' : !roomType.isCollapsed}">
+                            <em class="cell">Rate in {{currencySymbol}}</em>
+                        </div>
+                        <div class="line">
+                            <input type="number" value="{{dateData.best_available_rate_amount}}" class="cell" disabled />
+                        </div>
+                        <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="shouldHideSingleEntryRow()">
+                            <button ng-if="shouldShowCopyButton(dateData,$index)"
+                                tabindex="-1"
+                                ng-click="copySingleCellRateValueToOtherBlocks(dateData, roomType, 'single_amount')"
+                                type="button"
+                                class="admin-icons icon-mover-right">
+                                Copy to all days
+                            </button>
+                            <input tabindex="-1" type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                function-to-fire="rateChanging"
+                                ng-disabled="shouldDisableRateEntryBox(dateData, roomType)"
+                                ng-model="dateData.single_amount" class="cell" 
+                                ng-readonly="groupConfigData.summary.rate != -1"/>
+                        </div>
+                        <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="shouldHideDoubleEntryRow()">
+                            <button ng-if="shouldShowCopyButton(dateData,$index)"
+                                tabindex="-1"
+                                ng-click="copySingleCellRateValueToOtherBlocks(dateData, roomType,'double_amount')"
+                                type="button"
+                                class="admin-icons icon-mover-right">
+                                Copy to all days
+                            </button>
+                            <input tabindex="-1" type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                ng-disabled="shouldDisableRateEntryBox(dateData, roomType)"
+                                function-to-fire="rateChanging"
+                                ng-model="dateData.double_amount" 
+                                ng-readonly="groupConfigData.summary.rate != -1"
+                                class="cell" />
+                        </div>
+                        <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}">
+                            <button ng-if="shouldShowCopyButton(dateData,$index)"
+                                tabindex="-1"
+                                ng-click="copySingleCellRateValueToOtherBlocks(dateData, roomType, 'extra_adult_amount')"
+                                type="button"
+                                class="admin-icons icon-mover-right">
+                                Copy to all days
+                            </button>
+                            <input tabindex="-1" type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                ng-disabled="shouldDisableRateEntryBox(dateData, roomType)"
+                                function-to-fire="rateChanging"
+                                ng-model="dateData.extra_adult_amount"
+                                ng-readonly="groupConfigData.summary.rate != -1"
+                                class="cell"  />
+                        </div>
+                        
                         <div class="line small cellspan" ng-class="{'hidden' : !roomType.isCollapsed}">
                             <em class="cellspan">
                                 {{'AVAILABILITY_GROUP'|translate}}

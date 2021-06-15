@@ -589,9 +589,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
             // ensure the start and end dates are within the shoulder boundaries
             if ($scope.timeLineStartDate < summary.shoulder_from_date) {
-                $scope.timeLineStartDate = summary.shoulder_from_date;
+                $scope.timeLineStartDate = new tzIndependentDate(summary.shoulder_from_date);
             } else if ($scope.timeLineStartDate > summary.shoulder_to_date) {
-                $scope.timeLineStartDate = summary.shoulder_to_date;
+                $scope.timeLineStartDate = new tzIndependentDate(summary.shoulder_to_date);
             }
 
             // 14 days are shown by default.
@@ -599,7 +599,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             $scope.timeLineEndDate = $scope.timeLineEndDate.toDate();
             // restrict end_date in request to shoulder boundary
             if ($scope.timeLineEndDate > summary.shoulder_to_date) {
-                $scope.timeLineEndDate = summary.shoulder_to_date;
+                $scope.timeLineEndDate = new tzIndependentDate(summary.shoulder_to_date);
             }
 
             $scope.fetchRoomBlockGridDetails({
@@ -618,7 +618,11 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 */
         $scope.onTimeLineStartDatePicked = function(date, datePickerObj) {
             $scope.timeLineStartDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
-            $scope.fetchCurrentSetOfRoomBlockData();
+            if ($scope.isRoomViewActive) {
+                $scope.fetchCurrentSetOfRoomBlockData();
+            } else {
+                $scope.fetchRoomTypesDailyRates(); 
+            }
         };
 
 		/**
@@ -1266,6 +1270,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 */
         var successCallBackOfRoomTypeAndRatesFetch = function(data) {
             $scope.groupConfigData.summary.selected_room_types_and_rates = data.room_type_and_rates;
+            _.each($scope.groupConfigData.summary.selected_room_types_and_rates, function(roomTypeInfo) {
+                roomTypeInfo.isRateConfigured = roomTypeInfo.single_rate || roomTypeInfo.double_rate || roomTypeInfo.extra_adult_rate;
+            });
         };
 
 		/**
@@ -1395,7 +1402,12 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
         };
 
         var successCallBackOfSaveNewRoomTypesAndRates = function () {
-            $scope.fetchCurrentSetOfRoomBlockData();
+            if ($scope.isRoomViewActive) {
+                $scope.fetchCurrentSetOfRoomBlockData();
+            } else {
+                $scope.fetchRoomTypesDailyRates();
+            }
+            
         };
 
 		/**
@@ -1434,13 +1446,11 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             $scope.copy_selected_room_types_and_bookings = [];
 
 			// updating central model with newly formed data
-            _.extend(
-				$scope.groupConfigData.summary, {
-    block_from: $scope.startDate,
-    block_to: $scope.endDate,
-    hold_status: $scope.selectedHoldStatus
-}
-			);
+            _.extend($scope.groupConfigData.summary, {
+                block_from: $scope.startDate,
+                block_to: $scope.endDate,
+                hold_status: $scope.selectedHoldStatus
+            });
 
 			// callinng the update API calling
             $scope.updateGroupSummary();
@@ -1656,18 +1666,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
          * @return {[type]} [description]
          */
         var callInitialAPIs = function() {
-			// default start date
-            var businessDate = new tzIndependentDate($rootScope.businessDate).getDate();
-            var startDateValue = new tzIndependentDate($scope.groupConfigData.summary.block_from).getDate();
-            var endDateValue = new tzIndependentDate($scope.groupConfigData.summary.block_to).getDate();
-
-            // Fixed as per CICO-35639, case: if end date equal to business date and start date not equal to business date
-            if (endDateValue === businessDate && startDateValue !== businessDate) {
-                // Goto date should not be business date
-               $scope.timeLineStartDate = new tzIndependentDate(new tzIndependentDate($rootScope.businessDate) - 86400000);
-            } else {
-                $scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
-            }
+            resetTimelineDates();
 
 			// call API. date range end will be calculated in next function.
             $scope.fetchCurrentSetOfRoomBlockData();
@@ -1682,6 +1681,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             if (activeTab !== 'ROOM_BLOCK') {
                 return;
             }
+            $scope.isRoomViewActive = true;
             setDatePickers();
             callInitialAPIs();
 
@@ -1776,7 +1776,13 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
         $scope.getWidthForRoomBlockTimeLine = function() {
-            var width = $scope.groupConfigData.summary.selected_room_types_and_occupanies.length * 180 + 40;
+            var width;
+
+            if ($scope.isRoomViewActive) {
+                width = $scope.groupConfigData.summary.selected_room_types_and_occupanies.length * 180 + 40;
+            } else {
+                width = $scope.groupConfigData.summary.selected_room_types_rate_view_occupancies.length * 180 + 40; 
+            }
             
             if ($scope.shouldShowLoadNextSetButton()) {
 				width += 80;
@@ -1839,7 +1845,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             _.extend($scope.groupConfigData.summary, {
                 selected_room_types_and_bookings: [],
                 selected_room_types_and_occupanies: [],
-                selected_room_types_and_rates: []
+                selected_room_types_and_rates: [],
+                selected_room_types_and_daily_rates: [],
+                selected_room_types_rate_view_occupancies: []
             });
 
             if (isInEditMode) {
@@ -2024,6 +2032,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 			// since we are recieving two ouside click event on tapping outside, we wanted to check and act
             $scope.isUpdateInProgress = false;
+            $scope.isRoomViewActive = true;
         };
 
 		/**
@@ -2317,7 +2326,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			// date related setups and things
             setDatePickers();
 
-			// setting scrollers
+			// setting rooms view scrollers
             setScroller();
 
 			// accoridion
@@ -2401,6 +2410,275 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                 closeByDocument: false,
                 closeByEscape: true
             });
+        };
+
+        /**
+         * Reset the timeline dates
+         */
+        var resetTimelineDates = function() {
+            // default start date
+            var businessDate = new tzIndependentDate($rootScope.businessDate).getDate();
+            var startDateValue = new tzIndependentDate($scope.groupConfigData.summary.block_from).getDate();
+            var endDateValue = new tzIndependentDate($scope.groupConfigData.summary.block_to).getDate();
+
+            // Fixed as per CICO-35639, case: if end date equal to business date and start date not equal to business date
+            if (endDateValue === businessDate && startDateValue !== businessDate) {
+                // Goto date should not be business date
+               $scope.timeLineStartDate = new tzIndependentDate(new tzIndependentDate($rootScope.businessDate) - 86400000);
+            } else {
+                $scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
+            }
+        };
+
+        /**
+         * Toggle room rate switch
+         */
+        $scope.toggleRoomRateBtn = function() {
+            $scope.isRoomViewActive = !$scope.isRoomViewActive;
+            if (!$scope.isRoomViewActive) {
+                resetTimelineDates();
+                $scope.fetchRoomTypesDailyRates();
+            } else {
+                setDatePickers();
+                callInitialAPIs();
+                refreshScroller();
+            }
+        };
+
+        /**
+         * Get request params for the roomtyps/rate request
+         */
+        var getParamsForRoomTypeRatesRequest = function() {
+            // for pagination in group room block CICO-20097
+            var summary = $scope.groupConfigData.summary,
+                perPage = 14; // days
+
+            // shoulder_from_date and shoulder_to_date in summary are JS Date objects;
+            // they are assigned at populateShoulderDates in rvGroupConfigurationSummaryTab controller
+
+            // ensure the start and end dates are within the shoulder boundaries
+            if ($scope.timeLineStartDate < summary.shoulder_from_date) {
+                $scope.timeLineStartDate = new tzIndependentDate(summary.shoulder_from_date);
+            } else if ($scope.timeLineStartDate > summary.shoulder_to_date) {
+                $scope.timeLineStartDate = new tzIndependentDate(summary.shoulder_to_date);
+            }
+
+            // 14 days are shown by default.
+            $scope.timeLineEndDate = moment($scope.timeLineStartDate).add(perPage, 'days');
+            $scope.timeLineEndDate = $scope.timeLineEndDate.toDate();
+            // restrict end_date in request to shoulder boundary
+            if ($scope.timeLineEndDate > summary.shoulder_to_date) {
+                $scope.timeLineEndDate = new tzIndependentDate(summary.shoulder_to_date);
+            }
+            
+            return {
+                start_date: formatDateForAPI($scope.timeLineStartDate),
+                end_date: formatDateForAPI($scope.timeLineEndDate)
+            };
+        };
+
+        var successCallBackOfFetchRoomTypeRateDetails = function(response) {
+            var businessDate = new tzIndependentDate($rootScope.businessDate);
+
+            _.each(response.data.results, function(eachRoomType) {
+                eachRoomType.start_date = formatDateForAPI($scope.timeLineStartDate);
+                _.each(eachRoomType.dates, function(dateData) {
+                    var formattedDate = new tzIndependentDate(dateData.date);
+                    
+                    dateData.isModifiable = formattedDate >= businessDate;
+                });
+            });
+            $scope.groupConfigData.summary.selected_room_types_and_daily_rates = response.data.results;
+            $scope.groupConfigData.summary.selected_room_types_rate_view_occupancies = response.data.occupancy;
+            $scope.eventsCount = response.eventsCount;
+
+            // we need the copy of selected_room_type/rates, as we need to use these to show save/discard button
+            $scope.copy_selected_room_types_and_daily_rates = util.deepCopy(response.data.results);
+            $interval(refreshScroller, 1000);
+        };
+
+        /**
+		 * Load next 14 rates data
+		 */
+        $scope.fetchNextSetOfRoomTypesRateData = function() {
+            $scope.timeLineStartDate.setDate($scope.timeLineStartDate.getDate() + 14);
+            $scope.fetchRoomTypesDailyRates();
+        };
+
+        $scope.addListener('RENDERING_COMPLETE', setScrollListner);
+
+        /**
+		 * Flag that rate has been changed
+		 */
+        $scope.rateChanging = function() {
+            $scope.hasRateChanged = true;
+            runDigestCycle();
+        };
+
+		/**
+		 * Process mass rate upate
+         * @param {Object} params - request params
+         * @return {void}
+		 */
+        $scope.processMassRateUpdate = function(params) {
+            var onRateMassUpdateSuccess = function() {
+                    $scope.fetchRoomTypesDailyRates();
+                    $scope.closeDialog();
+                },
+                onRateMassUpdateFailure = function(error) {
+                    $scope.errorMessage = error;
+                    $scope.closeDialog();
+                },
+                options = {
+                    params: params,
+                    successCallBack: onRateMassUpdateSuccess,
+                    failureCallBack: onRateMassUpdateFailure
+                };
+
+            $scope.callAPI(rvGroupConfigurationSrv.performRateMassUpdate, options);
+        };
+
+        /**
+		 * Handler for performing rate mass update
+         * @param {Object} ngDialogData - dialog data
+		 * @return {void}
+		 */
+        $scope.clickedOnMassRateUpdateButton = function (ngDialogData) {
+
+            var value = ngDialogData.value,
+                groupStart = $scope.groupConfigData.summary.block_from,
+                timeLineStart = $scope.timeLineStartDate < groupStart ? groupStart : $scope.timeLineStartDate;
+
+            var requestParams = {
+                start_date: formatDateForAPI(timeLineStart),
+                end_date: formatDateForAPI($scope.massUpdateEndDate),
+                bulk_updated_for: ngDialogData.occupancy.toUpperCase(),
+                room_type_id: $scope.selectedRoomType.room_type_id,
+                amount: value,
+                groupId: $scope.groupConfigData.summary.group_id
+            };
+			
+            $scope.processMassRateUpdate(requestParams);
+        };
+
+        /**
+		 * Copy the rates for the corresponding room type occupancy to other dates
+		 * @param {Object} - cell data
+		 * @param {Object} - row data
+		 * @return undefined
+		 */
+        $scope.copySingleCellRateValueToOtherBlocks = function(cellData, rowData, occupancyType) {
+            var data = {};
+
+            _.each(rowData.dates, function(element) {
+                if (!element.is_shoulder_date) {
+                    switch (occupancyType) {
+                        case 'single_amount':
+                            element.single_amount = cellData.single_amount;
+                            data.value = cellData.single_amount;
+                            break;
+                        case 'double_amount':
+                            element.double_amount = cellData.double_amount;
+                            data.value = cellData.double_amount;
+                            break;
+                        case 'extra_adult_amount':
+                            element.extra_adult_amount = cellData.extra_adult_amount;
+                            data.value = cellData.extra_adult_amount;
+                            break;
+                        default:
+                              
+                    }
+                }
+            });
+            data.occupancy = occupancyType;
+
+            $scope.selectedRoomType = rowData;
+            $scope.showMassUpdateEndDateConfirmation(data);
+			// we chnged something
+            $scope.rateChanging();
+        };
+
+        /**
+		 * should we wanted to disable single box entry
+		 * @param {Object} [dateData] [description]
+		 * @param {Object} - Room Type data row
+		 * @return {Boolean}
+		 */
+        $scope.shouldDisableRateEntryBox = function(dateData, roomType) {
+            // API should provide !roomType.can_edit and then add the condition
+            return !!$scope.groupConfigData.summary.is_cancelled || !dateData.isModifiable || dateData.is_shoulder_date;
+        };
+
+        /**
+		 * Invoke when rates view is active and save button is clicked
+		 */
+        $scope.clickedOnSaveRatesButton = function() {
+			// do not force overbooking for the first time
+            // CICO-42325 Bring loader straight-away to protect from multi-clicks
+            $scope.$emit('showLoader');
+            $scope.saveRoomBlock(false);
+        };
+
+		/**
+		 * when discard button clicked, we will set the booking data with old copy
+		 * @return None
+		 */
+        $scope.clickedOnDiscardButtonInRatesView = function() {
+            $scope.groupConfigData.summary.selected_room_types_and_daily_rates =
+				util.deepCopy($scope.copy_selected_room_types_and_daily_rates);
+
+            $scope.hasRateChanged = false;
+        };
+
+		/**
+         * Save room types daily rates
+         */
+        $scope.saveRoomTypesDailyRates = function() {
+            var onDailyRateSaveSuccess = function() {
+                    $scope.copy_selected_room_types_and_daily_rates = angular.copy($scope.groupConfigData.summary.selected_room_types_and_bookings);
+                    $scope.hasRateChanged = false;
+                },
+                onDailyRateSaveFailure = function(error) {
+                    $scope.errorMessage = error;
+                };
+
+            $timeout(function() {
+                var params = {
+                    group_id: $scope.groupConfigData.summary.group_id,
+                    room_types_and_rates: $scope.groupConfigData.summary.selected_room_types_and_daily_rates
+                };
+
+                var options = {
+                    params: params,
+                    successCallBack: onDailyRateSaveSuccess,
+                    failureCallBack: onDailyRateSaveFailure
+                };
+
+                $scope.callAPI(rvGroupConfigurationSrv.saveRoomTypesDailyRates, options);
+            }, 0);
+        };
+
+        /**
+         * Fetch the rates for all occupancies corresponding to the room types configured
+         */
+        $scope.fetchRoomTypesDailyRates = function() {
+            var hasNeccessaryPermission = hasPermissionToCreateRoomBlock() &&
+				hasPermissionToEditRoomBlock();
+
+            if (!hasNeccessaryPermission) {
+                return;
+            }
+
+            var params = _.extend(getParamsForRoomTypeRatesRequest(), {
+                group_id: $scope.groupConfigData.summary.group_id
+            });
+
+            var options = {
+                params: params,
+                successCallBack: successCallBackOfFetchRoomTypeRateDetails
+            };
+
+            $scope.callAPI(rvGroupConfigurationSrv.getRoomTypesOccupancyRateDetailsAndEventsCount, options);
         };
 
 
