@@ -262,8 +262,8 @@ angular.module('sntRover').service('RVCustomExportSrv', [
                 deferred.resolve(cache.timePeriods);
             } else {
                 sntBaseWebSrv.getJSON(url).then(function (response) {
-                    var results = _.filter(response.results, function ( each ) {
-                        return EXCLUDE_TIME_PERIODS.indexOf(each.value) === -1;
+                    var results = _.reject(response.results, function ( item ) {
+                        return EXCLUDE_TIME_PERIODS.indexOf(item.value) >= 0;
                     });
     
                     cache.timePeriods = results;
