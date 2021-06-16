@@ -2194,6 +2194,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 params.appliedFilter = $scope.appliedFilter;
             }
 
+            // for tax receipt types list
+            if (!!report.hasTaxPaymentReceiptTypes) {
+                params[reportParams['TAX_RECEIPT_TYPE_VALUES']] = _.pluck(_.where(report.hasTaxPaymentReceiptTypes.data, { selected: true }), 'value');
+            }
+
             return params;
         }
 
@@ -2289,6 +2294,32 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 return response;
             };
 
+            var fetchReceipts = function (sub_category_type_id, pageNo) {
+                var paramsToApi = {};
+
+                paramsToApi.receipt_sub_category_type_id = sub_category_type_id;
+                paramsToApi.page = pageNo;
+                paramsToApi.per_page = reportParams['RECEIPTS_PER_PAGE_COUNT'];
+                paramsToApi.from_date = $scope.summaryCounts.vat_date_from;
+                paramsToApi.to_date = $scope.summaryCounts.vat_date_to;
+                $scope.$broadcast('updateReceipts', paramsToApi);
+            };
+
+            var responseForOutputTax = function (response) {
+                _.each(response.results, function (item) {
+                    // Pagination data added for each TA
+                    item.insidePaginationData = {
+                        id: item.sub_category_type_id,
+                        api: [fetchReceipts, item.sub_category_type_id],
+                        perPage: reportParams['RECEIPTS_PER_PAGE_COUNT']
+                    };
+                    $timeout(function () {
+                        $scope.$broadcast('updatePagination', item.sub_category_type_id);
+                    }, 1000);
+                });
+                return response;
+            };
+
             var responseForTaxExempt = function (response) {
 
                 _.each(response.results, function (item) {
@@ -2334,6 +2365,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     // For TA reservations
                     response = responseWithInsidePagination(response);
                 }
+                if (chosenReport.title === reportNames['TAX_OUTPUT_REPORT']) {
+                    // Response modified to accomodate inside pagination
+                    // For Category Receipts
+                    response = responseForOutputTax(response);
+                }
                 if (chosenReport.title === reportNames['TAX_EXEMPT']) {
                     // Response modified to handle the different tax exempt types in each date
                     response = responseForTaxExempt(response);
@@ -2364,6 +2400,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     $timeout(function () {
                         $scope.$broadcast('updatePagination', 'TA_COMMISSION_REPORT_MAIN');
                     }, 50);
+                }
+
+                if (chosenReport.title === reportNames['TAX_OUTPUT_REPORT']) {
+                    $scope.$broadcast('UPDATE_TAX_OUTPUT_RESULTS', $scope.results);
                 }
 
                 if (reportPaginationIds[chosenReport.title]) {

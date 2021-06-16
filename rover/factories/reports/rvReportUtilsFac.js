@@ -1011,7 +1011,12 @@ angular.module('reportsModule')
                         setIncludeDayuseFlag();
                     } else if ('SHOW_UPSELL_ONLY' === filter.value) {
                         reportItem[reportParams['SHOW_UPSELL_ONLY']] = true;
-                    } else {
+                    } else if ('TAX_PAYMENT_RECEIPT_TYPE' === filter.value && !filter.filled) {
+                        requested++;
+                        reportsSubSrv.fetchTaxPaymentReceiptTypes()
+                            .then(fillTaxPaymentReceiptTypes);
+                    } 
+                    else {
                         // no op
                     }
                 });
@@ -1049,6 +1054,31 @@ angular.module('reportsModule')
                                     hasSearch: true,
                                     key: 'name',
                                     defaultValue: 'Select guarantees'
+                                }
+                            };
+                        }
+                    });
+
+                    completed++;
+                    checkAllCompleted();
+                }
+
+                function fillTaxPaymentReceiptTypes(data) {
+                    var foundFilter;
+                    
+                    _.each(reportList, function (report) {
+                        foundFilter = _.find(report['filters'], { value: 'TAX_PAYMENT_RECEIPT_TYPE' });
+
+                        if (!!foundFilter) {
+                            foundFilter['filled'] = true;
+
+                            report.hasTaxPaymentReceiptTypes = {
+                                data: angular.copy(data),
+                                options: {
+                                    selectAll: report['title'] === reportNames['TAX_OUTPUT_REPORT'] ? true : false,
+                                    hasSearch: false,
+                                    key: 'name',
+                                    defaultValue: 'Select payment receipt'
                                 }
                             };
                         }

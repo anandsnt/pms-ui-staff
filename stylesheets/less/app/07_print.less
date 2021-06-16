@@ -2354,6 +2354,55 @@
                         }
                     }
                 }
+
+                &.tax-output {
+                    .pagination { .hide(); }
+
+                    tbody {
+                        tr {
+                            &.row-break:not(:last-child) {
+                                td {
+                                    border-bottom: 8pt solid @grey1;
+                                }
+                            }
+
+                        
+                        
+                            &:not(.row-break) {
+                                td:not([rowspan]) {
+                                    border-bottom: 1px solid @grey2;
+                                }
+
+                                td[rowspan] {
+                                    border-bottom: 8pt solid @grey1;
+                                }
+    
+                                td {
+                                    .date {
+                                        font-size: 6pt;
+                                        margin-top: 2pt;
+                                        color: @grey3;
+                                        width: 100%;
+                                        float: none;
+                                        .show();
+                                    }
+                                }
+                            }
+                        }
+                        
+                    }
+
+                    tfoot {
+                        tr {
+                            &.totals {
+                                td {
+                                    background: @grey1;
+                                    padding: 4pt 8pt 4pt 4pt
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             &.financial-adjustment-reports {

@@ -59,6 +59,7 @@ angular.module('reportsModule')
         "SHOW_ACTIONABLES": "actions_by",
         "TRAVEL_AGENTS": "travel_agent_ids",
         "TRAVEL_AGENTS_PER_PAGE_COUNT": 25,
+        "RECEIPTS_PER_PAGE_COUNT": 25,
         "RESERVATION_STATUS_ARRAY": "status_ids[]",
         "VAT_YEAR": "year",
         "WITH_VAT_NUMBER": "with_vat_number",
@@ -129,5 +130,6 @@ angular.module('reportsModule')
         "FRONT_OFFICE_STATUS": "fo_status_ids",
         "HOUSEKEEPING_STATUS": "hk_status_ids",
         "HK_RESERVATION_STATUSES": "hk_reservation_statuses",
-        "HK_FRONT_OFFICE_STATUSES": "hk_fo_statuses"
+        "HK_FRONT_OFFICE_STATUSES": "hk_fo_statuses",
+        "TAX_RECEIPT_TYPE_VALUES": "tax_receipt_type_values"
     });
