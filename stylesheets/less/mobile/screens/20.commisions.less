@@ -7,7 +7,6 @@
 .commissions-header {
     display: flex;
     flex-flow: column wrap;
-    /*justify-content: center;*/
     height: 100%;
 
     .commissions-info,
@@ -21,7 +20,7 @@
             flex-flow: column wrap;
             align-items: center;
             font-size: 14px;
-            line-height: 20px;
+            line-height: 1;
             text-transform: uppercase;
             text-align: center;
             color: @grey3; 
@@ -29,7 +28,7 @@
 
             .amount,
             strong {
-                font-size: 28px;
+                font-size: 24px;
                 font-weight: 300;                   
                 color: @textColor;
                 text-indent: 0;
@@ -45,10 +44,6 @@
                 }
             }            
         }
-
-        /*&.commissions-selected {
-            display: none !important;
-        }*/
     }
 
     .filters {
@@ -59,6 +54,7 @@
 
         li {
             width: 33.33%;
+            line-height: 20px;
             pointer-events: none;
         }
     }
@@ -68,7 +64,12 @@
         flex-flow: column wrap;
 
         li {
+            line-height: 1;
             margin-bottom: 40px;
+            
+            .amount {
+                line-height: 36px;
+            }
 
             &.actions,
             .button {
