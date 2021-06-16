@@ -119,7 +119,7 @@ body {
 /* App screen positioning   ==============================*/
     .content {
         top: 50px;
-        height: calc(100% - 50px);
+        .calc-height(100, 50);
         
         /* With search **/
         &#dashboard-search,
@@ -157,13 +157,13 @@ body {
 
             &.has-summary {
                 top: 170px;
-                height: calc(100% - 170px);
+                .calc-height(100, 170);
             }
         }
 
         &#guest-info {
             top: 60px;
-            height: calc(100% - 60px);
+            .calc-height(100, 60);
         }
     }
 
