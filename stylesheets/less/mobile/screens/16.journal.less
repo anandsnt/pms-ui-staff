@@ -15,6 +15,10 @@
         line-height: 20px;
         text-align: center;
         color: @grey3; 
+        
+        span:first-child:not(:last-child) {
+            display: none;
+        }
     }
 
     span {
@@ -51,19 +55,25 @@
         flex-flow: column wrap;
         align-items: center;
         font-size: 14px;
-        line-height: 20px;
+        line-height: 1;
         text-transform: uppercase;
         text-align: center;
-        color: @grey3; 
+        color: @grey3;
+        margin: 0;
 
         span:not(.currency) {
-            font-size: 28px;
+            font-size: 24px;
+            line-height: 36px;
             font-weight: 300;                   
             color: @textColor;
             text-indent: 0;
             .nowrap();
             .show;
         }
+    }
+    
+    .journal-summary {
+        margin-bottom: 20px;
     }
 
     .journal-summary:not(.first) {
