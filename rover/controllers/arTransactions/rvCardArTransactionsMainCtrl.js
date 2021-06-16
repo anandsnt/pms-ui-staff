@@ -916,6 +916,17 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			});
 		};
 
+		/*
+		*	Method to show Invoice pending while fiskilazation in progress.
+		*	This is for EFSTA only.
+		*/
+		var showInvoicePendingInfoPopup = function() {
+			ngDialog.open({
+				template: '/assets/partials/popups/billFormat/rvInvoicePendingInfoPopup.html',
+				className: '',
+				scope: $scope
+			});
+		};
         // Send email AR statement
         $scope.emailArStatement = function() {
           var params = getParamsToSend();
@@ -951,10 +962,17 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.item.is_locked = data.is_locked;
 			}
 			var sendEmailSuccessCallback = function(successData) {
-				$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
-				$scope.status = "success";
-				$scope.showEmailSentStatusPopup();
-				$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab);
+				if (successData.is_invoice_issued) {
+					$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+					$scope.status = "success";
+					$scope.showEmailSentStatusPopup();
+					$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab);
+				} else {
+					$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab);
+					$timeout(function() {
+						showInvoicePendingInfoPopup();
+					}, 500);
+				}
 			},
 			sendEmailFailureCallback = function(errorData) {
 				$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
@@ -974,6 +992,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			if ($scope.arDataObj.paidList.length > 0 && requestParams.is_locked) {
 				$scope.item.is_locked  = requestParams.is_locked;
 			}
+			$scope.closeDialog();
 			printBill(requestParams);
 		};
 
@@ -992,7 +1011,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.closeDialog();
 			$scope.printBillCardActive = false;
 			$("body #loading").html('<div id="loading-spinner" ></div>');
-			$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab)
+			$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab);
 			sntActivity.stop("PRINT_STARTED");
 
 		};
@@ -1049,43 +1068,48 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					{
 						successData.invoiceLabel = successData.ar_invoice_label || successData.translation.ar_invoice;
 					}
-					$scope.printData = successData;
-					$scope.errorMessage = "";
+					if (successData.is_invoice_issued) {
+						$scope.printData = successData;
+						$scope.errorMessage = "";
 
-					// CICO-9569 to solve the hotel logo issue
-					$("header .logo").addClass('logo-hide');
-					$("header .h2").addClass('text-hide');
-					$("body #loading").html("");// CICO-56119
-					$("header .nav-bar").addClass('no-print');
-					$(".cards-header").addClass('no-print');
-					$("#cards-header-id").addClass('no-print');
-					$(".billing-sidebar").addClass('no-print');
-					$(".reservation-transaction").addClass('no-print');
-					$(".card-tabs-nav").addClass('no-print');
-					$(".tab-header").addClass('no-print');
-					$("#add-balance").addClass('no-print');
+						// CICO-9569 to solve the hotel logo issue
+						$("header .logo").addClass('logo-hide');
+						$("header .h2").addClass('text-hide');
+						$("body #loading").html("");// CICO-56119
+						$("header .nav-bar").addClass('no-print');
+						$(".cards-header").addClass('no-print');
+						$("#cards-header-id").addClass('no-print');
+						$(".billing-sidebar").addClass('no-print');
+						$(".reservation-transaction").addClass('no-print');
+						$(".card-tabs-nav").addClass('no-print');
+						$(".tab-header").addClass('no-print');
+						$("#add-balance").addClass('no-print');
 
-					// add the orientation
-					// addPrintOrientation();
+						// add the orientation
+						// addPrintOrientation();
 
-					/*
-					*	======[ READY TO PRINT ]======
-					*/
-					// this will show the popup with full bill
-					$timeout(function() {
+						/*
+						*	======[ READY TO PRINT ]======
+						*/
+						// this will show the popup with full bill
+						$timeout(function() {
 
-						if (sntapp.cordovaLoaded) {
-							cordova.exec(billCardPrintCompleted,
-								function(error) {
-									billCardPrintCompleted();
-								}, 'RVCardPlugin', 'printWebView', []);
-						}
-						else
-						{
-							window.print();
-							billCardPrintCompleted();
-						}
-					}, 700);
+							if (sntapp.cordovaLoaded) {
+								cordova.exec(billCardPrintCompleted,
+									function(error) {
+										billCardPrintCompleted();
+									}, 'RVCardPlugin', 'printWebView', []);
+							}
+							else
+							{
+								window.print();
+								billCardPrintCompleted();
+							}
+						}, 700);
+					} else {
+						$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab);
+						showInvoicePendingInfoPopup();
+					}
 			};
 
 			var printDataFailureCallback = function(errorData) {
