@@ -51,20 +51,20 @@
                         </td>
                         
                         <td>
-                            <span class="currency">{{currencySymbol}}</span>{{reservation.rate_details[0].rate_amount}}
+                            <span ng-bind-html="reservation.rate_details[0].rate_amount | sntCurrency:this"></span>
                         </td>
                         <td rowspan="{{reservation.rate_details.length}}">
-                            <span class="currency">{{currencySymbol}}</span>{{reservation.commission_revenue}}
+                            <span ng-bind-html="reservation.commission_revenue | sntCurrency:this">
                         </td>
                         <td rowspan="{{reservation.rate_details.length}}">
-                            <span>{{reservation.commission_amount}}</span>
+                            <span ng-bind-html="reservation.commission_amount | sntCurrency:this"></span>
                         </td>
                         <td rowspan="{{reservation.rate_details.length}}">
-                            <span class="currency">{{currencySymbol}}</span>{{reservation.net_amount}}
+                            <span ng-bind-html="reservation.net_amount | sntCurrency:this"></span>
                         </td>
                     </tr>
                     <tr class="rate-row" ng-repeat="rate_details in reservation.rate_details"  ng-if="$index > 0" ng-repeat-end >
-                        <td><span class="currency">{{currencySymbol}}</span>{{rate_details.rate_amount}}</td>
+                        <td><span ng-bind-html="rate_details.rate_amount | sntCurrency:this"></span></td>
                     </tr>
 
                     <tr ng-if="travel_agents.reservation_details.reservations.length == 0">
@@ -89,11 +89,11 @@
                             Subtotals
                         </td>
                         <td>
-                           <span class="currency"><span class="currency">{{currencySymbol}}</span>{{ travel_agents.sub_total.revenue}}
+                           <span ng-bind-html="travel_agents.sub_total.revenue | sntCurrency:this"></span>
                         </td>
                         <td></td>
                         <td>
-                            <span class="currency">{{currencySymbol}}</span>{{ travel_agents.sub_total.net_amount}}
+                            <span ng-bind-html="travel_agents.sub_total.net_amount | sntCurrency:this"></span>
                         </td>
                     </tr>
                 </tfoot>

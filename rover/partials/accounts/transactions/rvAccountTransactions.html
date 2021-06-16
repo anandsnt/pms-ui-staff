@@ -6,13 +6,13 @@
 		<li>
 			<div class="data">
 				<span class="label" translate>TOTAL_CHARGES</span>
-				<span class="value"><span class="currency">{{currencySymbol}}</span>{{transactionsDetails.total_fees | number: precisonTwo}}</span>
+				<span class="value"><span ng-bind-html="transactionsDetails.total_fees | sntCurrency:this"></span></span>
 			</div>
 		</li>
 		<li>
 			<div class="data">
 				<span class="label" translate>TOTAL_BALANCE</span>
-				<span class="value" ng-class="{'green': transactionsDetails.total_balance == 0, 'red': transactionsDetails.total_balance != 0}"><span class="currency">{{currencySymbol}}</span>{{transactionsDetails.total_balance | number: precisonTwo}}</span> <!-- Green if 0, otherwise red -->
+				<span class="value" ng-class="{'green': transactionsDetails.total_balance == 0, 'red': transactionsDetails.total_balance != 0}"><span ng-bind-html="transactionsDetails.total_balance | sntCurrency:this"></span></span> <!-- Green if 0, otherwise red -->
 			</div>
 		</li>
 		<li>
@@ -130,7 +130,7 @@
 						<ul class="group-overview">
 							<li>
 								<span class="title" translate>CHARGES</span>
-								<span class="value"><span class="currency">{{currencySymbol}}</span>{{billData.total_amount | number: precisonTwo}}</span>
+								<span class="value"><span ng-bind-html="billData.total_amount | sntCurrency:this"></span></span>
 							</li>
 							<li class="break">
 								<button type="button" class="button with-icon only-icon" click-touch="showFormatBillPopup(billData.bill_number, billData.is_active)" ng-class="getInvoiceButtonClass()" ng-disabled="isInvoiceButtonDisabled()">
@@ -141,7 +141,7 @@
 							</li>
 							<li>
 								<span class="title" translate>BALANCE</span>
-								<span class="value" ng-class="{'green': billData.total_fees.balance_amount == 0, 'red': billData.total_fees.balance_amount != 0}"><span class="currency">{{currencySymbol}}</span>{{billData.balance_amount | number: precisonTwo}}</span> <!-- Green when 0, otherwise red -->
+								<span class="value" ng-class="{'green': billData.total_fees.balance_amount == 0, 'red': billData.total_fees.balance_amount != 0}"><span ng-bind-html="billData.balance_amount | sntCurrency:this"></span></span> <!-- Green when 0, otherwise red -->
 							</li>
 							<li>
 								<button class="button green with-icon only-icon" ng-class="{'overlay': !billData.is_active }" click-touch="showPayemntModal()">
@@ -199,7 +199,7 @@
 											{{'CHARGES' |translate}} ({{'AS_OF' |translate}}  {{ businessDate | date:dateFormat }}):
 										</td>
 										<td colspan="3" class="total-value">
-											 <strong><span class="currency">{{currencySymbol}}</span>{{billData.total_amount | number: precisonTwo}}</strong>
+											 <strong><span ng-bind-html="billData.total_amount | sntCurrency:this"></span></strong>
 										</td>
 										<td>
 											<!-- <button click-touch="openActionsPopup()" class="button purple with-icon only-icon">
@@ -214,7 +214,7 @@
 											{{'BALANCE' |translate}} ({{'AS_OF' |translate}} {{ businessDate | date:dateFormat }}):
 										</td>
 										<td colspan="3" class="total-value" ng-class="{'green': billData.total_fees.balance_amount == 0, 'red': billData.total_fees.balance_amount != 0}"> <!-- Green when 0, otherwise red -->
-											 <strong><span class="currency">{{currencySymbol}}</span>{{billData.balance_amount | number: precisonTwo}}</strong>
+											 <strong><span ng-bind-html="billData.balance_amount | sntCurrency:this"></span></strong>
 										</td>
 										<td>
 											<button ng-class="{'overlay': !billData.is_active }" class="button green with-icon only-icon" click-touch="showPayemntModal()">
@@ -262,13 +262,13 @@
 										</td>
 										<td>
 											<strong>
-												<span ng-show= "feesData.fees"><span class="currency">{{currencySymbol}}</span>{{feesData.fees | number: precisonTwo}}
+												<span ng-show= "feesData.fees"><span ng-bind-html="feesData.fees | sntCurrency:this"></span>
 												</span>
 											</strong>
 										</td>
 										<td class="credits align-right">
 											<strong ng-show="feesData.credits">
-												<span class="currency">{{currencySymbol}}</span>{{feesData.credits| number: precisonTwo}}
+												<span ng-bind-html="feesData.credits | sntCurrency:this"></span>
 											</strong>
 											<!-- ng-if="feesData.is_print_receipt_available" -->
 											<button  type="button" class="button with-icon only-icon blue open-modal inline" ng-click="openReceiptDialog($index)" ng-if="feesData.is_print_receipt_available">

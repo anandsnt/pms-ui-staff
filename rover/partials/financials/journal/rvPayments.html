@@ -14,19 +14,19 @@
     <ul class="journal-header-print">
         <li ng-if="data.activePaymentTab === 'PRE_STAY'">
             Pre-Stay Payments
-            <span><span class="currency">{{currencySymbol}}</span> {{ data.paymentData.total_payment | number: precisonTwo}}</span>
+            <span ng-bind-html="data.paymentData.total_payment | sntCurrency:this"></span>
         </li>
         <li ng-if="data.activePaymentTab === 'IN_HOUSE'">
             In-house Payments
-            <span><span class="currency">{{currencySymbol}}</span> {{ data.paymentData.total_payment | number: precisonTwo}}</span>
+            <span ng-bind-html="data.paymentData.total_payment | sntCurrency:this"></span>
         </li>
         <li ng-if="data.activePaymentTab === 'POST_STAY'">
             Post-Stay Payments
-            <span><span class="currency">{{currencySymbol}}</span> {{ data.paymentData.total_payment | number: precisonTwo}}</span>
+            <span ng-bind-html="data.paymentData.total_payment | sntCurrency:this"></span>
         </li>
         <li ng-if="data.activePaymentTab === ''">
             Total Payments
-            <span><span class="currency">{{currencySymbol}}</span> {{ data.paymentData.total_payment | number: precisonTwo}}</span>
+            <span ng-bind-html="data.paymentData.total_payment | sntCurrency:this"></span>
         </li>
     </ul>
 
@@ -51,7 +51,7 @@
                         <strong class="name">{{escapeNullData(level1.payment_type)}}</strong>
                         <span class="code">{{escapeNullData(level1.charge_code)}}</span>
                         <span class="number">{{escapeNullData(level1.number)}}</span>
-                        <span class="value"><span class="currency">{{currencySymbol}}</span> {{ level1.amount | number: precisonTwo}}</span>
+                        <span class="value" ng-bind-html="level1.amount | sntCurrency:this"></span>
                     </a>
 
                     <!-- Second level - credit cards - if Payment type is Credit Card -->
@@ -60,7 +60,7 @@
                         <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active, 'has-arrow':checkHasArrowSecondLevel(index1,index2)}" class="payment-title  toggle">
                             <span class="code">{{escapeNullData(level2.charge_code)}}</span>
                             <strong class="name">{{escapeNullData(level2.credit_card)}}</strong>
-                            <span class="value"><span class="currency">{{currencySymbol}}</span> {{level2.amount | number: precisonTwo}}</span>
+                            <span class="value" ng-bind-html="level2.amount | sntCurrency:this"></span>
                         </a>
 
                         <!-- Third level - transactions -->
@@ -168,7 +168,7 @@
 
                 </div>
                 <div class="grid-footer">
-                    <p class="payment"><span translate>TOTAL</span> <span class="currency">{{currencySymbol}}</span> {{ data.paymentData.total_payment | number: precisonTwo}}</p>
+                    <p class="payment"><span translate>TOTAL</span> <span ng-bind-html="data.paymentData.total_payment | sntCurrency:this"></span></p>
                 </div>
             </div>
 

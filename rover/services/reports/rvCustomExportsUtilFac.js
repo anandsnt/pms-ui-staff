@@ -595,6 +595,27 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                 };
                 selectedFilter.isMultiSelect = true;
                 deferred.resolve(selectedFilter);
+            },
+
+            /**
+             * Populate external reference
+             * @param {Object} selectedFilter selected filter
+             * @param {Array} selectedValues array of selected values
+             * @param {Object} deferred - deferred object
+             * @return {void}
+             */
+            populateExternalReference = ( selectedFilter, selectedValues, deferred ) => {
+                reportSubSrv.fetchExternalReferenceList().then(function (data) {
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'name');
+                    selectedFilter.options = {
+                        hasSearch: false,
+                        selectAll: selectedValues ? data.length === selectedValues.length : true,
+                        key: 'name',
+                        value_key: 'name'
+                    };
+                    selectedFilter.isMultiSelect = true;
+                    deferred.resolve(selectedFilter);
+                });
             };
 
         /**
@@ -635,6 +656,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                 case customExportFilterParamsConst['PRE_STAY']:
                 case customExportFilterParamsConst['TAX_EXEMPT']:
                 case customExportFilterParamsConst['GLOBAL']:
+                case customExportFilterParamsConst['IS_FLAGGED']:
                     populateDualStates(boolStateOptions, selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['ROOM_NO']:
@@ -709,6 +731,9 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     break;
                 case customExportFilterParamsConst['DO_NOT_MOVE']:
                     populateMultiSelectDualStates(boolStateOptions, selectedFilter, selectedValues, deferred);
+                    break;
+                case customExportFilterParamsConst['EXTERNAL_SYSTEM']:
+                    populateExternalReference(selectedFilter, selectedValues, deferred);
                     break;
                 default:
 

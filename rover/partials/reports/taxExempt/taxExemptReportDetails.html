@@ -71,7 +71,7 @@
                             <span class="reference">{{eachRow.dates[0].date | date:'EEEE'}}</span>
                         </td>
                         <td class="rate">
-                            <strong><span class="currency">{{currencySymbol}}</span>{{eachRow.dates[0].rate_amount}}</strong>
+                            <strong><span ng-bind-html="eachRow.dates[0].rate_amount | sntCurrency:this"></span></strong>
                             <span class="reference">{{eachRow.dates[0].rate_name}}</span>
                         </td>
                     </tr>
@@ -85,7 +85,7 @@
                             <strong>{{eachDate.date | date:dateFormat}}</strong><span class="reference">{{eachDate.date | date:'EEEE'}}</span>
                         </td>
                         <td class="rate">
-                            <strong><span class="currency">{{currencySymbol}}</span>{{eachDate.rate_amount}}</strong><span class="reference">{{eachDate.rate_name}}</span>
+                            <strong><span ng-bind-html="eachDate.rate_amount | sntCurrency:this"></span></strong><span class="reference">{{eachDate.rate_name}}</span>
                         </td>
                     </tr>
                     <tr ng-repeat-end  class="row-break" ng-if="eachRow.total_nights > 0">

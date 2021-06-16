@@ -228,7 +228,7 @@ angular.module('sntRover').controller('guestCardController', [
         };
 
         $scope.$on("swipeAtGuestCard", function() {
-            $scope.guestCardTabSwitch("guest-credit");
+            $scope.guestCardTabSwitch("guest-wallet");
         });
 
         $scope.$on("resetGuestTab", function() {
@@ -367,7 +367,7 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.$broadcast('SAVELIKES');
 
             }
-            if (tab === 'guest-credit') {
+            if (tab === 'guest-wallet') {
                 $scope.$broadcast('PAYMENTSCROLL');
             } else if (tab === 'guest-like') {
                 $scope.$broadcast('GUESTLIKETABACTIVE');

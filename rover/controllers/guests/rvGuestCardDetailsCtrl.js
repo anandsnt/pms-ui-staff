@@ -100,7 +100,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
                 $scope.$broadcast('SAVELIKES', {isFromGuestCardSection: true });
             }
 
-            if (tab === 'guest-credit') {
+            if (tab === 'guest-wallet') {
                 $scope.$broadcast('PAYMENTSCROLL');
 
             } else if (tab === 'guest-like') {
