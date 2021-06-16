@@ -651,7 +651,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 method: 'getJSON',
                 url: '/api/users/active.json?journal=true'
             });
-        }
+        };
 
         service.fetchTaxExemptTypes = function() {
             return callApi({

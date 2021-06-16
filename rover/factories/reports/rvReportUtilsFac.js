@@ -1458,7 +1458,7 @@ angular.module('reportsModule')
                         { id: 3, value: "IN HOUSE", description: "In House"},
                         { id: 4, value: "POST STAY", description: "Post Stay" }
                     ],
-                        foundFilter;
+                    foundFilter;
 
                     _.each(reportList, function (report) {
                         foundFilter = _.find(report['filters'], { value: 'TRANSACTION_CATEGORY' });
@@ -1499,7 +1499,6 @@ angular.module('reportsModule')
                     completed++;
                     checkAllCompleted();
                 }
-
 
                 function fillLanguages(data) {
                     var foundFilter,
