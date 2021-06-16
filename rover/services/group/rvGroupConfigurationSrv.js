@@ -735,8 +735,8 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
                 };
 
 				deferred.resolve(data);
-			}, function() {
-				deferred.reject({});
+			}, function(error) {
+				deferred.reject(error);
 			});
 
 			return deferred.promise;

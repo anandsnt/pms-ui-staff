@@ -10,6 +10,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
     '$interval',
     '$q',
     'dateFilter',
+    'Toggles',
     function($scope,
 		$rootScope,
 		$filter,
@@ -20,7 +21,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		util,
 	 	$interval,
 		$q,
-		dateFilter) {
+        dateFilter,
+        Toggles) {
 
         var summaryMemento;
         var update_existing_reservations_rate = false;
@@ -2340,6 +2342,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                 initializeRoomBlockDetails();
             }
 
+            $scope.isGroupDailyRatesEnabled = Toggles.isEnabled('group_daily_rates');
+
 
         }());
 
@@ -2475,26 +2479,6 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                 start_date: formatDateForAPI($scope.timeLineStartDate),
                 end_date: formatDateForAPI($scope.timeLineEndDate)
             };
-        };
-
-        var successCallBackOfFetchRoomTypeRateDetails = function(response) {
-            var businessDate = new tzIndependentDate($rootScope.businessDate);
-
-            _.each(response.data.results, function(eachRoomType) {
-                eachRoomType.start_date = formatDateForAPI($scope.timeLineStartDate);
-                _.each(eachRoomType.dates, function(dateData) {
-                    var formattedDate = new tzIndependentDate(dateData.date);
-                    
-                    dateData.isModifiable = formattedDate >= businessDate;
-                });
-            });
-            $scope.groupConfigData.summary.selected_room_types_and_daily_rates = response.data.results;
-            $scope.groupConfigData.summary.selected_room_types_rate_view_occupancies = response.data.occupancy;
-            $scope.eventsCount = response.eventsCount;
-
-            // we need the copy of selected_room_type/rates, as we need to use these to show save/discard button
-            $scope.copy_selected_room_types_and_daily_rates = util.deepCopy(response.data.results);
-            $interval(refreshScroller, 1000);
         };
 
         /**
@@ -2637,6 +2621,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             var onDailyRateSaveSuccess = function() {
                     $scope.copy_selected_room_types_and_daily_rates = angular.copy($scope.groupConfigData.summary.selected_room_types_and_bookings);
                     $scope.hasRateChanged = false;
+                    $scope.fetchRoomTypesDailyRates();
                 },
                 onDailyRateSaveFailure = function(error) {
                     $scope.errorMessage = error;
@@ -2662,8 +2647,30 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
          * Fetch the rates for all occupancies corresponding to the room types configured
          */
         $scope.fetchRoomTypesDailyRates = function() {
-            var hasNeccessaryPermission = hasPermissionToCreateRoomBlock() &&
-				hasPermissionToEditRoomBlock();
+            var onDailyRatesFetchSuccess = function(response) {
+                    var businessDate = new tzIndependentDate($rootScope.businessDate);
+        
+                    _.each(response.data.results, function(eachRoomType) {
+                        eachRoomType.start_date = formatDateForAPI($scope.timeLineStartDate);
+                        _.each(eachRoomType.dates, function(dateData) {
+                            var formattedDate = new tzIndependentDate(dateData.date);
+                            
+                            dateData.isModifiable = formattedDate >= businessDate;
+                        });
+                    });
+                    $scope.groupConfigData.summary.selected_room_types_and_daily_rates = response.data.results;
+                    $scope.groupConfigData.summary.selected_room_types_rate_view_occupancies = response.data.occupancy;
+                    $scope.eventsCount = response.eventsCount;
+        
+                    // we need the copy of selected_room_type/rates, as we need to use these to show save/discard button
+                    $scope.copy_selected_room_types_and_daily_rates = util.deepCopy(response.data.results);
+                    $scope.hasRateChanged = false;
+                    $interval(refreshScroller, 1000);
+                },
+                onDailyRatesFetchFailure = function(error) {
+                    $scope.errorMessage = error;
+                },
+                hasNeccessaryPermission = hasPermissionToCreateRoomBlock() && hasPermissionToEditRoomBlock();
 
             if (!hasNeccessaryPermission) {
                 return;
@@ -2675,7 +2682,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
             var options = {
                 params: params,
-                successCallBack: successCallBackOfFetchRoomTypeRateDetails
+                successCallBack: onDailyRatesFetchSuccess,
+                failureCallBack: onDailyRatesFetchFailure
             };
 
             $scope.callAPI(rvGroupConfigurationSrv.getRoomTypesOccupancyRateDetailsAndEventsCount, options);
