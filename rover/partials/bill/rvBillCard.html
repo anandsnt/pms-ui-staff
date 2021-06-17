@@ -303,7 +303,7 @@
 													{{'SUPPRESSED_RATES_TEXT' | translate}}
 											</td>
 											<td class="price"
-												ng-if="isBalanceShown(billData.is_rate_suppressed)"> <span ng-bind-html="allowanceEntry.amount | sntCurrency:this"></span>
+												ng-if="isBalanceShown(billData.is_rate_suppressed)"> <span ng-bind-html="billGroupExpense.expense | sntCurrency:this"></span>
 											</td>
 											<td> {{billGroupExpense.location}} </td>
 											<td> {{billGroupExpense.date | date:dateFormat}} </td>
@@ -315,7 +315,7 @@
 
 						<!-- Allowances -->
 						<div id="bill{{currentActiveBill}}-allowance"
-							class="summary-expanded no-padding"
+							class="summary-expanded no-padding allowance-info"
 							ng-class="{'hidden': selectedAllowanceReference !== currentActiveBill}">
 							<table class="allowances-details">
 								<thead>
