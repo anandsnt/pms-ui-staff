@@ -586,8 +586,11 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             $scope.fetchCurrentSetOfRoomBlockData();
         };
 
-        $scope.fetchCurrentSetOfRoomBlockData = function() {
-			// for pagination in group room block CICO-20097
+        /**
+         * 
+         */
+        var processTimeLineDates = function() {
+            // for pagination in group room block CICO-20097
             var summary = $scope.groupConfigData.summary,
                 perPage = 14; // days
 
@@ -608,6 +611,11 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             if ($scope.timeLineEndDate > summary.shoulder_to_date) {
                 $scope.timeLineEndDate = new tzIndependentDate(summary.shoulder_to_date);
             }
+
+        };
+
+        $scope.fetchCurrentSetOfRoomBlockData = function() {
+			processTimeLineDates();
 
             $scope.fetchRoomBlockGridDetails({
                 start_date: formatDateForAPI($scope.timeLineStartDate),
@@ -2458,27 +2466,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
          * Get request params for the roomtyps/rate request
          */
         var getParamsForRoomTypeRatesRequest = function() {
-            // for pagination in group room block CICO-20097
-            var summary = $scope.groupConfigData.summary,
-                perPage = 14; // days
-
-            // shoulder_from_date and shoulder_to_date in summary are JS Date objects;
-            // they are assigned at populateShoulderDates in rvGroupConfigurationSummaryTab controller
-
-            // ensure the start and end dates are within the shoulder boundaries
-            if ($scope.timeLineStartDate < summary.shoulder_from_date) {
-                $scope.timeLineStartDate = new tzIndependentDate(summary.shoulder_from_date);
-            } else if ($scope.timeLineStartDate > summary.shoulder_to_date) {
-                $scope.timeLineStartDate = new tzIndependentDate(summary.shoulder_to_date);
-            }
-
-            // 14 days are shown by default.
-            $scope.timeLineEndDate = moment($scope.timeLineStartDate).add(perPage, 'days');
-            $scope.timeLineEndDate = $scope.timeLineEndDate.toDate();
-            // restrict end_date in request to shoulder boundary
-            if ($scope.timeLineEndDate > summary.shoulder_to_date) {
-                $scope.timeLineEndDate = new tzIndependentDate(summary.shoulder_to_date);
-            }
+            processTimeLineDates();
             
             return {
                 start_date: formatDateForAPI($scope.timeLineStartDate),
@@ -2590,10 +2578,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
         /**
 		 * should we wanted to disable single box entry
 		 * @param {Object} [dateData] [description]
-		 * @param {Object} - Room Type data row
 		 * @return {Boolean}
 		 */
-        $scope.shouldDisableRateEntryBox = function(dateData, roomType) {
+        $scope.shouldDisableRateEntryBox = function(dateData) {
             // API should provide !roomType.can_edit and then add the condition
             return !!$scope.groupConfigData.summary.is_cancelled || !dateData.isModifiable || dateData.is_shoulder_date;
         };

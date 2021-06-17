@@ -748,7 +748,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		 */
 		this.performRateMassUpdate = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/groups/'+ params.groupId +'/daily_rates/bulk_update';
+				url = '/api/groups/' + params.groupId + '/daily_rates/bulk_update';
 
             delete params.groupId;
 

@@ -233,14 +233,15 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 					selectedRoomTypeAndRates = _.filter($scope.selectedRoomTypeAndRates, function(obj) {
 						return !!obj.room_type_id;
 					}),
-                    selectedRoomTypeIds = _.pluck(selectedRoomTypeAndRates, 'room_type_id'),
-                    // Convert string to integer
-                    selectedRoomTypeIds = selectedRoomTypeIds.map(function (id) {
-                        return +id;
-                    });
+                    selectedRoomTypeIds = _.pluck(selectedRoomTypeAndRates, 'room_type_id');
+
+                // Convert string to integer
+                selectedRoomTypeIds = selectedRoomTypeIds.map(function (id) {
+                    return +id;
+                });
 
 				return !_.isEqual(_.sortBy(originalRoomTypeIds), _.sortBy(selectedRoomTypeIds));
-            }
+            };
 
             return hasChanged || hasConfiguredRoomTypesChanged();            
         };
