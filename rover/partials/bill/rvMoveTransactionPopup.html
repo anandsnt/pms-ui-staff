@@ -3,10 +3,10 @@
 		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
 		<span class="h2 message">Move Charge(s)</span>
 		<span class="text" ng-if="!transactionsDetails.isAllChargeCodeSelected">{{moveChargeData.selectedTransactionIds.length}} CHARGE<span ng-if="moveChargeData.selectedTransactionIds.length>1">S</span> SELECTED</span>
-		<span class="text" ng-if="transactionsDetails.isAllChargeCodeSelected">ALL {{moveChargeData.selectedTransactionIds.length}} CHARGES ON THIS PAGE ARE SELECTED</span>
+		<span class="text" ng-if="transactionsDetails.isAllChargeCodeSelected && !showMoveAllChargesCheckbox()">ALL {{moveChargeData.selectedTransactionIds.length}} CHARGES ON THIS PAGE ARE SELECTED</span>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<!-- If showing the notice to check all the charges-->
-		<div class="notice notice-all-charges" ng-if="transactionsDetails.isAllChargeCodeSelected && moveChargeData.selectedTransactionIds.length==perPage">
+		<div class="notice notice-all-charges" ng-if="showMoveAllChargesCheckbox()">
 			<label for="move-all-charges-popup" class="checkbox inline">
 			<input type="checkbox" id="move-all-charges-popup" ng-model="moveChargeData.is_move_all_charges"/>
 			<span class="icon-form icon-checkbox" ng-class="{'checked':moveChargeData.is_move_all_charges}"></span>

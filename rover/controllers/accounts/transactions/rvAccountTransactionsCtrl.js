@@ -296,7 +296,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.moveChargeData.displayName = accountName;
 				$scope.moveChargeData.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
 				$scope.moveChargeData.fromBillId = billTabsData[$scope.currentActiveBill].bill_id;
-				$scope.moveChargeData.is_move_all_charges = false;
+				$scope.moveChargeData.isMoveAllCharges = false;
 				$scope.moveChargeData.total_count = $scope.transactionsDetails.bills[$scope.currentActiveBill].total_count;
 
 
