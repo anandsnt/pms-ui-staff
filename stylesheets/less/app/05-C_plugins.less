@@ -3764,6 +3764,10 @@
                 text-align: center;
                 margin-bottom: 20px;
             }
+            
+            .error {
+                margin: 0 20px 20px;
+            }
 
             .move-options,
             .delete-charges {
@@ -4021,6 +4025,17 @@
                 }
                 .account-selected {
                     .show();
+                }
+            }
+            
+            &.with-error {
+                height: auto;
+                
+                &.selected-account,
+                &.selected-bill {
+                    &.with-notice {
+                        height: auto;
+                    }
                 }
             }
         }

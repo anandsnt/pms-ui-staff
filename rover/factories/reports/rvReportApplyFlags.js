@@ -29,7 +29,8 @@ angular.module('reportsModule')
                         'FORECAST_BY_DATE': ['hasOneYearLimit'],
                         'FORECAST_GUEST_GROUPS': ['hasOneYearLimit'],
                         'ARRIVAL': ['hasOneMonthLimit'],
-                        'DEPARTURE': ['hasOneMonthLimit']                       
+                        'DEPARTURE': ['hasOneMonthLimit'],
+                        'TAX_OUTPUT_REPORT': ['hasOneYearLimit']
 
                     };
 

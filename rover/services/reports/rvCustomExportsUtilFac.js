@@ -656,6 +656,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                 case customExportFilterParamsConst['PRE_STAY']:
                 case customExportFilterParamsConst['TAX_EXEMPT']:
                 case customExportFilterParamsConst['GLOBAL']:
+                case customExportFilterParamsConst['IS_FLAGGED']:
                     populateDualStates(boolStateOptions, selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['ROOM_NO']:

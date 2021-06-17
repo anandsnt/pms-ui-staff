@@ -1,5 +1,5 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak ng-click="clearErrorMessage();">
-	<form id="move-room" name="move-room" class="modal-content form move-charge" ng-class="{'searching-account':searching,'selected-bill':targetBillSelected,'selected-account': targetSelected, 'with-notice': transactionsDetails.isAllChargeCodeSelected}"> <!-- Remove class searching when guest/account is selected -->
+	<form id="move-room" name="move-room" class="modal-content form move-charge" ng-class="{'searching-account':searching,'selected-bill':targetBillSelected,'selected-account': targetSelected, 'with-notice': transactionsDetails.isAllChargeCodeSelected, 'with-error': errorMessage.length > 0}"> <!-- Remove class searching when guest/account is selected -->
 		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
 		<span class="h2 message">Move Charge(s)</span>
 		<span class="text" ng-if="!transactionsDetails.isAllChargeCodeSelected">{{moveChargeData.selectedTransactionIds.length}} CHARGE<span ng-if="moveChargeData.selectedTransactionIds.length>1">S</span> SELECTED</span>
