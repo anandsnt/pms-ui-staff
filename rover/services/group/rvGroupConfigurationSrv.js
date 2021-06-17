@@ -702,17 +702,17 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
          * @param {} params 
          */
         this.fetchRoomTypesRates = function (params) {
-			var deferred = $q.defer(),
-				url = '/api/groups/' + params.group_id + '/daily_rates';
+            var deferred = $q.defer(),
+                url = '/api/groups/' + params.group_id + '/daily_rates';
 
-			rvBaseWebSrvV2.getJSON(url, params)
-				.then(function (data) {
-					deferred.resolve(data);
-				}, function (data) {
-					deferred.reject(data);
-				});
+            rvBaseWebSrvV2.getJSON(url, params)
+                .then(function (data) {
+                    deferred.resolve(data);
+                }, function (data) {
+                    deferred.reject(data);
+                });
 
-			return deferred.promise;
+            return deferred.promise;
         };
 
         
@@ -721,47 +721,47 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		 * @param {Object} params request params
 		 * @return {Promise}
 		 */
-		this.getRoomTypesOccupancyRateDetailsAndEventsCount = function(params) {
-			var promises = [],
-				deferred = $q.defer();
+        this.getRoomTypesOccupancyRateDetailsAndEventsCount = function (params) {
+            var promises = [],
+                deferred = $q.defer();
 
-			promises.push(self.fetchRoomTypesRates(params));
-			promises.push(rvHouseEventsListSrv.fetchHouseEventsCount(params));
+            promises.push(self.fetchRoomTypesRates(params));
+            promises.push(rvHouseEventsListSrv.fetchHouseEventsCount(params));
 
-			$q.all(promises).then(function(response) {
-				var data = {
+            $q.all(promises).then(function (response) {
+                var data = {
                     results: response[0],
                     eventsCount: response[1]
                 };
 
-				deferred.resolve(data);
-			}, function(error) {
-				deferred.reject(error);
-			});
+                deferred.resolve(data);
+            }, function (error) {
+                deferred.reject(error);
+            });
 
-			return deferred.promise;
+            return deferred.promise;
         };
         
         /**
 		 * Mass update of rates
 		 * @return {Promise}
 		 */
-		this.performRateMassUpdate = function(params) {
-			var deferred = $q.defer(),
-				url = '/api/groups/' + params.groupId + '/daily_rates/bulk_update';
+        this.performRateMassUpdate = function (params) {
+            var deferred = $q.defer(),
+                url = '/api/groups/' + params.groupId + '/daily_rates/bulk_update';
 
             delete params.groupId;
 
-			rvBaseWebSrvV2.putJSON(url, params).then(
-				function(data) {
-					deferred.resolve(data);
-				},
-				function(errorMessage) {
-					deferred.reject(errorMessage);
-				}
-			);
+            rvBaseWebSrvV2.putJSON(url, params).then(
+                function (data) {
+                    deferred.resolve(data);
+                },
+                function (errorMessage) {
+                    deferred.reject(errorMessage);
+                }
+            );
 
-			return deferred.promise;
+            return deferred.promise;
         };
         
         /**
@@ -769,22 +769,22 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
          * @param {Object} params - request payload
 		 * @return {Promise}
 		 */
-		this.saveRoomTypesDailyRates = function(params) {
-			var deferred = $q.defer(),
-				url = '/api/groups/' + params.group_id + '/daily_rates';
+        this.saveRoomTypesDailyRates = function (params) {
+            var deferred = $q.defer(),
+                url = '/api/groups/' + params.group_id + '/daily_rates';
 
 
-			rvBaseWebSrvV2.putJSON(url, params).then(
-				function(data) {
-					deferred.resolve(data);
-				},
-				function(errorMessage) {
-					deferred.reject(errorMessage);
-				}
-			);
+            rvBaseWebSrvV2.putJSON(url, params).then(
+                function (data) {
+                    deferred.resolve(data);
+                },
+                function (errorMessage) {
+                    deferred.reject(errorMessage);
+                }
+            );
 
-			return deferred.promise;
-		};
+            return deferred.promise;
+        };
 	}
 
 
