@@ -192,6 +192,23 @@ sntRover.controller('RVMoveChargeCtrl',
 			return ($scope.targetSelected || $scope.targetBillSelected);
 		};
 
+		/*
+		 *	Logic to show Move all charges code checkbox.
+		 *	It will show only when pagination exist and
+		 * 	all transactions on the screen/current page is selected
+		 */
+		$scope.showMoveAllChargesCheckbox = function() {
+			var isShowCheckbox = false,
+				isMoreThanOnePageExist = $scope.transactionsDetails.bills[$scope.currentActiveBill].pageOptions.totalPages > 1,
+				totalTransactionsCount = $scope.transactionsDetails.bills[$scope.currentActiveBill].transactions.length,
+				totalTransactionsSelected = $scope.moveChargeData.selectedTransactionIds.length;
+
+			if (isMoreThanOnePageExist && totalTransactionsCount === totalTransactionsSelected) {
+				isShowCheckbox = true;
+			}
+
+			return isShowCheckbox;
+		};
 
 		/**
 		 * function to move transaction codes to another
@@ -204,7 +221,7 @@ sntRover.controller('RVMoveChargeCtrl',
 				 "from_bill": $scope.moveChargeData.fromBillId,
    				 "to_bill": $scope.targetBillId,
     			 "financial_transaction_ids": $scope.moveChargeData.selectedTransactionIds,
-				 "is_move_all_charges": $scope.moveChargeData.is_move_all_charges
+				 "is_move_all_charges": $scope.moveChargeData.isMoveAllCharges
 			};
 			var chargesMovedSuccess = function(response) {
 				$scope.$emit("hideLoader");
