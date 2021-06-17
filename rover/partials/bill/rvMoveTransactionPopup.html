@@ -8,9 +8,9 @@
 		<!-- If showing the notice to check all the charges-->
 		<div class="notice notice-all-charges" ng-if="showMoveAllChargesCheckbox()">
 			<label for="move-all-charges-popup" class="checkbox inline">
-			<input type="checkbox" id="move-all-charges-popup" ng-model="moveChargeData.is_move_all_charges"/>
-			<span class="icon-form icon-checkbox" ng-class="{'checked':moveChargeData.is_move_all_charges}"></span>
-			MOVE ALL {{moveChargeData.total_count}} CHARGES INSTEAD?
+			<input type="checkbox" id="move-all-charges-popup" ng-model="moveChargeData.isMoveAllCharges"/>
+			<span class="icon-form icon-checkbox" ng-class="{'checked':moveChargeData.isMoveAllCharges}"></span>
+			MOVE ALL {{moveChargeData.totalCount}} CHARGES INSTEAD?
 			</label>
 		</div>
 		<!-- Move From -->
