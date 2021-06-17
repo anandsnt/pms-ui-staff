@@ -10,14 +10,20 @@
             <div class="entry full-width" ng-show="guestCardData.likes.newspapers.length >0" ng-class="{'no-print': guestCardData.likes.user_newspaper.length === 0 }">
                 <label for="newspaper" translate>NEWSPAPER</label>
                 <div class="select">
-                  <select iscroll-stop-propagation  ng-options="newspapers.id as newspapers.name for newspapers in guestCardData.likes.newspapers" ng-model="guestCardData.likes.user_newspaper"/>
+                   <select iscroll-stop-propagation ng-model="guestCardData.likes.user_newspaper" >
+                        <option value="" ></option>
+                        <option ng-repeat="newspapers in guestCardData.likes.newspapers" ng-value="{{newspapers.id}}" >{{newspapers.name}}</option>
+                   </select>
               </div>
             </div>
             
             <div class="entry full-width" ng-show="guestCardData.likes.roomtype.length >0" ng-class="{'no-print': guestCardData.likes.user_roomtype.length === 0 }">
                 <label for="roomtype" translate>ROOM_TYPE</label>
                  <div class="select">
-                    <select iscroll-stop-propagation  ng-options="roomtype.id as roomtype.name for roomtype in guestCardData.likes.roomtype" ng-model="guestCardData.likes.user_roomtype" />
+                    <select iscroll-stop-propagation ng-model="guestCardData.likes.user_roomtype" >
+                        <option value="" ></option>
+                        <option ng-repeat="roomtype in guestCardData.likes.roomtype" ng-value="{{roomtype.id}}" >{{roomtype.name}}</option>
+                    </select>    
                  </div>
             </div>
             
@@ -40,25 +46,26 @@
                 <div ng-if="'dropdown' == preferences.type" class="entry full-width">
                   <label>{{ preferences.name }}</label>
                   <div class="select">
-                    <select ng-model="preferences.isChecked" ng-options="value.id as value.details for value in preferences.values" ng-change="changedRadioComboPreference( $parent.$index )" iscroll-stop-propagation>
-                      <option value="">Select a preferences</option>
-                    </select>
-                  </div>
+                    <select ng-model="preferences.isChecked" ng-change="changedRadioComboPreference( $parent.$index )" iscroll-stop-propagation >
+                        <option value=""></option>
+                        <option ng-repeat="value in preferences.values" ng-value="{{value.id}}" >{{value.details}}</option>
+                    </select>  
+                </div>
                 </div>
 
                 <div ng-if="'radio' == preferences.type" class="entry full-width">
                   <label>{{ preferences.name }}</label>
                   <div class="check-block" ng-repeat="x in getHalfArrayPref(preferences.values) track by $index">
-                      <label class="radio"  ng-class="{ 'checked': preferences.isChecked === preferences.values[$index*2].id }">
-                          <span class="icon-form icon-radio"  ng-class="{ 'checked': preferences.isChecked === preferences.values[$index*2].id }"></span>
-                          <input type="radio" name="preferences.name"  ng-model="preferences.isChecked" ng-value="preferences.values[$index*2].id" ng-change="changedRadioComboPreference( $parent.$index )" />
-                          {{ preferences.values[$index*2].details }}
-                      </label>
-                      <label class="radio" ng-class="{ 'checked': preferences.isChecked === preferences.values[$index*2+1].id }">
-                          <span class="icon-form icon-radio" ng-class="{ 'checked': preferences.isChecked === preferences.values[$index*2+1].id }"></span>
-                          <input type="radio" name="preferences.name" ng-model="preferences.isChecked" ng-value="preferences.values[$index*2+1].id" ng-change="changedRadioComboPreference( $parent.$index )" />
-                          {{ preferences.values[$index*2+1].details }}
-                      </label>
+                    <label class="checkbox"  ng-class="{ 'checked': preferences.isChecked === preferences.values[$index*2].id }">
+                        <span class="icon-form icon-checkbox"  ng-class="{ 'checked': preferences.isChecked === preferences.values[$index*2].id }"></span>
+                        <input type="checkbox" ng-model="preferences.isChecked" ng-true-value="{{preferences.values[$index*2].id}}" ng-false-value="" ng-change="changedRadioComboPreference( $parent.$index)" />
+                        {{ preferences.values[$index*2].details }}
+                    </label>
+                    <label class="checkbox" ng-class="{ 'checked': preferences.isChecked === preferences.values[$index*2+1].id }">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked': preferences.isChecked === preferences.values[$index*2+1].id }"></span>
+                        <input type="checkbox" ng-model="preferences.isChecked" ng-true-value="{{preferences.values[$index*2+1].id}}" ng-false-value="" ng-change="changedRadioComboPreference( $parent.$index)" />
+                        {{ preferences.values[$index*2+1].details }}
+                    </label>
                   </div>
                 </div>
 
