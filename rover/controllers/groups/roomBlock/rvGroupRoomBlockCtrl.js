@@ -117,7 +117,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 */
         $scope.shouldHideAddRoomsButton = function() {
             return $scope.groupConfigData.summary.is_cancelled ||
-					$scope.groupConfigData.summary.selected_room_types_and_bookings.length > 0;
+                    ($scope.isRoomViewActive && $scope.groupConfigData.summary.selected_room_types_and_bookings.length > 0) || 
+                    (!$scope.isRoomViewActive && $scope.groupConfigData.summary.selected_room_types_and_daily_rates.length > 0);
         };
 
 		/**
@@ -125,7 +126,11 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
         $scope.shouldShowRoomsRates = function() {
-            return $scope.groupConfigData.summary.selected_room_types_and_bookings.length > 0;
+            if ($scope.isRoomViewActive) {
+                return $scope.groupConfigData.summary.selected_room_types_and_bookings.length > 0;
+            }
+            return $scope.groupConfigData.summary.selected_room_types_and_daily_rates.length > 0;
+            
         };
 
 		/**
@@ -570,7 +575,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             nextStart.setDate(nextStart.getDate() + 14);
             var hasNextSet = nextStart < new tzIndependentDate(endDate);
 
-            return timeLineScrollEndReached && hasNextSet;
+            return timeLineScrollEndReached && hasNextSet && $scope.shouldShowRoomsRates();
         };
 
 		/**
@@ -2650,7 +2655,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             var onDailyRatesFetchSuccess = function(response) {
                     var businessDate = new tzIndependentDate($rootScope.businessDate);
         
-                    _.each(response.data.results, function(eachRoomType) {
+                    _.each(response.results.data.daily_rates, function(eachRoomType) {
                         eachRoomType.start_date = formatDateForAPI($scope.timeLineStartDate);
                         _.each(eachRoomType.dates, function(dateData) {
                             var formattedDate = new tzIndependentDate(dateData.date);
@@ -2658,12 +2663,12 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                             dateData.isModifiable = formattedDate >= businessDate;
                         });
                     });
-                    $scope.groupConfigData.summary.selected_room_types_and_daily_rates = response.data.results;
-                    $scope.groupConfigData.summary.selected_room_types_rate_view_occupancies = response.data.occupancy;
+                    $scope.groupConfigData.summary.selected_room_types_and_daily_rates = response.results.data.daily_rates;
+                    $scope.groupConfigData.summary.selected_room_types_rate_view_occupancies = response.results.data.occupancy;
                     $scope.eventsCount = response.eventsCount;
         
                     // we need the copy of selected_room_type/rates, as we need to use these to show save/discard button
-                    $scope.copy_selected_room_types_and_daily_rates = util.deepCopy(response.data.results);
+                    $scope.copy_selected_room_types_and_daily_rates = util.deepCopy(response.results.data.daily_rates);
                     $scope.hasRateChanged = false;
                     $interval(refreshScroller, 1000);
                 },

@@ -730,7 +730,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 
 			$q.all(promises).then(function(response) {
 				var data = {
-                    data:response[0],
+                    results: response[0],
                     eventsCount: response[1]
                 };
 
