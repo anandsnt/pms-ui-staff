@@ -192,6 +192,14 @@ sntRover.controller('RVMoveChargeCtrl',
 			return ($scope.targetSelected || $scope.targetBillSelected);
 		};
 
+		// Method to check whether all charges on the page are selected.
+		$scope.isAllTransactionsSelected = function() {
+			var totalTransactionsCount = $scope.transactionsDetails.bills[$scope.currentActiveBill].transactions.length,
+				totalTransactionsSelected = $scope.moveChargeData.selectedTransactionIds.length;
+
+			return (totalTransactionsCount === totalTransactionsSelected);
+		};
+
 		/*
 		 *	Logic to show Move all charges code checkbox.
 		 *	It will show only when pagination exist and
@@ -199,16 +207,16 @@ sntRover.controller('RVMoveChargeCtrl',
 		 */
 		$scope.showMoveAllChargesCheckbox = function() {
 			var isShowCheckbox = false,
-				isMoreThanOnePageExist = $scope.transactionsDetails.bills[$scope.currentActiveBill].pageOptions.totalPages > 1,
-				totalTransactionsCount = $scope.transactionsDetails.bills[$scope.currentActiveBill].transactions.length,
-				totalTransactionsSelected = $scope.moveChargeData.selectedTransactionIds.length;
+				isMoreThanOnePageExist = $scope.transactionsDetails.bills[$scope.currentActiveBill].pageOptions.totalPages > 1;
 
-			if (isMoreThanOnePageExist && totalTransactionsCount === totalTransactionsSelected) {
+			if (isMoreThanOnePageExist && $scope.isAllTransactionsSelected()) {
 				isShowCheckbox = true;
 			}
 
 			return isShowCheckbox;
 		};
+
+		
 
 		/**
 		 * function to move transaction codes to another
