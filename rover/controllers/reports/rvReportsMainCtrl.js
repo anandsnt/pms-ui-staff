@@ -2097,7 +2097,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             if (report.hasOwnProperty('hasFloorList')) {
                 selected = _.where(report['hasFloorList']['data'], { selected: true });
 
-                if (selected.length > 0) {
+                if (selected.length > 0 && (report['hasFloorList']['data'].length !== selected.length)) {
                     key = reportParams['FLOOR'];
                     params[key] = [];
                     /**/
@@ -2108,11 +2108,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                             $scope.appliedFilter.floorList.push(source.floor_number);
                         }
                     });
-
-                    // in case if all sources are selected
-                    if (changeAppliedFilter && report['hasFloorList']['data'].length === selected.length) {
-                        $scope.appliedFilter.floorList = ['All Floors'];
-                    }
+                }
+                // in case if all floors are selected
+                if (changeAppliedFilter && report['hasFloorList']['data'].length === selected.length) {
+                    $scope.appliedFilter.floorList = ['All Floors'];
                 }
             }
 
