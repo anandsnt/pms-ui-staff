@@ -11,9 +11,14 @@
             margin: 10px 20px 20px;
         }
 
+        /* Pay Bill ***/
         &.pay-bill {
-            @media screen and (min-width:600px) {
-                width: 580px !important;
+            max-height: 100% !important;
+            
+            .payment-form {
+                .wrapper {
+                    padding: 0;
+                }
             }
         }
 
@@ -31,15 +36,18 @@
                     padding: 0;
                 }
 
-                .actions {
-                    padding-bottom: 20px;
+                
+                .notice {
+                    .actions {
+                        padding-bottom: 20px;
 
-                    .button {
-                        width: 100%;
-                        .show();
+                        .button {
+                            width: 100%;
+                            .show();
 
-                        &:not(:last-child) {
-                            margin-bottom: 10px;
+                            &:not(:last-child) {
+                                margin-bottom: 10px;
+                            }
                         }
                     }
                 }

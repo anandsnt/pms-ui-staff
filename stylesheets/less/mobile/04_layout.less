@@ -1359,26 +1359,26 @@ body {
 
         /* Amount + reference ***/
         &.amount {
+            display: grid;
+            grid-template-columns: 1fr 30px .75fr 30px;
             width: 100%;
-            .float;
+            
+            label {
+                grid-column: 1 /span 4;
+            }
 
             input {
-                .pull-left;
-
                 &.amount {
                     font-size: 18px;
                     font-weight: 600;
                     color: @textColor;
-                    width: 25% !important;
                 }
-
-                &.fee { width: 20% !important; }
             }
 
             .select {
-                margin-left: 10px;
+                grid-column: 2/span 3;
                 width: 80px;
-                .pull-left;
+                margin-left: 10px;
             }
 
             .delimiter,
@@ -1390,15 +1390,13 @@ body {
             .delimiter {
                 font-size: 14px;
                 text-align: center;
-                width: 30px;
-                .pull-left;
+                padding: 0 5px;
             }
 
             .total {
-                text-align: right;
-                margin-left: 10px;
-                .calc-width(35, 10);
-                .pull-right;
+                grid-column: 1 /span 4;
+                padding-top: 10px;
+                text-align: center;
 
                 strong {
                     font-size: 18px;
@@ -1477,7 +1475,6 @@ body {
 
         .transaction {
             margin: 20px auto 0;
-            width: 60%;
 
             li {
                 margin-bottom: 5px;
