@@ -299,7 +299,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.moveChargeData.isMoveAllCharges = false;
 				$scope.moveChargeData.totalCount = $scope.transactionsDetails.bills[$scope.currentActiveBill].total_count;
 
-
 				if (chargeCodes.length > 0) {
 					_.each(chargeCodes, function(chargeCode, index) {
 						if (chargeCode.isSelected) {
@@ -313,6 +312,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 							}
 						}
 					});
+					$scope.origin = 'ACCOUNT';
 					ngDialog.open({
 						template: '/assets/partials/bill/rvMoveTransactionPopup.html',
 						controller: 'RVMoveChargeCtrl',
