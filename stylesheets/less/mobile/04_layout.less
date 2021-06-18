@@ -210,16 +210,24 @@ body {
 
             .user {
                 color: @grey3;
+                height: 12px;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
 
                 strong { .hide; }
 
                 .date {
+                    order: 2;
+                    
                     &.updating {
+                        order: 1;
                         color: @logoPrimary;
                         #blink > .infinite();
                     }
 
                     &.error {
+                        order: 1;
                         color:  @red;
                         font-style: normal;
                         font-weight: 600;
@@ -2374,6 +2382,7 @@ body {
     }
 }
 
+
 /* Release Notes            ==============================*/
 .has-release-notes {
     padding-bottom: 130px;
@@ -2449,6 +2458,12 @@ html[class^="theme-"] {
     #main-menu {
         .nav-toggle {
             top: 0;
+        }        
+    }
+
+    .post-form {
+        .back-button {
+            top: 10px;
         }        
     }
 }
