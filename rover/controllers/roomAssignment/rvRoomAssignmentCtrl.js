@@ -318,12 +318,45 @@ sntRover.controller('RVroomAssignmentController', [
 				"change_room_type_alone": !$scope.assignedRoom,
 				'room_type': !$scope.assignedRoom ? $scope.getCurrentRoomType().type : ''
 			},
-            successCallBack: $scope.goToNextView(true)
+            successCallBack: successCallbackUpgrade
         };
 
         $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
 	};
 	 
+	var successCallbackUpgrade = function(data) {
+
+		var dataToUpdate 		= {},
+			assignedRoom 		= $scope.assignedRoom,
+			selectedRoomType 	= $scope.selectedRoomType,
+			reservationData 	= $scope.reservationData.reservation_card;
+
+		_.extend (dataToUpdate,
+		{
+			room_id: assignedRoom.room_id,
+			room_number: assignedRoom.room_number,
+			room_status: "READY",
+			fo_status: "VACANT",
+			room_ready_status: "INSPECTED",
+			is_upsell_available: (data.is_upsell_available) ? "true" : "false"
+		});
+
+		if (typeof $scope.selectedRoomType !== 'undefined') {
+			_.extend (dataToUpdate,
+			{
+				room_type_description: selectedRoomType.description,
+				room_type_code: selectedRoomType.type
+			});
+		}
+
+		_.extend($scope.reservationData.reservation_card, dataToUpdate);
+
+		RVReservationCardSrv
+			.updateResrvationForConfirmationNumber(reservationData.confirmation_num, $scope.reservationData);
+
+		$scope.goToNextView(true);
+
+	};
 	
 	$scope.occupancyDialogSuccess = function() {
 
