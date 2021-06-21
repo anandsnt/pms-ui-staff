@@ -117,7 +117,7 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		 */
 		$scope.shouldShowAddNewButton = function(obj) {
 			return (!util.isEmpty(obj.room_type_id) &&
-				(_.pluck($scope.selectedRoomTypeAndRates, "room_type_id").length < $scope.roomTypes.length));
+				(_.pluck($scope.selectedRoomTypeAndRates, "room_type_id").length < $scope.roomTypes.length) && !$scope.groupConfigData.summary.is_cancelled);
 		};
 
 		/**
@@ -125,7 +125,7 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldShowDeleteButton = function() {
-			return ($scope.selectedRoomTypeAndRates.length >= 2);
+			return ($scope.selectedRoomTypeAndRates.length >= 2 && !$scope.groupConfigData.summary.is_cancelled);
 		};
 
 		/**
