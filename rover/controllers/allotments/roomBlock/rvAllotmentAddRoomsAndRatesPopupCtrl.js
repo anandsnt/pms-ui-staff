@@ -117,7 +117,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 		 */
 		$scope.shouldShowAddNewButton = function(obj) {
 			return (!util.isEmpty(obj.room_type_id) &&
-				(_.pluck($scope.selectedRoomTypeAndRates, "room_type_id").length < $scope.roomTypes.length));
+				(_.pluck($scope.selectedRoomTypeAndRates, "room_type_id").length < $scope.roomTypes.length) && !$scope.allotmentConfigData.summary.is_cancelled);
 		};
 
 		/**
@@ -125,7 +125,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldShowDeleteButton = function() {
-			return ($scope.selectedRoomTypeAndRates.length >= 2);
+			return ($scope.selectedRoomTypeAndRates.length >= 2 && !$scope.allotmentConfigData.summary.is_cancelled);
 		};
 
 		/**
