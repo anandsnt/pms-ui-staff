@@ -1016,7 +1016,9 @@ angular.module('reportsModule')
                         reportsSubSrv.fetchTaxPaymentReceiptTypes()
                             .then(fillTaxPaymentReceiptTypes);
                     } 
-                    else {
+                    else if ('COLLAPSED_OR_EXPANDED' === filter.value && !filter.filled) {
+                        fillCollapsedOrExpanded();
+                    } else {
                         // no op
                     }
                 });
@@ -1086,6 +1088,26 @@ angular.module('reportsModule')
 
                     completed++;
                     checkAllCompleted();
+                }
+
+                function fillCollapsedOrExpanded() {
+                    var customData = [
+                        { id: 1, value: "Collapsed", description: "Collapsed" },
+                        { id: 2, value: "Expanded", description: "Expanded" }
+                    ],
+                    foundFilter;
+
+                    _.each(reportList, function (report) {
+                        foundFilter = _.find(report['filters'], { value: 'COLLAPSED_OR_EXPANDED' });
+                        if (!!foundFilter) {
+                            foundFilter['filled'] = true;
+
+                            report.hasCollapsedOrExpanded = {
+                                data: customData,
+                                selected: customData[0]
+                            };
+                        }
+                    });
                 }
 
                 function fillAccounts(data) {

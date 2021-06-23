@@ -131,5 +131,6 @@ angular.module('reportsModule')
         "HOUSEKEEPING_STATUS": "hk_status_ids",
         "HK_RESERVATION_STATUSES": "hk_reservation_statuses",
         "HK_FRONT_OFFICE_STATUSES": "hk_fo_statuses",
-        "TAX_RECEIPT_TYPE_VALUES": "tax_receipt_type_values"
+        "TAX_RECEIPT_TYPE_VALUES": "tax_receipt_type_values",
+        "COLLAPSED_OR_EXPANDED": "collapsed_or_expanded"
     });

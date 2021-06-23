@@ -57,6 +57,7 @@ angular.module('reportsModule')
     'GUESTS_INHOUSE_BY_NATIONALITY': 'Guests In House by Nationality',
     'BUSINESS_ON_THE_BOOKS': 'Business on the Books',
     'ROOM_STATUS_REPORT': 'Room Status Report',
-    'TAX_OUTPUT_REPORT': 'Tax Output Report - Tax Payment Receipts'
+    'TAX_OUTPUT_REPORT': 'Tax Output Report - Tax Payment Receipts',
+    'FINANCIAL_TRANSACTION_SUMMARY_REPORT': 'Financial Transactions - Summary Report'
 });
 

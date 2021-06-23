@@ -1,0 +1,80 @@
+<!-- Report content -->
+<div ng-show="hasNoResults" class="report-content no-content">
+    <div class="info">
+        <span class="icon-no-content icon-reports"></span>
+        <strong class="h1">No reports found</strong>
+        <span class="h2">Try changing search criteria or modify dates</span>
+    </div>
+</div>
+
+<section id="report-details" class="content reports-wrapper" role="main">
+
+    <!-- Report content -->
+    <div id="report-content" class="report-content journal-content scrollable">
+        <div class="wrapper">
+            <div class="journal-summary first">
+                <h3 class="has-arrow toggle">Summary title</h3>
+                <ul>
+                    <li>Opening<span ng-bind-html="opening_balance | sntCurrency:this"></span></li>
+                    <li>Debit<span ng-bind-html="debit_sum | sntCurrency:this"></span></li>
+                    <li>Credit<span ng-bind-html="credit_sum | sntCurrency:this"></span></li>
+                    <li>Closing<span ng-bind-html="closing_balance | sntCurrency:this"></span></li>
+                </ul>
+            </div>
+            <!-- Remove .hidden when showing expanded view -->
+            <div class="journal-grid print-details hidden">
+                <table class="grid-items">
+                    <thead>
+                        <tr>
+                            <th>Room</th>
+                            <th class="cell-reservation">Reservation</th>
+                            <th>Invoice / Folio No. </th>
+                            <th>Date & Time</th>
+                            <th class="cell-details">Details</th>
+                            <th class="cell-charges">Charge</th>
+                            <th class="align-right">Debit</th>
+                            <th class="align-right">Credit</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="level1 in results.transactions">
+                        <tr>
+                            <td>{{level1.room}}</td>
+                            <td>
+                                <strong class="cell-row">{{level1.name}}</strong>
+                                <span class="cell-row">{{level1.reservation_number}}</span>
+                                <em class="cell-row grey-text" ng-if="accompany_guest_name">{{level1.accompany_guest_name}}</em>
+                            </td>
+                            <td>{{level1.invoice_or_folio}}</td>
+                            <td>
+                                <span class="cell-row">{{level1.date}}</span>
+                                <span class="cell-row grey-text">{{level1.time}}</span>
+                            </td>
+                            <td>
+                                <span class="cell-row">{{level1.details}}</span>
+                                
+                                <span class="converted-currency" ng-if="level1.converted_currency">
+                                    <span ng-bind-html="level1.debit_converted_amount | sntCurrency:this:converted_currency"></span>
+                                </span>
+                                <span class="converted-currency smaller" ng-if="level1.conversion_rate">
+                                    <span>{{level1.conversion_rate}}</span>
+                                </span>
+
+                            </td>
+                            <td>
+                                <strong class="cell-row">{{level1.charge_code}}</strong>
+                                <span class="cell-row grey-text">{{level1.charge_desc}}</span>
+                            </td>
+                            <td class="align-right">
+                                <span ng-bind-html="debit | sntCurrency:this"></span>
+                            </td>
+                            <td class="align-right">
+                                <span ng-bind-html="credit | sntCurrency:this"></span>    
+                            </td>
+                        </tr>
+                    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>   
+</section>

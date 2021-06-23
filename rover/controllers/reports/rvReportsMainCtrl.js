@@ -1055,7 +1055,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     'tax_exempt_type_ids': [],
                     'group_code': [],
                     'country_ids': [],
-                    'include_long_stays': []
+                    'include_long_stays': [],
+                    'collapsed_or_expanded': []
                 };
             }
 
@@ -1180,6 +1181,18 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 rawData.fromCreateDate = params[fromKey];
                 rawData.untilCreateDate = params[untilKey];
             }
+
+            // include collapsed or expanded
+            if (report.hasOwnProperty('hasCollapsedOrExpanded')) {
+                
+                var selected = report['hasCollapsedOrExpanded']['selected'];
+                key = reportParams['COLLAPSED_OR_EXPANDED'];
+                params[key] = selected.id;
+                if (changeAppliedFilter) {
+                    $scope.appliedFilter.collapsed_or_expanded = selected.value;
+                };
+            }
+
 
             // include single dates
             if (!!report.hasSingleDateFilter) {
