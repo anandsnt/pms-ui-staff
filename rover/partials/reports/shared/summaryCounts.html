@@ -271,3 +271,11 @@
         <span class="currency">{{ summaryCounts.total_balance | currency:currencySymbol:2 }}</span>
     </li>
 </ul>
+
+<!-- Tax output report -->
+<ul ng-if="isThisReport( 'TAX_OUTPUT_REPORT' )" class="totals">
+    <li>Tax Payer<span>{{summaryCounts.tax_payer_info}}</span></li>
+    <li>Tax ID<span>{{summaryCounts.tax_payer_tax_id}}</span></li>
+    <li>Branch No.<span>{{summaryCounts.tax_payer_branch_number}}</span></li>
+    <li>VAT Date<span>{{summaryCounts.vat_date_from | date : dateFormat}} - {{summaryCounts.vat_date_to | date : dateFormat}}</span></li>
+</ul>

@@ -41,6 +41,13 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             GOOGLE_DRIVE: []
         };
 
+        var EXCLUDE_TIME_PERIODS = [
+            'DATE',
+            'DATE_RANGE',
+            'CURRENT_YEAR',
+            'NEXT_365_DAYS'
+        ];
+
         var self = this;
 
         /**
@@ -255,8 +262,8 @@ angular.module('sntRover').service('RVCustomExportSrv', [
                 deferred.resolve(cache.timePeriods);
             } else {
                 sntBaseWebSrv.getJSON(url).then(function (response) {
-                    var results = _.reject(response.results, function ( each ) {
-                        return each.value === 'DATE' || each.value === 'DATE_RANGE';
+                    var results = _.reject(response.results, function ( item ) {
+                        return EXCLUDE_TIME_PERIODS.indexOf(item.value) >= 0;
                     });
     
                     cache.timePeriods = results;
