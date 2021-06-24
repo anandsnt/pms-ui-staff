@@ -2160,11 +2160,11 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         };
 
         $scope.shouldDisableShoulderFrom = function () {
-            return $scope.isShoulderDateDisabled || (new tzIndependentDate($scope.groupConfigData.summary.block_from) <= new tzIndependentDate($rootScope.businessDate));
+            return ($scope.isShoulderDateDisabled || (new tzIndependentDate($scope.groupConfigData.summary.block_from) <= new tzIndependentDate($rootScope.businessDate)) || $scope.groupConfigData.summary.is_cancelled);
         };
 
         $scope.shouldDisableShoulderTo = function () {
-            return $scope.isShoulderDateDisabled || (new tzIndependentDate($scope.groupConfigData.summary.block_to) < new tzIndependentDate($rootScope.businessDate));
+            return ($scope.isShoulderDateDisabled || (new tzIndependentDate($scope.groupConfigData.summary.block_to) < new tzIndependentDate($rootScope.businessDate)) || $scope.groupConfigData.summary.is_cancelled);
         };
 
         $scope.addListener('DATE_CHANGE_FAILED', function() {
