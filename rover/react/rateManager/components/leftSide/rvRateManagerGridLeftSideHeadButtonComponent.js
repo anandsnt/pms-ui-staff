@@ -11,7 +11,7 @@ const RateManagerGridLeftSideHeadButtonComponent = ({
         {shouldShowPagination ? 
             <div>
                 {isFirstPage ? '' : 
-                    (<button className="button blue"
+                    (<button className="button blue prev"
                         onTouchEnd={(e) => {
                             e.stopPropagation();
                             goToPrevPage(e);
@@ -24,7 +24,7 @@ const RateManagerGridLeftSideHeadButtonComponent = ({
                     </button>)
                 }
                 {isLastPage ? '' :
-                    (<button className="button blue"
+                    (<button className="button blue next"
                         onTouchEnd={(e) => {
                             e.stopPropagation();
                             goToNextPage(e);
