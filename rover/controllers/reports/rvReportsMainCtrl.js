@@ -231,7 +231,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             item_56: false,
             item_57: false,
             item_58: false,
-            item_59: false
+            item_59: false,
+            item_60: false
         };
         $scope.toggleFilterItems = function (item) {
             if (!$scope.filterItemsToggle.hasOwnProperty(item)) {
@@ -1186,8 +1187,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             if (report.hasOwnProperty('hasCollapsedOrExpanded')) {
                 
                 var selected = report['hasCollapsedOrExpanded']['selected'];
-                key = reportParams['COLLAPSED_OR_EXPANDED'];
-                params[key] = selected.id;
+                params["summary_type"] = selected.value;
                 if (changeAppliedFilter) {
                     $scope.appliedFilter.collapsed_or_expanded = selected.value;
                 };

@@ -249,8 +249,7 @@
 <div class="entry" ng-show="uiChosenReport.hasCollapsedOrExpanded && uiChosenReport.hasCollapsedOrExpanded.data.length">
     <label>Details</label>
     <div class="select">
-        <select ng-model="uiChosenReport.hasCollapsedOrExpanded.selected" ng-options="hasCollapsedOrExpanded.description for CollapsedOrExpanded in uiChosenReport.hasCollapsedOrExpanded.data" iscroll-stop-propagation>
-            <option value=""></option>
+        <select ng-model="uiChosenReport.hasCollapsedOrExpanded.selected" ng-options="CollapsedOrExpanded.description for CollapsedOrExpanded in uiChosenReport.hasCollapsedOrExpanded.data" iscroll-stop-propagation>
         </select>
     </div>
 </div>

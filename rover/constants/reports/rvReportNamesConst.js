@@ -58,6 +58,6 @@ angular.module('reportsModule')
     'BUSINESS_ON_THE_BOOKS': 'Business on the Books',
     'ROOM_STATUS_REPORT': 'Room Status Report',
     'TAX_OUTPUT_REPORT': 'Tax Output Report - Tax Payment Receipts',
-    'FINANCIAL_TRANSACTION_SUMMARY_REPORT': 'Financial Transactions - Summary Report'
+    'FINANCIAL_TRANSACTION_SUMMARY_REPORT': 'Financial Transaction - Summary Report'
 });
 
