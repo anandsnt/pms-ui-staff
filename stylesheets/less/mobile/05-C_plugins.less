@@ -980,5 +980,81 @@
                 }
             }
         }
+
+        /** Key & Scan Popup - Stay Card **/
+        &.key-delivery {
+            padding: 0 !important;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+
+            #room-status {
+                width: 100%;
+                float: none;
+                padding: 20px;
+                box-sizing: border-box;
+                height: 100%;
+
+                .message {
+                    margin: 0;
+                    top: 30px;
+                }
+            }
+
+            #key-status {
+                width: 100%;
+                box-sizing: border-box;
+                height: 100%;
+
+                .qr-holder {
+                    bottom: 60px;
+                }
+            }
+        }
+
+        /** Confirm Reservation - Stay Card**/
+        &.confirm-reservation {
+            position: relative;
+            padding-bottom: 150px !important;
+
+            .actions {
+                position: absolute;
+                bottom: 20px;
+                left: 20px;
+                .calc-width( 100, 40 );
+            }
+        }
+
+        /** Room Enhancements - Stay Card **/
+        &.room-enhancements {
+            &.customization-disabled {
+                .content-left {
+                    float: none;
+                    width: 100%;
+
+                    .scrollable {
+                        .wrapper {
+                            padding: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        /** Modify Rate - Stay Card*/
+        &.modify-rate {
+            padding: 0 !important;
+            max-height: 100%;
+
+            .modal-header {
+                padding: 20px 40px;
+            }
+
+            .scrollable {
+                position: relative;
+                max-height: 100%;
+                .calc-height( 100, 200 );
+            }
+        }
     }
 }
