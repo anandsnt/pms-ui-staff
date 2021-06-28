@@ -39,7 +39,6 @@
 
 /* 7. MEDIA QUERIES
 ==========================================================*/
-@import "less/common/07-responsive.less";
 @import 'stylesheets/less/rover-theme.less';
 
 /* 7. ANGULAR
