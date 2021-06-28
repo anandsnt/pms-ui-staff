@@ -10,7 +10,7 @@
 <section id="report-details" class="content reports-wrapper" role="main">
 
     <!-- Report content -->
-    <div id="report-content" class="report-content journal-content scrollable">
+    <div id="report-content" class="report-content journal-content scrollable" ng-hide="hasNoResults" ng-iscroll="report-details-scroll">
         <div class="wrapper">
             <div ng-repeat="(title,summary) in results">
                 
