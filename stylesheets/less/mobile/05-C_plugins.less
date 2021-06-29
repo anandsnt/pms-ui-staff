@@ -1193,6 +1193,15 @@
         &.card-authorize {
             position: relative;
 
+            .back-button {
+                width: 22ch;
+                text-indent: 10px;
+                font-weight: 600;
+                text-transform: uppercase;
+                margin: 0 auto 10px;
+                .clickable();
+            }
+
             .content-left,
             .content-right {
                 width: 100%;
@@ -1205,7 +1214,7 @@
 
                 .block-item {
                     width: 100%;
-                    
+
                     &.item-active {
                         background: @white;
                         .box-shadow();
