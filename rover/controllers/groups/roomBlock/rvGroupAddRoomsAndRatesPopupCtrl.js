@@ -106,6 +106,7 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 					row.single_rate = selectedRateDetails.single_rate;
 					row.double_rate = selectedRateDetails.double_rate;
 					row.extra_adult_rate = selectedRateDetails.extra_adult_rate;
+					row.room_type_name = selectedRateDetails.room_type_name;
 				}
 			} else {
 				row.best_available_rate_amount = "";
