@@ -1,4 +1,4 @@
-#reservation-card { 
+#reservation-card {
     .reservation-tabs-nav,
     .reservation-header {
         .hide();
@@ -6,19 +6,19 @@
 
     .reservation-list,
     .reservation {
-    	width: 100%;
-    	height: 100%;
-    	overflow: hidden;
-    	.show();
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        .show();
     }
 
     .reservation-content,
     .reservation-actions {
-    	position: relative;
+        position: relative;
 
-    	.wrapper {
-    		padding: 10px;
-    	}
+        .wrapper {
+            padding: 10px;
+        }
 
     }
 
@@ -29,27 +29,23 @@
         box-shadow: 0 -1px 2px rgba(0,0,0,.2);
         overflow: hidden;
 
-    	.wrapper {
-    		display: grid;
-    		grid-template-columns: 1fr 1fr;
-    		grid-column-gap: 10px;
-    		grid-row-gap: 10px;
-    		padding: 10px;
+        .wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-column-gap: 10px;
+            grid-row-gap: 10px;
+            padding: 10px;
+        }
 
-            > div {
-                grid-column: 1/span 2;
-            }
-    	}
+        .iScrollIndicator {
+            background-color: rgba(0,0,0,.1);
+        }
 
-    	.iScrollIndicator {
-    		background-color: rgba(0,0,0,.1);
-    	}
-
-    	.balance {
-    		grid-column: 1/span 2;
-    		display: flex;
-    		flex-flow: row wrap;
-    		align-items: center;
+        .balance {
+            grid-column: 1/span 2;
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
             padding: 10px;
             background-color: rgba(0,0,0,.05);
             border-radius: 3px;
@@ -70,8 +66,8 @@
             }
 
             .h1 {
-            	margin-left: auto;
-            	font-size: 24px;
+                margin-left: auto;
+                font-size: 24px;
             }
 
             &.background-red {
@@ -83,43 +79,42 @@
             }
         }
 
-    	.button { 
-            display: flex;
-            flex-flow: column wrap;
-            justify-content: center;
-            align-items: center;
+        .button {
             padding: 0 10px;
             line-height: 1;
             height: 50px;
             width: 100%;
             overflow: hidden;
+            .show();
 
+            &:first-of-type,
             &.green,
             &.red,
             &.purple,
+            &.grey,
             &.bottom-button {
                 grid-column: 1/span 2;
             }
 
             &.white {
-                background-color: @grey1;
+                 background-color: @grey1;
             }
 
             &.staycard-button {
-            	text-shadow: none;
-            	background-image: none;
-            	color: @blue;
+                text-shadow: none;
+                background-image: none;
+                color: @blue;
                 background-color: @grey1;
                 .box-shadow();
 
                 &.routing {
-                    span { 
+                    span {
                         color: @logoPrimary;
                         .show;
                     }
                 }
 
-                &.icon-queue {                   
+                &.icon-queue {
                     &.in {
                         color: @red;
                     }
@@ -130,13 +125,13 @@
 
     /* Reservation card content ***/
     .reservation-content {
-    	position: relative;
-    	height: calc(~'100% - 160px');
+        position: relative;
+        height: calc(~'100% - 160px');
 
-    	/* Title ***/
+        /* Title ***/
         .block-title {
-        	display: flex;
-        	flex-flow: row wrap;
+            display: flex;
+            flex-flow: row wrap;
             color: @textColor;
             font-size: 14px;
             line-height: 20px;
@@ -146,7 +141,7 @@
             width: 100%;
             box-shadow: 0 1px 0 rgba(0,0,0,.1);
 
-            span { 
+            span {
                 color: @grey3;
                 margin-left: auto;
 
@@ -160,9 +155,9 @@
 
             .move-room,
             .block-input {
-            	margin-left: auto;
-            	display: flex;
-            	flex-flow: row wrap;
+                margin-left: auto;
+                display: flex;
+                flex-flow: row wrap;
                 position: relative;
 
                 .label {
@@ -170,7 +165,7 @@
                 }
 
                 .switch-button {
-                	margin-left: auto;
+                    margin-left: auto;
                     .show;
                     .size(18px, 28px);
 
@@ -221,7 +216,7 @@
                 }
             }
 
-            &.has-arrow { 
+            &.has-arrow {
                 cursor: pointer;
                 font-size: 16px;
                 line-height: 1em;
@@ -255,22 +250,22 @@
 
             .next-view {
                 .clickable();
-                
-                &.has-arrow { 
+
+                &.has-arrow {
                     background-position: calc(~'100% - 10px') 50%;
-                    padding-right: 40px; 
+                    padding-right: 40px;
                 }
             }
 
             .no-view,
-            .overlay { 
-                .faux-clickable(); 
-                .box-shadow(none);                
+            .overlay {
+                .faux-clickable();
+                .box-shadow(none);
             }
 
             /* Actions / Notes / Group **/
             &.item-actions,
-            &.item-notes { 
+            &.item-notes {
                 .staycard-button {
                     font-size: 30px;
                     font-weight: 300;
@@ -279,14 +274,14 @@
                     &.icon-actions { color: @green; }
                     &.icon-new-actions { color: @red; }
                     &.icon-notes { color: @blue; }
-                    
+
                     &.icon-no-actions,
                     &.icon-no-notes { color: @grey3; }
 
                     span { color: @textColor; }
                 }
             }
-            
+
             &.item-cards {
 
                 .icons {
@@ -308,7 +303,7 @@
             /* Block Item - Payment Method ***/
             &.item-payment {
                 .next-view,
-                .no-view { 
+                .no-view {
                     position: relative;
 
                     .icons {
@@ -345,7 +340,7 @@
                         flex-shrink: 0;
                         max-width: 50%;
                         font-size: 24px;
-                        
+
                         &:not(:empty) {
                             padding-right: 10px;
                         }
@@ -361,7 +356,7 @@
                 }
 
                 /* Room is locked ***/
-                .has-lock { 
+                .has-lock {
                     position: relative;
                     padding-right: 50px;
 
@@ -392,7 +387,7 @@
                         }
                     }
 
-                    .rate {                        
+                    .rate {
                         .nowrap();
 
                         &.custom {
@@ -418,15 +413,15 @@
             /* Rows with buttons ***/
             &.has-buttons,
             &.has-button {
-            	display: grid;
-            	grid-column-gap: 10px;
+                display: grid;
+                grid-column-gap: 10px;
 
                 .actions {
 
                     .add-new-button {
                         padding: 0;
                         line-height: 48px;
-                        .size(50px, 60px); 
+                        .size(50px, 60px);
                     }
 
                     .button {
@@ -459,11 +454,11 @@
             }
 
             &.has-buttons {
-            	grid-template-columns: 1fr 130px;
+                grid-template-columns: 1fr 130px;
 
-            	.block-title {
-            		grid-column: 1/span 2;
-            	}
+                .block-title {
+                    grid-column: 1/span 2;
+                }
 
 
                 /* CC display adjustment */
@@ -472,7 +467,7 @@
                         margin: 13px 10px 13px 0;
                         .size(24px, 48px);
 
-                        img { 
+                        img {
                             .show();
                         }
                     }
@@ -492,11 +487,11 @@
             }
 
             &.has-button {
-            	grid-template-columns: 1fr 60px;
+                grid-template-columns: 1fr 60px;
 
-            	.block-title {
-            		grid-column: 1/span 2;
-            	}
+                .block-title {
+                    grid-column: 1/span 2;
+                }
             }
         }
 
@@ -506,10 +501,9 @@
             grid-template-columns: 1fr 1fr;
             grid-column-gap: 10px;
 
-            div:not(.block-item),
             .item-cards {
                 grid-column: 1/span 2;
             }
         }
-    }    
+    }
 }

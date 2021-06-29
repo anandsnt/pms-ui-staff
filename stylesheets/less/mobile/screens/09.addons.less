@@ -2,14 +2,31 @@
     height: 100%;
 
     .addons {
-
         @media screen and (max-width: 480px) {
-            .show;
-        }
+            #flexbox > .parent( column wrap, '', '', '');
+            flex-direction: column-reverse;
+
+            .addon-categories {
+                margin-top: 10px;
+                border-radius: 3px;
+                overflow: hidden;
+
+                li {
+                    margin: 0;
+
+                    .button {
+                        border-radius: 0px;
+                        box-shadow: none;
+                    }
+                }
+            }
+        }   
+    
 
         .addon-items {
             .options {
                 margin-bottom: 10px;
+                text-align: center;
             }
 
             .addon-tab {
@@ -18,16 +35,39 @@
                     
                     .data,
                     .price,
-                    .add-enhancement {
+                    .add-enhancement {
                         width: 100%;
+                        text-align: center;
+                    }
+
+                    .data {
+                        h2 {
+                            margin: 10px 0;
+                        }
                     }
 
                     .price {
+                        padding: 0;
                         margin-top: 10px;
+
+                        .list-price {
+                            position: static;
+                            .show;
+                        }
                     }
                    
-                    .add-enhancement {
+                    .add-enhancement {
+                        #flexbox > .parent( row wrap, space-between, '', '');
                         margin-top: 30px;
+                        
+                        .button,
+                        .select {
+                            .calc-width(50, 5);
+                        }
+
+                        .button {
+                            margin-right: 10px;
+                        }
                     }
                 }
             }
