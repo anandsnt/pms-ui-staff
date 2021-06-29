@@ -15,7 +15,7 @@
             <div ng-repeat="(title,summary) in results">
                 
                 <div class="journal-summary" ng-class="{first: $first}">
-                    <h3>{{title}}</h3>
+                    <h3 translate>{{title}}</h3>
                     <ul>
                         <li>Opening<span ng-bind-html="summary.opening_balance | sntCurrency:this"></span></li>
                         <li>Debit<span ng-bind-html="summary.debit_sum | sntCurrency:this"></span></li>
@@ -81,6 +81,23 @@
                     </table>
                 </div>
             </div>
+            <div class="journal-summary totals">
+                <h3>Totals</h3>
+                <ul>
+                <li>
+                    <span ng-bind-html="(results.deposit_balance.opening_balance + results.guest_balance.opening_balance + results.ar_balance.opening_balance) | sntCurrency:this"></span>
+                </li>
+                <li>                    
+                    <span ng-bind-html="(results.deposit_balance.debit_sum + results.guest_balance.debit_sum + results.ar_balance.debit_sum) | sntCurrency:this"></span>
+                </li>
+                <li>
+                    <span ng-bind-html="(results.deposit_balance.credit_sum + results.guest_balance.credit_sum + results.ar_balance.credit_sum) | sntCurrency:this"></span>
+                </li>
+                <li>                    
+                    <span ng-bind-html="(results.deposit_balance.closing_balance + results.guest_balance.closing_balance + results.ar_balance.closing_balance) | sntCurrency:this"></span>
+                </li>
+                </ul>
+                </div> 
         </div>
     </div>   
 </section>
