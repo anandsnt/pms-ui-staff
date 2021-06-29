@@ -1326,5 +1326,71 @@
                 }
             }
         }
+
+        /** Sell Limits */
+        &.overbooking {
+
+            .overbooking-limit {
+                padding: 0 0 70px 0;
+            }
+
+            .limit-days {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                grid-column-gap: 10px;
+                grid-row-gap: 10px;
+
+                .checkbox {
+                    margin: 0;
+                    width: 100%;
+
+                    &:nth-child(-n+4) {
+                        margin-bottom: 0;
+                    }
+                }
+
+
+                .actions {
+                    position: fixed;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    padding: 10px;
+                    background-color: @white;
+                    box-shadow: 0 -1px 2px rgba(0,0,0,.2);
+                    z-index: 9999;
+                }
+            }
+        }
+
+        &.new-overbooking {
+            &.showing-rooms {
+                display: grid;
+                grid-template-rows: 30% 70%;
+                height: 100%;
+
+                .overbooking-limit {
+                    position: static;
+                    padding-top: 20px;
+                    grid-row: 2;
+                    box-shadow: none;
+                    width: 100%;
+                    overflow-y: auto;
+                    -webkit-overflow-scrolling: touch;
+                }
+
+                .overbooking-rooms {
+                    position: static;
+                    width: 100%;
+                    grid-row: 1;
+                    border-radius: 3px;
+
+                    .scrollable {
+                        height: 100%;
+                    }
+                }
+            }
+
+        }
     }
 }
