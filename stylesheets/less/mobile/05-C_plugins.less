@@ -1077,21 +1077,6 @@
             }
         }
 
-        &.confirmation {
-
-            /** Room & Rate update- Stay Card**/
-            &.edit-rate {
-
-                display: flex;
-                flex-direction: column;
-
-                .actions {
-                    margin-top: auto;
-                }
-
-            }
-        }
-
         /** Confirm Reservation - Stay Card**/
         &.confirm-reservation {
             position: relative;
@@ -1264,6 +1249,150 @@
                 .content-right {
                     #flexbox > .parent( column wrap, '', '', '' );
                     flex-direction: column;
+                }
+            }
+        }
+
+        /** Room Enhancements - Stay Card */
+        &.room-enhancements {
+
+            .block-item {
+                width: 100%;
+                padding: 0;
+
+                &:before,
+                &:after {
+                    .hide();
+                }
+
+                .data {
+                    float: none;
+                    padding-left: 10px;
+                    width: auto;
+                }
+
+                .price {
+                    float: none;
+                    width: auto;
+                }
+
+                .delete {
+                    float: none;
+
+                    .icons {
+                        right: 10px;
+                    }
+                }
+
+                &.disabled {
+                    display: grid;
+                    grid-template-columns: 2fr 1fr;
+                }
+
+                &:not(.disabled) {
+                    display: grid;
+                    grid-template-columns: 2fr 1fr 35px;
+                }
+
+                &.item-active {
+                    background: @white;
+                    .box-shadow();
+
+                    .release-auth {
+                        right: 10px;
+                    }
+                }
+            }
+
+            &.customization-disabled {
+                .content-left {
+                    float: none;
+                    width: 100%;
+
+                    .scrollable {
+                        .wrapper {
+                            padding: 0;
+
+                            .block-item {
+                                &.disabled {
+                                    .price {
+                                        width: auto;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            &:not(.customization-disabled) {
+                position: relative;
+                display: flex;
+                flex-flow: column wrap;
+
+                .content-left,
+                .content-right {
+                    width: 100%;
+                    height: auto;
+                    padding: 0;
+                    float: none;
+                }
+
+                .content-left {
+                    flex: 1;
+                    background: transparent;
+                }
+
+                .content-right {
+                    margin-top: 10px;
+                    box-shadow: none;
+
+                    .content-initial {
+                        height: auto;
+
+                        .no-content {
+                            display: none;
+                        }
+                    }
+
+                    .actions {
+                        position: static;
+                        bottom: auto;
+                        height: auto;
+
+                        .button {
+                            width: 100%;
+                            float: none;
+                        }
+                    }
+                }
+
+                &.show-right-content {
+                    .content-left {
+                        .hide();
+                    }
+
+                    .content-right {
+                        height: 100%;
+                        overflow-y: auto;
+                        -webkit-overflow-scrolling: touch;
+
+                        .content-dates {
+                            display: flex;
+                            flex-flow: column wrap;
+                            height: 100%;
+                        }
+
+                        .actions {
+                            margin-top: auto;
+                            display: flex;
+                            flex-flow: column wrap;
+
+                            .button.blank {
+                                order: 2;
+                            }
+                        }
+                    }
                 }
             }
         }

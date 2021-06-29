@@ -1,27 +1,33 @@
 .addons-content {
     height: 100%;
 
+    .wrapper {
+        padding: 0;
+    }
+
     .addons {
-        @media screen and (max-width: 480px) {
-            #flexbox > .parent( column wrap, '', '', '');
-            flex-direction: column-reverse;
+        grid-template-columns: 1fr;
+        grid-column-gap: 0;
 
-            .addon-categories {
-                margin-top: 10px;
-                border-radius: 3px;
-                overflow: hidden;
+        .addon-categories {
+           grid-column: 1/span 2;
+           background-color: rgba(0,0,0,.1);
 
-                li {
-                    margin: 0;
+           li {
+               margin: 0;
+           }
 
-                    .button {
-                        border-radius: 0px;
-                        box-shadow: none;
-                    }
-                }
-            }
-        }   
-    
+           .button {
+               background: transparent;
+               border-radius: 0px;
+               box-shadow: none;
+           }
+        }
+
+        .addon-items {
+            padding: 20px;
+            grid-column: 1/span 2;
+        }
 
         .addon-items {
             .options {
@@ -31,42 +37,67 @@
 
             .addon-tab {
                 li {
-                    #flexbox > .parent( row wrap, space-between, '', '');
-                    
-                    .data,
-                    .price,
-                    .add-enhancement {
-                        width: 100%;
+                    display: flex;
+                    flex-flow: column wrap;
+                    align-items: center;
+
+                    .data {
                         text-align: center;
                     }
 
-                    .data {
-                        h2 {
-                            margin: 10px 0;
-                        }
-                    }
-
                     .price {
+                        display: grid;
+                        grid-template-columns: 2fr 1fr;
+                        grid-template-rows: repeat(2, 18px);
+                        grid-column-gap: 5px;
                         padding: 0;
-                        margin-top: 10px;
+                        margin: 10px 0;
 
-                        .list-price {
+                        > * {
                             position: static;
-                            .show;
                         }
                     }
-                   
-                    .add-enhancement {
-                        #flexbox > .parent( row wrap, space-between, '', '');
-                        margin-top: 30px;
-                        
-                        .button,
+
+                    .value {
+                        grid-column: 1;
+                        grid-row: 1/span 2;
+                    }
+
+                    .amount-type,
+                    .post-type {
+                        line-height: 14px;
+                        grid-column: 2;
+                    }
+
+                    .amount-type {
+                        padding-top: 4px;
+                        grid-row: 1;
+                    }
+
+                    .post-type {
+                        padding-bottom: 4px;
+                        grid-row: 2;
+                    }
+
+                    .list-price {
+                        grid-column: 1/span 2;
+                        grid-row: 3;
+                        text-align: center;
+                    }
+
+                    .add-enhancement {
+                        display: flex;
+                        justify-content: center;
+                        width: 100%;
+
                         .select {
-                            .calc-width(50, 5);
+                            width: 18ch;
+                            margin-right: 10px;
                         }
 
                         .button {
-                            margin-right: 10px;
+                            width: 12ch;
+                            order: 2;
                         }
                     }
                 }
