@@ -994,10 +994,21 @@
                 padding: 20px;
                 box-sizing: border-box;
                 height: 100%;
+                max-height: 400px;
 
                 .message {
                     margin: 0;
                     top: 30px;
+                }
+
+                h1.icon-key {
+                    background-position: 50% 45px;
+                }
+
+                &.encode {
+                    h1 {
+                        padding-top: 35px;
+                    }
                 }
             }
 
@@ -1008,7 +1019,61 @@
 
                 .qr-holder {
                     bottom: 60px;
+                    
+                    .info {
+                        .hide();
+                    }
                 }
+
+                &.encode {
+
+                    .actions {
+                        &.bottom {
+                            background: transparent;
+                            border: none;
+                        }
+                    }
+
+                    .mobile-key {
+                        background: transparent;
+                    }
+
+                    &.connected {
+
+                        &:not(.completed) {
+                            height: 560px;
+                            padding-bottom: 100px;
+                        }
+                    }
+
+                    &.completed {
+                        #flexbox > .parent( column wrap, '', '', '' );
+
+                        .action {
+                            margin-top: auto;
+                            margin-bottom: 0;
+                        }
+                    }
+                  
+                    .mobile-key {
+                        position: static;
+                    }
+                }
+            }
+        }
+
+        &.confirmation {
+
+            /** Room & Rate update- Stay Card**/
+            &.edit-rate {
+
+                display: flex;
+                flex-direction: column;
+
+                .actions {
+                    margin-top: auto;
+                }
+
             }
         }
 
@@ -1039,6 +1104,73 @@
                     }
                 }
             }
+
+            &:not(.customization-disabled) {
+                position: relative;
+
+                @media screen and (min-width:600px) {
+                    width: 560px !important;
+                    height: 600px !important;
+                }
+
+                .content-left,
+                .content-right {
+                    width: 100%;
+                    float: none;
+                }
+
+                .content-left {
+                    background: transparent;
+                    padding: 0;
+
+                    .block-item {
+                        width: 100%;
+
+                        .delete {
+                            float: right;
+                        }
+                        
+                        &.item-active {
+                            background: @white;
+                            .box-shadow();
+
+                            .release-auth {
+                                right: 10px;
+                            }
+                        }
+                    }
+                }
+                .content-right {
+                    .hide;
+                    .background(@white);
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 20;
+                    overflow: auto;
+
+                    .actions {
+                        margin-top: auto;
+
+                        .button {
+                            width: 100%;
+                            float: none;
+
+                            &.blank:not(:first-child) {
+                                margin-bottom: 10px;
+                            }
+                        }
+                    }
+
+                }
+
+                &.show-right-content {
+                    .content-right {
+                        #flexbox > .parent( column wrap, '', '', '' );
+                        flex-direction: column;
+                    }
+                }
+            }
         }
 
         /** Modify Rate - Stay Card*/
@@ -1054,6 +1186,61 @@
                 position: relative;
                 max-height: 100%;
                 .calc-height( 100, 200 );
+            }
+        }
+
+        /** Card Authorize - Stay Card */
+        &.card-authorize {
+            position: relative;
+
+            .content-left,
+            .content-right {
+                width: 100%;
+                float: none;
+            }
+
+            .content-left {
+                background: transparent;
+                padding: 0;
+
+                .block-item {
+                    width: 100%;
+                    
+                    &.item-active {
+                        background: @white;
+                        .box-shadow();
+
+                        .release-auth {
+                            right: 10px;
+                        }
+                    }
+                }
+            }
+            .content-right {
+                .hide;
+                .background(@white);
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 20;
+
+                .actions {
+                    margin-top: auto;
+
+                    .button {
+                        &.blank:not(:last-child) {
+                            margin-top: 10px;
+                        }
+                    }
+                }
+
+            }
+
+            &.show-right-content {
+                .content-right {
+                    #flexbox > .parent( column wrap, '', '', '' );
+                    flex-direction: column;
+                }
             }
         }
     }
