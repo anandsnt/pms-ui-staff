@@ -129,6 +129,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					initDaysListForRecentDayActive();
 				}
 			}
+			else if (data.transactions.length === 0 && activebillTab.transactions.length > 0) {
+				// Background process is completed, need to refresh bill to resolve the conflicts.
+				getTransactionDetails();
+			}
 			else {
 				$scope.errorMessage = ['The date selected has no transactions, please select a new date'];
 			}
