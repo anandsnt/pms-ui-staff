@@ -166,7 +166,7 @@
             }
         }
 
-        .entry {
+        .entry {
             float: none;
             margin-bottom: 0;
 
@@ -280,18 +280,24 @@
     /* Open ***/
     &.open,
     &.fullscreen {
+
         .card-header {
             box-shadow: none;
         }
 
         .card-content {
-            &.visible { .show; }
+            &.visible,
+            &.display-card-search { .show; }
         }
+    }
+
+    &.open {
+        max-height: calc(~'100% - 60px') !important;
     }
 
     /* Fullscreen cards ***/
     &.fullscreen {
-        height: calc(~'100% - 50px') !important;
+        height: calc(~'100% - 60px') !important;
 
         .card-content { .show; }
     }
