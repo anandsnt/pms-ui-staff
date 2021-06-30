@@ -42,8 +42,7 @@
                     <span class="date">{{stayday.day}}</span>
                     <span ng-if="$first || $last" class="guest-status small-icon" ng-class="{'check-in':$first,'check-out':$last}"></span>
                     <span ng-if="!reservationData.ratesMeta[reservationData.rooms[activeRoom].stayDates[stayday.date].rate.id].is_suppress_rate_on" class="price" ng-show="!$last && stateCheck.stayDates[stayday.date].amount">
-                        {{stateCheck.stayDates[stayday.date].rateCurrency}}
-                        {{stateCheck.stayDates[stayday.date].amount | number : 0}}
+                        <span ng-bind-html="stateCheck.stayDates[stayday.date].amount | sntCurrency:this:stateCheck.stayDates[stayday.date].rateCurrency: 0"></span>
                     </span>
                     <span ng-if="reservationData.ratesMeta[reservationData.rooms[activeRoom].stayDates[stayday.date].rate.id].is_suppress_rate_on" class="price" ng-show="!$last && stateCheck.lookUp[stateCheck.preferredType].rates[reservationData.rooms[activeRoom].stayDates[stayday.date].rate.id].dates[stayday.date].amount ">
                         SR

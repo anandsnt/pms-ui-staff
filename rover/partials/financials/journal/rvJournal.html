@@ -110,9 +110,9 @@
             <li ng-if="data.isShowSummaryTab" ng-class="{'active':data.activeTab === 'SUMMARY'}" ng-click="activatedTab('SUMMARY')">
                 <span class="icons icon-navbar icon-summary" translate>SUMMARY</span></li>
             <li id="show-revenue" ng-class="{'active':data.activeTab === 'REVENUE'}" ng-click="activatedTab('REVENUE')">
-                <span class="icons icon-navbar icon-revenue" translate>REVENUE</span><span class="currency">{{currencySymbol}}</span> {{data.revenueData.total_revenue | number: precisonTwo}}</li>
+                <span class="icons icon-navbar icon-revenue" translate>REVENUE</span><span ng-bind-html="data.revenueData.total_revenue | sntCurrency:this"></span></li>
             <li id="show-payments" ng-class="{'active':data.activeTab === 'PAYMENTS'}" ng-click="activatedTab('PAYMENTS')">
-                <span class="icons icon-navbar icon-payments" translate>PAYMENTS</span><span class="currency">{{currencySymbol}} </span>{{data.paymentData.total_payment | number: precisonTwo}}</li>
+                <span class="icons icon-navbar icon-payments" translate>PAYMENTS</span><span ng-bind-html="data.paymentData.total_payment | sntCurrency:this"></span></li>
             <li ng-class="{'active':data.activeTab === 'BALANCE'}" ng-show="featureToggles.journal_balance_tab" ng-click="activatedTab('BALANCE')">
                 <span class="icons icon-navbar icon-balance">Balance</span>
                 <span class="value">End of Day</span>

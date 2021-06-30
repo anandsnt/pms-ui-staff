@@ -685,6 +685,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.fetchPaymentTypes = function() {
+            return callApi({
+                name: 'paymentTypes',
+                method: 'getJSON',
+                url: '/api/hotel_payment_types',
+                resKey: 'results'
+            });
+        };
+
         service.fetchTaxExemptTypes = function() {
             return callApi({
                 name: 'taxExempts',

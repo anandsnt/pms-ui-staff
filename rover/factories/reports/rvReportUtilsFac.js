@@ -993,6 +993,16 @@ angular.module('reportsModule')
                         fillCompletionStatus();
                     } else if ('INCLUDE_AGING_BALANCE' === filter.value && !filter.filled) {
                         fillAgingBalance();
+                    } else if ('TRANSACTION_CATEGORY' === filter.value && !filter.filled) {
+                        fillTransactionCategory();
+                    } else if ('SHOW_EMPLOYEES_INCLUDING_EOD' === filter.value && !filter.filled) {
+                        requested++;
+                        reportsSubSrv.fetchEmployees()
+                            .then(fillEmployeeList);
+                    } else if ('PAYMENT_TYPES' === filter.value && !filter.filled) {
+                        requested++;
+                        reportsSubSrv.fetchPaymentTypes()
+                        .then(fillPaymentType);
                     } else if ('INCLUDE_LANGUAGE' === filter.value && !filter.filled) {
                         requested++;
                         reportsSubSrv.fetchLanguages()
@@ -1433,7 +1443,6 @@ angular.module('reportsModule')
                         { id: "120plus", status: "120+ DAYS", selected: true }
                     ],
                         foundFilter;
-
                     _.each(reportList, function (report) {
                         foundFilter = _.find(report['filters'], { value: 'INCLUDE_AGING_BALANCE' });
                         if (!!foundFilter) {
@@ -1450,6 +1459,82 @@ angular.module('reportsModule')
                             };
                         }
                     });
+                }
+
+                function fillTransactionCategory() {
+                    var customData = [
+                        { id: 1, value: "TOTAL", description: "Total"},
+                        { id: 2, value: "PRE STAY", description: "Pre Stay"},
+                        { id: 3, value: "IN HOUSE", description: "In House"},
+                        { id: 4, value: "POST STAY", description: "Post Stay"}
+                    ],
+                    foundFilter;
+
+                    _.each(reportList, function (report) {
+                        foundFilter = _.find(report['filters'], { value: 'TRANSACTION_CATEGORY' });
+                        if (!!foundFilter) {
+                            foundFilter['filled'] = true;
+
+                            report.hasTransactionCategory = {
+                                data: customData
+                            };
+                        }
+                    });
+
+                    completed++;
+                    checkAllCompleted();
+                }
+
+                function fillEmployeeList(data) {
+                    var foundFilter;
+
+                    _.each(reportList, function (report) {
+                        foundFilter = _.find(report['filters'], { value: 'SHOW_EMPLOYEES_INCLUDING_EOD' });
+                        if (!!foundFilter) {
+                            foundFilter['filled'] = true;
+                            
+                            report.filterTitle = 'Employees';
+                            report.empList = {
+                                data: angular.copy(data),
+                                options: {
+                                    hasSearch: true,
+                                    selectAll: true,
+                                    key: 'full_name',
+                                    defaultValue: 'Selected Employee'
+                                }
+                            };
+                        }
+                    });
+
+                    completed++;
+                    checkAllCompleted();
+                }
+                
+                function fillPaymentType(data) {
+                    var foundFilter;
+
+                    _.each(reportList, function (report) {
+
+                        foundFilter = _.find(report['filters'], { value: 'PAYMENT_TYPES' });
+                        if (!!foundFilter) {
+                            foundFilter['filled'] = true;
+
+                            report.hasPaymentType = {
+                                data: angular.copy(data),
+                                options: {
+                                    hasSearch: false,
+                                    selectAll: true,
+                                    noSelectAll: true,
+                                    key: 'description',
+                                    defaultValue: 'Show All'
+                                }
+                            
+                            };
+                        }
+                    });
+
+                    completed++;
+                    checkAllCompleted();
                 }
 
                 function fillDepartments(data) {

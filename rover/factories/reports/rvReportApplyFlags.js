@@ -31,6 +31,7 @@ angular.module('reportsModule')
                         'ARRIVAL': ['hasOneMonthLimit'],
                         'DEPARTURE': ['hasOneMonthLimit'],
                         'FINANCIAL_TRANSACTION_REVENUE_REPORT': ['hasUserFilter'],              
+                        'FINANCIAL_TRANSACTION_PAYMENT_REPORT': ['hasUserFilter'],
                         'TAX_OUTPUT_REPORT': ['hasOneYearLimit']
 
                     };

@@ -26,7 +26,7 @@
                             <span>Release Date:</span> {{group.release_date | date : dateFormat}}
                         </li>
                         <li>
-                            <span>Lowest Rate:</span> <span class="currency">{{group.lowest_rate_amount | currency:currencySymbol:2}}</span>
+                            <span>Lowest Rate:</span> <span ng-bind-html="group.lowest_rate_amount | sntCurrency:this"></span>
                         </li>
                         <li>
                             <span>Rate Code:</span> {{group.rate_code}}

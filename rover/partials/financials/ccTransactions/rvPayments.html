@@ -15,7 +15,7 @@
                     
                     <a ng-click="clickedApprovedTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0 }">
                         <strong class="name">{{item.description}}</strong>
-                        <span class="value">{{currencySymbol}}{{item.total_amount|number:2}}</span>
+                        <span class="value" ng-bind-html="item.total_amount|sntCurrency:this"></span>
                     </a>
                     <table ng-show="item.active" class="grid-items"> 
                         <thead>
@@ -40,8 +40,8 @@
                                 <td><a ng-click="gotoStayCard(transaction.reservation_id, transaction.reservation_no)" class="button white brand-text has-arrow next-view with-arrow">{{transaction.reservation_no}}</a></td>
                                 <td>{{transaction.guest_name}}</td>
                                 <td>{{transaction.auth_code}}</td>
-                                <td>{{currencySymbol}}{{transaction.amount|number:2}}</td>
-                                <td ng-show="manualCCEnabled">{{currencySymbol}}{{transaction.bank_commission|number:2}}</td>
+                                <td><span ng-bind-html="transaction.amount|sntCurrency:this"></td>
+                                <td ng-show="manualCCEnabled"><span ng-bind-html="transaction.bank_commission|sntCurrency:this"></span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -55,7 +55,7 @@
 
                     <a ng-click="clickedDeclinedTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0 }">
                         <strong class="name">{{item.description}}</strong>
-                        <span class="value">{{currencySymbol}}{{item.total_amount|number:2}}</span>
+                        <span class="value" ng-bind-html="item.total_amount|sntCurrency:this"></span>
                     </a>
                     <table ng-show="item.active" class="grid-items"> 
                         <thead>
@@ -79,7 +79,7 @@
                                 <td><a ng-click="gotoStayCard(transaction.reservation_id, transaction.reservation_no)" class="button white brand-text has-arrow next-view with-arrow">{{transaction.reservation_no}}</a></td>
                                 <td>{{transaction.guest_name}}</td>
                                 <td>{{transaction.auth_code}}</td>
-                                <td>{{currencySymbol}}{{transaction.amount|number:2}}</td> 
+                                <td><span ng-bind-html="transaction.amount|sntCurrency:this"></span></td> 
                             </tr>
                         </tbody>
                     </table>
