@@ -97,10 +97,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		// Success callback for transaction fetch API.
 		var onBillTransactionFetchSuccess = function(data, selectedDate) {
+			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+
 			if (data.transactions.length > 0) {
 				$scope.errorMessage = '';
-				var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
-
 				activebillTab.transactions = [];
 				_.each(data.transactions, function(item) {
 
@@ -128,6 +128,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				else {
 					initDaysListForRecentDayActive();
 				}
+			}
+			else if (data.transactions.length === 0 && activebillTab.transactions.length > 0) {
+				// Background process is completed, need to refresh bill to resolve the conflicts.
+				getTransactionDetails();
 			}
 			else {
 				$scope.errorMessage = ['The date selected has no transactions, please select a new date'];
