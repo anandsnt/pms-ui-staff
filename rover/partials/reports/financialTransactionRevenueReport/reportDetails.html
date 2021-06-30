@@ -1,0 +1,87 @@
+<!-- Report content -->
+<div ng-show="hasNoResults" class="report-content no-content">
+    <div class="info">
+        <span class="icon-no-content icon-reports"></span>
+        <strong class="h1">No reports found</strong>
+        <span class="h2">Try changing search criteria or modify dates</span>
+    </div>
+</div>
+
+<section id="report-details" class="content reports-wrapper" role="main">
+    <!-- Report content -->
+    <div id="report-content" class="report-content journal-content scrollable" ng-hide="hasNoResults" ng-iscroll="report-details-scroll">
+        <div class="wrapper">
+            <div id="journal-grid" class="journal-grid">
+                <ul class="grid-header revenue">
+                    <li class="name">Charge Group</li>
+                    <li class="number">Number</li>
+                    <li class="value">Amount</li>
+                </ul>
+            
+                <!-- First level - charge groups -->
+                <div class="grid-group" ng-repeat="level1 in results">
+                    <a class="revenue-title active toggle">
+                        <strong class="name">{{level1.name}}</strong>
+                        <span class="number">{{level1.number}}</span>
+                        <span class="value"><span ng-bind-html="level1.total | sntCurrency:this"></span>
+                    </a>
+
+                    <!-- Second level - charge codes -->
+                    <div id="{{level1.id}}" class="grid-charge" ng-repeat="level2 in level1.charge_codes">
+                        <a class="revenue-title active toggle">
+                            <span class="code">{{level2.code}}</span>
+                            <strong class="name">{{level2.name}}</strong>
+                            <span class="value"><span ng-bind-html="level2.total | sntCurrency:this"></span></span>
+                        </a>
+
+                        <!-- Third level - transactions -->
+                        <table id="{{level2.id}}" class="grid-items">
+                            <thead>
+                                <tr>
+                                    <th>Room</th>
+                                    <th class="cell-reservation">Reservation</th>
+                                    <th>Invoice / Folio No.</th>
+                                    <th>Date & Time</th>
+                                    <th class="cell-details">Details</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th class="align-right">Debit</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="level3 in level2.transactions">
+                                <tr>
+                                    <td>{{level3.room}}</td>
+                                    <td>
+                                        <strong  class="cell-row">{{level3.name}}</strong>
+                                        <span  class="cell-row">{{level3.reservation_number}}</span>
+                                    </td>
+                                    <td>{{level3.invoice_or_folio}}</td>
+                                    <td>
+                                        <span class="cell-row">{{level3.date}}</span>
+                                        <span class="cell-row">{{level3.time}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="cell-row" ng-bind-html="level3.details"></span>
+                                        <!-- If adjusted, show like this:
+                                        <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
+                                        <span class="converted-currency" ng-if="level3.converted_currency">
+                                            <span ng-bind-html="level3.debit_converted_amount | sntCurrency:this:converted_currency"></span>
+                                        </span>
+                                        <span class="converted-currency smaller" ng-if="level3.conversion_rate">
+                                            <span>{{level3.conversion_rate}}</span>
+                                        </span>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="align-right" ng-show="level3.debit !== '' && level3.debit !== null">
+                                        <span ng-bind-html="level3.debit | sntCurrency:this"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+</section>

@@ -983,6 +983,12 @@ angular.module('reportsModule')
                         requested++;
                         reportsSubSrv.fetchDepartments()
                             .then(fillDepartments);
+                    } else if ('TRANSACTION_CATEGORY' === filter.value && !filter.filled) {
+                        fillTransactionCategory();
+                    } else if ('SHOW_EMPLOYEES_INCLUDING_EOD' === filter.value && !filter.filled) {
+                        requested++;
+                        reportsSubSrv.fetchEmployees()
+                            .then(fillEmployeeList);
                     } else if ('INCLUDE_COMPLETION_STATUS' === filter.value && !filter.filled) {
                         fillCompletionStatus();
                     } else if ('INCLUDE_AGING_BALANCE' === filter.value && !filter.filled) {

@@ -1770,7 +1770,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     }
                 }
             }
-
+            
             // include hold status
             if (report.hasOwnProperty('hasHoldStatus')) {
                 selected = _.where(report['hasHoldStatus']['data'], { selected: true });
