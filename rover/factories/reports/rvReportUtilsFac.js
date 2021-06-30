@@ -1566,55 +1566,6 @@ angular.module('reportsModule')
                     checkAllCompleted();
                 }
 
-                function fillTransactionCategory() {
-                    var customData = [
-                        { id: 1, value: "TOTAL", description: "Total" },
-                        { id: 2, value: "PRE STAY", description: "Pre Stay" },
-                        { id: 3, value: "IN HOUSE", description: "In House"},
-                        { id: 4, value: "POST STAY", description: "Post Stay" }
-                    ],
-                    foundFilter;
-
-                    _.each(reportList, function (report) {
-                        foundFilter = _.find(report['filters'], { value: 'TRANSACTION_CATEGORY' });
-                        if (!!foundFilter) {
-                            foundFilter['filled'] = true;
-
-                            report.hasTransactionCategory = {
-                                data: customData
-                            };
-                        }
-                    });
-
-                    completed++;
-                    checkAllCompleted();
-                }
-
-                function fillEmployeeList(data) {
-                    var foundFilter;
-
-                    _.each(reportList, function (report) {
-                        foundFilter = _.find(report['filters'], { value: 'SHOW_EMPLOYEES_INCLUDING_EOD' });
-                        if (!!foundFilter) {
-                            foundFilter['filled'] = true;
-                            
-                            report.filterTitle = 'Employees';
-                            report.empList = {
-                                data: angular.copy(data),
-                                options: {
-                                    hasSearch: true,
-                                    selectAll: true,
-                                    key: 'full_name',
-                                    defaultValue: 'Selected Employee'
-                                }
-                            };
-                        }
-                    });
-
-                    completed++;
-                    checkAllCompleted();
-                }
-
                 function fillLanguages(data) {
                     var foundFilter,
                         customData;
