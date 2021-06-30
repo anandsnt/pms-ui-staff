@@ -97,10 +97,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		// Success callback for transaction fetch API.
 		var onBillTransactionFetchSuccess = function(data, selectedDate) {
+			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+
 			if (data.transactions.length > 0) {
 				$scope.errorMessage = '';
-				var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
-
 				activebillTab.transactions = [];
 				_.each(data.transactions, function(item) {
 
