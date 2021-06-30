@@ -14,6 +14,7 @@ sntRover.controller('RVOutsidePostChargeController',
 
 			$scope.fetchedData = {};
 			$scope.isOutsidePostCharge = true;
+			$scope.shouldShowChargesForMobile = false;
 
 			$scope.init = function() {
 				// Show/hide reservations or items
@@ -422,6 +423,17 @@ sntRover.controller('RVOutsidePostChargeController',
 				}
 				return valueToReturn;
 			};
+
+			var clickedViewChargesListener = $rootScope.$on('CLICKED_VIEW_CHARGES', function() {
+				$scope.shouldShowChargesForMobile = true;
+			});
+
+			var backToChargesListListener = $rootScope.$on('BACK_TO_CHARGES_LIST', function() {
+				$scope.shouldShowChargesForMobile = false;
+			});
+
+			$scope.$on('$destroy', clickedViewChargesListener);
+			$scope.$on('$destroy', backToChargesListListener);
 		}
 	]
 );

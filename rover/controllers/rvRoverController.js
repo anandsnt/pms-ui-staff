@@ -701,6 +701,7 @@ sntRover.controller('roverController', [
             jsMappings.fetchAssets(['postcharge', 'directives'])
                 .then(function () {
                     $scope.isOutsidePostCharge = true;
+                    $scope.shouldShowChargesForMobile = false;
                     $scope.$emit('hideLoader');
                     ngDialog.open(
                         {
@@ -1235,6 +1236,17 @@ sntRover.controller('roverController', [
                 RVHotelDetailsSrv.hotelDetails.cloud_storage_config &&
                 RVHotelDetailsSrv.hotelDetails.cloud_storage_config["enabled_" + cardType];
         };
+
+        var clickedViewChargesListener = $rootScope.$on('CLICKED_VIEW_CHARGES', function() {
+            $scope.shouldShowChargesForMobile = true;
+        });
+
+        var backToChargesListListener = $rootScope.$on('BACK_TO_CHARGES_LIST', function() {
+            $scope.shouldShowChargesForMobile = false;
+        });
+
+        $scope.$on('$destroy', clickedViewChargesListener);
+        $scope.$on('$destroy', backToChargesListListener);
 
         (function() {
             if ($window.dataLayer) {
