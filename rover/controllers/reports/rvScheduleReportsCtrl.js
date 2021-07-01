@@ -2010,7 +2010,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     selectedEntity.report.title === reportNames['ROOM_STATUS_REPORT'] ||
                     selectedEntity.report.title === reportNames['OCCUPANCY_REVENUE_SUMMARY'] ||
                     selectedEntity.report.title === reportNames['ADDON_FORECAST'] || 
-                    selectedEntity.report.title === reportNames['FORECAST_GUEST_GROUPS'] ||
                     selectedEntity.report.title === reportNames['COMPLIMENTARY_ROOM_REPORT'])) {
                 $scope.scheduleFormat = _.filter(originalScheduleFormats, function(object) {
                     return object.value === 'CSV';
@@ -2024,7 +2023,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['ACTIONS_MANAGER'] ||
                 selectedEntity.report.title === reportNames['CANCELLATION_NO_SHOW'] ||
                 selectedEntity.report.title === reportNames['MARKET_SEGMENT_STAT_REPORT'] ||
-                selectedEntity.report.title === reportNames['RATE_ADJUSTMENTS_REPORT']
+                selectedEntity.report.title === reportNames['RATE_ADJUSTMENTS_REPORT'] ||
+                selectedEntity.report.title === reportNames['FORECAST_GUEST_GROUPS']
             )) {
                 $scope.scheduleFormat = _.filter(originalScheduleFormats, function(object) {
                     return object.value === 'CSV' || object.value === 'PDF';
