@@ -2024,7 +2024,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['A/R_AGING'] ||
                 selectedEntity.report.title === reportNames['ACTIONS_MANAGER'] ||
                 selectedEntity.report.title === reportNames['CANCELLATION_NO_SHOW'] ||
-                selectedEntity.report.title === reportNames['MARKET_SEGMENT_STAT_REPORT']
+                selectedEntity.report.title === reportNames['MARKET_SEGMENT_STAT_REPORT'] ||
+                selectedEntity.report.title === reportNames['RATE_ADJUSTMENTS_REPORT']
             )) {
                 $scope.scheduleFormat = _.filter(originalScheduleFormats, function(object) {
                     return object.value === 'CSV' || object.value === 'PDF';
