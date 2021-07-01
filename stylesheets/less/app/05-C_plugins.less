@@ -1670,10 +1670,32 @@
                 .pull-left;
                 .calc-width(50, 40);
 
-                &.connecting { height: 260px; }
-                &.not-connected { height: 320px; }
+                &.connecting {
+                    height: 260px;
+
+                    &.encode {
+                        height: 360px;
+                    }
+                }
+
+                &.not-connected {
+                    height: 320px;
+
+                    &.encode {
+                        height: 360px;
+                    }
+                }
+
                 &.connected { height: 540px; }
-                &.completed { height: 320px; }
+
+                &.completed {
+                    height: 320px;
+
+                    &.encode {
+                        height: 360px;
+                    }
+                }
+
                 &.pin { height: 440px; }
             }
 
@@ -1695,9 +1717,7 @@
                     display: table-cell;
                     vertical-align: middle;
 
-                    span { 
-                        font-size: 48px;
-                        font-weight: 300;
+                    .trim {
                         width: 100%;
                         max-width: 290px;
                         margin: 0 auto;
@@ -1705,8 +1725,13 @@
                         .show;
                     }
 
-                    &.icon-key { 
-                        padding-top: 110px; 
+                    .room-number {
+                        font-size: 48px;
+                        font-weight: 300;
+                    }
+
+                    &.icon-key {
+                        padding-top: 110px;
                         background-position: 50% 65px;
                     }
                 }
@@ -1716,6 +1741,28 @@
                     left: 0;
                     bottom: 20px;
                     width: 100%;
+                }
+
+                &.encode {
+
+                    h1 {
+                       .icon-key {
+                            height: 105px;
+                            margin: 20px;
+                        }
+
+                        &.icon-key {
+                            padding:0;
+                            background:none;
+                        }
+                    }
+
+
+                    .number {
+                        position: static;
+                        font-size: 16px;
+                        line-height: 1;
+                    }
                 }
             }
 
@@ -1734,7 +1781,7 @@
                     .button:last-child { margin-top: 10px; }
                 }
 
-                .qr-holder { 
+                .qr-holder {
                     position: absolute;
                     bottom: 20px;
                     left: 0;
@@ -1748,24 +1795,30 @@
                     }
                 }
 
-                &.print-key {
+                &.print-key,
+                &.encode {
 
                     .notice { font-size: 14px; }
 
-                    .status { 
+                    .status {
                         padding-top: 110px;
                         font-size: 14px;
-                        .show; 
+                        .show;
 
-                        &.pending { 
-                            color: @logoPrimary; 
+                        &:not(.icon-key) {
+                            padding:0;
+                            height: auto;
                         }
 
-                        &.error { 
-                            color: @red; 
+                        &.pending {
+                            color: @logoPrimary;
+                        }
+
+                        &.error {
+                            color: @red;
                             margin: 20px 0;
                         }
-                        
+
                         &.success { color: @green; }
                     }
 
@@ -1821,20 +1874,87 @@
                         }
                     }
 
-                    &.connecting { 
+                    &.connecting {
                         .pending { #blink > .infinite(); }
                     }
-                    
-                    &.not-connected { 
+
+                    &.not-connected {
                         .info { color: @red; }
-                        .action { 
-                            margin: 0; 
+                        .action {
+                            margin: 0;
                             padding-top: 20px;
-                        }                       
+                        }
                     }
-                    
-                    &.connected { 
+
+                    &.connected {
                         .info { color: @green; }
+                    }
+                }
+
+                &.encode {
+
+                    .icon-remove-10 {
+                        &:before {
+                            margin-top: -5px;
+                        }
+                    }
+
+                    .icon-ok-10 {
+                        &:before {
+                            margin-top: -2px;
+                        }
+                    }
+
+                    .action {
+                        .button:first-child:last-child { margin-top:0; }
+                    }
+
+                    .actions {
+                        &.bottom {
+                            position: absolute;
+                            width: 100%;
+                            left: 0;
+                            padding: 20px;
+                            bottom: 0;
+                            background: rgba(0,0,0,0.05);
+                        }
+                    }
+
+                    .mobile-key {
+                        border-top: 1px solid rgba(0,0,0,.1);
+                        background: rgba(0,0,0,0.05);
+                        position: absolute;
+                        left: 0;
+                        bottom:0;
+                        width: 100%;
+                        padding: 20px;
+                        .calc-height(100, 90);
+
+                        .message {
+                            &.error {
+                                color: @redStart;
+                            }
+                        }
+
+                        .error-messsage {
+                            padding: 10px;
+                            background-color: rgba(0,0,0,0.1);
+                            text-align: left;
+                            min-height: 100px;
+                            border-radius: 3px;
+                        }
+
+                        ul {
+                            list-style: disc;
+                            text-align: left;
+                            margin-left: 20px;
+                        }
+
+                        .actions {
+                            .button {
+                                margin-bottom: 10px;
+                            }
+                        }
                     }
                 }
 
@@ -1869,7 +1989,7 @@
 
                 .print-key {
                     &.not-connected,
-                    &.completed { 
+                    &.completed {
                         .info { padding: 65px 0; }
                     }
                 }
@@ -1881,7 +2001,7 @@
                 .scan-key { height: 340px; }
                 .print-key {
                     &.not-connected,
-                    &.completed { 
+                    &.completed {
                         .info { padding: 95px 0; }
                     }
                 }
