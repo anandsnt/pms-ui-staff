@@ -2008,7 +2008,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     selectedEntity.report.title === reportNames['CREDIT_CHECK_REPORT'] ||
                     selectedEntity.report.title === reportNames['RESERVATIONS_BY_USER'] ||
                     selectedEntity.report.title === reportNames['ROOM_STATUS_REPORT'] ||
-                    selectedEntity.report.title === reportNames['RATE_ADJUSTMENTS_REPORT'] || 
                     selectedEntity.report.title === reportNames['OCCUPANCY_REVENUE_SUMMARY'] ||
                     selectedEntity.report.title === reportNames['ADDON_FORECAST'] || 
                     selectedEntity.report.title === reportNames['FORECAST_GUEST_GROUPS'] ||
