@@ -1185,14 +1185,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
             // include collapsed or expanded
             if (report.hasOwnProperty('hasCollapsedOrExpanded')) {
-                
-                var selected = report['hasCollapsedOrExpanded']['selected'];
-                params["summary_type"] = selected.value;
-                if (changeAppliedFilter) {
-                    $scope.appliedFilter.collapsed_or_expanded = selected.value;
-                };
-            }
+                var selectedProperty = report['hasCollapsedOrExpanded']['selected'];
 
+                params["summary_type"] = selectedProperty.value;
+                if (changeAppliedFilter) {
+                    $scope.appliedFilter.collapsed_or_expanded = selectedProperty.value;
+                }
+            }
 
             // include single dates
             if (!!report.hasSingleDateFilter) {
