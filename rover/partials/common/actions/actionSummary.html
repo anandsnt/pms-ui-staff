@@ -44,7 +44,10 @@
                 <!-- Add .hidden when showing edit or new action screen -->
             <!-- if Delete status add class .inline -->
 <div class="detail-actions" ng-show="actionSelected === 'selected'" ng-class="{'inline': selectedAction.action_status === 'delete'}">
-    
+
+    <!-- Back button for mobile view -->
+    <button type="button" ng-if="selectedAction.action_status !== 'delete'" class="back-button hide-on-desktop" ng-click="onBackButtonClicked()">All Actions</button>
+
     <!-- If Unnasigned or assigned -->                               
     <button type="button" class="button white purple-text" ng-click="prepareEditAction(selectedAction)" ng-class="{'overlay': !hasPermissionToEditAction(), 'hidden': !shouldShowEditAndCompleteBtns(selectedAction)}">Edit</button>
     <button type="button" class="button white green-text" ng-click="completeAction()" ng-class="{'hidden': !shouldShowEditAndCompleteBtns(selectedAction)}">Complete</button>
