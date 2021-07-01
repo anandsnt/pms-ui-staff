@@ -1050,6 +1050,7 @@ year: year};
             };
 
             $scope.isStandAlone = $rootScope.isStandAlone;
+            // Toggle for showing Left/Right content on Mobile view
             $scope.showLeftSideViewForMobile = true;
 
             if ($scope.$parent.reservationData.reservation_card.reservation_id) {

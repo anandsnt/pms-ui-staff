@@ -23,6 +23,7 @@ sntRover.controller('RVActionsManagerController',
         // -------------------------------------------------------------------------------------------------------------- B. Local Methods
         var init = function () {
                 $scope.$emit("updateRoverLeftMenu", "actionManager");
+                // Toggle for showing Left/Right content on Mobile view
                 $scope.showLeftSideViewForMobile = true;
                 var heading = 'Actions Manager';
 
