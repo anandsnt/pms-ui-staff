@@ -5,7 +5,7 @@
         {{errorMessage}}
     </span>
 </div>
-<section class="actions-content" role="main" ng-show='showActionsList() || refreshingToNonEmpty()'>
+<section class="actions-content" ng-class="{'show-right-content': !showLeftSideViewForMobile}" role="main" ng-show='showActionsList() || refreshingToNonEmpty()'>
     <!-- Actions list -->
     <div class="content-left" ng-show='showActionsList() || refreshingToNonEmpty()'>
         <div ng-include="'/assets/partials/reservationCard/actions/overlay/actionsList.html'" class="scrollable" ng-iscroll="rvActionListScroller" ng-iscroll-delay="500"></div>
@@ -23,7 +23,7 @@
     </div>
 
 </section>
-<section class="actions-content" role="main" ng-show='showNewActionOnly()'>
+<section class="actions-content" ng-class="{'show-right-content': !showLeftSideViewForMobile}" role="main" ng-show='showNewActionOnly()'>
     <div class="content-right" ng-class="{'full-width': actions.totalCount === 0}">
         <div id="summary" class="summary" ng-include=" '/assets/partials/reservationCard/actions/overlay/createAction.html'"></div>
     </div>

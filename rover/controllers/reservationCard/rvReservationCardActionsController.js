@@ -226,6 +226,16 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
             $scope.clearAssignSection();
         };
 
+        // For mobile view while one action selected
+        $scope.onActionSelected = function() {
+            $scope.showLeftSideViewForMobile = false;
+        };
+
+        // For mobile view while Back button clicked
+        $scope.onBackButtonClicked = function() {
+            $scope.showLeftSideViewForMobile = true;
+        };
+
         $scope.setRightPane = function(toView) {
             // selected, new, assign, comment
             $scope.actionSelected = toView;
@@ -451,6 +461,7 @@ year: year};
         $scope.initNewAction = function() {
             $scope.clearNewAction();
             $scope.setRightPane('new');
+            $scope.showLeftSideViewForMobile = false;
         };
 
         $scope.getDefaultDueDate = function() {
@@ -470,6 +481,7 @@ year: year};
             }
 
             $scope.clearNewAction();
+            $scope.showLeftSideViewForMobile = true;
         };
 
         $scope.refreshingList = function() {
@@ -579,6 +591,7 @@ year: year};
                 }
 
                 setActionsHeaderInfo();
+                $scope.showLeftSideViewForMobile = true;
                 var isStandAlone = $scope.isStandAlone;
 
                 if ($scope.lastSelectedItemId) {
@@ -626,6 +639,7 @@ year: year};
                 $scope.$parent.$emit('hideLoader');
                 $scope.refreshToEmpty = false;
                 $scope.refreshing = false;
+                $scope.showLeftSideViewForMobile = true;
             };
 
             $scope.callAPI(rvActionTasksSrv.getActionsTasksList, {
@@ -719,11 +733,13 @@ year: year};
                 }
 
                 $scope.openingPopup = false;
+                $scope.showLeftSideViewForMobile = true;
             };
 
             var onFailure = function() {
                 setActionsHeaderInfo();
                 sntActivity.stop('FETCH_ACTIONS_LIST');
+                $scope.showLeftSideViewForMobile = true;
             };
 
             fetchDepartments(function() {
@@ -801,6 +817,7 @@ year: year};
         var updateSelectedAction = function(params) {
 
                 var onSuccess = function() {
+                    $scope.showLeftSideViewForMobile = true;
                     // switch back to selected
                     $scope.actionSelected = 'selected';
                     $scope.lastSelectedItemId = params.action_task.id;
@@ -963,6 +980,7 @@ year: year};
 
         // Cancel the action edit operation
         $scope.cancel = function() {
+            $scope.showLeftSideViewForMobile = true;
             $scope.actionSelected = $scope.actions.totalCount ? 'selected' : 'none';
         };
 
@@ -1006,6 +1024,7 @@ year: year};
         // Cancel delete operation
         $scope.cancelDelete = function() {
             $scope.selectedAction.action_status = $scope.selectedAction.originalStatus;
+            $scope.showLeftSideViewForMobile = true;
         };
 
         // Get action status based class name
@@ -1031,6 +1050,7 @@ year: year};
             };
 
             $scope.isStandAlone = $rootScope.isStandAlone;
+            $scope.showLeftSideViewForMobile = true;
 
             if ($scope.$parent.reservationData.reservation_card.reservation_id) {
                 $scope.reservationId = $scope.$parent.reservationData.reservation_card.reservation_id;
