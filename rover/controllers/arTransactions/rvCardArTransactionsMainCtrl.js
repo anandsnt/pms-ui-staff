@@ -43,7 +43,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'isSummary': false,
 			'statementEmailAddress': '',
 			'sortField': 'aging_date',
-
 			'sortOptions': [{
 				'value': 'aging_date',
 				'name': 'AGING DATE'
@@ -56,7 +55,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			}, {
 				'value': 'name',
 				'name': 'NAME'
-			}],
+			}]
 		};
 
 		/*
