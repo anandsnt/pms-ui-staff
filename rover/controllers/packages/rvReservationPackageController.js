@@ -10,15 +10,18 @@ sntRover.controller('RVReservationPackageController',
 					$rootScope,
 					$state, $timeout, $filter, ngDialog, RVReservationStateService) {
 
+		// Used to toggle b/w left and right content for mobile view
+		$scope.showRightContentForMobile = false;
+
 		var shouldReloadState = false;
-			
+
 		$scope.setScroller('resultDetails', {
 				'click': true
 		});
 		setTimeout(function() {
 			$scope.refreshScroller('resultDetails');
 		}, 2000);
-					
+
 		$scope.closeAddOnPopup = function() {
 			// to add stjepan's popup showing animation
 			$rootScope.modalOpened = false;
@@ -30,6 +33,7 @@ sntRover.controller('RVReservationPackageController',
 					$state.reload($state.current.name);
 				}
 				ngDialog.close();
+				$scope.showRightContentForMobile = false;
 			}, 300);
 		};
 
@@ -159,9 +163,16 @@ sntRover.controller('RVReservationPackageController',
 						}
 					});
 				angular.copy($scope.selectedPurchesedAddon.selected_post_days, $scope.previousPostDays);
+
+				$timeout(function() {
+					$scope.showRightContentForMobile = true;
+				}, 10);
 			} else {
 				// $scope.errorMessage = ["Custom posting can be configured only for nightly addons"];
 				$scope.selectedPurchesedAddon = addon;
+				$timeout(function() {
+					$scope.showRightContentForMobile = true;
+				}, 10);
 			}
 
 		};
@@ -274,6 +285,12 @@ sntRover.controller('RVReservationPackageController',
 
 		$scope.closePopup = function() {
 			ngDialog.close();
+			$scope.showRightContentForMobile = false;
+		};
+
+		// For Mobile view - to go back
+		$scope.goBackToAddonsList = function() {
+			$scope.showRightContentForMobile = false;
 		};
 
 		$scope.closeCalendar = function() {
