@@ -1463,6 +1463,17 @@
         /** Room Enhancements - Stay Card */
         &.room-enhancements {
 
+            .content-left {
+                display: grid;
+                grid-template-rows: 54px 1fr;
+
+                .scrollable {
+                    margin: 0;
+                    height: 100%;
+                    max-height: 100%;
+                }
+            }
+
             .block-item {
                 width: 100%;
                 padding: 0;
@@ -1493,12 +1504,12 @@
 
                 &.disabled {
                     display: grid;
-                    grid-template-columns: 2fr 1fr;
+                    grid-template-columns: calc(~'100% - 100px') 100px;
                 }
 
                 &:not(.disabled) {
                     display: grid;
-                    grid-template-columns: 2fr 1fr 35px;
+                    grid-template-columns: calc(~'100% - 135px') 100px 35px;
                 }
 
                 &.item-active {
@@ -1515,8 +1526,13 @@
                 .content-left {
                     float: none;
                     width: 100%;
+                    grid-template-rows: 54px 1fr 50px;
 
-                    .scrollable {
+                    .scrollable,
+                    .scrollable.with-two-actions {
+                        height: 100%;
+                        max-height: 100%;
+
                         .wrapper {
                             padding: 0;
 
@@ -1528,6 +1544,10 @@
                                 }
                             }
                         }
+                    }
+
+                    .scrollable.with-two-actions {
+                        max-height: calc(~'100% - 70px');
                     }
                 }
             }
