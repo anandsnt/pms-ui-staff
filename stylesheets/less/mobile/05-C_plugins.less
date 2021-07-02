@@ -719,7 +719,7 @@
         }
 
         /** Rate Manager ***/
-        &.rate-manager-modal  { 
+        &.rate-manager-modal  {
             padding: 0 !important;
 
             .modal-header {
@@ -788,16 +788,21 @@
                 }
 
                 .modal-header-right {
-                    position: absolute;
-                    top: 10px;
-                    bottom: 10px;
-                    right: 10px;
-                    left: 10px;
-                    width: auto !important;
+                    position: fixed;
+                    bottom: 60px;
+                    left: 60px;
+                    z-index: 90;
+                    padding: 10px;
+                    .background();
+                    .calc-width(100, 60);
 
                     .notice {
                         padding: 10px;
                         height: auto;
+
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
                     }
                 }
 
@@ -808,30 +813,182 @@
             }
 
             .modal-body {
-                display: flex;
-                flex-flow: column nowrap;
-                height: calc(~'100% - 120px');
+                display: grid;
+                grid-template-columns: 60px 1fr;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                .calc-height(100, 120);
 
-                .content-left,
-                .content-right {
-                    display: none;
+                .button {
+                    font-size: 16px;
+                    height: 40px;
+                    line-height: 40px;
+                    padding: 0 10px;
                 }
 
+                .h2 {
+                    margin-bottom: 10px;
+                }
+
+                .mixed_restrictions {
+                    margin: 0 20px;
+                }
+
+                .inputlabel {
+                    margin-top: 0;
+                    padding: 20px;
+                }
+
+                .cancellationbuttonwrap {
+                    width: 50%;
+                    margin: 0 auto;
+                    padding: 0 20px;
+
+                    .button {
+                        margin-right: 0;
+                        width: 100%;
+
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
+                    }
+                }
+
+                .content-left,
                 .content-middle {
                     float: none;
                     width: 100% !important;
+                    overflow: hidden;
+                }
 
-                    > div {
+                .content-left {
+                    padding: 0;
+                    height: 100%;
+                    overflow-y: auto;
+                    -webkit-overflow-scrolling: touch;
+
+                    .restriction_text {
+                        .hide();
+                    }
+
+                    .restriction-list {
+                        padding: 10px;
+                    }
+
+                    .restriction-type {
+                        cursor: pointer;
+                        padding: 5px;
+                        width: 100%;
+
+                        .restriction-left,
+                        .restriction-right {
+                            float: none;
+                            text-align: center;
+                            padding: 0;
+                            width: 100%;
+                        }
+
+                        .restriction-left {
+                            height: 20px;
+
+                            .restriction-icon {
+                                float: none;
+                                margin: 0 auto;
+                            }
+
+                            .restriction-name,
+                            .icons {
+                                .hide();
+                            }
+                        }
+
+                        .restriction-right {
+                            margin-top: 4px;
+                            border: 0;
+                            height: 13px;
+
+                            .switch-button,
+                            .mixed-button {
+                                margin: 0 2.5px;
+                                width: 25px;
+                            }
+                        }
+
+                    }
+                }
+
+                .content-middle {
+                    padding: 20px 0;
+
+                    .main-screen {
                         height: 100%;
                     }
 
-                    .prices-container {
-                        max-height: calc(~'100% - 50px');
+                    input {
+                        width: 100%;
                     }
+
+                    .scrollable {
+                        .calc-height(100, 50);
+                        max-height: inherit;
+
+                        .wrapper {
+                            padding: 0 20px 60px 20px;
+                        }
+                    }
+
+                    .no-price-entry {
+                        .apply-all-button {
+                            float: none;
+                            margin: 10px auto 0;
+                        }
+                    }
+
+                    .price-fields {
+                        display: flex;
+                        flex-flow: row wrap;
+                        justify-content: flex-start;
+                        width: 100%;
+
+                        label {
+                            width: 100%;
+                        }
+
+                        .price {
+                            width: auto;
+                            flex: 1;
+                        }
+
+                        .or-class {
+                            width: 30px;
+                        }
+
+                        .extra_amount {
+                            width: 50px;
+                            margin: 0 5px;
+                            flex: 1;
+                        }
+
+                        &:before,
+                        &:after {
+                            .hide();
+                        }
+                    }
+                }
+
+                .content-right,
+                &:before,
+                &:after {
+                    .hide();
                 }
             }
 
             .footer {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                z-index: 999;
                 height: 60px;
 
                 .actions {
@@ -841,59 +998,88 @@
                         font-size: 16px;
                         height: 40px;
                         line-height: 40px;
+                        padding: 0 10px;
+
+                        &.green {
+                            width: 100px;
+                        }
                     }
                 }
             }
 
             /** Rate Manager Hierarchy modal **/
-            &.rate-manager-hierarchy { 
-                
-                .restrictions-table-header {
-                    display: none;
-                }
-                
-                .restrictions-table-list {
+            &.rate-manager-hierarchy {
 
-                    li {
-                        .restriction-item {
-                            padding-right: 20px;
-
-                            .data {
-                                margin-right: 0;
-                                width: 100%;
-                            }
-
-                            .set-on {
-                                display: none;
-                            }
+                .no-content {
+                    .info {
+                        .h1 {
+                            font-size: 24px;
                         }
-                    }
-                }
 
-                .scrollable {
-                    &.restrictions-table-list { 
-                        .wrapper {
-                            padding: 20px;
+                        h2 {
+                            font-size: 18px;
                         }
                     }
                 }
 
                 .modal-header {
                     .modal-header-right {
+                        top: 0;
+                        right: 0;
                         left: auto;
-                        width: 40px !important;
+                        bottom: auto;
+                        width: 60px;
+                        background: transparent;
                     }
                 }
 
                 .modal-body {
-                    height: calc(~'100% - 60px');
-                }   
-
-                .restriction-content {
+                    .calc-height(100, 120);
 
                     .content-middle {
-                        height: calc(~'100% - 60px');
+                        padding: 10px 0;
+                        height: 100%;
+
+                        .restrictions-table-header {
+                            .hide();
+                        }
+
+                        .scrollable {
+                            height: auto;
+
+                            .wrapper {
+                                padding: 0 10px;
+                            }
+                        }
+
+                        .restrictions-table-list {
+                            height: 100%;
+
+                            li {
+                                .restriction-item {
+                                    padding-right: 30px;
+                                    background-position: calc(~'100% - 10px') 50%;
+
+                                    .data {
+                                        margin-right: 0;
+                                        width: 100%;
+                                    }
+
+                                    .set-on {
+                                        display: none;
+                                    }
+                                }
+                            }
+
+                            .remove-restriction {
+                                height: 50px;
+                                line-height: 50px;
+                            }
+                        }
                     }
+                }
+
+                .restriction-content {
 
                     .footer {
                         height: 60px;
@@ -904,6 +1090,74 @@
                             .button {
                                 height: 40px;
                                 line-height: 40px;
+                                min-width: auto;
+                            }
+                        }
+
+                        &.with-remove-button {
+                            .button {
+                                &:not(.blank) {
+                                    width: auto;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &.restriction-view {
+
+                    .restrictions-list,
+                    .restriction-content {
+
+                    }
+
+                    .restriction-content {
+                        .show();
+                    }
+
+                    &.showing-dates {
+
+                        .scrollable {
+                            .wrapper {
+                                transform: translate(0px, 0px) translateZ(0px) !important;
+                            }
+
+                            .iScrollVerticalScrollbar {
+                                .hide();
+                            }
+                        }
+
+                        .content-middle {
+                            height: auto;
+                        }
+
+                        .content-right {
+                            background-color: transparent;
+                            .size(auto, 100%);
+                            .show();
+                        }
+                    }
+
+                    &.with-restriction-list {
+
+                        .restrictions-list {
+                            .show();
+                        }
+
+                        .restriction-content {
+                            .calc-width(100,50);
+                        }
+
+                        &.showing-dates {
+                            .restrictions-list {
+                                position: fixed;
+                                top: 60px;
+                                left: 0;
+                                height: calc(~'100vh - 60px');
+                            }
+
+                            .restriction-content {
+                                margin-left: 50px;
                             }
                         }
                     }
