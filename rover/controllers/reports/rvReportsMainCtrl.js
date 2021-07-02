@@ -1055,7 +1055,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     'tax_exempt_type_ids': [],
                     'group_code': [],
                     'country_ids': [],
-                    'include_long_stays': []
+                    'include_long_stays': [],
+                    'transaction_category': [],
+                    'payment_types': []
                 };
             }
 
@@ -1768,7 +1770,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     }
                 }
             }
-
+            
             // include hold status
             if (report.hasOwnProperty('hasHoldStatus')) {
                 selected = _.where(report['hasHoldStatus']['data'], { selected: true });
@@ -1884,6 +1886,41 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     }
                 }
             }
+
+            // include status
+            if (report.hasOwnProperty('hasTransactionCategory')) {
+                var selectedItem = report['hasTransactionCategory']['selected'] ? report['hasTransactionCategory']['selected'] : report['hasTransactionCategory']['data'][0];
+
+                key = reportParams['TRANSACTION_CATEGORY'];
+                params[key] = selectedItem.id;
+                if (changeAppliedFilter) {
+                    $scope.appliedFilter.transaction_category = selectedItem.value;
+                }
+            }
+    
+            // include payment type
+            if (report.hasOwnProperty('hasPaymentType')) {
+                selected = _.where(report['hasPaymentType']['data'], { selected: true });
+
+                if (selected.length > 0) {
+                    key = reportParams['PAYMENT_TYPES'];
+                    params[key] = [];
+                    /**/
+                    _.each(selected, function (each) {
+                        params[key].push(each.id.toString());
+                        /**/
+                        if (changeAppliedFilter) {
+                            $scope.appliedFilter.payment_types.push(each.description);
+                        }
+                    });
+                    // in case if all status are selected
+                    if (changeAppliedFilter && report['hasPaymentType']['data'].length === selected.length) {
+                        $scope.appliedFilter.payment_types = ['All Payments'];
+                        delete params[key];
+                    }
+                }
+            }
+                
 
             // include travel agents
             if (report.hasOwnProperty('hasTravelAgentsSearch')) {

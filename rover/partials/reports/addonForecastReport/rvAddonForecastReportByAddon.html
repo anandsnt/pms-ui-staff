@@ -23,14 +23,14 @@
                 <a ng-if="item1.hasData" href="#addon-{date}" class="title-1 toggle" ng-class="{ 'has-arrow': item1.addons.length }" ng-click="toggleSub(item1)">
                     <strong>{{ getAddonGrpName(key1) }}</strong>
                     <span>{{ item1.guests }}</span>
-                    <span><span class="currency">{{ item1.revenue | currency:currencySymbol:2 }}</span></span>
+                    <span><span ng-bind-html="item1.revenue | sntCurrency:this"></span></span>
                 </a>
                 <div ng-if="item1.hasData" ng-repeat="item2 in item1.addons" ng-init="item2Values = getKeyValues(item2)" class="grid-content" ng-class="{ 'hidden': !openAddon && !item1.hidden }"> <!-- Toggle class hidden when L135-139 tapped -->
                     <!-- Level 2 - Add-On Group -->
                     <a ng-if="item2Values.hasData" href="#addon-{group}-{date}" class="title-2 toggle" ng-class="{ 'has-arrow': item2Values.dates.length }" ng-click="toggleSub(item2Values)">
                         <strong>{{ getAddonName(item2) }}</strong>
                         <span>{{ item2Values.guests }}</span>
-                        <span><span class="currency">{{ item2Values.revenue | currency:currencySymbol:2 }}</span></span>
+                        <span><span ng-bind-html="item2Values.revenue | sntCurrency:this"></span></span>
                     </a>
                     <div ng-if="item2Values.hasData" ng-repeat="item3 in item2Values.dates" ng-init="item3Values = getKeyValues(item3)" class="grid-content" ng-class="{ 'hidden': !openDate && !item2Values.hidden }"> <!-- Toggle class hidden when L142-146 tapped -->
                         <ul class="grid-header addons">
@@ -46,7 +46,7 @@
                             <span>{{ item3Values.booked }}</span>
                             <span>{{ item3Values.remaining }}</span>
                             <span>{{ item3Values.guests }}</span>
-                            <span><span class="currency">{{ item3Values.revenue | currency:currencySymbol:2 }}</span></span>
+                            <span><span ng-bind-html="item3Values.revenue | sntCurrency:this"></span></span>
                         </a>
 
                         <table ng-if="item2Values.hasData" class="grid-content" ng-class="{ 'hidden': !openResrv && !item3Values.hidden }"> <!-- Toggle class hidden when L156-162 tapped -->
@@ -93,7 +93,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <span class="currency">{{ item4.price | currency:currencySymbol:2 }}</span>
+                                        <span ng-bind-html="item4.price | sntCurrency:this"></span>
                                     </td>
                                 </tr>
                                 <!-- Pagination // Shown when needed -->

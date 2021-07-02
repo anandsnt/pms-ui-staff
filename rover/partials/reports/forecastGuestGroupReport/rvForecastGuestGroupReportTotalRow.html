@@ -70,28 +70,28 @@
 
 <td class="vertical">
     <div class="row">
-        <strong><span class="currency">{{ resultsTotalRow.guest_room_revenue | currency:currencySymbol:2 }}</span><em>(Gst.)</em></strong>
+        <strong><span ng-bind-html="resultsTotalRow.guest_room_revenue | sntCurrency:this"></span><em>(Gst.)</em></strong>
     </div>
     <div class="row">
-        <strong><span class="currency">{{ resultsTotalRow.group_room_revenue | currency:currencySymbol:2 }}</span><em>(Grp.)</em></strong>
+        <strong><span ng-bind-html="resultsTotalRow.group_room_revenue | sntCurrency:this"></span><em>(Grp.)</em></strong>
     </div>
     <div class="row">
-        <strong><span class="currency">{{ resultsTotalRow.total_room_revenue | currency:currencySymbol:2 }}</span><em>(Tot.)</em></strong>
+        <strong><span ng-bind-html="resultsTotalRow.total_room_revenue | sntCurrency:this"></span><em>(Tot.)</em></strong>
     </div>
 </td>
 
 <td class = "vertical">
     <div class="row">
-        <strong><span class="currency">{{ resultsTotalRow.adr_guest | currency:currencySymbol:2 }}</span><em>(Gst.)</em></strong>
+        <strong><span ng-bind-html="resultsTotalRow.adr_guest | sntCurrency:this"></span><em>(Gst.)</em></strong>
     </div>
     <div class="row">
-        <strong><span class="currency">{{ resultsTotalRow.adr_group | currency:currencySymbol:2 }}</span><em>(Gst.)</em></strong>
+        <strong><span ng-bind-html="resultsTotalRow.adr_group | sntCurrency:this"></span><em>(Gst.)</em></strong>
     </div>
     <div class="row">
-        <strong><span class="currency">{{ resultsTotalRow.adr | currency:currencySymbol:2 }}</span><em>(Tot.)</em></strong>
+        <strong><span ng-bind-html="resultsTotalRow.adr | sntCurrency:this"></span><em>(Tot.)</em></strong>
     </div>
 </td>
-<td class="break"><span class="currency">{{ resultsTotalRow.rev_par | currency:currencySymbol:2 }}</span></td>
+<td class="break"><span ng-bind-html="resultsTotalRow.rev_par | sntCurrency:this"></span></td>
 
 <td>{{ resultsTotalRow.actual_rooms_last_year }}%</td>
 <td class="break" ng-class="{ 'red': (resultsTotalRow.variance * 1) < 0 }">{{ resultsTotalRow.variance }}%</td> <!-- Add class "red" if negative -->

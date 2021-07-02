@@ -29,7 +29,8 @@ module.exports = {
 				servicesRoot + "rvContactInfoSrv.js",
 				servicesRoot + "actionTasks/rvActionTasksSrv.js",
 				servicesRoot + 'rvDropDownDataSrv.js',
-				servicesRoot + 'reservation/RVReservationStateSrv.js',
+                servicesRoot + 'reservation/RVReservationStateSrv.js',
+                'shared/sntUtils/sntFeatureToggles.js',
 
                 // Eliminate all spec files
                 '!**/*.spec.js'

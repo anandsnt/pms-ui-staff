@@ -19,26 +19,26 @@
                 <td ng-if="shouldPrintArInvoiceNumber(printData, statement) && statement.type !== 'manual'">{{statement.ar_invoice_number}}</td>
                 <td ng-if="shouldPrintFolioNumber(printData, statement) && statement.type !== 'manual'">{{statement.folio_number}}</td>
                 <td ng-if="shouldPrintInvoiceNumber(printData, statement) && statement.type !== 'manual'">{{statement.invoice_number}}</td>
-                <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.debit}}</td>
-                <td class="align-right" ng-if="statement.credit !== '' && statement.credit !== nil && statement.credit !== null"><span class="currency">{{currencySymbol}}</span>{{statement.credit}}</td>
+                <td class="align-right"><span ng-bind-html="statement.debit | sntCurrency:this"></span></td>
+                <td class="align-right" ng-if="statement.credit !== '' && statement.credit !== nil && statement.credit !== null"><span ng-bind-html="statement.credit | sntCurrency:this"></span></td>
                 <td class="align-right" ng-if="statement.credit === '' || statement.credit === nil || statement.credit === null">-</td>
-                <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.amount_due}}</td>  
+                <td class="align-right"><span ng-bind-html="statement.amount_due | sntCurrency:this"></span></td>  
             </tr>
           </tbody>
           <tfoot>
                 <tr>
                     <td colspan="5"><strong >{{printData.translation.total_amount}}</strong></td>
-                    <td><strong><span class="currency">{{currencySymbol}}</span>{{printData.total_amount | number: precisonTwo}}</strong></td>
+                    <td><strong><span ng-bind-html="printData.total_amount | sntCurrency:this"></span></strong></td>
                 </tr>
 
                 <tr>
                     <td colspan="5"><strong >{{printData.translation.total_account_amount}}</strong></td>
-                    <td><strong><span class="currency">{{currencySymbol}}</span>{{printData.total_account_amount | number: precisonTwo}}</strong></td>
+                    <td><strong><span ng-bind-html="printData.total_account_amount | sntCurrency:this"></span></strong></td>
                 </tr>
                 
                 <tr>
                     <td colspan="5"><strong >{{printData.translation.total_account_amount_due}}</strong></td>
-                    <td><strong><span class="currency">{{currencySymbol}}</span>{{printData.total_amount_due | number: precisonTwo}}</strong></td>
+                    <td><strong><span ng-bind-html="printData.total_amount_due | sntCurrency:this"></span></strong></td>
                 </tr>
 
             </tfoot>

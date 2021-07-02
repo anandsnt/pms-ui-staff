@@ -33,7 +33,7 @@
 	</td>
 	<td ng-if="each.isReport">
 		<span class="data room">{{ each.room_type }}</span>
-		<span class="data rate">{{ each.rate }} / <strong><span class="currency">{{ each.adr | currency:currencySymbol:2 }}</span> ADR</strong></span>
+		<span class="data rate">{{ each.rate }} / <strong><span ng-bind-html="each.adr | sntCurrency:this"></span> ADR</strong></span>
 		<!-- If payment CC:-->
         <span ng-if="each.payment.payment_type == 'Credit Card'" class="data payment">
             <figure class="card-logo">
@@ -45,7 +45,7 @@
         <span ng-if="each.payment.payment_type != 'Credit Card'" class="data payment">{{ each.payment.payment_type }}</span>
 	</td>
 	<td ng-if="each.isReport" class="balance red"> <!-- Add class "red" or "green" as required -->
-		<span class="currency">{{ each.balance_amount | currency:currencySymbol:2 }}</span>
+		<span ng-bind-html="each.balance_amount | sntCurrency:this"></span>
 	</td>
 
 
@@ -63,7 +63,7 @@
 		<span ng-repeat="item in each.addOnDetails">
 			{{ item.name }} &#8226;
 			<i ng-if="item.amount == 'INCL'">{{ item.amount }}</i>
-			<i ng-if="!item.amount != 'INCL'"><span class="currency">{{ item.amount | currency:currencySymbol:2 }}</span></i>
+			<i ng-if="!item.amount != 'INCL'"><span ng-bind-html="item.amount | sntCurrency:this"></span></i>
 		</span>
 	</td>
 

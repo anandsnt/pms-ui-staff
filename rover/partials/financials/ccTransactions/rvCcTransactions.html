@@ -20,11 +20,11 @@
         <ul class="display">
             <li ng-class="{ 'active': data.activeTab == 0 }">
                 <span ng-click="activatedTab(0)" class="icons icon-navbar icon-payments" translate>PAYMENTS</span>
-                <span class="currency">{{currencySymbol}}</span>{{data.paymentData.total_amount|number:2}}
+                <span ng-bind-html="data.paymentData.total_amount | sntCurrency:this"></span>
             </li>
             <li ng-class="{ 'active': data.activeTab == 1 }">
                 <span ng-click="activatedTab(1)" class="icons icon-navbar icon-authorizations" translate>AUTHORIZATIONS</span>
-                <span class="currency">{{currencySymbol}} </span>{{data.authData.total_amount|number:2}}
+                <span ng-bind-html="data.authData.total_amount | sntCurrency:this"></span>
             </li>
         </ul>
     </form>

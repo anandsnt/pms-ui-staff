@@ -192,6 +192,32 @@ sntRover.controller('RVMoveChargeCtrl',
 			return ($scope.targetSelected || $scope.targetBillSelected);
 		};
 
+		// Method to check whether all charges on the page are selected.
+		$scope.isAllTransactionsSelected = function() {
+			if ($scope.origin === 'ACCOUNT') {
+				var totalTransactionsCount = $scope.transactionsDetails.bills[$scope.currentActiveBill].transactions.length,
+					totalTransactionsSelected = $scope.moveChargeData.selectedTransactionIds.length;
+
+				return (totalTransactionsCount === totalTransactionsSelected);
+			}
+		};
+
+		/*
+		 *	Logic to show Move all charges code checkbox.
+		 *	It will show only when pagination exist and
+		 * 	all transactions on the screen/current page is selected
+		 */
+		$scope.showMoveAllChargesCheckbox = function() {
+			var isShowCheckbox = false;
+
+			if ($scope.origin === 'ACCOUNT') {
+				var isMoreThanOnePageExist = $scope.transactionsDetails.bills[$scope.currentActiveBill].pageOptions.totalPages > 1;
+
+				isShowCheckbox = isMoreThanOnePageExist && $scope.isAllTransactionsSelected();
+			}
+
+			return isShowCheckbox;
+		};
 
 		/**
 		 * function to move transaction codes to another
@@ -203,13 +229,16 @@ sntRover.controller('RVMoveChargeCtrl',
 			var params = {
 				 "from_bill": $scope.moveChargeData.fromBillId,
    				 "to_bill": $scope.targetBillId,
-    			 "financial_transaction_ids": $scope.moveChargeData.selectedTransactionIds
+    			 "financial_transaction_ids": $scope.moveChargeData.selectedTransactionIds,
+				 "is_move_all_charges": $scope.moveChargeData.isMoveAllCharges
 			};
 			var chargesMovedSuccess = function(response) {
 				$scope.$emit("hideLoader");
 				response.data.toBill = $scope.targetBillId;
 				$scope.$emit('moveChargeSuccsess', response.data);
-				$scope.closeDialog();
+				if (!response.data.is_move_charges_inprogress) {
+					$scope.closeDialog();
+				}
 			};
 			var failureCallback = function(data) {
 

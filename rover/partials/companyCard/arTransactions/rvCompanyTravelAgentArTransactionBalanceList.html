@@ -94,15 +94,15 @@
 
             <div class="balance balance-now">
                 Invoiced Amount 
-                <strong class="red"><span class="currency">{{currencySymbol}}</span>{{balance.balanceNow | number:2}}</strong>
+                <strong class="red"><span ng-bind-html="balance.balanceNow | sntCurrency:this"></span></strong>
             </div>
             <div class="balance balance-after">
                 Remaining Balance
-                <strong class="green"><span class="currency">{{currencySymbol}}</span>{{balance.balanceAfter | number:2}}</strong>
+                <strong class="green"><span ng-bind-html="balance.balanceAfter | sntCurrency:this"></span></strong>
             </div>
             <div class="amount unpaid" ng-class="{'partially-paid':balance.is_partially_paid}">
                 <span ng-if="balance.is_partially_paid" class="icons icon-wallet-green"></span>
-                <span class="currency">{{currencySymbol}}</span>{{balance.amount | number:2}}
+                <span ng-bind-html="balance.amount | sntCurrency:this"></span>
             </div>
             <div class="amount input">
                 <span class="currency">{{currencySymbol}}</span>
@@ -145,15 +145,15 @@
                             <!-- Lightspeed Data -->
                         </td>
                         <td class="fees">
-                            <span ng-if="debit.fees" class="currency">{{ currencySymbol }}</span>{{ debit.fees | number:2 }}
+                            <span ng-if="debit.fees" ng-bind-html="debit.fees | sntCurrency:this"></span>
                             <!-- Lightspeed Data -->
                             <ul class = 'charge-items light-speed-data' ng-if = "isStandAlone && debit.is_group_by_ref" ng-class = "{'hidden': !debit.isExpanded}">
-                                <li ng-repeat = "object in debit.light_speed_data"><span class = "cost"><span class="currency">{{currencySymbol}}</span>{{object.amount | number:2 }}</span></li>
+                                <li ng-repeat = "object in debit.light_speed_data"><span class = "cost"><span ng-bind-html="object.amount | sntCurrency:this"></span></span></li>
                             </ul>
                             <!-- Lightspeed Data -->
                         </td>
                         <td class="credits">
-                            <span ng-if="debit.credits" class="currency">{{ currencySymbol }}</span>{{ debit.credits | number:2 }}
+                            <span ng-if="debit.credits" ng-bind-html="debit.credits | sntCurrency:this"></span>
                         </td>
                         <td class="action">
                             <!-- Show this if possible to edit charge
@@ -184,7 +184,7 @@
                         </td>
                         <td class="fees"></td>
                         <td class="credits">
-                            <span class="currency">{{ currencySymbol }}</span>{{payment.amount | number:2}}
+                            <span ng-bind-html="payment.amount | sntCurrency:this"></span>
                                
                         </td>
                          <td class="action">

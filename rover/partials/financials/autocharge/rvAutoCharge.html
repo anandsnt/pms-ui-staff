@@ -33,7 +33,7 @@
     <!-- Tabs -->
     <ul class="filters">
         <li ng-hide="filters.status == 'DECLINED'" ng-class="{'active': selectedTab == 'DEPOSIT_TAB'}" ng-click="selectHeaderTab('DEPOSIT_TAB')">
-            <strong>Deposits</strong> {{currencySymbol}}{{totalDeposite}}
+            <strong>Deposits</strong> <span ng-bind-html="totalDeposite | sntCurrency:this">
         </li>
         <li ng-hide="filters.status == 'DECLINED'" ng-class="{'active': selectedTab == 'EOD_TAB'}" ng-click="selectHeaderTab('EOD_TAB')">
             <strong>EOD Check Out</strong>
@@ -109,7 +109,7 @@
                         </div>
 
                         <div class="cell-cost" ng-show="selectedTab == 'DEPOSIT_TAB'">
-                            {{currencySymbol}}{{autoCharge.stay_cost}}
+                            <span ng-bind-html="autoCharge.stay_cost | sntCurrency:this"></span>
                         </div>
                         <div class="cell-cost" ng-show="selectedTab == 'EOD_TAB'">
                             {{autoCharge.bill_number}}
@@ -118,13 +118,13 @@
                         <div class="cell-deposit"
                              ng-class="{'color-green' : !autoCharge.is_declined, 'color-red' : autoCharge.is_declined}"
                              ng-show="selectedTab == 'DEPOSIT_TAB'">
-                            {{currencySymbol}}{{autoCharge.deposit_paid}}
-                            <div class="deposit-due" ng-show="autoCharge.is_declined">{{currencySymbol}}{{autoCharge.deposit_due}}</div>
+                            <span ng-bind-html="autoCharge.deposit_paid | sntCurrency:this"></span>
+                            <div class="deposit-due" ng-show="autoCharge.is_declined" ng-bind-html="autoCharge.deposit_due | sntCurrency:this"></div>
                         </div>
                         <div class="cell-deposit"
                              ng-class="{'color-green' : !autoCharge.bill_balance, 'color-red' : autoCharge.bill_balance}"
                              ng-show="selectedTab == 'EOD_TAB'">
-                            {{currencySymbol}}{{autoCharge.bill_balance|number:2}}
+                             <span ng-bind-html="autoCharge.bill_balance | sntCurrency:this"></span>
                         </div>
 
                     </a>
