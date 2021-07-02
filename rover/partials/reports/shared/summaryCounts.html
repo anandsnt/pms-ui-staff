@@ -23,18 +23,18 @@
 <!-- Upsell -->
 <ul ng-if="isThisReport( 'UPSELL' )" class="totals">
     <li>Rooms upsold<span>{{  summaryCounts.rooms_upsold }}</span></li>
-    <li>Upsell Revenue<span class="brand-colors"><span class="currency">{{ summaryCounts.upsell_revenue | currency:currencySymbol:2 }}</span></span></li>
-    <li>Rover<span><span class="currency">{{ summaryCounts.rover_revenue | currency:currencySymbol:2 }}</span></span></li>
-    <li>Zest Web <span><span class="currency">{{ summaryCounts.zest_web_revenue | currency:currencySymbol:2 }}</span></span></li>
-    <li>Zest App<span><span class="currency">{{ summaryCounts.zest_app_revenue | currency:currencySymbol:2 }}</span></span></li>
-    <li>Zest Station<span><span class="currency">{{ summaryCounts.zest_station_revenue | currency:currencySymbol:2 }}</span></span></li>
+    <li>Upsell Revenue<span class="brand-colors"><span ng-bind-html="summaryCounts.upsell_revenue | sntCurrency:this"></span></span></li>
+    <li>Rover<span><span ng-bind-html="summaryCounts.rover_revenue | sntCurrency:this"></span></span></li>
+    <li>Zest Web <span><span ng-bind-html="summaryCounts.zest_web_revenue | sntCurrency:this"></span></span></li>
+    <li>Zest App<span><span ng-bind-html="summaryCounts.zest_app_revenue | sntCurrency:this"></span></span></li>
+    <li>Zest Station<span><span ng-bind-html="summaryCounts.zest_station_revenue | sntCurrency:this"></span></span></li>
 </ul>
 
 <!-- Web check in -->
 <ul ng-if="isThisReport( 'WEB_CHECK_IN_CONVERSION' )" class="totals">
     <li>Emails sent<span>{{ summaryCounts.emails_sent }}</span></li>
     <li>Up Sell Conversion<span class="brand-colors">{{ summaryCounts.up_sell_conv }}</span></li>
-    <li>Revenue<span><span class="currency">{{ summaryCounts.revenue | currency:currencySymbol:2 }}</span></span></li>
+    <li>Revenue<span><span ng-bind-html="summaryCounts.revenue | sntCurrency:this"></span></span></li>
     <li>Conversion<span class="brand-colors">{{ summaryCounts.conversion }}</span></li>
     <li>Total Web Check-Ins<span>{{ summaryCounts.total_checkin }}</span></li>
 </ul>
@@ -43,7 +43,7 @@
 <ul ng-if="isThisReport( 'WEB_CHECK_IN_CONV_BY_DAY' )" class="totals">
     <li>Emails sent<span>{{ summaryCounts.emails_sent }}</span></li>
     <li>Up Sell Conversion<span class="brand-colors">{{ summaryCounts.up_sell_conv }}</span></li>
-    <li>Revenue<span><span class="currency">{{ summaryCounts.revenue | currency:currencySymbol:2 }}</span></span></li>
+    <li>Revenue<span><span ng-bind-html="summaryCounts.revenue | sntCurrency:this"></span></span></li>
     <li>Conversion<span class="brand-colors">{{ summaryCounts.conversion }}</span></li>
     <li>Total Web Check-Ins<span>{{ summaryCounts.total_checkin }}</span></li>
 </ul>
@@ -52,7 +52,7 @@
 <ul ng-if="isThisReport( 'WEB_CHECK_OUT_CONVERSION' )" class="totals">
     <li>Emails sent<span>{{  summaryCounts.emails_sent }}</span></li>
     <li>Late Check Out Conversion<span class="brand-colors">{{  summaryCounts.late_checkout_conv }}</span></li>
-    <li>Revenue<span><span class="currency">{{  summaryCounts.revenue | currency:currencySymbol:2 }}</span></span></li>
+    <li>Revenue<span><span ng-bind-html="summaryCounts.revenue | sntCurrency:this"></span></span></li>
     <li>Conversion<span class="brand-colors">{{  summaryCounts.conversion }}</span></li>
     <li>Total Web Check-Outs<span>{{  summaryCounts.total_checkout }}</span></li>
 </ul>
@@ -60,54 +60,54 @@
 <!-- Late check out -->
 <ul ng-if="isThisReport( 'LATE_CHECK_OUT' )" class="totals">
     <li>Late Check Out Rooms<span>{{ summaryCounts.rooms }}</span></li>
-    <li>Late Check Out Revenue<span class="brand-colors"><span class="currency">{{ summaryCounts.revenue | currency:currencySymbol:2 }}</span></span></li>
+    <li>Late Check Out Revenue<span class="brand-colors"><span ng-bind-html="summaryCounts.revenue | sntCurrency:this"></span></span></li>
 </ul>
 
 <!-- Accounts Receivable Summary -->
 <ul ng-if="isThisReport( 'AR_SUMMARY_REPORT' )" class="totals">
     <li>Records<span>{{ summaryCounts.records }}</span></li>
-    <li>Open Balance<span class="red"><span class="currency">{{ summaryCounts.balance_amount | currency:currencySymbol:2 }}</span></span></li>
-    <li>Credit<span class="green"><span class="currency">{{ summaryCounts.credit_amount | currency:currencySymbol:2 }}</span></span></li>
-    <li>AR Balance<span ng-class="{'green': summaryCounts.ar_balance >= 0, 'red':  summaryCounts.ar_balance < 0}"><span class="currency">{{ summaryCounts.ar_balance | currency:currencySymbol:2 }}</span></span></li>
+    <li>Open Balance<span class="red"><span ng-bind-html="summaryCounts.balance_amount | sntCurrency:this"></span></span></li>
+    <li>Credit<span class="green"><span ng-bind-html="summaryCounts.credit_amount | sntCurrency:this"></span></span></li>
+    <li>AR Balance<span ng-class="{'green': summaryCounts.ar_balance >= 0, 'red':  summaryCounts.ar_balance < 0}"><span ng-bind-html="summaryCounts.ar_balance | sntCurrency:this"></span></span></li>
 </ul>
 
 
 <!-- Early Check In -->
 <ul ng-if="isThisReport( 'EARLY_CHECKIN' )" class="totals">
     <li>Early Check In<span>{{ summaryCounts.total_early_checkins }}</span></li>
-    <li>Early Check In Revenue<span class="brand-colors"><span class="currency">{{ summaryCounts.total_revenue | currency:currencySymbol:2 }}</span></span></li>
+    <li>Early Check In Revenue<span class="brand-colors"><span ng-bind-html="summaryCounts.total_revenue | sntCurrency:this"></span></span></li>
 </ul>
 
 <!-- Arrival -->
 <ul ng-if="isThisReport( 'TAX_EXEMPT' )" class="totals">
     <li>Total Tax Exempt Reservations<span>{{ summaryCounts.total_count }}</span></li>    
-</ul
+</ul>
 
 <!-- Arrival -->
 <ul ng-if="isThisReport( 'ARRIVAL' )" class="totals">
     <li>Total Arrival Rooms<span>{{ summaryCounts.total_rooms_count }}</span></li>
-    <li>ADR<span><span class="currency">{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></span></li>
+    <li>ADR<span><span ng-bind-html="summaryCounts.adr | sntCurrency:this"></span></span></li>
 </ul>
 
 <!-- In-House Guests -->
 <ul ng-if="isThisReport( 'IN_HOUSE_GUEST' )" class="totals">
     <li>Total Rooms<span>{{ summaryCounts.total_rooms_count }}</span></li>
     <li>Total Adults / Children<span>{{ summaryCounts.total_adults }} / {{ summaryCounts.total_children }}</span></li>
-    <li>Total Balance<span class="green"><span class="currency">{{ summaryCounts.total_balance | currency:currencySymbol:2 }}</span></span></li>
+    <li>Total Balance<span class="green"><span ng-bind-html="summaryCounts.total_balance | sntCurrency:this"></span></span></li>
 </ul>
 
 <!-- Deposit Report -->
 <ul ng-if="isThisReport( 'DEPOSIT_REPORT' )" class="totals">
-    <li>Due<span><span class="currency">{{ summaryCounts.total_deposit_due | currency:currencySymbol:2 }}</span></span></li>
-    <li>Paid<span class="green"><span class="currency">{{ summaryCounts.total_deposit_paid | currency:currencySymbol:2 }}</span></span></li>
-    <li>Past Due<span class="red"><span class="currency">{{ summaryCounts.total_deposit_passed | currency:currencySymbol:2 }}</span></span></li>
+    <li>Due<span><span ng-bind-html="summaryCounts.total_deposit_due | sntCurrency:this"></span></span></li>
+    <li>Paid<span class="green"><span ng-bind-html="summaryCounts.total_deposit_paid | sntCurrency:this"></span></span></li>
+    <li>Past Due<span class="red"><span ng-bind-html="summaryCounts.total_deposit_passed | sntCurrency:this"></span></span></li>
 </ul>
 
 <!-- Group Deposit Report -->
 <ul ng-if="isThisReport( 'GROUP_DEPOSIT_REPORT' )" class="totals">
-    <!-- <li>Due<span>{{ summaryCounts.total_deposit_due | currency:currencySymbol:2 }}</span></li> -->
-    <li>Paid<span class="green"><span class="currency">{{ summaryCounts.total_deposit_paid | currency:currencySymbol:2 }}</span></span></li>
-    <!-- <li>Past Due<span class="red">{{ summaryCounts.total_deposit_passed | currency:currencySymbol:2 }}</span></li> -->
+    <!-- <li>Due<span><span ng-bind-html="summaryCounts.total_deposit_due | sntCurrency:this"></span></li> -->
+    <li>Paid<span class="green"><span ng-bind-html="summaryCounts.total_deposit_paid | sntCurrency:this"></span></span></li>
+    <!-- <li>Past Due<span class="red"><span ng-bind-html="summaryCounts.total_deposit_passed | sntCurrency:this"></span></li> -->
 </ul>
 
 <!-- Reservations By User -->
@@ -116,8 +116,8 @@
     <li>New<span>{{ summaryCounts.total_new }}</span></li>
     <li>Cancel<span>{{ summaryCounts.total_cancel }}</span></li>
     <li>Overrides<span>{{ summaryCounts.total_rate_overrides }}</span></li>
-    <li>Variance<span><span class="currency">{{ summaryCounts.total_rate_variance | currency:currencySymbol:2 }}</span></span></li>
-    <li>Total Revenue<span class="green"><span class="currency">{{ summaryCounts.total_revenue | currency:currencySymbol:2 }}</span></span></li>
+    <li>Variance<span><span ng-bind-html="summaryCounts.total_rate_variance | sntCurrency:this"></span></span></li>
+    <li>Total Revenue<span class="green"><span ng-bind-html="summaryCounts.total_revenue | sntCurrency:this"></span></span></li>
     <li>Room Nights<span>{{ summaryCounts.total_nights }}</span></li>
 </ul>
 
@@ -125,10 +125,10 @@
 <ul ng-if="isThisReport( ['DAILY_TRANSACTIONS', 'DAILY_PAYMENTS'] )" class="totals">
     <li>Date<span>{{ summaryCounts.date | date : dateFormat }}</span></li>
     <li>Transactions<span>{{ summaryCounts.grand_total_transactions }}</span></li>
-    <li ng-if="isThisReport('DAILY_TRANSACTIONS')">Revenue<span class="green"><span class="currency">{{ summaryCounts.grand_total_revenue | currency:currencySymbol:2 }}</span></span></li>
-    <li ng-if="isThisReport('DAILY_PAYMENTS')">Payments<span class="green"><span class="currency">{{ summaryCounts.grand_total_revenue | currency:currencySymbol:2 }}</span></span></li>
-    <li>MTD<span><span class="currency">{{ summaryCounts.grand_total_mtd | currency:currencySymbol:2 }}</span></span></li>
-    <li>YTD<span><span class="currency">{{ summaryCounts.grand_total_ytd | currency:currencySymbol:2 }}</span></span></li>
+    <li ng-if="isThisReport('DAILY_TRANSACTIONS')">Revenue<span class="green"><span ng-bind-html="summaryCounts.grand_total_revenue | sntCurrency:this"></span></span></li>
+    <li ng-if="isThisReport('DAILY_PAYMENTS')">Payments<span class="green"><span ng-bind-html="summaryCounts.grand_total_revenue | sntCurrency:this"></span></span></li>
+    <li>MTD<span><span ng-bind-html="summaryCounts.grand_total_mtd | sntCurrency:this"></span></span></li>
+    <li>YTD<span><span ng-bind-html="summaryCounts.grand_total_ytd | sntCurrency:this"></span></span></li>
 </ul>
 
 <!-- Reservations By User -->
@@ -139,42 +139,42 @@
 <!-- Rate adjustment -->
 <ul ng-if="isThisReport( 'RATE_ADJUSTMENTS_REPORT' )" class="totals">
     <li>Total Adjusted Reservations<span>{{ summaryCounts.total_num_adjusted_reservations }}</span></li>
-    <li>Total Original Revenue<span><span class="currency">{{ summaryCounts.total_amt_original_revenue | currency:currencySymbol:2 }}</span></span></li>
-    <li>Total Adjusted Revenue<span><span class="currency">{{ summaryCounts.total_amt_adjusted_revenue | currency:currencySymbol:2 }}</span></span></li>
-    <li>Variance<span ng-class="{ red: summaryCounts.rate_adjustment_variance < 0 }"><span class="currency">{{ summaryCounts.rate_adjustment_variance | currency:currencySymbol:2 }}</span></span></li>
+    <li>Total Original Revenue<span><span ng-bind-html="summaryCounts.total_amt_original_revenue | sntCurrency:this"></span></span></li>
+    <li>Total Adjusted Revenue<span><span ng-bind-html="summaryCounts.total_amt_adjusted_revenue | sntCurrency:this"></span></span></li>
+    <li>Variance<span ng-class="{ red: summaryCounts.rate_adjustment_variance < 0 }"><span ng-bind-html="summaryCounts.rate_adjustment_variance | sntCurrency:this"></span></span></li>
 </ul>
 
 <!-- Daily production by rate report -->
 <ul ng-if="isThisReport('DAILY_PRODUCTION_RATE')" class="totals">
-    <li>Total Revenue<span>{{ summaryCounts.total_revenue | currency:currencySymbol:2 }}</span></li>
-    <li>ADR<span><span class="currency">{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></span></li>
-    <li>Room Revenue<span><span class="currency">{{ summaryCounts.room_revenue | currency:currencySymbol:2 }}</span></span></li>
+    <li>Total Revenue<span><span ng-bind-html="summaryCounts.total_revenue | sntCurrency:this"></span></li>
+    <li>ADR<span><span ng-bind-html="summaryCounts.adr | sntCurrency:this"></span></span></li>
+    <li>Room Revenue<span><span ng-bind-html="summaryCounts.room_revenue | sntCurrency:this"></span></span></li>
 </ul>
 
 <!-- Daily production report -->
 <ul ng-if="isThisReport('DAILY_PRODUCTION_ROOM_TYPE')" class="totals">
-    <li>Forecast Room Revenue<span><span class="currency">{{ summaryCounts.rate_revenue | currency:currencySymbol:2 }}</span></span></li>
-    <li>ADR<span><span class="currency">{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></span></li>
-    <li>Actual Room Revenue<span><span class="currency">{{ summaryCounts.actual_revenue | currency:currencySymbol:2 }}</span></span></li>
+    <li>Forecast Room Revenue<span><span ng-bind-html="summaryCounts.rate_revenue | sntCurrency:this"></span></span></li>
+    <li>ADR<span><span ng-bind-html="summaryCounts.adr | sntCurrency:this"></span></span></li>
+    <li>Actual Room Revenue<span><span ng-bind-html="summaryCounts.actual_revenue | sntCurrency:this"></span></span></li>
 </ul>
 
 <!-- Daily production by demographics -->
 <ul ng-if="isThisReport( 'DAILY_PRODUCTION_DEMO' )" class="totals">
-    <li>Forecast Revenue<span><span class="currency">{{ summaryCounts.future_revenue | currency:currencySymbol:2 }}</span></span></li>
-    <li>ADR<span><span class="currency">{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></span></li>
-    <li>Actual Room Revenue<span><span class="currency">{{ summaryCounts.rate_revenue | currency:currencySymbol:2 }}</span></span></li>
+    <li>Forecast Revenue<span><span ng-bind-html="summaryCounts.future_revenue | sntCurrency:this"></span></span></li>
+    <li>ADR<span><span ng-bind-html="summaryCounts.adr | sntCurrency:this"></span></span></li>
+    <li>Actual Room Revenue<span><span ng-bind-html="summaryCounts.rate_revenue | sntCurrency:this"></span></span></li>
 </ul>
 
 <!-- Guest Balance Report -->
 <ul ng-if="isThisReport( 'GUEST_BALANCE_REPORT' )" class="totals">
     <li>Records<span>{{ summaryCounts.records }}</span></li>
-    <li>Balance Amount<span class="red"><span class="currency">{{ summaryCounts.balance_amount | currency:currencySymbol:2 }}</span></span></li>
+    <li>Balance Amount<span class="red"><span ng-bind-html="summaryCounts.balance_amount | sntCurrency:this"></span></span></li>
 </ul>
 
 <!-- Guest Balance Report -->
 <ul ng-if="isThisReport( 'COMPANY_TA_TOP_PRODUCERS' )" class="totals">
-    <li>Total Revenue<span><span class="currency">{{ summaryCounts.total_revenue | currency:currencySymbol:2 }}</span></span></li>
-    <li>Room Revenue<span><span class="currency">{{ summaryCounts.room_revenue | currency:currencySymbol:2 }}</span></span></li>
+    <li>Total Revenue<span><span ng-bind-html="summaryCounts.total_revenue | sntCurrency:this"></span></span></li>
+    <li>Room Revenue<span><span ng-bind-html="summaryCounts.room_revenue | sntCurrency:this"></span></span></li>
     <li>Reservations<span>{{ summaryCounts.reservations }}</span></li>
     <li>Nights<span>{{ summaryCounts.nights }}</span></li>
 </ul>
@@ -184,32 +184,42 @@
     <li>Charge Type<span>{{ appliedFilter.chargeTypes.join(' ') }}</span></li>
     <li ng-if="appliedFilter.users.length > 1">Users<span>Multiple</span></li>
     <li ng-if="appliedFilter.users.length == 1">Users<span>{{ appliedFilter.users.join(' ') }}</span></li>
-    <li>Total Adjustments<span class="purple"><span class="currency">{{ summaryCounts.total_adjustments_amount | currency:currencySymbol:2 }}</span></span></li>
-    <li>Total Deleted Charges<span class="red"><span class="currency">{{ summaryCounts.total_deleted_charges_amount | currency:currencySymbol:2 }}</span></span></li>
+    <li>Total Adjustments<span class="purple"><span ng-bind-html="summaryCounts.total_adjustments_amount | sntCurrency:this"></span></span></li>
+    <li>Total Deleted Charges<span class="red"><span ng-bind-html="summaryCounts.total_deleted_charges_amount | sntCurrency:this"></span></span></li>
+</ul>
+
+<!-- Financial Transactions - Payment Report -->
+<ul ng-if="isThisReport( 'FINANCIAL_TRANSACTION_PAYMENT_REPORT' )" class="totals">
+    <li>Total<span ng-bind-html="summaryCounts.total_payment | sntCurrency:this"></span></li>
+</ul>
+
+<!-- Financial Transactions - Revenue Report -->
+<ul ng-if="isThisReport( 'FINANCIAL_TRANSACTION_REVENUE_REPORT' )" class="totals">
+    <li>Total<span ng-bind-html="summaryCounts.total_revenue | sntCurrency:this"></span></li>
 </ul>
 
 <!-- Guest/Account Deposit Balance Summary Report -->
 <ul ng-if="isThisReport( 'DEPOSIT_SUMMARY' )" class="totals">
-    <li ng-hide="appliedFilter.guestOrAccount == 'Account'">Total Guest<span><span class="currency">{{summaryCounts.total_guest_deposit_balance | number: 2 }}</span></span></li>
+    <li ng-hide="appliedFilter.guestOrAccount == 'Account'">Total Guest<span><span ng-bind-html="summaryCounts.total_guest_deposit_balance | sntCurrency:this"></span></span></li>
     <!-- Hide if not showing Guest -->
-    <li ng-hide="appliedFilter.guestOrAccount == 'Guest'">Total Account<span><span class="currency">{{summaryCounts.total_group_deposit_balance | number: 2 }}</span></span></li>
+    <li ng-hide="appliedFilter.guestOrAccount == 'Guest'">Total Account<span><span ng-bind-html="summaryCounts.total_group_deposit_balance | sntCurrency:this"></span></span></li>
     <!-- Hide if not showing Group -->
-    <li>Total Deposit Balance<span class="green"><span class="currency">{{summaryCounts.total_deposit_balance | number: 2 }}</span></span></li>
+    <li>Total Deposit Balance<span class="green"><span ng-bind-html="summaryCounts.total_deposit_balance | sntCurrency:this"></span></span></li>
 </ul>
 
 <!-- Guest/Account Deposit Balance Summary Report -->
 <ul ng-if="isThisReport( 'A/R_AGING' )" class="totals">
-    <li>Payments<span><span class="currency">{{summaryCounts.payments}}</span></span></li>
-    <li>Total Open Balance<span><span class="green"><span class="currency">{{summaryCounts.total_ar_balance | currency:currencySymbol:2 }}</span></span></span></li>
-    <li>0-30 Days<span><span class="currency">{{summaryCounts.days_0_30_sum | currency:currencySymbol:2 }}</span></span>
+    <li>Payments<span><span ng-bind-html="summaryCounts.payments | sntCurrency:this"></span></span></li>
+    <li>Total Open Balance<span><span class="green"><span ng-bind-html="summaryCounts.total_ar_balance | sntCurrency:this"></span></span></span></li>
+    <li>0-30 Days<span><span ng-bind-html="summaryCounts.days_0_30_sum | sntCurrency:this"></span></span>
     </li>
-    <li>31-60 Days<span><span class="currency">{{summaryCounts.days_31_60_sum | currency:currencySymbol:2 }}</span></span>
+    <li>31-60 Days<span><span ng-bind-html="summaryCounts.days_31_60_sum | sntCurrency:this"></span></span>
     </li>
-    <li>61-90 Days<span><span class="currency">{{summaryCounts.days_61_90_sum | currency:currencySymbol:2 }}</span></span>
+    <li>61-90 Days<span><span ng-bind-html="summaryCounts.days_61_90_sum | sntCurrency:this"></span></span>
     </li>
-    <li>91-120 Days<span><span class="currency">{{summaryCounts.days_91_120_sum | currency:currencySymbol:2 }}</span></span>
+    <li>91-120 Days<span><span ng-bind-html="summaryCounts.days_91_120_sum | sntCurrency:this"></span></span>
     </li>
-    <li>120+ Days<span><span class="currency">{{summaryCounts.days_120_plus_sum | currency:currencySymbol:2 }}</span></span>
+    <li>120+ Days<span><span ng-bind-html="summaryCounts.days_120_plus_sum | sntCurrency:this"></span></span>
     </li>
 </ul>
 <!-- Web check in -->
@@ -255,7 +265,7 @@
 </ul>
 <!-- Yearly vat report -->
 <ul ng-if="isThisReport( 'YEARLY_TAX')" class="totals">
-    <li>Total Gross Revenue<span><span class="currency">{{currencySymbol}}</span>{{ summaryCounts.total_revenue  }}</span></li>
+    <li>Total Gross Revenue<span><span ng-bind-html="summaryCounts.total_revenue | sntCurrency:this"></span></li>
     <li>Total Tax<span>{{ summaryCounts.total_vat }}</span>
     </li>  
 </ul>
@@ -263,7 +273,7 @@
 <!-- Cancellation & No show report -->
 <ul ng-if="isThisReport( 'CANCELLATION_NO_SHOW' )" class="totals">
     <li>Total Open Balance<span ng-class="{'red': toFloat(summaryCounts.total_balance) !== 0.00, 'green': toFloat(summaryCounts.total_balance) === 0.00}">
-        <span class="currency">{{ summaryCounts.total_balance | currency:currencySymbol:2 }}</span>
+        <span ng-bind-html="summaryCounts.total_balance | sntCurrency:this"></span>
     </li>
 </ul>
 

@@ -18,32 +18,32 @@
                             <div class="select">
                                 <select id="room-type-1-select"  
                                     ng-model="row.room_type_id" ng-change="changeBestAvailableRate(row)" 
-                                    iscroll-stop-propagation ng-class="{'placeholder': isEmpty(row.room_type_id)}" > <!-- Add class="placeholder" if value="" is selected -->
+                                    iscroll-stop-propagation ng-class="{'placeholder': isEmpty(row.room_type_id)}" ng-disabled="shouldDisableRateEdit(row)"> <!-- Add class="placeholder" if value="" is selected -->
                                     <option value="" translate 
                                     ng-selected="isEmpty(row.room_type_id)" >SELECT_ROOM_TYPE</option>
-                                    <option ng-hide="hideRoomType(row.room_type_id, roomType)" ng-repeat="roomType in roomTypes" value="{{roomType.room_type_id}}" ng-selected="roomType.room_type_id==row.room_type_id" >
+                                    <option ng-hide="hideRoomType(row.room_type_id, roomType)" ng-repeat="roomType in roomTypes" value="{{roomType.room_type_id}}"  ng-selected="roomType.room_type_id==row.room_type_id" >
                                         {{roomType.room_type_name}}
                                     </option>
                                 </select>
-                            </div>
-                        </div>
+                          </div>
+                       </div>
                         <div class="entry">
                             <label for="room-type-1-bar" translate ng-hide="$index>0">BAR_SINGLE</label>
                             <input id="room-type-1-bar" ng-model="row.best_available_rate_amount" type="text" readonly />
                         </div>
                         <div class="entry">
                             <label for="room-type-1-single" translate ng-hide="$index>0">SINGLE_OCCUPANCY</label>
-                            <input id="room-type-1-single" ng-model="row.single_rate" ng-if="groupConfigData.summary.rate == -1" type="text" ng-disabled="groupConfigData.summary.is_cancelled" />
+                            <input id="room-type-1-single" ng-model="row.single_rate" ng-if="groupConfigData.summary.rate == -1" type="text" ng-disabled="shouldDisableRateEdit(row)" />
                             <input id="room-type-1-single" value="{{parseCurrency(row.single_rate)}}" ng-if="groupConfigData.summary.rate != -1" type="text" readonly />
                         </div>
                         <div class="entry">
                             <label for="room-type-1-double" translate ng-hide="$index>0">DOUBLE_OCCUPANCY</label>
-                            <input id="room-type-1-double" ng-model="row.double_rate" ng-if="groupConfigData.summary.rate == -1" type="text" ng-disabled="groupConfigData.summary.is_cancelled" />
+                            <input id="room-type-1-double" ng-model="row.double_rate" ng-if="groupConfigData.summary.rate == -1" type="text" ng-disabled="shouldDisableRateEdit(row)" />
                             <input id="room-type-1-double" value="{{parseCurrency(row.double_rate)}}" ng-if="groupConfigData.summary.rate != -1" type="text" readonly/>
                         </div>
                         <div class="entry">
                             <label for="room-type-1-plus" translate ng-hide="$index>0">ONE_MORE_ADULT</label>
-                            <input id="room-type-1-plus" ng-model="row.extra_adult_rate" ng-if="groupConfigData.summary.rate == -1" type="text" ng-disabled="groupConfigData.summary.is_cancelled" />
+                            <input id="room-type-1-plus" ng-model="row.extra_adult_rate" ng-if="groupConfigData.summary.rate == -1" type="text" ng-disabled="shouldDisableRateEdit(row)" />
                             <input id="room-type-1-plus" value="{{parseCurrency(row.extra_adult_rate)}}" ng-if="groupConfigData.summary.rate != -1" type="text" readonly/>
                         </div>
                     </div>

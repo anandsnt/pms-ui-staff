@@ -110,7 +110,7 @@
 									
 									<div class="price" ng-show="isBalanceShown(billTab.is_rate_suppressed) && !billTab.is_void_bill && !billTab.is_voided">
 										<span translate>BILL #{{billTab.bill_number}}</span>
-										<span class="currency">{{currencySymbol}}</span>{{billTab.total_amount}}
+										<span ng-bind-html="billTab.total_amount | sntCurrency:this"></span>
 									</div>
 									<div class="price" ng-show="!isBalanceShown(billTab.is_rate_suppressed) && !billTab.is_void_bill && !billTab.is_voided">
 										<span translate>BILL #{{billTab.bill_number}}</span>
@@ -164,7 +164,7 @@
 											Add Charge
 										</button>
 										<button ng-show="isStandAlone && reservationBillData.reservation_status === 'CHECKEDIN' &&
-									!reservationBillData.is_advance_bill && !reservationBillData.is_hourly" type="button" class="button with-icon green" click-touch="clickedAdvanceBill()"> <!-- Click opens {modals/alerts/advanced-bill.html} -->
+									!reservationBillData.is_advance_bill && !reservationBillData.is_hourly && !reservationBillData.is_allowance_attached" type="button" class="button with-icon green" click-touch="clickedAdvanceBill()"> <!-- Click opens {modals/alerts/advanced-bill.html} -->
 											<span class="icons icon-charge"></span>
 											Advanced Bill
 										</button>
@@ -183,7 +183,7 @@
 											<span class="date"> {{days.date | date:'dd'}} </span>
 											<span class="guest-status check-in small-icon" ng-show="days.date == reservationBillData.checkin_date" translate>CHECK_IN</span>
 											<span class="price" ng-show="!isBalanceShown(days.is_rate_suppressed)">{{'SUPPRESSED_RATES_TEXT' | translate}}</span>
-											<span class="price" ng-show="isBalanceShown(days.is_rate_suppressed)"><span class="currency">{{currencySymbol}}</span>{{days.amount}}</span>
+											<span class="price" ng-show="isBalanceShown(days.is_rate_suppressed)"><span ng-bind-html="days.amount | sntCurrency:this"></span></span>
 										</div>
 									</li>
 
@@ -194,7 +194,7 @@
 											<span class="price" ng-show="addons.package_type != 'PACKAGES'">{{addons.package_type}}</span>
 											<span class="price" ng-show="addons.package_type == 'PACKAGES' && caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount) !='MULTI' && caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount) !='INCL'"><span class="currency">{{currencySymbol}}</span>{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span>
 											<span class="price" ng-show="addons.package_type == 'PACKAGES' && (caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount) =='MULTI' || caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount) =='INCL')">{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span>
-											<span class="price" ng-hide="addons.package_type == 'PACKAGES'"><span class="currency">{{currencySymbol}}</span>{{addons.amount}}</span>
+											<span class="price" ng-hide="addons.package_type == 'PACKAGES'"><span ng-bind-html="addons.amount | sntCurrency:this"></span></span>
 										</div>
 									</li>
 
@@ -213,7 +213,7 @@
 											<span class="expense"> {{groupItems.title}} </span>
 											<!-- CICO-31516 - show if SR -->
 											<span class="price" ng-if="!isBalanceShown(billData.is_rate_suppressed)">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
-											<span class="price" ng-if="isBalanceShown(billData.is_rate_suppressed)"><span class="currency">{{currencySymbol}}</span>{{groupItems.amount}}</span>
+											<span class="price" ng-if="isBalanceShown(billData.is_rate_suppressed)"><span ng-bind-html="groupItems.amount | sntCurrency:this"></span></span>
 										</div>
 									</li>
 								</ul>
@@ -225,8 +225,8 @@
 		                        <a ng-click="showAllowanceDetails(currentActiveBill)" class="toggle">
 		                            <span class="day" translate>
 		                            	ALLOWANCES
-		                            </span>
-		                            <span class="price">{{ currencySymbol }}&nbsp;{{ reservationBillData.bills[currentActiveBill].allowance_data.amount }}</span>
+									</span>
+		                            <span class="price"><span ng-bind-html="reservationBillData.bills[currentActiveBill].allowance_data.amount | sntCurrency:this"></span></span>
 		                        </a>
                     		</div>
 
@@ -238,7 +238,7 @@
 										<span translate>+ FEES</span>
 									</div>
 									<div class="price" ng-show="isBalanceShown(reservationBillData.is_rate_suppressed_present_in_stay_dates)">
-										<span class="currency">{{currencySymbol}}</span>{{billItem.amount | number: precisonTwo}}
+										<span ng-bind-html="billItem.amount | sntCurrency:this"></span>
 										<span translate>+ <span translate>FEES</span>
 									</div>
 									<div class="rate">
@@ -273,13 +273,13 @@
 									<tbody>
 										<tr ng-repeat="expense in billAddons.expense_details">
 											<td class="price" ng-show="expense.is_inclusive" translate> INCL </td>
-											<td class="price" ng-show="!expense.is_inclusive"> <span class="currency">{{currencySymbol}}</span>{{expense.price | number: precisonTwo}} </td>
+											<td class="price" ng-show="!expense.is_inclusive"> <span ng-bind-html="expense.price | sntCurrency:this"></span> </td>
 											<td> {{expense.package}} </td>
 											<td> {{expense.quantity}} </td>
 											<!--CICO-29775-->
 											<td > {{expense.amount_type}} {{expense.post_type}}</td>
 											<td class="price" ng-show="expense.is_inclusive" translate> INCL </td>
-											<td class="price" ng-show="!expense.is_inclusive"> <span class="currency">{{currencySymbol}}</span>{{expense.effective_quantity*expense.price  | number: precisonTwo}} </td>
+											<td class="price" ng-show="!expense.is_inclusive"> <span ng-bind-html="expense.effective_quantity*expense.price | sntCurrency:this"></span> </td>
 										</tr>
 									</tbody>
 								</table>
@@ -303,7 +303,7 @@
 													{{'SUPPRESSED_RATES_TEXT' | translate}}
 											</td>
 											<td class="price"
-												ng-if="isBalanceShown(billData.is_rate_suppressed)"> <span class="currency">{{currencySymbol}}</span>{{billGroupExpense.expense | number: precisonTwo}}
+												ng-if="isBalanceShown(billData.is_rate_suppressed)"> <span ng-bind-html="billGroupExpense.expense | sntCurrency:this"></span>
 											</td>
 											<td> {{billGroupExpense.location}} </td>
 											<td> {{billGroupExpense.date | date:dateFormat}} </td>
@@ -353,7 +353,7 @@
 											<span class="icons time check-in rotate-down"></span>
 										</td>
 										<td class="amount">
-											<span class="currency">{{ currencySymbol }}</span>{{ allowanceEntry.amount | number:2 }}
+											<span ng-bind-html="allowanceEntry.amount | sntCurrency:this"></span>
 										</td>
 										<td class="column-allowance" ng-if="allowanceEntry.type !== 'CONSUMED' && allowanceEntry.type !== 'UNUSED ALLOWANCE / ALLOWANCE LOSS'">
 										</td>

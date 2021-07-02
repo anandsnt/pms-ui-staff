@@ -229,7 +229,7 @@
 
 		<!-- Minimum revenue -->
 		<div ng-if="appliedFilter.hasMinRevenue">
-			Minimum Revenue: <span><span class="currency">{{ appliedFilter.hasMinRevenue | currency:currencySymbol:2 }}</span></span>
+			Minimum Revenue: <span><span ng-bind-html="appliedFilter.hasMinRevenue | sntCurrency:this"></span></span>
 		</div>
 
 

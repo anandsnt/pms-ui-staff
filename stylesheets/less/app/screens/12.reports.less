@@ -4057,6 +4057,57 @@
                 }
             }
         }
+        
+        &.journal-content {
+            position: relative;
+            padding: 0 20px;
+            .calc-height(100, 50);
+
+            > .wrapper { padding: 20px 0; }
+
+            .journal-grid {
+                .grid-header {
+                    &.payment {
+                        padding: 0 0 0 10px;
+
+                        .code {
+                            padding-right: 0;
+                        }
+                    }
+                }
+
+
+                .payment-title {
+                    .number,
+                    .code {
+                        padding-right: 0;
+                    }
+                }
+
+                .grid-items {
+                    border-spacing: 0;
+
+                }
+
+                .grid-group {
+                    > .toggle {
+                        padding-right: 20px;
+                    }
+                }
+
+                .grid-charge {
+                    > .toggle {
+                        padding-right: 10px;
+                    }
+                }
+
+                .toggle {
+                    .value {
+                        padding-right: 0;
+                    }
+                }
+            }
+        }
 
         &.journal-content {
             position: relative;

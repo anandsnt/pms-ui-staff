@@ -16,8 +16,8 @@
         <span ng-repeat="resultItem in results">
             <ul class="card-meta">
                 <li class="name">Deposit Transactions on {{ resultItem.transaction_date | date : dateFormat }}</li>
-                <li class="balance green"><span class="currency">{{resultItem.total_credit | number: 2 }}</span></li>
-                <li class="balance red"><span class="currency">{{resultItem.total_debit | number: 2 }}</span></li>
+                <li class="balance green"><span ng-bind-html="resultItem.total_credit | sntCurrency:this"></span></li>
+                <li class="balance red"><span ng-bind-html="resultItem.total_debit | sntCurrency:this"></span></li>
             </ul>
             <table class="balance-reports deposit-balance-summary">
 

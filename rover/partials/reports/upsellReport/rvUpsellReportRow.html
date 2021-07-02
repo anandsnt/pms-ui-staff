@@ -7,8 +7,8 @@
     <td>{{ each[5] }}</td>
     <td>{{ each[6] }}</td>
     <td>{{ each[7] }}</td>
-    <td><span class="currency">{{ each[8] | currency:currencySymbol:2 }}</span></td>
-    <td><strong><span class="currency">{{ each[9] | currency:currencySymbol:2 }}</span></strong></td>
+    <td><span ng-bind-html="each[8] | sntCurrency:this"></span></td>
+    <td><strong><span ng-bind-html="each[9] | sntCurrency:this"></span></strong></td>
     <td>{{ each[10] }}</td>
-    <td><span class="currency">{{ each[11] | currency:currencySymbol:2 }}</span></td>
+    <td><span ng-bind-html="each[11] | sntCurrency:this"></span></td>
 </tr>
