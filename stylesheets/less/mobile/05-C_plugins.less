@@ -38,22 +38,19 @@
 
         /* Deposit popup ***/
         &.deposit-required {
+            padding: 20px 0 !important;
 
             .payment-form {
                 position: relative;
                 padding: 0 20px;
-                margin-left: -10px;
-                width: calc(~'100% + 20px');
-                max-height: calc(~'100% - 54px');
+                max-height: calc(~'100% - 50px');
 
                 .wrapper {
                     padding: 0;
                 }
 
-                
                 .notice {
                     .actions {
-                        padding-bottom: 20px;
 
                         .button {
                             width: 100%;
@@ -64,6 +61,20 @@
                             }
                         }
                     }
+                }
+
+                .actions {
+                    margin-top: 10px;
+
+                    .button {
+                        line-height: 50px;
+                    }
+                }
+
+                &:not(.scrollable) {
+                    overflow-y: auto;
+                    -webkit-overflow-scrolling: touch;
+                    .calc-height(100, 50);
                 }
             }
         }
