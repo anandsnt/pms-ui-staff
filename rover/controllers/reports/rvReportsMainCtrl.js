@@ -1892,7 +1892,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 var selectedItem = report['hasTransactionCategory']['selected'] ? report['hasTransactionCategory']['selected'] : report['hasTransactionCategory']['data'][0];
 
                 key = reportParams['TRANSACTION_CATEGORY'];
-                params[key] = selectedItem.id;
+                params[key] = selectedItem.value;
                 if (changeAppliedFilter) {
                     $scope.appliedFilter.transaction_category = selectedItem.value;
                 }
