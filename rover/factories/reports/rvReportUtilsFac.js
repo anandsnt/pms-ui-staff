@@ -1943,6 +1943,10 @@ angular.module('reportsModule')
                                     this.data = enabled;
                                 }
                             };
+                            
+                            if (report['title'] === reportNames['FINANCIAL_TRANSACTION_REVENUE_REPORT']) {
+                                report.hasByChargeCode.options.key = 'description';
+                            }
                         }
                     });
 
