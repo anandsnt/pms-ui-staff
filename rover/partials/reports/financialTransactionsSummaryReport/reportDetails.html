@@ -1,0 +1,103 @@
+<!-- Report content -->
+<div ng-show="hasNoResults" class="report-content no-content">
+    <div class="info">
+        <span class="icon-no-content icon-reports"></span>
+        <strong class="h1">No reports found</strong>
+        <span class="h2">Try changing search criteria or modify dates</span>
+    </div>
+</div>
+
+<section id="report-details" class="content reports-wrapper" role="main">
+
+    <!-- Report content -->
+    <div id="report-content" class="report-content journal-content scrollable" ng-hide="hasNoResults" ng-iscroll="report-details-scroll">
+        <div class="wrapper">
+            <div ng-repeat="(title,summary) in results">
+                
+                <div class="journal-summary" ng-class="{first: $first}">
+                    <h3 translate>{{title}}</h3>
+                    <ul>
+                        <li>Opening<span ng-bind-html="summary.opening_balance | sntCurrency:this"></span></li>
+                        <li>Debit<span ng-bind-html="summary.debit_sum | sntCurrency:this"></span></li>
+                        <li>Credit<span ng-bind-html="summary.credit_sum | sntCurrency:this"></span></li>
+                        <li>Closing<span ng-bind-html="summary.closing_balance | sntCurrency:this"></span></li>
+                    </ul>
+                </div>
+
+                <!-- Remove .hidden when showing expanded view -->
+                <div class="journal-grid print-details" ng-class="{hidden: appliedFilter.collapsed_or_expanded === 'Collapsed'}">
+                    
+                    <table class="grid-items">
+                        <thead>
+                            <tr>
+                                <th>Room</th>
+                                <th class="cell-reservation">Reservation</th>
+                                <th>Invoice / Folio No. </th>
+                                <th>Date & Time</th>
+                                <th class="cell-details">Details</th>
+                                <th class="cell-charges">Charge</th>
+                                <th class="align-right">Debit</th>
+                                <th class="align-right">Credit</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody ng-repeat="trans in summary.transactions">
+                            <tr>
+                                <td>{{trans.room}}</td>
+                                <td>
+                                    <strong class="cell-row">{{trans.name}}</strong>
+                                    <span class="cell-row">{{trans.reservation_number}}</span>
+                                    <em class="cell-row grey-text" ng-if="accompany_guest_name">{{trans.accompany_guest_name}}</em>
+                                </td>
+                                <td>{{trans.invoice_or_folio}}</td>
+                                <td>
+                                    <span class="cell-row">{{trans.date}}</span>
+                                    <span class="cell-row grey-text">{{trans.time}}</span>
+                                </td>
+                                <td>
+                                    <span class="cell-row" ng-bind-html="trans.details"></span>
+                                    
+                                    <span class="converted-currency" ng-if="trans.converted_currency">
+                                        <span ng-bind-html="trans.debit_converted_amount | sntCurrency:this:converted_currency"></span>
+                                    </span>
+                                    <span class="converted-currency smaller" ng-if="trans.conversion_rate">
+                                        <span>{{trans.conversion_rate}}</span>
+                                    </span>
+
+                                </td>
+                                <td>
+                                    <strong class="cell-row">{{trans.charge_code}}</strong>
+                                    <span class="cell-row grey-text">{{trans.charge_description}}</span>
+                                </td>
+                                <td class="align-right">
+                                    <span ng-bind-html="trans.debit | sntCurrency:this"></span>
+                                </td>
+                                <td class="align-right">
+                                    <span ng-bind-html="trans.credit | sntCurrency:this"></span>    
+                                </td>
+                            </tr>
+                        
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="journal-summary totals">
+                <h3>Totals</h3>
+                <ul>
+                <li>
+                    <span ng-bind-html="(results.deposit_balance.opening_balance + results.guest_balance.opening_balance + results.ar_balance.opening_balance) | sntCurrency:this"></span>
+                </li>
+                <li>                    
+                    <span ng-bind-html="(results.deposit_balance.debit_sum + results.guest_balance.debit_sum + results.ar_balance.debit_sum) | sntCurrency:this"></span>
+                </li>
+                <li>
+                    <span ng-bind-html="(results.deposit_balance.credit_sum + results.guest_balance.credit_sum + results.ar_balance.credit_sum) | sntCurrency:this"></span>
+                </li>
+                <li>                    
+                    <span ng-bind-html="(results.deposit_balance.closing_balance + results.guest_balance.closing_balance + results.ar_balance.closing_balance) | sntCurrency:this"></span>
+                </li>
+                </ul>
+                </div> 
+        </div>
+    </div>   
+</section>

@@ -4109,6 +4109,71 @@
             }
         }
 
+        &.journal-content {
+            position: relative;
+            padding: 0 20px;
+            .calc-height(100, 50);
+
+            > .wrapper { padding: 20px 0; }
+
+            .journal-grid {
+                .grid-header {
+                    &.payment {
+                        padding: 0 0 0 10px;
+
+                        .code {
+                            padding-right: 0;
+                        }
+                    }
+                }
+
+
+                .payment-title {
+                    .number,
+                    .code {
+                        padding-right: 0;
+                    }
+                }
+
+                .grid-items {
+                    border-spacing: 0;
+
+                }
+
+                .grid-group {
+                    > .toggle {
+                        padding-right: 20px;
+                    }
+                }
+
+                .grid-charge {
+                    > .toggle {
+                        padding-right: 10px;
+                    }
+                }
+
+                .toggle {
+                    .value {
+                        padding-right: 0;
+                    }
+                }
+
+                .journal-summary {
+                    .toggle {
+                        background: transparent;
+                        justify-content: flex-start;
+                    }
+
+                    &.totals {
+                        h3 {
+                            text-align: left;
+                            padding: 13px 10px;
+                        }
+                    }
+                }
+            }
+        }
+
         &.card-authorization-check {
             .grid-footer li {
                 float: right !important;

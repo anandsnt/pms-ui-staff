@@ -255,6 +255,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
                 case reportNames['FINANCIAL_TRANSACTION_REVENUE_REPORT']:
                 case reportNames['FINANCIAL_TRANSACTION_PAYMENT_REPORT']:
+                case reportNames['FINANCIAL_TRANSACTION_SUMMARY_REPORT']:
                 case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
                     $scope.hasPagination = false;
                     break;
@@ -791,6 +792,13 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.detailsTemplateUrl = '/assets/partials/reports/compayTaTopProducers/rvCompayTaTopProducers.html';
                     break;
 
+                case reportNames['FINANCIAL_TRANSACTION_SUMMARY_REPORT']:
+                    $scope.hasReportTotals = true;
+                    $scope.showReportHeader = true;
+                    $scope.showPrintOption = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/financialTransactionsSummaryReport/reportDetails.html';
+                    break;
+    
                 case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
                     $scope.hasReportTotals = true;
                     $scope.showReportHeader = true;
