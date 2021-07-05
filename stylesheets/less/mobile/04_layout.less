@@ -2228,19 +2228,24 @@ body {
             position: absolute;
             bottom: 0;
             left: 0;
+            padding: 0 10px;
+            display: flex;
+            justify-content: space-around;
             background: @white;
             .box-shadow(0 -1px 1px rgba(0,0,0,.2));
             .size(50px, 100%);
-            .float;
-            #flexbox > .display();
+
+            .back-button,
+            .button {
+                margin-top: 5px;
+            }
 
             .button {
                 position: relative;
-                margin: 0 auto;
-                clear: none;
-                line-height: 48px;
-                width: 50%;
-                .pull-left;
+                line-height: 40px;
+                height: 40px;
+                padding: 0 10px;
+                flex: 1;
                 .box-shadow(none);
                 #border-radius > .rounded(0);
                 .show;
@@ -2255,30 +2260,10 @@ body {
                     .calc-height(100, 20);
                     .show;
                 }
-
-                &:first-child,
-                &.hidden + .button:not(.hidden) {
-                    &:after { .hide; }
-                }
             }
 
             &.inline {
-                display: block;
-                text-align: center;
-                padding: 10px 0;
-                .size(60px, 100%);
-
-                .button {
-                    float: none;
-                    width: auto;
-                    display: inline-block;
-                    line-height: 40px;
-                    height: 40px;
-
-                    &.blank {
-                        padding: 0 40px;
-                    }
-                }
+                display: flex;
             }
         }
 
