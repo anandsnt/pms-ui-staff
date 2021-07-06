@@ -1658,6 +1658,7 @@ sntRover.controller('reservationDetailsController',
 					console.warn("There should be atleast one credit card needed");
 					$scope.closeDialog();
 				}
+				$scope.showRightContentForMobile = false;
 			};
 
 			var fetchCreditCardAuthInfoFaliure = function( errorMessage ) {
@@ -1908,6 +1909,7 @@ sntRover.controller('reservationDetailsController',
 	* Method to invoke while clicking on cancel btn in release confirm section
 	*/
      $scope.onCancelClick = function() {
+		$scope.showRightContentForMobile = false;
      	$scope.hasShownReleaseConfirm = false;
      };
 
