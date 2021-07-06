@@ -81,7 +81,7 @@
 
             <!-- Remove .hidden if clicked on an enhancement that can be changed -->
             <!-- Add .hidden if clicked again on the same enhancement to show initial screen -->
-            <div class="content-dates" ng-show="selectedPurchesedAddon">
+            <div class="content-dates" ng-show="selectedPurchesedAddon" ng-class="{'hide-on-mobile': !showRightContentForMobile}">
                 <span class="h2 message" ng-if="selectedPurchesedAddon.name">{{selectedPurchesedAddon.name | limitTo: selectedPurchesedAddon.nameCharLimit}}{{selectedPurchesedAddon.name.length > 23 ? '...': ''}}</span>
 
                 <!-- <span class="text" ng-if="selectedPurchesedAddon.description">{{selectedPurchesedAddon.description | limitTo: 70}}{{selectedPurchesedAddon.description.length >= 70 ? '...': ''}}</span> -->
