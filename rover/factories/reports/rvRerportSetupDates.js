@@ -108,7 +108,7 @@ angular.module('reportsModule')
 							'untilDate': getDates.yesterday
 						},
 						'FINANCIAL_TRANSACTION_SUMMARY_REPORT': {
-							'fromDate': getDates.yesterday
+							'singleValueDate': getDates.yesterday
 						},
             			/**/
             			'DEFAULT': {
