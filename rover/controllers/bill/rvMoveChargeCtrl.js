@@ -228,9 +228,10 @@ sntRover.controller('RVMoveChargeCtrl',
 
 			var params = {
 				 "from_bill": $scope.moveChargeData.fromBillId,
-   				 "to_bill": $scope.targetBillId,
-    			 "financial_transaction_ids": $scope.moveChargeData.selectedTransactionIds,
-				 "is_move_all_charges": $scope.moveChargeData.isMoveAllCharges
+   				"to_bill": $scope.targetBillId,
+    			"financial_transaction_ids": $scope.moveChargeData.selectedTransactionIds,
+				  "is_move_all_charges": $scope.moveChargeData.isMoveAllCharges,
+					"date": $scope.moveChargeData.date
 			};
 			var chargesMovedSuccess = function(response) {
 				$scope.$emit("hideLoader");
