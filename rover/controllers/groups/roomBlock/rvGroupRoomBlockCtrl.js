@@ -2681,6 +2681,14 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             $scope.callAPI(rvGroupConfigurationSrv.getRoomTypesOccupancyRateDetailsAndEventsCount, options);
         };
 
+        /**
+		 * To disable the bulk update option
+		 * @return {Boolean}
+		 */
+        $scope.shouldDisableBulkUpdateButton = function() {
+            return !!$scope.groupConfigData.summary.is_cancelled;
+        };
 
+        
     }
 ]);
