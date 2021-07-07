@@ -1697,6 +1697,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                 return;
             }
             $scope.isRoomViewActive = true;
+            $scope.hasRateChanged = false;
             setDatePickers();
             callInitialAPIs();
 
