@@ -302,6 +302,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.moveChargeData.fromBillId = billTabsData[$scope.currentActiveBill].bill_id;
 				$scope.moveChargeData.isMoveAllCharges = false;
 				$scope.moveChargeData.totalCount = $scope.transactionsDetails.bills[$scope.currentActiveBill].total_count;
+				$scope.moveChargeData.date = $scope.invoiceDate;
 
 				if (chargeCodes.length > 0) {
 					_.each(chargeCodes, function(chargeCode, index) {
