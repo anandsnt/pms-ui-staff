@@ -196,17 +196,20 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }, {
 		            title: "MENU_CREATE_RESERVATION",
 		            action: "rover.reservation.search",
-		            menuIndex: "createReservation"
+					menuIndex: "createReservation",
+					hideOnMobile: true
 		        }, {
 		            title: "MENU_ROOM_DIARY",
 		            action: 'rover.diary',
 		            // hidden: !isHourlyRateOn,
-		            menuIndex: 'diaryReservation'
+					menuIndex: 'diaryReservation',
+					hideOnMobile: true
 		        }, {
 		            title: "MENU_ROOM_DIARY",
 		            action: 'rover.nightlyDiary',
 		            // hidden: !isHourlyRateOn,
-		            menuIndex: 'nightlyDiaryReservation'
+					menuIndex: 'nightlyDiaryReservation',
+					hideOnMobile: true
 		        },  {
 		            title: "MENU_POST_CHARGES",
 		            action: "",
@@ -215,32 +218,37 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }, {
 		            title: "MENU_CASHIER",
 		            action: "rover.financials.journal({ id: 'CASHIER' })",
-		            menuIndex: "cashier"
+					menuIndex: "cashier",
+					hideOnMobile: true
 		        }, {
 		            title: "MENU_GUESTS",
 		            action: "rover.guest.search",
-		            menuIndex: "guests"
+					menuIndex: "guests"
 		        }, {
 		            title: "MENU_ACCOUNTS",
 		            action: "rover.accounts.search",
-		            menuIndex: "accounts"
+					menuIndex: "accounts",
+					hideOnMobile: true
 		        }, {
 	                title: "MENU_END_OF_DAY",
 	                action: "rover.endOfDay.starteod",
 	                actionPopup: false,
-	                menuIndex: "endOfDay"
+					menuIndex: "endOfDay",
+					hideOnMobile: true
             	}, {
 	                title: "MENU_SOCIAL_LOBBY",
 	                action: "rover.socialLobby",
 	                hidden: !isNeighboursEnabled(),
-	                menuIndex: "sociallobby"
+					menuIndex: "sociallobby",
+					hideOnMobile: true
             	}]
 		    }, {
 		        title: "MENU_GROUPS",
 		        // hidden: true,
 		        action: "",
 		        iconClass: "icon-groups",
-		        menuIndex: "menuGroups",
+				menuIndex: "menuGroups",
+				hideOnMobile: true,
 		        submenu: [{
 		            title: "MENU_CREATE_GROUP",
 		            action: "rover.groups.config({id:'NEW_GROUP'})",
@@ -263,7 +271,8 @@ angular.module('sntRover').service('rvMenuSrv',
 		        // hidden: true,
 		        action: "",
 		        iconClass: "icon-conversations",
-		        menuIndex: "conversations",
+				menuIndex: "conversations",
+				hideOnMobile: true,
 		        submenu: [{
 		            title: "MENU_SOCIAL_LOBBY",
 		            action: ""
@@ -296,7 +305,8 @@ angular.module('sntRover').service('rvMenuSrv',
 					title: "MENU_EVENTS",
 					action: "rover.houseEvents",
 					menuIndex: "events",
-					hidden: this.hideMenuOnPermission('EVENTS')			
+					hidden: this.hideMenuOnPermission('EVENTS'),
+					hideOnMobile: true
 		        }]
 		    }, {
 		        title: "MENU_HOUSEKEEPING",
@@ -312,13 +322,15 @@ angular.module('sntRover').service('rvMenuSrv',
 		            title: "MENU_TASK_MANAGEMENT",
 		            action: "rover.workManagement.start",
 		            menuIndex: "workManagement",
-		            hidden: !shouldShowTaskManagementInHKMenu()
+					hidden: !shouldShowTaskManagementInHKMenu(),
+					hideOnMobile: true
 
 		        }, {
 		            title: "MENU_MAINTAENANCE",
 		            action: "",
 		            menuIndex: "maintanance",
-		            hidden: true
+					hidden: true,
+					hideOnMobile: true
 		        }]
 		    }, {
 		        title: "MENU_FINANCIALS",
@@ -336,7 +348,8 @@ angular.module('sntRover').service('rvMenuSrv',
 					menuIndex: "ccTransactions",
 					actionParams: {
 						isRefresh: true
-					}
+					},
+					hideOnMobile: true
 		        }, {
 		            title: "MENU_ACCOUNTS_RECEIVABLES",
 		            action: "rover.financials.accountsReceivables",
@@ -349,20 +362,23 @@ angular.module('sntRover').service('rvMenuSrv',
 		            title: "MENU_INVOICE_SEARCH",
 		            action: "rover.financials.invoiceSearch",
 		            menuIndex: "invoiceSearch",
-					hidden: !shouldShowInvoiceSearchInFinancialsMenu()
+					hidden: !shouldShowInvoiceSearchInFinancialsMenu(),
+					hideOnMobile: true
 		        },
                 {
                     title: "AUTO_CHARGE",
                     action: "rover.financials.autoCharge",
                     menuIndex: "autoCharge",
-					hidden: !shouldShowAutochargeInFinancialsMenu()
+					hidden: !shouldShowAutochargeInFinancialsMenu(),
+					hideOnMobile: true
                 },
 				{
 					title: "MENU_CURRENY_EXCHANGE",
 					action: "",
 					actionPopup: true,
 					menuIndex: "currencyExchange",
-					hidden: !shouldShowCurrencyExchangeInFinancialsMenu()
+					hidden: !shouldShowCurrencyExchangeInFinancialsMenu(),
+					hideOnMobile: true
 				}
 
                 ]
@@ -381,14 +397,16 @@ angular.module('sntRover').service('rvMenuSrv',
 		            title: "QUICKTEXT",
 		            action: "rover.quicktext",
 		            menuIndex: "QuickText",
-		            hidden: !shouldShowQucikTextMenu()
+					hidden: !shouldShowQucikTextMenu(),
+					hideOnMobile: true
 		        }]
             },
             {
 		        title: "MENU_REPORTS",		        
 		        action: "",
 		        iconClass: "icon-reports",
-		        menuIndex: "reports",		        
+				menuIndex: "reports",
+				hideOnMobile: true,
 		        submenu: [{
 		            title: "MENU_NEW_REPORT",
 		            action: "rover.reports.dashboard",

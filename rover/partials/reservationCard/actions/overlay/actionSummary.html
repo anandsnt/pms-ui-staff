@@ -44,6 +44,9 @@
             <!-- if Delete status add class .inline -->
             <div class="detail-actions" ng-show="actionSelected === 'selected' && !isMessage(selectedAction.action_task_type) && !isRequest(selectedAction.action_task_type)" ng-class="{'inline': selectedAction.action_status === 'delete'}">
                 
+                <!-- Back button for mobile view -->
+                <button type="button" ng-if="selectedAction.action_status !== 'delete'" class="back-button hide-on-desktop" ng-click="onBackButtonClicked()">All Actions</button>
+
                 <!-- If Unnasigned or assigned -->                               
                 <button type="button" class="button white purple-text" ng-click="prepareEditAction(selectedAction)" ng-class="{'hidden': !isTrace(selectedAction.action_task_type) || selectedAction.action_status === 'COMPLETED'}">Edit</button>                
                 
