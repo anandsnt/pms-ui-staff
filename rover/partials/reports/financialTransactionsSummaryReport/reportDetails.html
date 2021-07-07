@@ -70,10 +70,10 @@
                                     <span class="cell-row grey-text">{{trans.charge_description}}</span>
                                 </td>
                                 <td class="align-right">
-                                    <span ng-bind-html="trans.debit | sntCurrency:this"></span>
+                                    <span ng-if="trans.debit" ng-bind-html="trans.debit | sntCurrency:this"></span>
                                 </td>
                                 <td class="align-right">
-                                    <span ng-bind-html="trans.credit | sntCurrency:this"></span>    
+                                    <span ng-if="trans.credit" ng-bind-html="trans.credit | sntCurrency:this"></span>    
                                 </td>
                             </tr>
                         
