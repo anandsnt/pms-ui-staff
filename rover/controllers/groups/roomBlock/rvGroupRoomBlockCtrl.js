@@ -2539,6 +2539,15 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
         };
 
         /**
+		 * to close the popup
+		 * @return undefined
+		 */
+        $scope.clickedOnCancelButton = function() {
+            $scope.hasRateChanged = false;
+            $scope.closeDialog();
+        };
+
+        /**
 		 * Copy the rates for the corresponding room type occupancy to other dates
 		 * @param {Object} - cell data
 		 * @param {Object} - row data
@@ -2681,6 +2690,16 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             $scope.callAPI(rvGroupConfigurationSrv.getRoomTypesOccupancyRateDetailsAndEventsCount, options);
         };
 
+        /**
+		 * To disable the bulk update option
+		 * @return {Boolean}
+		 */
+        $scope.shouldDisableBulkUpdateButton = function(dateData) {
+            var pastDate = new tzIndependentDate(dateData.date) < new tzIndependentDate($rootScope.businessDate);
 
+            return !!$scope.groupConfigData.summary.is_cancelled || pastDate;
+        };
+
+        
     }
 ]);

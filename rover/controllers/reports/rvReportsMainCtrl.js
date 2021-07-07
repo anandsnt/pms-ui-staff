@@ -231,7 +231,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             item_56: false,
             item_57: false,
             item_58: false,
-            item_59: false
+            item_59: false,
+            item_60: false
         };
         $scope.toggleFilterItems = function (item) {
             if (!$scope.filterItemsToggle.hasOwnProperty(item)) {
@@ -1057,7 +1058,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     'country_ids': [],
                     'include_long_stays': [],
                     'transaction_category': [],
-                    'payment_types': []
+                    'payment_types': [],
+                    'collapsed_or_expanded': []
                 };
             }
 
@@ -1181,6 +1183,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
                 rawData.fromCreateDate = params[fromKey];
                 rawData.untilCreateDate = params[untilKey];
+            }
+
+            // include collapsed or expanded
+            if (report.hasOwnProperty('hasCollapsedOrExpanded')) {
+                var selectedProperty = report['hasCollapsedOrExpanded']['selected'];
+
+                params["summary_type"] = selectedProperty.value;
+                if (changeAppliedFilter) {
+                    $scope.appliedFilter.collapsed_or_expanded = selectedProperty.value;
+                }
             }
 
             // include single dates
@@ -1892,7 +1904,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 var selectedItem = report['hasTransactionCategory']['selected'] ? report['hasTransactionCategory']['selected'] : report['hasTransactionCategory']['data'][0];
 
                 key = reportParams['TRANSACTION_CATEGORY'];
-                params[key] = selectedItem.id;
+                params[key] = selectedItem.value;
                 if (changeAppliedFilter) {
                     $scope.appliedFilter.transaction_category = selectedItem.value;
                 }

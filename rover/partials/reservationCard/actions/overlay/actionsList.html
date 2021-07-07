@@ -1,6 +1,6 @@
 
 <ul class="wrapper">
-    <li ng-repeat="action in actions" ng-hide="action.is_deleted" ng-click="selectAction(action)" ng-class="{'active': action.id == selectedAction.id}"> <!-- Add class "overdue" when past due date. Add class "active" when selected, first one should be active by default when screen is loaded -->
+    <li ng-repeat="action in actions" ng-hide="action.is_deleted" ng-click="selectAction(action);onActionSelected()" ng-class="{'active': action.id == selectedAction.id}"> <!-- Add class "overdue" when past due date. Add class "active" when selected, first one should be active by default when screen is loaded -->
         <span ng-hide="!isStandAlone && (isRequest(action.action_task_type))" 
               class="icons icon-action icon-{{getActionStatusClass(action)}}" 
               ng-class="{'active': action.id == selectedAction.id, 

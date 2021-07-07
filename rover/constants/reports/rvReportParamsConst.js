@@ -134,5 +134,6 @@ angular.module('reportsModule')
         "PAYMENT_TYPES": "payment_types",
         "TRANSACTION_CATEGORY": "transaction_category",
         "SHOW_EMPLOYEES_INCLUDING_EOD": "show_employee_including_eod",
-        "TAX_RECEIPT_TYPE_VALUES": "tax_receipt_type_values"
+        "TAX_RECEIPT_TYPE_VALUES": "tax_receipt_type_values",
+        "COLLAPSED_OR_EXPANDED": "collapsed_or_expanded"
     });

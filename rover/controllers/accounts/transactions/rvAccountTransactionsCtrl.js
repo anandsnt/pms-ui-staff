@@ -97,10 +97,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		// Success callback for transaction fetch API.
 		var onBillTransactionFetchSuccess = function(data, selectedDate) {
+			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+
 			if (data.transactions.length > 0) {
 				$scope.errorMessage = '';
-				var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
-
 				activebillTab.transactions = [];
 				_.each(data.transactions, function(item) {
 
@@ -128,6 +128,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				else {
 					initDaysListForRecentDayActive();
 				}
+			}
+			else if (data.transactions.length === 0 && activebillTab.transactions.length > 0) {
+				// Background process is completed, need to refresh bill to resolve the conflicts.
+				getTransactionDetails();
 			}
 			else {
 				$scope.errorMessage = ['The date selected has no transactions, please select a new date'];
@@ -298,6 +302,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.moveChargeData.fromBillId = billTabsData[$scope.currentActiveBill].bill_id;
 				$scope.moveChargeData.isMoveAllCharges = false;
 				$scope.moveChargeData.totalCount = $scope.transactionsDetails.bills[$scope.currentActiveBill].total_count;
+				$scope.moveChargeData.date = $scope.invoiceDate;
 
 				if (chargeCodes.length > 0) {
 					_.each(chargeCodes, function(chargeCode, index) {
@@ -668,6 +673,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.fetchedData = {};
 				$scope.fetchedData.bill_numbers = bills;
 				$scope.isOutsidePostCharge = false;
+				$scope.shouldShowChargesForMobile = false;
 
 				ngDialog.open({
 					template: '/assets/partials/postCharge/rvPostChargeV2.html',
@@ -1629,5 +1635,16 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.addListener('DATE_CHANGED', function( event, date ) {
 			getBillTransactionDetails(null, date);
 		});
+
+		var clickedViewChargesListener = $rootScope.$on('CLICKED_VIEW_CHARGES', function() {
+			$scope.shouldShowChargesForMobile = true;
+		});
+
+		var backToChargesListListener = $rootScope.$on('BACK_TO_CHARGES_LIST', function() {
+			$scope.shouldShowChargesForMobile = false;
+		});
+
+		$scope.$on('$destroy', clickedViewChargesListener);
+		$scope.$on('$destroy', backToChargesListListener);
 	}
 ]);

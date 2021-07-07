@@ -252,6 +252,14 @@
     data="uiChosenReport.empList.data"
     options="uiChosenReport.empList.options"></multi-option-selection>
 
+<div class="entry" ng-show="uiChosenReport.hasCollapsedOrExpanded && uiChosenReport.hasCollapsedOrExpanded.data.length">
+    <label>Details</label>
+    <div class="select">
+        <select ng-model="uiChosenReport.hasCollapsedOrExpanded.selected" ng-options="CollapsedOrExpanded.description for CollapsedOrExpanded in uiChosenReport.hasCollapsedOrExpanded.data" iscroll-stop-propagation>
+        </select>
+    </div>
+</div>
+    
 <div class="entry" ng-show="uiChosenReport.hasTransactionCategory && uiChosenReport.hasTransactionCategory.data.length">
     <label>Showing</label>
     <div class="select">

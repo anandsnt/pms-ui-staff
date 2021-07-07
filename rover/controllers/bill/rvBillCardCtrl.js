@@ -1215,7 +1215,8 @@ sntRover.controller('RVbillCardController',
 
 		    $scope.fetchedData = {};
 			$scope.fetchedData.bill_numbers = bills;
-		    $scope.isOutsidePostCharge = false;
+			$scope.isOutsidePostCharge = false;
+			$scope.shouldShowChargesForMobile = false;
 
 			ngDialog.open({
 	    		template: '/assets/partials/postCharge/rvPostChargeV2.html',
@@ -3640,6 +3641,18 @@ sntRover.controller('RVbillCardController',
 		});
 
 	};
+
+	var clickedViewChargesListener = $rootScope.$on('CLICKED_VIEW_CHARGES', function() {
+		$scope.shouldShowChargesForMobile = true;
+	});
+
+	var backToChargesListListener = $rootScope.$on('BACK_TO_CHARGES_LIST', function() {
+		$scope.shouldShowChargesForMobile = false;
+	});
+
+	$scope.$on('$destroy', clickedViewChargesListener);
+	$scope.$on('$destroy', backToChargesListListener);
+
 	$scope.init(reservationBillData);
     var init = function() {
         $scope.isCompleteRegistration = false;

@@ -352,7 +352,9 @@
                                 tabindex="-1"
                                 ng-click="copySingleValueToOtherBlocks(dateData, roomType)"
                                 type="button"
-                                class="admin-icons icon-mover-right">
+                                class="admin-icons icon-mover-right"
+                                ng-class="{'overlay': shouldDisableBulkUpdateButton(dateData)}"
+                                ng-disabled="shouldDisableBulkUpdateButton(dateData)">
                                 Copy to all days
                             </button>
                         </div>
@@ -379,7 +381,9 @@
                                 tabindex="-1"
                                 ng-click="copyDoubleValueToOtherBlocks(dateData, roomType)"
                                 type="button"
-                                class="admin-icons icon-mover-right">
+                                class="admin-icons icon-mover-right"
+                                ng-class="{'overlay': shouldDisableBulkUpdateButton(dateData)}"
+                                ng-disabled="shouldDisableBulkUpdateButton(dateData)">
                                 Copy to all days
                             </button>
                         </div>
@@ -406,7 +410,9 @@
                                 tabindex="-1"
                                 ng-click="copyTripleValueToOtherBlocks(dateData, roomType)"
                                 type="button"
-                                class="admin-icons icon-mover-right">
+                                class="admin-icons icon-mover-right"
+                                ng-class="{'overlay': shouldDisableBulkUpdateButton(dateData)}"
+                                ng-disabled="shouldDisableBulkUpdateButton(dateData)">
                                 Copy to all days
                             </button>
                         </div>
@@ -431,7 +437,9 @@
                                 tabindex="-1"
                                 ng-click="copyQuadrupleValueToOtherBlocks(dateData, roomType)"
                                 type="button"
-                                class="admin-icons icon-mover-right">
+                                class="admin-icons icon-mover-right"
+                                ng-class="{'overlay': shouldDisableBulkUpdateButton(dateData)}"
+                                ng-disabled="shouldDisableBulkUpdateButton(dateData)">
                                 Copy to all days
                             </button>
                         </div>
@@ -466,7 +474,9 @@
                                 tabindex="-1"
                                 ng-click="copySingleCellRateValueToOtherBlocks(dateData, roomType, 'single_amount')"
                                 type="button"
-                                class="admin-icons icon-mover-right">
+                                class="admin-icons icon-mover-right"
+                                ng-class="{'overlay': shouldDisableBulkUpdateButton(dateData)}"
+                                ng-disabled="shouldDisableBulkUpdateButton(dateData)">
                                 Copy to all days
                             </button>
                             <input tabindex="-1" type="text"
@@ -482,7 +492,9 @@
                                 tabindex="-1"
                                 ng-click="copySingleCellRateValueToOtherBlocks(dateData, roomType,'double_amount')"
                                 type="button"
-                                class="admin-icons icon-mover-right">
+                                class="admin-icons icon-mover-right"
+                                ng-class="{'overlay': shouldDisableBulkUpdateButton(dateData)}"
+                                ng-disabled="shouldDisableBulkUpdateButton(dateData)">
                                 Copy to all days
                             </button>
                             <input tabindex="-1" type="text"
@@ -499,7 +511,9 @@
                                 tabindex="-1"
                                 ng-click="copySingleCellRateValueToOtherBlocks(dateData, roomType, 'extra_adult_amount')"
                                 type="button"
-                                class="admin-icons icon-mover-right">
+                                class="admin-icons icon-mover-right"
+                                ng-class="{'overlay': shouldDisableBulkUpdateButton(dateData)}"
+                                ng-disabled="shouldDisableBulkUpdateButton(dateData)">
                                 Copy to all days
                             </button>
                             <input tabindex="-1" type="text"
