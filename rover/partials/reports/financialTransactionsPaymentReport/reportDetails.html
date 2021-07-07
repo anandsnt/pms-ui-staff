@@ -131,8 +131,16 @@
                         </table>
                     </div>
                 </div>
-                <div ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></div>
             </div>
+            <ul class="journal-footer-print">
+                <li>
+                    Date Range: From <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br />
+                </li>
+                <li>
+                    Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br />
+                    User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+                </li>
+            </ul>
         </div>  
     </div>
 </section>
