@@ -27,7 +27,7 @@
                 <!-- Remove .hidden when showing expanded view -->
                 <div class="journal-grid print-details" ng-class="{hidden: appliedFilter.collapsed_or_expanded === 'Collapsed'}">
                     
-                    <table class="grid-items">
+                    <table class="grid-items" ng-show="summary.transactions.length > 0">
                         <thead>
                             <tr>
                                 <th>Room</th>
@@ -97,7 +97,16 @@
                     <span ng-bind-html="(results.deposit_balance.closing_balance + results.guest_balance.closing_balance + results.ar_balance.closing_balance) | sntCurrency:this"></span>
                 </li>
                 </ul>
-                </div> 
+            </div>
         </div>
+        <ul class="journal-footer-print summary">
+            <li>
+                Date <span>{{ appliedFilter.singleValueDate | date:dateFormat }}</span>
+            </li>
+            <li>
+                Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br />
+                User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+            </li>
+        </ul>
     </div>   
 </section>
