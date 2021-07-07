@@ -726,6 +726,16 @@ sntRover.controller('RVPostChargeControllerV2',
 				}
 				return IsShowItemSummaryList;
 			};
+
+			$scope.clickedOnViewCharges = function() {
+				$scope.shouldShowChargesForMobile = true;
+				$rootScope.$emit('CLICKED_VIEW_CHARGES');
+			};
+
+			$scope.clickedOnBack = function() {
+				$scope.shouldShowChargesForMobile = false;
+				$rootScope.$emit('BACK_TO_CHARGES_LIST');
+			};
 		}
 	]
 );

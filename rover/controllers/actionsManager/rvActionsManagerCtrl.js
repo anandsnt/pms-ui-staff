@@ -23,6 +23,8 @@ sntRover.controller('RVActionsManagerController',
         // -------------------------------------------------------------------------------------------------------------- B. Local Methods
         var init = function () {
                 $scope.$emit("updateRoverLeftMenu", "actionManager");
+                // Toggle for showing Left/Right content on Mobile view
+                $scope.showLeftSideViewForMobile = true;
                 var heading = 'Actions Manager';
 
                 $scope.setScroller("rvActionListScroller", {
@@ -135,6 +137,7 @@ sntRover.controller('RVActionsManagerController',
                         $scope.$broadcast("INIT_NEW_ACTION");
                     }
                     refreshScroller();
+                    $scope.showLeftSideViewForMobile = true;
                 };
 
                 if (!!$scope.filterOptions.department) {
@@ -264,13 +267,19 @@ sntRover.controller('RVActionsManagerController',
 
         $scope.initNewAction = function () {            
             $scope.selectedView = "new";
+            $scope.showLeftSideViewForMobile = false;
             refreshCreateActionScroller();
         };
 
         $scope.onSelectAction = function (actionId) {
             $scope.filterOptions.selectedActionId = actionId;
+            $scope.showLeftSideViewForMobile = false;
             getActionDetails();
         };
+
+        $scope.onGoBack = function() {
+            $scope.showLeftSideViewForMobile = true;
+        }
 
         $scope.setActiveFilter = function (selectedFilter) {
             $scope.filterOptions.selectedStatus = selectedFilter;
@@ -330,6 +339,7 @@ sntRover.controller('RVActionsManagerController',
                     $scope.selectedAction = getBindabaleAction(response.data);
                     $scope.selectedView = 'list';
                     updateListEntry();
+                    $scope.showLeftSideViewForMobile = true;
                 }
             });
             ngDialog.close();
@@ -531,6 +541,7 @@ sntRover.controller('RVActionsManagerController',
         // Cancel the edit operation
         $scope.cancelEdit = function() {
             $scope.selectedView = 'list';
+            $scope.showLeftSideViewForMobile = true;
         };
 
         // Checks the permission to edit action
@@ -559,7 +570,8 @@ sntRover.controller('RVActionsManagerController',
                     // show failed msg, so user can try again-?
                     if (data[0]) {
                         $scope.errorMessage = 'Internal Error Occured';
-                    }                    
+                    }
+                    $scope.showLeftSideViewForMobile = true;
                 };
             var apiConfig = {
                 params: $scope.selectedAction.id,
@@ -575,6 +587,7 @@ sntRover.controller('RVActionsManagerController',
         // Cancel delete operation
         $scope.cancelDelete = function() {
             $scope.selectedAction.action_status = $scope.selectedAction.originalStatus;
+            $scope.showLeftSideViewForMobile = true;
         };
 
         // Get the action status info
