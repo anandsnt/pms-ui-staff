@@ -1676,6 +1676,24 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
         };
 
         /**
+         * Reset the timeline dates
+         */
+        var resetTimelineDates = function() {
+            // default start date
+            var businessDate = new tzIndependentDate($rootScope.businessDate).getDate();
+            var startDateValue = new tzIndependentDate($scope.groupConfigData.summary.block_from).getDate();
+            var endDateValue = new tzIndependentDate($scope.groupConfigData.summary.block_to).getDate();
+
+            // Fixed as per CICO-35639, case: if end date equal to business date and start date not equal to business date
+            if (endDateValue === businessDate && startDateValue !== businessDate) {
+                // Goto date should not be business date
+               $scope.timeLineStartDate = new tzIndependentDate(new tzIndependentDate($rootScope.businessDate) - 86400000);
+            } else {
+                $scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
+            }
+        };
+
+        /**
          * we have to call multiple API on initial screen, which we can't use our normal function in teh controller
          * depending upon the API fetch completion, loader may disappear.
          * @return {[type]} [description]
@@ -2427,24 +2445,6 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                 closeByDocument: false,
                 closeByEscape: true
             });
-        };
-
-        /**
-         * Reset the timeline dates
-         */
-        var resetTimelineDates = function() {
-            // default start date
-            var businessDate = new tzIndependentDate($rootScope.businessDate).getDate();
-            var startDateValue = new tzIndependentDate($scope.groupConfigData.summary.block_from).getDate();
-            var endDateValue = new tzIndependentDate($scope.groupConfigData.summary.block_to).getDate();
-
-            // Fixed as per CICO-35639, case: if end date equal to business date and start date not equal to business date
-            if (endDateValue === businessDate && startDateValue !== businessDate) {
-                // Goto date should not be business date
-               $scope.timeLineStartDate = new tzIndependentDate(new tzIndependentDate($rootScope.businessDate) - 86400000);
-            } else {
-                $scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
-            }
         };
 
         /**
