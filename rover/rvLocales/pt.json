@@ -1,0 +1,245 @@
+{
+    "HK_GUESTS": {
+        "translation": "Convidados"
+    },
+    "HK_OCCUPIED": {
+        "translation": "Ocupado"
+    },
+    "HK_VACANT_DIRTY": {
+        "translation": "Vago (sujo)"
+    },
+    "HK_VACANT_CLEAN": {
+        "translation": "Vago (limpo)"
+    },
+    "HK_OOOS": {
+        "translation": "Fora de serviço"
+    },
+    "OWS_ERROR_MSG": {
+        "translation": "O Rover está tendo problemas para responder. Tente novamente se o problema persistir, entre em contato com nossa equipe de suporte - support@stayntouch.com."
+    },
+    "ROOM_STATUS": {
+        "translation": "Status da sala"
+    },
+    "ENTER_ROOM_NUMBER": {
+        "translation": "Digite o número do quarto"
+    },
+    "SEARCH_BY_ROOM_NO": {
+        "translation": "Pesquisa por número de quarto"
+    },
+    "FILTER_ROOMS": {
+        "translation": "Filtrar salas"
+    },
+    "CLEAR_QUERY": {
+        "translation": "Limpar consulta"
+    },
+    "CLEAR": {
+        "translation": "Limpar consulta"
+    },
+    "DONE": {
+        "translation": "Feito"
+    },
+    "VIP": {
+        "translation": "Pessoa muito importante"
+    },
+    "HOUSEKEEPING_STATUS": {
+        "translation": "Status de limpeza"
+    },
+    "SHOW_DIRTY": {
+        "translation": "Mostrar sujo"
+    },
+    "SHOW_PICKUP": {
+        "translation": "Mostrar retirada"
+    },
+    "SHOW_CLEAN": {
+        "translation": "Mostrar Limpo"
+    },
+    "SHOW_INSPECTED": {
+        "translation": "Mostrar inspecionado"
+    },
+    "SHOW_OOO": {
+        "translation": "Mostrar fora de serviço"
+    },
+    "SHOW_OOS": {
+        "translation": "Mostrar fora de serviço"
+    },
+    "RESERVATION_STATUS": {
+        "translation": "Status de reserva"
+    },
+    "SHOW_VACANT": {
+        "translation": "Mostrar vagas"
+    },
+    "SHOW_OCCUPIED": {
+        "translation": "Mostrar Ocupado"
+    },
+    "SHOW_QUEUED": {
+        "translation": "Mostrar na fila"
+    },
+    "FRONT_OFFICE_STATUS": {
+        "translation": "Status do Escritório da Frente"
+    },
+    "SHOW_STAYOVER": {
+        "translation": "Data de Estadia"
+    },
+    "SHOW_NOT_RESERVED": {
+        "translation": "Mostrar não reservado"
+    },
+    "SHOW_ARRIVAL": {
+        "translation": "Mostrar chegada"
+    },
+    "SHOW_ARRIVED": {
+        "translation": "Mostrar chegada"
+    },
+    "SHOW_DAY_USE": {
+        "translation": "Mostrar uso diurno"
+    },
+    "SHOW_DUE_OUT": {
+        "translation": "Vencido"
+    },
+    "SHOW_DEPARTED": {
+        "translation": "Mostrar os Partidos"
+    },
+    "ROOM_DETAILS": {
+        "translation": "Detalhes do quarto"
+    },
+    "ROOM_IS_VACANT": {
+        "translation": "O quarto está vazio."
+    },
+    "HK_FLOORS": {
+        "translation": "Andares"
+    },
+    "SHOW_ALL_FLOORS": {
+        "translation": "Mostrar todos os andares"
+    },
+    "HK_SINGLE": {
+        "translation": "Único"
+    },
+    "FLOOR_#": {
+        "translation": "Andar #"
+    },
+    "HK_MULTIPLE": {
+        "translation": "Múltiplo"
+    },
+    "HK_FROM": {
+        "translation": "A partir de"
+    },
+    "HK_TO": {
+        "translation": "Para"
+    },
+    "PULL_REFRESH": {
+        "translation": "Puxe para baixo para atualizar a página"
+    },
+    "RELEASE_REFRESH": {
+        "translation": "Solte para atualizar a página"
+    },
+    "PULL_LOAD_NEXT": {
+        "translation": "Suba para carregar a próxima página"
+    },
+    "RELEASE_LOAD_NEXT": {
+        "translation": "Solte para carregar a próxima página"
+    },
+    "PULL_LOAD_PREV": {
+        "translation": "Puxe para baixo para carregar a página anterior"
+    },
+    "RELEASE_LOAD_PREV": {
+        "translation": "Solte para carregar a página anterior"
+    },
+    "ROOM_TYPE_FILTER_TITLE": {
+        "translation": "Tipo de sala"
+    },
+    "SELECT_WORK_TYPE": {
+        "translation": "Selecione um tipo de trabalho"
+    },
+    "WORK_TYPE": {
+        "translation": "Tipo de trabalho"
+    },
+    "ALL_WORK_TYPES": {
+        "translation": "Todos os tipos de trabalho"
+    },
+    "OO": {
+        "translation": "Fora de serviço"
+    },
+    "OS": {
+        "translation": "Fora de serviço"
+    },
+    "FIND_ROOM_MAID": {
+        "translation": "Encontrar sala ou funcionário"
+    },
+    "DEP_TO_CLEAN": {
+        "translation": "Saídas para limpar"
+    },
+    "SO_TO_CLEAN": {
+        "translation": "Saídas para limpar"
+    },
+    "TOTAL": {
+        "translation": "Total"
+    },
+    "TOTAL_STAFF_REQUIRED": {
+        "translation": "Total de funcionários necessários"
+    },
+    "TOTAL_ROOMS_ASSIGNED": {
+        "translation": "Total de salas atribuídas"
+    },
+    "TOTAL_ROOMS_COMPLETED": {
+        "translation": "Total de salas concluídas"
+    },
+    "MANAGE_WS": {
+        "translation": "Gerenciar planilhas"
+    },
+    "CREATE_WS": {
+        "translation": "Criar Folha de Trabalho"
+    },
+    "EMPLOYEE_NAME": {
+        "translation": "Nome do empregado"
+    },
+    "SELECT_EMPLOYEE": {
+        "translation": "Selecione o funcionário"
+    },
+    "MAID": {
+        "translation": "Empregada"
+    },
+    "EMP": {
+        "translation": "Empregado"
+    },
+    "UNASSIGNED": {
+        "translation": "Não atribuído"
+    },
+    "ALL_UNASSIGNED": {
+        "translation": "Todos não atribuídos"
+    },
+    "ALL_FLOORS": {
+        "translation": "Todos os andares"
+    },
+    "NO_ROOM_ASSIGNED": {
+        "translation": "Nenhuma sala atribuída."
+    },
+    "DRAG_DROP_TO_ASSIGN": {
+        "translation": "Arraste e solte as salas para atribuir."
+    },
+    "UNASSIGN_ROOM": {
+        "translation": "Cancelar atribuição de sala"
+    },
+    "TIME_ALLOCATED": {
+        "translation": "Tempo Alocado"
+    },
+    "STAYOVERS": {
+        "translation": "Estadias"
+    },
+    "COMPLETED": {
+        "translation": "Concluído"
+    },
+    "NO_EMPLOYEES_SELECTED": {
+        "translation": "Nenhum funcionário selecionado."
+    },
+    "SELECT_EMPLOYEES_TO_ASSIGN": {
+        "translation": "Selecione funcionários para atribuir quartos."
+    },
+    "WEB_IN_PROGRESS_HOUSE_KEEPING": {
+        "translation": "Reserva na Web em andamento. O pedido OOO \/ OOS não pode ser concluído"
+    },
+    "AUTO_ASSIGN": {
+        "translation": "Atribuição automática"
+    },
+    "DO_NOT_DISTURB": {
+        "translation": "Não perturbe"
+    }
+}
