@@ -30,8 +30,8 @@ angular.module('reportsModule')
                         'FORECAST_GUEST_GROUPS': ['hasOneYearLimit'],
                         'ARRIVAL': ['hasOneMonthLimit'],
                         'DEPARTURE': ['hasOneMonthLimit'],
-                        'TAX_OUTPUT_REPORT': ['hasOneYearLimit']
-
+                        'TAX_OUTPUT_REPORT': ['hasOneYearLimit'],
+                        'FINANCIAL_TRANSACTION_SUMMARY_REPORT': ['hasDateLimit']
                     };
 
                     var reportName = _.findKey(reportNames, function(value, key) {
