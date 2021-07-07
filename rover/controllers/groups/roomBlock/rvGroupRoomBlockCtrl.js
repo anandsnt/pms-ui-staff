@@ -2694,8 +2694,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * To disable the bulk update option
 		 * @return {Boolean}
 		 */
-        $scope.shouldDisableBulkUpdateButton = function() {
-            return !!$scope.groupConfigData.summary.is_cancelled;
+        $scope.shouldDisableBulkUpdateButton = function(dateData) {
+            var pastDate = new tzIndependentDate(dateData.date) < new tzIndependentDate($rootScope.businessDate);
+
+            return !!$scope.groupConfigData.summary.is_cancelled || pastDate;
         };
 
         
