@@ -279,7 +279,7 @@ sntRover.controller('RVActionsManagerController',
 
         $scope.onGoBack = function() {
             $scope.showLeftSideViewForMobile = true;
-        }
+        };
 
         $scope.setActiveFilter = function (selectedFilter) {
             $scope.filterOptions.selectedStatus = selectedFilter;
