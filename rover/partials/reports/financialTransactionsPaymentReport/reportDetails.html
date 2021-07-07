@@ -37,7 +37,7 @@
                         </a>
 
                         <!-- Third level - transactions -->
-                        <table class="grid-items">
+                        <table class="grid-items" ng-show="level2.transactions.length > 0">
                             <thead>
                                 <tr>
                                     <th>Room</th>
@@ -86,7 +86,7 @@
 
                     <!-- Second level -transactions - if Payment type is not Credit Card -->
                     <div class="grid-charge active" ng-if="level1.payment_type !== 'Credit Card'">
-                        <table  class="grid-items">
+                        <table class="grid-items" ng-show="level1.transactions.length > 0">
                             <thead>
                                 <tr>
                                     <th>Room</th>
@@ -131,6 +131,7 @@
                         </table>
                     </div>
                 </div>
+                <div ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></div>
             </div>
         </div>  
     </div>
