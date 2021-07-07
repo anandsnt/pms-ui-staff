@@ -27,7 +27,7 @@
                     </a>
 
                     <!-- Second level - charge codes -->
-                    <div id="{{level1.id}}" class="grid-charge" ng-repeat="level2 in level1.charge_codes">
+                    <div class="grid-charge" ng-repeat="level2 in level1.charge_codes">
                         <a class="revenue-title active toggle">
                             <span class="code">{{level2.code}}</span>
                             <strong class="name">{{level2.name}}</strong>
@@ -35,7 +35,7 @@
                         </a>
 
                         <!-- Third level - transactions -->
-                        <table id="{{level2.id}}" class="grid-items">
+                        <table class="grid-items" ng-show="level2.transactions.length > 0">
                             <thead>
                                 <tr>
                                     <th>Room</th>
@@ -81,6 +81,7 @@
                         </table>
                     </div>
                 </div>
+                <div ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></div>
             </div>
         </div>  
     </div>
