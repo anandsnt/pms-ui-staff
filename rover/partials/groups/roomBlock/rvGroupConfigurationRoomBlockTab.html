@@ -149,8 +149,8 @@
             <!-- On by default when showing rooms -->
             <!-- Add .hidden if a change was made in the grid and remove .hidden when saved or clicked on Cancel Changes above-->
             <div class="switch-button" 
-                ng-class="{'on': isRoomViewActive, 'hidden': hasBookingDataChanged || hasRateChanged, 'overlay': !isGroupDailyRatesEnabled }">
-                <input id="group-block-type-switch" value="1" type="checkbox" ng-model="isRoomViewActive" ng-click="toggleRoomRateBtn()" ng-disabled="!isGroupDailyRatesEnabled">
+                ng-class="{'on': isRoomViewActive, 'hidden': hasBookingDataChanged || hasRateChanged, 'overlay': shouldDisableRoomRatesToggleBtn() }">
+                <input id="group-block-type-switch" value="1" type="checkbox" ng-model="isRoomViewActive" ng-click="toggleRoomRateBtn()" ng-disabled="shouldDisableRoomRatesToggleBtn()">
                 <label class="data-off">
                     <span class="value">Rooms</span>
                     <span class="switch-icon">Rates</span>

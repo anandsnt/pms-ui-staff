@@ -2692,6 +2692,13 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
         };
 
         /**
+         * Should disable the room/rates togglle btn
+         */
+        $scope.shouldDisableRoomRatesToggleBtn = function() {
+            return !$scope.isGroupDailyRatesEnabled || $scope.groupConfigData.summary.is_cancelled;
+        };
+
+        /*
 		 * To disable the bulk update option
 		 * @return {Boolean}
 		 */
