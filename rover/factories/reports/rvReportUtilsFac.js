@@ -1474,9 +1474,6 @@ angular.module('reportsModule')
                             };
                         }
                     });
-
-                    completed++;
-                    checkAllCompleted();
                 }
 
                 function fillEmployeeList(data) {
