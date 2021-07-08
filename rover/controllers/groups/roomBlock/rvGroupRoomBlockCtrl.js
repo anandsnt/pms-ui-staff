@@ -2681,6 +2681,13 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             $scope.callAPI(rvGroupConfigurationSrv.getRoomTypesOccupancyRateDetailsAndEventsCount, options);
         };
 
+        /**
+         * Should disable the room/rates togglle btn
+         */
+        $scope.shouldDisableRoomRatesToggleBtn = function() {
+            return !$scope.isGroupDailyRatesEnabled || $scope.groupConfigData.summary.is_cancelled;
+        }
+
 
     }
 ]);
