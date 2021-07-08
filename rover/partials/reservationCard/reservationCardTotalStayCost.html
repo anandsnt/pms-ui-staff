@@ -10,7 +10,7 @@
 			{{::reservationData.reservation_card.text_rates_suppressed}}
 		</span>
 		<span class="number" ng-show="isRateAmountShown()">
-			{{::reservationData.reservation_card.rate_currency}}{{::reservationData.reservation_card.avg_daily_rate}}
+			<span ng-bind-html="::reservationData.reservation_card.avg_daily_rate | sntCurrency:this:reservationData.reservation_card.rate_currency"></span>
 		</span>
 		<span ng-hide="reservationParentData.is_modified == true && isStandAlone" class="rate">
 			{{reservationData.reservation_card.is_multiple_rates == true ? 'Multiple' :reservationData.reservation_card.rate_name}}

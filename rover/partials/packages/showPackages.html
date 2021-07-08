@@ -23,13 +23,12 @@
                                 {{ addon.description }}
                             </span> -->
                             <span class="enhancement-desc" ng-hide="addon.is_rate_addon && addon.is_inclusive">
-                                at <span class="currency">{{addon.addon_currency}}</span>{{addon.amount | number : 2}} / {{addon.amount_type.description}} {{addon.post_type.description}}
+                                at <span ng-bind-html="addon.amount | sntCurrency:this:addon.addon_currency"></span> / {{addon.amount_type.description}} {{addon.post_type.description}}
                              </span>
                              <span class="enhancement-desc" ng-show="addon.is_inclusive">INCL</span>
                          </div>
                          <span class="price" ng-hide="addon.is_rate_addon && addon.is_inclusive">
-                            <span class="currency">{{addon.addon_currency}}</span>{{getAddonTotal(addon) | number : 2}}
-                             </span>
+                            <span ng-bind-html="getAddonTotal(addon) | sntCurrency:this:addon.addon_currency"></span>
                          <!-- add class .hidden to hide it if it can't be removed/deleted-->
                          <span class="delete" ng-hide="addon.is_rate_addon || addon.is_inclusive" ng-click="removeChosenAddons($event, $index, addon)">
                             <span class="icons icon-remove-10"></span>
@@ -84,7 +83,7 @@
                 <span class="h2 message" ng-if="selectedPurchesedAddon.name">{{selectedPurchesedAddon.name | limitTo: selectedPurchesedAddon.nameCharLimit}}{{selectedPurchesedAddon.name.length > 23 ? '...': ''}}</span>
 
                 <!-- <span class="text" ng-if="selectedPurchesedAddon.description">{{selectedPurchesedAddon.description | limitTo: 70}}{{selectedPurchesedAddon.description.length >= 70 ? '...': ''}}</span> -->
-                <span class="text" ng-if="selectedPurchesedAddon.amount && selectedPurchesedAddon.amount_type && selectedPurchesedAddon.post_type">at {{selectedPurchesedAddon.addon_currency}}{{selectedPurchesedAddon.amount | number : 2}} / {{selectedPurchesedAddon.amount_type.description}} {{selectedPurchesedAddon.post_type.description}}</span>
+                <span class="text" ng-if="selectedPurchesedAddon.amount && selectedPurchesedAddon.amount_type && selectedPurchesedAddon.post_type">at <span ng-bind-html="selectedPurchesedAddon.amount | sntCurrency:this:addon.selectedPurchesedAddon.addon_currency"></span> / {{selectedPurchesedAddon.amount_type.description}} {{selectedPurchesedAddon.post_type.description}}</span>
 
                 <span class="text" ng-if="selectedPurchesedAddon.post_day_of_the_week && selectedPurchesedAddon.post_type.value !== 'CUSTOM' && selectedPurchesedAddon.post_type.value !== 'NIGHT' && selectedPurchesedAddon.post_type.value !== 'LAST_NIGHT'"> Post day - {{selectedPurchesedAddon.post_day_of_the_week}} </span>
 
