@@ -302,6 +302,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.moveChargeData.fromBillId = billTabsData[$scope.currentActiveBill].bill_id;
 				$scope.moveChargeData.isMoveAllCharges = false;
 				$scope.moveChargeData.totalCount = $scope.transactionsDetails.bills[$scope.currentActiveBill].total_count;
+				$scope.moveChargeData.date = $scope.invoiceDate;
 
 				if (chargeCodes.length > 0) {
 					_.each(chargeCodes, function(chargeCode, index) {
@@ -672,6 +673,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.fetchedData = {};
 				$scope.fetchedData.bill_numbers = bills;
 				$scope.isOutsidePostCharge = false;
+				$scope.shouldShowChargesForMobile = false;
 
 				ngDialog.open({
 					template: '/assets/partials/postCharge/rvPostChargeV2.html',
@@ -1633,5 +1635,16 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.addListener('DATE_CHANGED', function( event, date ) {
 			getBillTransactionDetails(null, date);
 		});
+
+		var clickedViewChargesListener = $rootScope.$on('CLICKED_VIEW_CHARGES', function() {
+			$scope.shouldShowChargesForMobile = true;
+		});
+
+		var backToChargesListListener = $rootScope.$on('BACK_TO_CHARGES_LIST', function() {
+			$scope.shouldShowChargesForMobile = false;
+		});
+
+		$scope.$on('$destroy', clickedViewChargesListener);
+		$scope.$on('$destroy', backToChargesListListener);
 	}
 ]);

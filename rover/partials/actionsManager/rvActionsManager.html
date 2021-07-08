@@ -1,7 +1,7 @@
 <!-- Navbar -->
 <span ng-include="'/assets/partials/common/header.html'"></span>
 <!-- Actions -->
-<section id="actions" class="content actions-content actions-manager" role="main" ng-cloak>
+<section id="actions" class="content actions-content actions-manager" ng-class="{'show-right-content': !showLeftSideViewForMobile}" role="main" ng-cloak>
 
     <!-- Actions list -->
     <div class="content-left">
@@ -244,7 +244,7 @@
 </section>
 
 <!-- Post form -->
-<form method="get" action="" id="actions-post" class="post-form">
+<form method="get" action="" id="actions-post" class="post-form" ng-class="{'show-right-content': !showLeftSideViewForMobile}">
 
     <!-- Guest / Group -->
     <button id="switch-guest-group" type="button" class="switch">
@@ -268,8 +268,16 @@
         </select>
     </div>
 
-    <!-- New Action -->
-    <button type="button" ng-hide="actions.length === 0" class="button green" ng-click='initNewAction()'>New Action
+    <!-- New Action for desktop -->
+    <button type="button" ng-hide="actions.length === 0" class="button green hide-on-mobile" ng-click='initNewAction()'>New Action
+    </button>
+
+    <!-- New Action for mobile -->
+    <button type="button" class="button green hide-on-desktop" ng-click='initNewAction()'>New Action
+    </button>
+
+    <!-- Back button -->
+    <button type="button" ng-hide="showLeftSideViewForMobile" class="back-button hide-on-desktop" ng-click='onGoBack()'>All Actions
     </button>
 </form>
 

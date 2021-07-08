@@ -1,16 +1,10 @@
 /* StayNTouch | Rover Themes */
 
 .applyTheme(@themeColor) {
-	background: url("../cssimg/texture-dark.png"), linear-gradient(to bottom, lighten(@themeColor, 5) 0%,darken(@themeColor, 5) 100%);
+	background-image: url("../cssimg/texture-dark.png"), linear-gradient(to bottom, lighten(@themeColor, 5) 0%,darken(@themeColor, 5) 100%);
 	background-color: mix(lighten(@themeColor, 5), darken(@themeColor, 5), 60%);
-	background-repeat: repeat;
-	padding-top: 5px;
 
-	.root-view,
-	#main-menu {
-		top: 5px;
-	}
-
+	
 	#global-header h1 .hotel,
 	.nav-bar h1 .hotel {
 		color: @themeColor;
@@ -32,6 +26,16 @@
 @themeBlack: 			hsl(320, 80%, 5%);
 
 html {
+
+	&[class^="theme-"] {
+		background-repeat: repeat;
+		padding-top: 5px;
+
+		.root-view,
+		#main-menu {
+			top: 5px;
+		}
+	}
 
 	&.theme-tabasco {
 		.applyTheme(@themeTabasco);

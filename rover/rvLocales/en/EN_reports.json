@@ -5,4 +5,7 @@
     "SCHEDULE_EXPORT": "Schedule an Export",
     "SCHEDULED_REPORTS": "Scheduled Reports",
     "SCHEDULED_EXPORTS": "Scheduled Exports",
-    "CUSTOM_EXPORTS": "Custom Exports"
+    "CUSTOM_EXPORTS": "Custom Exports",
+    "deposit_balance" : "Deposit Balance",
+    "guest_balance": "Guest Balance",
+	"ar_balance" : "A/R Balance"

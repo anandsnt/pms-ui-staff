@@ -1,5 +1,5 @@
 <div role="dialog" id="modal" class="modal-show inline-modal" ng-class="{'modal-show': !modalClosing}" ng-click="clearErrorMessage()" ng-cloak>
-    <div class="modal-content form room-enhancements" ng-class="{'customization-disabled': !showCustomPosting()}">
+    <div class="modal-content form room-enhancements" ng-class="{'customization-disabled': !showCustomPosting(), 'show-right-content': showRightContentForMobile}">
 
         <button id="modal-close" type="button" class="modal-close" ng-click="closePopup()"><span class="icons icon-close invert"></button>
         <div class="content-left">
@@ -41,6 +41,7 @@
                 <button ng-if="shouldShowAddMoreButton()" type="button" class="button orange" ng-click="goToAddons()">Add More to This Room</button>
                 <button type="button" class="button blank" ng-click="closeAddOnPopup()">Close Window</button>
             </div>
+
         </div>
         <div class="content-right" ng-class="{'hidden': !showCustomPosting()}">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -80,7 +81,7 @@
 
             <!-- Remove .hidden if clicked on an enhancement that can be changed -->
             <!-- Add .hidden if clicked again on the same enhancement to show initial screen -->
-            <div class="content-dates" ng-show="selectedPurchesedAddon">
+            <div class="content-dates" ng-show="selectedPurchesedAddon" ng-class="{'hide-on-mobile': !showRightContentForMobile}">
                 <span class="h2 message" ng-if="selectedPurchesedAddon.name">{{selectedPurchesedAddon.name | limitTo: selectedPurchesedAddon.nameCharLimit}}{{selectedPurchesedAddon.name.length > 23 ? '...': ''}}</span>
 
                 <!-- <span class="text" ng-if="selectedPurchesedAddon.description">{{selectedPurchesedAddon.description | limitTo: 70}}{{selectedPurchesedAddon.description.length >= 70 ? '...': ''}}</span> -->
@@ -142,8 +143,11 @@
                 </div>
 
                 <div class="actions inline">
-                    <button class="button blank" ng-click="setDeafultDisplay()">{{addonPopUpData.cancelLabel}}</button>
+                    <button class="button blank hide-on-mobile" ng-click="setDeafultDisplay()">{{addonPopUpData.cancelLabel}}</button>
                     <button class="button green" ng-disabled="selectedPurchesedAddon.post_type.value !== 'STAY'" ng-class="{'green': selectedPurchesedAddon.post_type.value === 'STAY', 'grey': selectedPurchesedAddon.post_type.value !== 'STAY'}" ng-click="proceedBooking()">{{addonPopUpData.saveLabel}}</button>
+
+                    <!-- Back button for mobile view - to go back to left content -->
+                    <button class="button blank hide-on-desktop" ng-click="goBackToAddonsList()">{{addonPopUpData.cancelLabel}}</button>
                 </div>
             </div>
         </div>

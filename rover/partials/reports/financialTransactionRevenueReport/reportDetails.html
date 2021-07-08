@@ -9,7 +9,7 @@
 
 <section id="report-details" class="content reports-wrapper" role="main">
     <!-- Report content -->
-    <div id="report-content" class="report-content journal-content scrollable" ng-hide="hasNoResults" ng-iscroll="report-details-scroll">
+    <div id="report-content" class="report-content journal-content revenue-journal scrollable" ng-hide="hasNoResults" ng-iscroll="report-details-scroll">
         <div class="wrapper">
             <div id="journal-grid" class="journal-grid">
                 <ul class="grid-header revenue">
@@ -27,7 +27,7 @@
                     </a>
 
                     <!-- Second level - charge codes -->
-                    <div id="{{level1.id}}" class="grid-charge" ng-repeat="level2 in level1.charge_codes">
+                    <div class="grid-charge" ng-repeat="level2 in level1.charge_codes">
                         <a class="revenue-title active toggle">
                             <span class="code">{{level2.code}}</span>
                             <strong class="name">{{level2.name}}</strong>
@@ -35,7 +35,7 @@
                         </a>
 
                         <!-- Third level - transactions -->
-                        <table id="{{level2.id}}" class="grid-items">
+                        <table class="grid-items" ng-show="level2.transactions.length > 0">
                             <thead>
                                 <tr>
                                     <th>Room</th>
@@ -48,8 +48,8 @@
                                     <th class="align-right">Debit</th>
                                 </tr>
                             </thead>
-                            <tbody ng-repeat="level3 in level2.transactions">
-                                <tr>
+                            <tbody>
+                                <tr ng-repeat="level3 in level2.transactions">
                                     <td>{{level3.room}}</td>
                                     <td>
                                         <strong  class="cell-row">{{level3.name}}</strong>
@@ -65,7 +65,7 @@
                                         <!-- If adjusted, show like this:
                                         <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
                                         <span class="converted-currency" ng-if="level3.converted_currency">
-                                            <span ng-bind-html="level3.debit_converted_amount | sntCurrency:this:converted_currency"></span>
+                                            <span ng-bind-html="level3.debit_converted_amount | sntCurrency:this:level3.converted_currency"></span>
                                         </span>
                                         <span class="converted-currency smaller" ng-if="level3.conversion_rate">
                                             <span>{{level3.conversion_rate}}</span>
@@ -82,6 +82,15 @@
                     </div>
                 </div>
             </div>
+            <ul class="journal-footer-print">
+                <li>
+                    Date Range: From <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br />
+                </li>
+                <li>
+                    Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br />
+                    User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+                </li>
+            </ul>
         </div>  
     </div>
 </section>

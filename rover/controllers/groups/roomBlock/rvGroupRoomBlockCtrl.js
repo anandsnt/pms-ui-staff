@@ -1676,6 +1676,24 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
         };
 
         /**
+         * Reset the timeline dates
+         */
+        var resetTimelineDates = function() {
+            // default start date
+            var businessDate = new tzIndependentDate($rootScope.businessDate).getDate();
+            var startDateValue = new tzIndependentDate($scope.groupConfigData.summary.block_from).getDate();
+            var endDateValue = new tzIndependentDate($scope.groupConfigData.summary.block_to).getDate();
+
+            // Fixed as per CICO-35639, case: if end date equal to business date and start date not equal to business date
+            if (endDateValue === businessDate && startDateValue !== businessDate) {
+                // Goto date should not be business date
+               $scope.timeLineStartDate = new tzIndependentDate(new tzIndependentDate($rootScope.businessDate) - 86400000);
+            } else {
+                $scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
+            }
+        };
+
+        /**
          * we have to call multiple API on initial screen, which we can't use our normal function in teh controller
          * depending upon the API fetch completion, loader may disappear.
          * @return {[type]} [description]
@@ -1697,6 +1715,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                 return;
             }
             $scope.isRoomViewActive = true;
+            $scope.hasRateChanged = false;
             setDatePickers();
             callInitialAPIs();
 
@@ -2430,24 +2449,6 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
         };
 
         /**
-         * Reset the timeline dates
-         */
-        var resetTimelineDates = function() {
-            // default start date
-            var businessDate = new tzIndependentDate($rootScope.businessDate).getDate();
-            var startDateValue = new tzIndependentDate($scope.groupConfigData.summary.block_from).getDate();
-            var endDateValue = new tzIndependentDate($scope.groupConfigData.summary.block_to).getDate();
-
-            // Fixed as per CICO-35639, case: if end date equal to business date and start date not equal to business date
-            if (endDateValue === businessDate && startDateValue !== businessDate) {
-                // Goto date should not be business date
-               $scope.timeLineStartDate = new tzIndependentDate(new tzIndependentDate($rootScope.businessDate) - 86400000);
-            } else {
-                $scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
-            }
-        };
-
-        /**
          * Toggle room rate switch
          */
         $scope.toggleRoomRateBtn = function() {
@@ -2536,6 +2537,15 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             };
 			
             $scope.processMassRateUpdate(requestParams);
+        };
+
+        /**
+		 * to close the popup
+		 * @return undefined
+		 */
+        $scope.clickedOnCancelButton = function() {
+            $scope.hasRateChanged = false;
+            $scope.closeDialog();
         };
 
         /**
@@ -2688,6 +2698,16 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             return !$scope.isGroupDailyRatesEnabled || $scope.groupConfigData.summary.is_cancelled;
         }
 
+        /*
+		 * To disable the bulk update option
+		 * @return {Boolean}
+		 */
+        $scope.shouldDisableBulkUpdateButton = function(dateData) {
+            var pastDate = new tzIndependentDate(dateData.date) < new tzIndependentDate($rootScope.businessDate);
 
+            return !!$scope.groupConfigData.summary.is_cancelled || pastDate;
+        };
+
+        
     }
 ]);

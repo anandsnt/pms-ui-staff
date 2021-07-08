@@ -99,6 +99,17 @@ angular.module('reportsModule')
                             'fromDate': getDates.businessDate,
                             'untilDate': getDates.thirtyOneDaysAfter
                         },
+						'FINANCIAL_TRANSACTION_REVENUE_REPORT': {
+							'fromDate': getDates.yesterday,
+							'untilDate': getDates.yesterday
+						},
+						'FINANCIAL_TRANSACTION_PAYMENT_REPORT': {
+							'fromDate': getDates.yesterday,
+							'untilDate': getDates.yesterday
+						},
+						'FINANCIAL_TRANSACTION_SUMMARY_REPORT': {
+							'singleValueDate': getDates.yesterday
+						},
             			/**/
             			'DEFAULT': {
             				'fromDate': getDates.aWeekAgo,
