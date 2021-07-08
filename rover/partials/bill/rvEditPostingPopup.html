@@ -76,7 +76,7 @@
                         <span ng-hide="selectedChargeCode">
                         {{selectedTransaction.desc}} </span>
                         <span ng-show="selectedChargeCode">{{selectedChargeCode.description}}</span>               
-                        <span class="value" ng-show="newAmount.length>0"> <span ng-class ="{'hidden':newAmount - selectedTransaction.amount< 0}">+</span>{{newAmount - selectedTransaction.amount |number:2}}</span>
+                        <span class="value" ng-show="newAmount.length>0"> <span ng-class ="{'hidden':newAmount - selectedTransaction.amount< 0}">+</span><span ng-bind-html="newAmount - selectedTransaction.amount | sntCurrency:this:null:true"></span></span>
                     </li>
                 </ul>
             </div>
