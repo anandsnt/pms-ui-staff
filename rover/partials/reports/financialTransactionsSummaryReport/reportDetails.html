@@ -10,7 +10,7 @@
 <section id="report-details" class="content reports-wrapper" role="main">
 
     <!-- Report content -->
-    <div id="report-content" class="report-content journal-content scrollable" ng-hide="hasNoResults" ng-iscroll="report-details-scroll">
+    <div id="report-content" class="report-content journal-content summary-journal scrollable" ng-hide="hasNoResults" ng-iscroll="report-details-scroll">
         <div class="wrapper">
             <div ng-repeat="(title,summary) in results">
                 
@@ -41,8 +41,8 @@
                             </tr>
                         </thead>
                         
-                        <tbody ng-repeat="trans in summary.transactions">
-                            <tr>
+                        <tbody>
+                            <tr ng-repeat="trans in summary.transactions">
                                 <td>{{trans.room}}</td>
                                 <td>
                                     <strong class="cell-row">{{trans.name}}</strong>
@@ -58,7 +58,8 @@
                                     <span class="cell-row" ng-bind-html="trans.details"></span>
                                     
                                     <span class="converted-currency" ng-if="trans.converted_currency">
-                                        <span ng-bind-html="trans.debit_converted_amount | sntCurrency:this:converted_currency"></span>
+                                        <span ng-if="trans.credit_converted_amount" ng-bind-html="trans.credit_converted_amount | sntCurrency:this:trans.converted_currency"></span>
+                                        <span ng-if="trans.debit_converted_amount" ng-bind-html="trans.debit_converted_amount | sntCurrency:this:trans.converted_currency"></span>
                                     </span>
                                     <span class="converted-currency smaller" ng-if="trans.conversion_rate">
                                         <span>{{trans.conversion_rate}}</span>
@@ -70,10 +71,10 @@
                                     <span class="cell-row grey-text">{{trans.charge_description}}</span>
                                 </td>
                                 <td class="align-right">
-                                    <span ng-if="trans.debit" ng-bind-html="trans.debit | sntCurrency:this"></span>
+                                    <span ng-if="trans.debit" ng-show="trans.debit !== '' && trans.debit !== null" ng-bind-html="trans.debit | sntCurrency:this"></span>
                                 </td>
                                 <td class="align-right">
-                                    <span ng-if="trans.credit" ng-bind-html="trans.credit | sntCurrency:this"></span>    
+                                    <span ng-if="trans.credit" ng-show="trans.credit !== '' && trans.credit !== null" ng-bind-html="trans.credit | sntCurrency:this"></span>    
                                 </td>
                             </tr>
                         
