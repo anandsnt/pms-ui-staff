@@ -65,7 +65,7 @@
                                         <!-- If adjusted, show like this:
                                         <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
                                         <span class="converted-currency" ng-if="level3.converted_currency">
-                                            <span ng-bind-html="level3.debit_converted_amount | sntCurrency:this:converted_currency"></span>
+                                            <span ng-bind-html="level3.debit_converted_amount | sntCurrency:this:level3.converted_currency"></span>
                                         </span>
                                         <span class="converted-currency smaller" ng-if="level3.conversion_rate">
                                             <span>{{level3.conversion_rate}}</span>
