@@ -84,7 +84,7 @@
                 <span class="h2 message" ng-if="selectedPurchesedAddon.name">{{selectedPurchesedAddon.name | limitTo: selectedPurchesedAddon.nameCharLimit}}{{selectedPurchesedAddon.name.length > 23 ? '...': ''}}</span>
 
                 <!-- <span class="text" ng-if="selectedPurchesedAddon.description">{{selectedPurchesedAddon.description | limitTo: 70}}{{selectedPurchesedAddon.description.length >= 70 ? '...': ''}}</span> -->
-                <span class="text" ng-if="selectedPurchesedAddon.amount && selectedPurchesedAddon.amount_type && selectedPurchesedAddon.post_type">at <span ng-bind-html="selectedPurchesedAddon.amount | sntCurrency:this:addon.selectedPurchesedAddon.addon_currency"></span> / {{selectedPurchesedAddon.amount_type.description}} {{selectedPurchesedAddon.post_type.description}}</span>
+                <span class="text" ng-if="selectedPurchesedAddon.amount && selectedPurchesedAddon.amount_type && selectedPurchesedAddon.post_type">at <span ng-bind-html="selectedPurchesedAddon.amount | sntCurrency:this:selectedPurchesedAddon.addon_currency"></span> / {{selectedPurchesedAddon.amount_type.description}} {{selectedPurchesedAddon.post_type.description}}</span>
 
                 <span class="text" ng-if="selectedPurchesedAddon.post_day_of_the_week && selectedPurchesedAddon.post_type.value !== 'CUSTOM' && selectedPurchesedAddon.post_type.value !== 'NIGHT' && selectedPurchesedAddon.post_type.value !== 'LAST_NIGHT'"> Post day - {{selectedPurchesedAddon.post_day_of_the_week}} </span>
 
