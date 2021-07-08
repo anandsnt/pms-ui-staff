@@ -9,7 +9,7 @@
 
 <section id="report-details" class="content reports-wrapper" role="main">
     <!-- Report content -->
-    <div id="report-content" class="report-content journal-content scrollable" ng-hide="hasNoResults" ng-iscroll="report-details-scroll">
+    <div id="report-content" class="report-content journal-content revenue-journal scrollable" ng-hide="hasNoResults" ng-iscroll="report-details-scroll">
         <div class="wrapper">
             <div id="journal-grid" class="journal-grid">
                 <ul class="grid-header revenue">
@@ -48,8 +48,8 @@
                                     <th class="align-right">Debit</th>
                                 </tr>
                             </thead>
-                            <tbody ng-repeat="level3 in level2.transactions">
-                                <tr>
+                            <tbody>
+                                <tr ng-repeat="level3 in level2.transactions">
                                     <td>{{level3.room}}</td>
                                     <td>
                                         <strong  class="cell-row">{{level3.name}}</strong>
