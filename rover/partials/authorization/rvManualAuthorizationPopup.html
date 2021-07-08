@@ -26,7 +26,7 @@
                         <span class="amount">
                                 {{ 'AMOUNT' | translate }}
                             <span class="value" ng-if="card.last_authorization.amount">
-                                {{ currencySymbol }}{{ card.last_authorization.amount | number : 2 }}
+                                <span ng-bind-html="card.last_authorization.amount | sntCurrency:this"></span>
                             </span>
                             <span class="value" ng-if="!card.last_authorization.amount">-</span>
                         </span>
@@ -63,7 +63,7 @@
                             <td class="value" ng-class="{
                                 'green' : authData.selectedCardDetails.bill_balance == 0.00,
                                 'red'   : authData.selectedCardDetails.bill_balance > 0.00 }">
-                                {{ currencySymbol }} {{ authData.selectedCardDetails.bill_balance | number : 2 }}
+                                <span ng-bind-html="authData.selectedCardDetails.bill_balance | sntCurrency:this"></span>
                             </td>
                         </tr>
 
@@ -120,7 +120,7 @@
                 <span class="value">{{selectedCardData.last_authorization.code}}</span>
             </span>
             <span class="amount">{{ 'AMOUNT' | translate }}
-                <span class="value">{{ currencySymbol }}{{ selectedCardData.last_authorization.amount | number : 2 }}</span>
+                <span class="value"><span ng-bind-html="selectedCardData.last_authorization.amount | sntCurrency:this"></span>
             </span>
         </div>
         <div class="actions">

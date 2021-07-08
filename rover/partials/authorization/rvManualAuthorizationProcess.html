@@ -7,13 +7,13 @@
 
 	    <!-- Step 2, A: Success --> 
 			<span ng-show="isSuccessScreen" class="icons icon-cc-authorization success"></span>
-		    <span ng-show="isSuccessScreen" class="h2 message green"> CC Authorization for {{currencySymbol}}{{cc_auth_amount}} completed.</span>
+		    <span ng-show="isSuccessScreen" class="h2 message green"> CC Authorization for <span ng-bind-html="cc_auth_amount | sntCurrency:this"></span> completed.</span>
 			<span ng-show="isSuccessScreen" class="text">Authorization Code {{cc_auth_code}}</span>
 			<button ng-click="cancelButtonClick()" ng-show="isSuccessScreen" type="button" class="button blank">Close</button>
 
 		<!-- Step 2, B: Failure -->
 			<span ng-show="isFailureScreen" class="icons icon-cc-authorization failure"></span>
-			<span ng-show="isFailureScreen" class="h2 message red"> CC Authorization for {{currencySymbol}}{{cc_auth_amount}} declined.</span>
+			<span ng-show="isFailureScreen" class="h2 message red"> CC Authorization for <span ng-bind-html="cc_auth_amount | sntCurrency:this"></span> declined.</span>
 			<button ng-disabled="!isCCAuthPermission" ng-click="tryAgain()" ng-show="isFailureScreen" type="button" class="button blue" ng-class="{'grey':!isCCAuthPermission }">Try Again</button>
 			<button ng-click="cancelButtonClick()" ng-show="isFailureScreen" type="button" class="button blank">Cancel</button>
 		
