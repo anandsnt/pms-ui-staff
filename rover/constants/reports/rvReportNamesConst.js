@@ -59,6 +59,7 @@ angular.module('reportsModule')
     'ROOM_STATUS_REPORT': 'Room Status Report',
     'FINANCIAL_TRANSACTION_REVENUE_REPORT': 'Financial Transaction - Revenue Report',
     'FINANCIAL_TRANSACTION_PAYMENT_REPORT': 'Financial Transaction - Payment Report',
+    'FINANCIAL_TRANSACTION_SUMMARY_REPORT': 'Financial Transaction - Summary Report',
     'TAX_OUTPUT_REPORT': 'Tax Output Report - Tax Payment Receipts'
 });
 

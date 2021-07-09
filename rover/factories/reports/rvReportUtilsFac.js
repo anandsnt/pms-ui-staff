@@ -993,12 +993,6 @@ angular.module('reportsModule')
                         fillCompletionStatus();
                     } else if ('INCLUDE_AGING_BALANCE' === filter.value && !filter.filled) {
                         fillAgingBalance();
-                    } else if ('TRANSACTION_CATEGORY' === filter.value && !filter.filled) {
-                        fillTransactionCategory();
-                    } else if ('SHOW_EMPLOYEES_INCLUDING_EOD' === filter.value && !filter.filled) {
-                        requested++;
-                        reportsSubSrv.fetchEmployees()
-                            .then(fillEmployeeList);
                     } else if ('PAYMENT_TYPES' === filter.value && !filter.filled) {
                         requested++;
                         reportsSubSrv.fetchPaymentTypes()
@@ -1031,8 +1025,9 @@ angular.module('reportsModule')
                         requested++;
                         reportsSubSrv.fetchTaxPaymentReceiptTypes()
                             .then(fillTaxPaymentReceiptTypes);
-                    } 
-                    else {
+                    } else if ('EXPANDED_OR_COLLAPSED' === filter.value && !filter.filled) {
+                        fillCollapsedOrExpanded();
+                    } else {
                         // no op
                     }
                 });
@@ -1102,6 +1097,26 @@ angular.module('reportsModule')
 
                     completed++;
                     checkAllCompleted();
+                }
+
+                function fillCollapsedOrExpanded() {
+                    var customData = [
+                        { id: 1, value: "Expanded", description: "Expanded" },
+                        { id: 2, value: "Collapsed", description: "Collapsed" }
+                    ],
+                    foundFilter;
+
+                    _.each(reportList, function (report) {
+                        foundFilter = _.find(report['filters'], { value: 'EXPANDED_OR_COLLAPSED' });
+                        if (!!foundFilter) {
+                            foundFilter['filled'] = true;
+
+                            report.hasCollapsedOrExpanded = {
+                                data: customData,
+                                selected: customData[0]
+                            };
+                        }
+                    });
                 }
 
                 function fillAccounts(data) {
@@ -1554,55 +1569,6 @@ angular.module('reportsModule')
                                     selectAll: true,
                                     key: 'name',
                                     defaultValue: 'Select Department'
-                                }
-                            };
-                        }
-                    });
-
-                    completed++;
-                    checkAllCompleted();
-                }
-
-                function fillTransactionCategory() {
-                    var customData = [
-                        { id: 1, value: "TOTAL", description: "Total" },
-                        { id: 2, value: "PRE STAY", description: "Pre Stay" },
-                        { id: 3, value: "IN HOUSE", description: "In House"},
-                        { id: 4, value: "POST STAY", description: "Post Stay" }
-                    ],
-                    foundFilter;
-
-                    _.each(reportList, function (report) {
-                        foundFilter = _.find(report['filters'], { value: 'TRANSACTION_CATEGORY' });
-                        if (!!foundFilter) {
-                            foundFilter['filled'] = true;
-
-                            report.hasTransactionCategory = {
-                                data: customData
-                            };
-                        }
-                    });
-
-                    completed++;
-                    checkAllCompleted();
-                }
-
-                function fillEmployeeList(data) {
-                    var foundFilter;
-
-                    _.each(reportList, function (report) {
-                        foundFilter = _.find(report['filters'], { value: 'SHOW_EMPLOYEES_INCLUDING_EOD' });
-                        if (!!foundFilter) {
-                            foundFilter['filled'] = true;
-                            
-                            report.filterTitle = 'Employees';
-                            report.empList = {
-                                data: angular.copy(data),
-                                options: {
-                                    hasSearch: true,
-                                    selectAll: true,
-                                    key: 'full_name',
-                                    defaultValue: 'Selected Employee'
                                 }
                             };
                         }
