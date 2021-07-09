@@ -30,8 +30,8 @@ angular.module('reportsModule')
                         'FORECAST_GUEST_GROUPS': ['hasOneYearLimit'],
                         'ARRIVAL': ['hasOneMonthLimit'],
                         'DEPARTURE': ['hasOneMonthLimit'],
-                        'FINANCIAL_TRANSACTION_REVENUE_REPORT': ['hasUserFilter'],              
-                        'FINANCIAL_TRANSACTION_PAYMENT_REPORT': ['hasUserFilter'],
+                        'FINANCIAL_TRANSACTION_REVENUE_REPORT': ['hasUserFilter', 'hasBDLimit'],              
+                        'FINANCIAL_TRANSACTION_PAYMENT_REPORT': ['hasUserFilter', 'hasBDLimit'],
                         'TAX_OUTPUT_REPORT': ['hasOneYearLimit'],
                         'FINANCIAL_TRANSACTION_SUMMARY_REPORT': ['hasDateLimit']
                     };
