@@ -25,15 +25,13 @@
                     ng-click="onClickIncidentalsOnly()"
                     class="button orange"
                     type="button">
-                Incidentals Only ({{currencySymbol}}{{authorizationInfo.pre_auth_amount_for_incidentals | number:
-                precisonTwo}})
+                Incidentals Only (<span ng-bind-html="authorizationInfo.pre_auth_amount_for_incidentals | sntCurrency:this"></span>)
             </button>
 
             <button ng-click="onClickFullAuth()"
                     class="button green modal-close"
                     type="button">
-                Full Auth as per set rule ({{currencySymbol}}{{authorizationInfo.pre_auth_amount_at_checkin | number:
-                precisonTwo}})
+                Full Auth as per set rule (<span ng-bind-html="authorizationInfo.pre_auth_amount_at_checkin | sntCurrency:this"></span>)
             </button>
             <button ng-click="onClickManualAuth()"
                     class="button blue modal-close"
