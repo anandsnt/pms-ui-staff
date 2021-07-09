@@ -1770,6 +1770,18 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     }
                 }
             }
+            
+            // include status
+            if (report.hasOwnProperty('hasTransactionCategory')) {
+                var selectedItem = report['hasTransactionCategory']['selected'] ? report['hasTransactionCategory']['selected'] : report['hasTransactionCategory']['data'][0];
+
+                key = reportParams['TRANSACTION_CATEGORY'];
+                params[key] = selectedItem.id;
+                if (changeAppliedFilter) {
+                    $scope.appliedFilter.transaction_category = selectedItem.value;
+                }
+            }
+
 
             // include hold status
             if (report.hasOwnProperty('hasHoldStatus')) {

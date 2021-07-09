@@ -252,6 +252,16 @@
     data="uiChosenReport.empList.data"
     options="uiChosenReport.empList.options"></multi-option-selection>
 
+<div class="entry" ng-show="uiChosenReport.hasTransactionCategory && uiChosenReport.hasTransactionCategory.data.length">
+    <label>Showing</label>
+    <div class="select">
+        <select ng-model="uiChosenReport.hasTransactionCategory.selected" ng-options="transactionCategory.description for transactionCategory in uiChosenReport.hasTransactionCategory.data" iscroll-stop-propagation>
+            <option value="">Show totals</option>
+        </select>
+    </div>
+</div>
+    
+
 <multi-option-selection ng-show="uiChosenReport.hasGeneralOptions && uiChosenReport.hasGeneralOptions.data.length"
     label="Option(s)"
     on-update="refreshFilterScroll"
