@@ -131,5 +131,8 @@ angular.module('reportsModule')
         "HOUSEKEEPING_STATUS": "hk_status_ids",
         "HK_RESERVATION_STATUSES": "hk_reservation_statuses",
         "HK_FRONT_OFFICE_STATUSES": "hk_fo_statuses",
+        "PAYMENT_TYPES": "payment_types",
+        "TRANSACTION_CATEGORY": "transaction_category",
+        "SHOW_EMPLOYEES_INCLUDING_EOD": "show_employee_including_eod",
         "TAX_RECEIPT_TYPE_VALUES": "tax_receipt_type_values"
     });
