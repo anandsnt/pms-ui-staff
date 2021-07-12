@@ -993,12 +993,6 @@ angular.module('reportsModule')
                         fillCompletionStatus();
                     } else if ('INCLUDE_AGING_BALANCE' === filter.value && !filter.filled) {
                         fillAgingBalance();
-                    } else if ('TRANSACTION_CATEGORY' === filter.value && !filter.filled) {
-                        fillTransactionCategory();
-                    } else if ('SHOW_EMPLOYEES_INCLUDING_EOD' === filter.value && !filter.filled) {
-                        requested++;
-                        reportsSubSrv.fetchEmployees()
-                            .then(fillEmployeeList);
                     } else if ('PAYMENT_TYPES' === filter.value && !filter.filled) {
                         requested++;
                         reportsSubSrv.fetchPaymentTypes()
