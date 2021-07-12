@@ -42,7 +42,7 @@
         <span ng-show="feeData.showFee" class="total">
           Total:
           <strong ng-if="!payment.isRateSuppressed">
-              {{currencySymbol}}{{feeData.totalOfValueAndFee | number: 2}}
+            <span ng-bind-html="feeData.totalOfValueAndFee | sntCurrency:this">
           </strong>
           <strong ng-if="payment.isRateSuppressed">
               {{'SUPPRESSED_RATES_TEXT' | translate}}
@@ -75,7 +75,7 @@
             Your Authorize code is: <span class="auth">{{payment.authorizationCode}}</span>
         </li>
         <li ng-if="feeData.showFee">
-            Amount paid: <span class="value">{{currencySymbol}}{{payment.amount}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
+            Amount paid: <span class="value"> <i ng-bind-html="payment.amount | sntCurrency:this"></i> + <i ng-bind-html="feeData.calculatedFee | sntCurrency:this"></i> fee
                         </span>
         </li>
         <li ng-if="!feeData.showFee">

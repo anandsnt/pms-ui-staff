@@ -58,7 +58,7 @@
     <span ng-show="feeData.showFee" class="total">
           Total:
           <strong ng-if="!payment.isRateSuppressed">
-              <span class="currency">{{payment.selectedPaymentCurrencySymbol}}</span>{{feeData.totalOfValueAndFee | number: 2}}
+            <span ng-bind-html="feeData.totalOfValueAndFee | sntCurrency:this:payment.selectedPaymentCurrencySymbol">
           </strong>
           <strong ng-if="payment.isRateSuppressed">
               {{'SUPPRESSED_RATES_TEXT' | translate}}
@@ -134,12 +134,12 @@
             ng-disabled="shouldHidePaymentButton()"
             ng-class="{'grey':shouldHidePaymentButton()}"
             ng-show="isRefund() && !splitBillEnabled">
-        REFUND<span class="currency">{{payment.selectedPaymentCurrencySymbol}}</span>{{ -1 * payment.amount | number:2 }}
+        REFUND <span ng-bind-html="-1 * payment.amount | sntCurrency:this:payment.selectedPaymentCurrencySymbol"></span>
     </button>
     <button type="button" class="button blue" click-touch="submitPayment()"
             ng-disabled="shouldHidePaymentButton()"
             ng-class="{'grey':shouldHidePaymentButton()}"
             ng-show="isRefund() && splitBillEnabled">
-        REFUND <span class="currency">{{payment.selectedPaymentCurrencySymbol}}</span>{{ -1 * payment.amount | number:2 }} ({{ completedSplitPayments + 1}}/{{ numSplits }})
+        REFUND <span ng-bind-html="-1 * payment.amount | sntCurrency:this:payment.selectedPaymentCurrencySymbol"></span> ({{ completedSplitPayments + 1}}/{{ numSplits }})
     </button>
 </div>
