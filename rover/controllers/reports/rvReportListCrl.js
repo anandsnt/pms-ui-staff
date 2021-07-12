@@ -153,6 +153,8 @@ sntRover.controller('RVReportListCrl', [
                 currentDate.setDate(currentDate.getDate() - 1);
                 return $filter('date')(currentDate, $rootScope.dateFormat);
             }());
+            $scope.fromDateOptionsTillBD.maxDate = new tzIndependentDate($rootScope.businessDate);
+            $scope.untilDateOptionsTillBD.maxDate = new tzIndependentDate($rootScope.businessDate);
             $scope.fromDateOptionsSysLimit.maxDate = new Date();
             $scope.untilDateOptionsSysLimit.maxDate = new Date();
             $scope.toDateOptionsOneYearLimit.minDate = datesUsedForCalendar.monthStart;
