@@ -1128,6 +1128,7 @@ sntRover.controller('reservationActionsController', [
             $scope.ngData.successMessage = '';
             $scope.ngData.failureMessage = '';
             $scope.ngData.guestEmail = $scope.guestCardData.contactInfo.email;
+            $scope.ngData.isCustomTextPerReservation = $scope.reservationData.reservation_card.is_custom_text_per_reservation;
 
             var openConfirmationPopup = function(data) {
                   
