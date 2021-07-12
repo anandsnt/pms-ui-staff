@@ -2005,15 +2005,12 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] ||
                     selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS'] ||
                     selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ||
-                    selectedEntity.report.title === reportNames['CREDIT_CHECK_REPORT'] ||
-                    selectedEntity.report.title === reportNames['FORECAST_BY_DATE'] || 
+                    selectedEntity.report.title === reportNames['MARKET_SEGMENT_STAT_REPORT'] ||
                     selectedEntity.report.title === reportNames['RESERVATIONS_BY_USER'] ||
                     selectedEntity.report.title === reportNames['ROOM_STATUS_REPORT'] ||
-                    selectedEntity.report.title === reportNames['RATE_ADJUSTMENTS_REPORT'] || 
                     selectedEntity.report.title === reportNames['ROOMS_OOO_OOS'] || 
                     selectedEntity.report.title === reportNames['OCCUPANCY_REVENUE_SUMMARY'] ||
                     selectedEntity.report.title === reportNames['ADDON_FORECAST'] || 
-                    selectedEntity.report.title === reportNames['FORECAST_GUEST_GROUPS'] ||
                     selectedEntity.report.title === reportNames['MARKET_SEGMENT_STAT_REPORT'] || 
                     selectedEntity.report.title === reportNames['COMPLIMENTARY_ROOM_REPORT'])) {
                 $scope.scheduleFormat = _.filter(originalScheduleFormats, function(object) {
@@ -2025,6 +2022,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['ACTIONS_MANAGER'] ||
                 selectedEntity.report.title === reportNames['CANCELLATION_NO_SHOW'] ||
                 selectedEntity.report.title === reportNames['DEPOSIT_SUMMARY']
+                selectedEntity.report.title === reportNames['RATE_ADJUSTMENTS_REPORT'] ||
+                selectedEntity.report.title === reportNames['FORECAST_GUEST_GROUPS'] ||
+                selectedEntity.report.title === reportNames['CREDIT_CHECK_REPORT']
             )) {
                 $scope.scheduleFormat = _.filter(originalScheduleFormats, function(object) {
                     return object.value === 'CSV' || object.value === 'PDF';
