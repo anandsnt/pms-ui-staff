@@ -2025,7 +2025,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['RATE_ADJUSTMENTS_REPORT'] ||
                 selectedEntity.report.title === reportNames['FORECAST_GUEST_GROUPS'] ||
                 selectedEntity.report.title === reportNames['CREDIT_CHECK_REPORT'] ||
-                selectedEntity.report.title === reportNames['FORECAST_BY_DATE']
+                selectedEntity.report.title === reportNames['FORECAST_BY_DATE'] ||
+                selectedEntity.report.title === reportNames['ROOMS_OOO_OOS']
             )) {
                 $scope.scheduleFormat = _.filter(originalScheduleFormats, function(object) {
                     return object.value === 'CSV' || object.value === 'PDF';
