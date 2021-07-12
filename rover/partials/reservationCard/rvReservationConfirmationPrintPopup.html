@@ -19,7 +19,7 @@
                     </select>
                 </div>
             </div>
-            <div class="entry">
+            <div class="entry" ng-show="ngData.is_custom_text_per_reservation">
                 <label for="custom-text">Email Type</label>
                 <div class="switch-button" ng-class="{ 'on' : ngData.enable_confirmation_custom_text }">
                     <input id="custom-text" value="{value}" type="checkbox" ng-click="enableConfirmationCustomText()"/>
