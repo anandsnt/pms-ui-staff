@@ -1242,6 +1242,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         else {
                             $scope.groupConfigData.summary.shoulder_from_date = $scope.groupSummaryMemento.shoulder_from_date;
                             $scope.groupConfigData.summary.shoulder_to_date   = $scope.groupSummaryMemento.shoulder_to_date;
+                            $scope.groupConfigData.summary.uniqId = $scope.groupSummaryMemento.uniqId;
+                            $scope.groupConfigData.summary.rate = $scope.groupSummaryMemento.rate;
                             // client controllers should get an infromation whether updation was a failure
                             $scope.$broadcast("FAILED_TO_UPDATE_GROUP_INFO", error);
                             $scope.errorMessage = error;
