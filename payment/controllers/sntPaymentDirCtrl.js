@@ -64,6 +64,24 @@ angular.module('sntPay').controller('sntPaymentController',
                 }));
             });
 
+            // We're going to remove the Direct Bill from the options if they have disabled it
+            if ($scope.allowDirectBill !== undefined && !$scope.allowDirectBill){
+                // A watch is added because the 'paymentTypes' takes a second to load from the parent
+                var unwatchPaymentType = $scope.$watch('paymentTypes', function() {
+                    if($scope.paymentTypes === undefined) return; 
+                    removeDirectBill();
+                });
+            }
+
+            // Here we recieve the update to remove Direct Bill and we first stop the watch,
+            // And then we remove Direct Bill from the list of options
+            function removeDirectBill(){
+                unwatchPaymentType();
+                $scope.$emit('REMOVE_PAYMENT_TYPE', {
+                    'paymentType': 'DB'
+                });
+            }
+            
             // ---------------------------------------------------------------------------------------------------------
             /**
              *
