@@ -101,8 +101,8 @@ sntRover.controller('RVReservationPackageController',
 			$scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 			if (!$rootScope.featureToggles.addons_custom_posting) {
 				return;
-			} else if (addon.is_rate_addon) {
-				$scope.errorMessage = ["Custom posting cannot be configured for rate addons"];
+			} else if (addon.is_rate_addon || addon.is_allowance) {
+				$scope.errorMessage = ["Custom posting cannot be configured for " + (addon.is_allowance ? "allowance" : "rate") + " addons"];
 				$scope.selectedPurchesedAddon = "";
 			} else if (addon.post_type.value === 'STAY') {
 				var addonPostingMode = $scope.addonPopUpData.addonPostingMode;

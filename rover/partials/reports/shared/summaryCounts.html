@@ -188,6 +188,14 @@
     <li>Total Deleted Charges<span class="red"><span class="currency">{{ summaryCounts.total_deleted_charges_amount | currency:currencySymbol:2 }}</span></span></li>
 </ul>
 
+<!-- Financial Transactions - Revenue Report -->
+<ul ng-if="isThisReport( 'FINANCIAL_TRANSACTION_REVENUE_REPORT' )" class="totals">
+    <li>Total<span ng-bind-html="summaryCounts.total_revenue | sntCurrency:this"></span></li>
+<!-- Financial Transactions - Payment Report -->
+<ul ng-if="isThisReport( 'FINANCIAL_TRANSACTION_PAYMENT_REPORT' )" class="totals">
+    <li>Total<span ng-bind-html="summaryCounts.total_payment | sntCurrency:this"></span></li>
+</ul>
+
 <!-- Guest/Account Deposit Balance Summary Report -->
 <ul ng-if="isThisReport( 'DEPOSIT_SUMMARY' )" class="totals">
     <li ng-hide="appliedFilter.guestOrAccount == 'Account'">Total Guest<span><span class="currency">{{summaryCounts.total_guest_deposit_balance | number: 2 }}</span></span></li>
