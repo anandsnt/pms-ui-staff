@@ -1,0 +1,245 @@
+{
+    "HK_GUESTS": {
+        "translation": "Huéspedes"
+    },
+    "HK_OCCUPIED": {
+        "translation": "Ocupado"
+    },
+    "HK_VACANT_DIRTY": {
+        "translation": "Vacante (sucio)"
+    },
+    "HK_VACANT_CLEAN": {
+        "translation": "Vacante (limpio)"
+    },
+    "HK_OOOS": {
+        "translation": "Fuera de servicio"
+    },
+    "OWS_ERROR_MSG": {
+        "translation": "Rover tiene problemas para responder. Vuelva a intentarlo si el problema persiste, comuníquese con nuestro equipo de soporte - support@stayntouch.com."
+    },
+    "ROOM_STATUS": {
+        "translation": "Estado de la habitación"
+    },
+    "ENTER_ROOM_NUMBER": {
+        "translation": "Ingrese el número de habitación"
+    },
+    "SEARCH_BY_ROOM_NO": {
+        "translation": "Buscar por número de habitación"
+    },
+    "FILTER_ROOMS": {
+        "translation": "Filtrar habitaciones"
+    },
+    "CLEAR_QUERY": {
+        "translation": "Consulta clara"
+    },
+    "CLEAR": {
+        "translation": "Borrar consulta"
+    },
+    "DONE": {
+        "translation": "Hecho"
+    },
+    "VIP": {
+        "translation": "Persona muy importante"
+    },
+    "HOUSEKEEPING_STATUS": {
+        "translation": "Estado de limpieza"
+    },
+    "SHOW_DIRTY": {
+        "translation": "Mostrar sucio"
+    },
+    "SHOW_PICKUP": {
+        "translation": "Mostrar recogida"
+    },
+    "SHOW_CLEAN": {
+        "translation": "Mostrar limpio"
+    },
+    "SHOW_INSPECTED": {
+        "translation": "Mostrar inspeccionado"
+    },
+    "SHOW_OOO": {
+        "translation": "Mostrar fuera de servicio"
+    },
+    "SHOW_OOS": {
+        "translation": "Mostrar fuera de servicio"
+    },
+    "RESERVATION_STATUS": {
+        "translation": "Estado de la reserva"
+    },
+    "SHOW_VACANT": {
+        "translation": "Mostrar vacante"
+    },
+    "SHOW_OCCUPIED": {
+        "translation": "Mostrar ocupado"
+    },
+    "SHOW_QUEUED": {
+        "translation": "Mostrar en cola"
+    },
+    "FRONT_OFFICE_STATUS": {
+        "translation": "Estado de la oficina principal"
+    },
+    "SHOW_STAYOVER": {
+        "translation": "Mostrar estancia"
+    },
+    "SHOW_NOT_RESERVED": {
+        "translation": "Mostrar no reservado"
+    },
+    "SHOW_ARRIVAL": {
+        "translation": "Mostrar llegada"
+    },
+    "SHOW_ARRIVED": {
+        "translation": "Mostrar llegado"
+    },
+    "SHOW_DAY_USE": {
+        "translation": "Mostrar uso diurno"
+    },
+    "SHOW_DUE_OUT": {
+        "translation": "Que saldrá"
+    },
+    "SHOW_DEPARTED": {
+        "translation": "Mostrar Salida"
+    },
+    "ROOM_DETAILS": {
+        "translation": "Detalles de la habitación"
+    },
+    "ROOM_IS_VACANT": {
+        "translation": "La habitación está vacía."
+    },
+    "HK_FLOORS": {
+        "translation": "Pisos"
+    },
+    "SHOW_ALL_FLOORS": {
+        "translation": "Mostrar todos los pisos"
+    },
+    "HK_SINGLE": {
+        "translation": "Único"
+    },
+    "FLOOR_#": {
+        "translation": "Suelo #"
+    },
+    "HK_MULTIPLE": {
+        "translation": "Múltiple"
+    },
+    "HK_FROM": {
+        "translation": "De"
+    },
+    "HK_TO": {
+        "translation": "A"
+    },
+    "PULL_REFRESH": {
+        "translation": "Tire hacia abajo para actualizar la página"
+    },
+    "RELEASE_REFRESH": {
+        "translation": "Suelte para actualizar la página"
+    },
+    "PULL_LOAD_NEXT": {
+        "translation": "Tire hacia arriba para cargar la página siguiente"
+    },
+    "RELEASE_LOAD_NEXT": {
+        "translation": "Suelte para cargar la página siguiente"
+    },
+    "PULL_LOAD_PREV": {
+        "translation": "Tire hacia abajo para cargar la página anterior"
+    },
+    "RELEASE_LOAD_PREV": {
+        "translation": "Suelte para cargar la página anterior"
+    },
+    "ROOM_TYPE_FILTER_TITLE": {
+        "translation": "Tipo de habitación"
+    },
+    "SELECT_WORK_TYPE": {
+        "translation": "Seleccione un tipo de trabajo"
+    },
+    "WORK_TYPE": {
+        "translation": "Tipo de trabajo"
+    },
+    "ALL_WORK_TYPES": {
+        "translation": "Todos los tipos de trabajo"
+    },
+    "OO": {
+        "translation": "Fuera de servicio"
+    },
+    "OS": {
+        "translation": "Fuera de servicio"
+    },
+    "FIND_ROOM_MAID": {
+        "translation": "Encontrar habitación o empleado"
+    },
+    "DEP_TO_CLEAN": {
+        "translation": "Salidas para limpiar"
+    },
+    "SO_TO_CLEAN": {
+        "translation": "Salidas para limpiar"
+    },
+    "TOTAL": {
+        "translation": "Total"
+    },
+    "TOTAL_STAFF_REQUIRED": {
+        "translation": "Personal total requerido"
+    },
+    "TOTAL_ROOMS_ASSIGNED": {
+        "translation": "Total de habitaciones asignadas"
+    },
+    "TOTAL_ROOMS_COMPLETED": {
+        "translation": "Total de habitaciones completadas"
+    },
+    "MANAGE_WS": {
+        "translation": "Administrar hojas de trabajo"
+    },
+    "CREATE_WS": {
+        "translation": "Crear hoja de trabajo"
+    },
+    "EMPLOYEE_NAME": {
+        "translation": "Nombre de empleado"
+    },
+    "SELECT_EMPLOYEE": {
+        "translation": "Seleccionar empleado"
+    },
+    "MAID": {
+        "translation": "Sirvienta"
+    },
+    "EMP": {
+        "translation": "Empleado"
+    },
+    "UNASSIGNED": {
+        "translation": "Sin asignar"
+    },
+    "ALL_UNASSIGNED": {
+        "translation": "Todo sin asignar"
+    },
+    "ALL_FLOORS": {
+        "translation": "Todos los pisos"
+    },
+    "NO_ROOM_ASSIGNED": {
+        "translation": "No hay habitación asignada."
+    },
+    "DRAG_DROP_TO_ASSIGN": {
+        "translation": "Arrastra y suelta habitaciones para asignar."
+    },
+    "UNASSIGN_ROOM": {
+        "translation": "Anular asignación de habitación"
+    },
+    "TIME_ALLOCATED": {
+        "translation": "Tiempo asignado"
+    },
+    "STAYOVERS": {
+        "translation": "Estancias"
+    },
+    "COMPLETED": {
+        "translation": "Completado"
+    },
+    "NO_EMPLOYEES_SELECTED": {
+        "translation": "No se seleccionaron empleados."
+    },
+    "SELECT_EMPLOYEES_TO_ASSIGN": {
+        "translation": "Seleccione empleados para asignar habitaciones."
+    },
+    "WEB_IN_PROGRESS_HOUSE_KEEPING": {
+        "translation": "Reserva web en curso. La solicitud de OOO \/ OOS no se puede completar"
+    },
+    "AUTO_ASSIGN": {
+        "translation": "Asignación automática"
+    },
+    "DO_NOT_DISTURB": {
+        "translation": "No molestar"
+    }
+}
