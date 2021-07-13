@@ -2005,6 +2005,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] ||
                     selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS'] ||
                     selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ||
+                    selectedEntity.report.title === reportNames['MARKET_SEGMENT_STAT_REPORT'] ||
                     selectedEntity.report.title === reportNames['RESERVATIONS_BY_USER'] ||
                     selectedEntity.report.title === reportNames['ROOM_STATUS_REPORT'] ||
                     selectedEntity.report.title === reportNames['ROOMS_OOO_OOS'] || 
