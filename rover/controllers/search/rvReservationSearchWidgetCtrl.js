@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScope', 'RVSearchSrv', '$filter', '$state', '$stateParams', '$vault', 'ngDialog', '$timeout', 'RVHkRoomStatusSrv', 'rvPermissionSrv',
-	function($scope, $rootScope, RVSearchSrv, $filter, $state, $stateParams, $vault, ngDialog, $timeout, RVHkRoomStatusSrv, rvPermissionSrv) {
+sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScope', 'RVSearchSrv', '$filter', '$state', '$stateParams', '$vault', 'ngDialog', '$timeout', 'RVHkRoomStatusSrv', 'rvPermissionSrv', 'RVGAHelperSrv',
+	function($scope, $rootScope, RVSearchSrv, $filter, $state, $stateParams, $vault, ngDialog, $timeout, RVHkRoomStatusSrv, rvPermissionSrv, RVGAHelperSrv) {
 
 		/*
 		 * Base reservation search, will extend in some place
@@ -752,6 +752,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			RVSearchSrv.data = $scope.results;
 			RVSearchSrv.fromDate = $scope.fromDate;
 			RVSearchSrv.toDate = $scope.toDate;
+
+			RVGAHelperSrv.startEventTiming('LOAD_RESERVATION', reservationID, confirmationID);
 
             $rootScope.goToReservationCalled = true;
 			$scope.$emit('GUESTCARDVISIBLE', false);

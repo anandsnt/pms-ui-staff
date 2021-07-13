@@ -67,6 +67,8 @@
                 Cancel
             </button>
             <button type="button" class="button green" 
+            ng-class="{'overlay': allotmentConfigData.summary.is_cancelled}"
+            ng-disabled="allotmentConfigData.summary.is_cancelled" 
             ng-click="checkIfAllotmentCustomRateChanged();">
                 Update
             </button>

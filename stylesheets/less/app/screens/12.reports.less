@@ -2024,6 +2024,12 @@
             &:first-child { margin-top: 0; }
         }
 
+        .receipt-type-container {
+            .card-meta {
+                margin-bottom: 10px;
+            }
+        }
+
         /* For Travel Commission Report*/
         .travel-agent {
 
@@ -2946,6 +2952,55 @@
                             &:nth-child(4) { .calc-width(25, 255); }
                             &:nth-child(5),
                             &:nth-child(6) { width: 120px; }
+                        }
+                    }
+                }
+                
+                &.tax-output {
+                    margin-bottom: 40px;
+
+                    tbody {
+                        tr:not(.row-break) {
+                            td:not([rowspan]) {
+                                border-bottom: 1px solid @grey2;
+                            }
+
+                            td {
+                                .date {
+                                    font-size: 12px;
+                                    color: @grey3;
+                                    width: 100%;
+                                    float: none;
+                                    .show();
+                                }
+                            }
+                        }
+                    }
+                    
+                    .numbers-pagination {
+                        position: static;
+                        padding: 5px;
+                        background: transparent;
+                        height: 40px;
+                        margin-bottom: 10px;
+                        .box-shadow(none);
+
+                        .delimeter {
+                            height: 30px;
+                        }
+
+                        .button {
+                            .square(30px);
+                            line-height: 30px;
+                            font-size: 12px;
+
+                            &.next,
+                            &.prev {
+                                &:before {
+                                    top: 10px;
+                                    left: 12px;
+                                }
+                            }
                         }
                     }
                 }
@@ -3999,6 +4054,122 @@
                     padding-left: 20px;
                     color: @grey3;
                     font-size: 12px;
+                }
+            }
+        }
+        
+        &.journal-content {
+            position: relative;
+            padding: 0 20px;
+            .calc-height(100, 50);
+
+            > .wrapper { padding: 20px 0; }
+
+            .journal-grid {
+                .grid-header {
+                    &.payment {
+                        padding: 0 0 0 10px;
+
+                        .code {
+                            padding-right: 0;
+                        }
+                    }
+                }
+
+
+                .payment-title {
+                    .number,
+                    .code {
+                        padding-right: 0;
+                    }
+                }
+
+                .grid-items {
+                    border-spacing: 0;
+
+                }
+
+                .grid-group {
+                    > .toggle {
+                        padding-right: 20px;
+                    }
+                }
+
+                .grid-charge {
+                    > .toggle {
+                        padding-right: 10px;
+                    }
+                }
+
+                .toggle {
+                    .value {
+                        padding-right: 0;
+                    }
+                }
+            }
+        }
+
+        &.journal-content {
+            position: relative;
+            padding: 0 20px;
+            .calc-height(100, 50);
+
+            > .wrapper { padding: 20px 0; }
+
+            .journal-grid {
+                .grid-header {
+                    &.payment {
+                        padding: 0 0 0 10px;
+
+                        .code {
+                            padding-right: 0;
+                        }
+                    }
+                }
+
+
+                .payment-title {
+                    .number,
+                    .code {
+                        padding-right: 0;
+                    }
+                }
+
+                .grid-items {
+                    border-spacing: 0;
+
+                }
+
+                .grid-group {
+                    > .toggle {
+                        padding-right: 20px;
+                    }
+                }
+
+                .grid-charge {
+                    > .toggle {
+                        padding-right: 10px;
+                    }
+                }
+
+                .toggle {
+                    .value {
+                        padding-right: 0;
+                    }
+                }
+
+                .journal-summary {
+                    .toggle {
+                        background: transparent;
+                        justify-content: flex-start;
+                    }
+
+                    &.totals {
+                        h3 {
+                            text-align: left;
+                            padding: 13px 10px;
+                        }
+                    }
                 }
             }
         }

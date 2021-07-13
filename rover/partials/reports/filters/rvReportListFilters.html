@@ -240,11 +240,34 @@
     </div>
 </div>
 
+<multi-option-selection ng-show="uiChosenReport.hasDepartments && uiChosenReport.hasDepartments.data.length"
+    label="Department Assigned"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasDepartments.data"
+    options="uiChosenReport.hasDepartments.options"></multi-option-selection>
+
 <multi-option-selection ng-show="uiChosenReport.hasUserFilter && uiChosenReport.empList.data.length"
     label="{{ uiChosenReport.filterTitle }}"
     on-update="refreshFilterScroll"
     data="uiChosenReport.empList.data"
     options="uiChosenReport.empList.options"></multi-option-selection>
+
+<div class="entry" ng-show="uiChosenReport.hasCollapsedOrExpanded && uiChosenReport.hasCollapsedOrExpanded.data.length">
+    <label>Details</label>
+    <div class="select">
+        <select ng-model="uiChosenReport.hasCollapsedOrExpanded.selected" ng-options="CollapsedOrExpanded.description for CollapsedOrExpanded in uiChosenReport.hasCollapsedOrExpanded.data" iscroll-stop-propagation>
+        </select>
+    </div>
+</div>
+
+<div class="entry" ng-show="uiChosenReport.hasTransactionCategory && uiChosenReport.hasTransactionCategory.data.length">
+    <label>Showing</label>
+    <div class="select">
+        <select ng-model="uiChosenReport.hasTransactionCategory.selected" ng-options="transactionCategory.description for transactionCategory in uiChosenReport.hasTransactionCategory.data" iscroll-stop-propagation>
+            <option value="">Show totals</option>
+        </select>
+    </div>
+</div>
 
 <multi-option-selection ng-show="uiChosenReport.hasGeneralOptions && uiChosenReport.hasGeneralOptions.data.length"
     label="Option(s)"
@@ -425,11 +448,6 @@
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasCompletionStatus.data"
     options="uiChosenReport.hasCompletionStatus.options"></multi-option-selection>
-<multi-option-selection ng-show="uiChosenReport.hasDepartments && uiChosenReport.hasDepartments.data.length"
-    label="Department Assigned"
-    on-update="refreshFilterScroll"
-    data="uiChosenReport.hasDepartments.data"
-    options="uiChosenReport.hasDepartments.options"></multi-option-selection>
 <div class="entry" ng-show="uiChosenReport.hasLanguages && uiChosenReport.hasLanguages.data.length">
     <label>Language</label>
     <div class="select">
@@ -503,11 +521,23 @@
     data="uiChosenReport.hasGuaranteeType.data"
     options="uiChosenReport.hasGuaranteeType.options"></multi-option-selection>
 
+<multi-option-selection ng-show="uiChosenReport.hasTaxPaymentReceiptTypes && uiChosenReport.hasTaxPaymentReceiptTypes.data.length"
+    label="Tax Receipt Type(s)"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasTaxPaymentReceiptTypes.data"
+    options="uiChosenReport.hasTaxPaymentReceiptTypes.options"></multi-option-selection>
+
 <multi-option-selection ng-show="uiChosenReport.hasFloorList && uiChosenReport.hasFloorList.data.length"
     label="Floor"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasFloorList.data"
     options="uiChosenReport.hasFloorList.options"></multi-option-selection>
+    
+<multi-option-selection ng-show="uiChosenReport.hasPaymentType && uiChosenReport.hasPaymentType.data.length"
+    label="Payment type"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasPaymentType.data"
+    options="uiChosenReport.hasPaymentType.options"></multi-option-selection>
 
 <div class="entry" ng-show="uiChosenReport.hasMinRevenue">
     <label>Minimum Revenue</label>

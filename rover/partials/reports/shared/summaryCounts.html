@@ -188,6 +188,15 @@
     <li>Total Deleted Charges<span class="red"><span class="currency">{{ summaryCounts.total_deleted_charges_amount | currency:currencySymbol:2 }}</span></span></li>
 </ul>
 
+<!-- Financial Transactions - Revenue Report -->
+<ul ng-if="isThisReport( 'FINANCIAL_TRANSACTION_REVENUE_REPORT' )" class="totals">
+    <li>Total<span ng-bind-html="summaryCounts.total_revenue | sntCurrency:this"></span></li>
+</ul>
+<!-- Financial Transactions - Payment Report -->
+<ul ng-if="isThisReport( 'FINANCIAL_TRANSACTION_PAYMENT_REPORT' )" class="totals">
+    <li>Total<span ng-bind-html="summaryCounts.total_payment | sntCurrency:this"></span></li>
+</ul>
+
 <!-- Guest/Account Deposit Balance Summary Report -->
 <ul ng-if="isThisReport( 'DEPOSIT_SUMMARY' )" class="totals">
     <li ng-hide="appliedFilter.guestOrAccount == 'Account'">Total Guest<span><span class="currency">{{summaryCounts.total_guest_deposit_balance | number: 2 }}</span></span></li>
@@ -265,4 +274,12 @@
     <li>Total Open Balance<span ng-class="{'red': toFloat(summaryCounts.total_balance) !== 0.00, 'green': toFloat(summaryCounts.total_balance) === 0.00}">
         <span class="currency">{{ summaryCounts.total_balance | currency:currencySymbol:2 }}</span>
     </li>
+</ul>
+
+<!-- Tax output report -->
+<ul ng-if="isThisReport( 'TAX_OUTPUT_REPORT' )" class="totals">
+    <li>Tax Payer<span>{{summaryCounts.tax_payer_info}}</span></li>
+    <li>Tax ID<span>{{summaryCounts.tax_payer_tax_id}}</span></li>
+    <li>Branch No.<span>{{summaryCounts.tax_payer_branch_number}}</span></li>
+    <li>VAT Date<span>{{summaryCounts.vat_date_from | date : dateFormat}} - {{summaryCounts.vat_date_to | date : dateFormat}}</span></li>
 </ul>

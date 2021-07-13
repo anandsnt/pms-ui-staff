@@ -58,7 +58,7 @@
                         Amount paid:
                         <span class="value">
                             <i class="currency">{{currencySymbol}} </i>
-                            {{paymentDetails.amount |number:2}} <i class="currency" ng-show="paymentDetails.showFee"> + {{currencySymbol}}
+                            {{paymentDetails.amountWithoutFee |number:2}} <i class="currency" ng-show="paymentDetails.showFee"> + {{currencySymbol}}
                             {{paymentDetails.feePaid |number:2}} fee </i>
                         </span>
                     </li>

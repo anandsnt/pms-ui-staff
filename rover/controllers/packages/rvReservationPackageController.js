@@ -101,8 +101,8 @@ sntRover.controller('RVReservationPackageController',
 			$scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 			if (!$rootScope.featureToggles.addons_custom_posting) {
 				return;
-			} else if (addon.is_rate_addon) {
-				$scope.errorMessage = ["Custom posting cannot be configured for rate addons"];
+			} else if (addon.is_rate_addon || addon.is_allowance) {
+				$scope.errorMessage = ["Custom posting cannot be configured for " + (addon.is_allowance ? "allowance" : "rate") + " addons"];
 				$scope.selectedPurchesedAddon = "";
 			} else if (addon.post_type.value === 'STAY') {
 				var addonPostingMode = $scope.addonPopUpData.addonPostingMode;
@@ -149,11 +149,11 @@ sntRover.controller('RVReservationPackageController',
 				$scope.selectedPurchesedAddon.nameCharLimit = ($scope.selectedPurchesedAddon.name.length > 23) ? 20 : 23;
 				angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item) {
 						if (!item.active) {
-							var postDate = new Date(item.post_date),
+							var postDate = moment(item.post_date),
 							daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 							day;
 
-							day = daysOfWeek[postDate.getDay()];
+							day = daysOfWeek[postDate.day()];
 
 							$scope.selectedPurchesedAddon.selected_post_days[day] = item.active;
 						}

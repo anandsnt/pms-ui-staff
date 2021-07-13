@@ -97,10 +97,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		// Success callback for transaction fetch API.
 		var onBillTransactionFetchSuccess = function(data, selectedDate) {
+			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+
 			if (data.transactions.length > 0) {
 				$scope.errorMessage = '';
-				var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
-
 				activebillTab.transactions = [];
 				_.each(data.transactions, function(item) {
 
@@ -128,6 +128,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				else {
 					initDaysListForRecentDayActive();
 				}
+			}
+			else if (data.transactions.length === 0 && activebillTab.transactions.length > 0) {
+				// Background process is completed, need to refresh bill to resolve the conflicts.
+				getTransactionDetails();
 			}
 			else {
 				$scope.errorMessage = ['The date selected has no transactions, please select a new date'];
@@ -296,7 +300,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.moveChargeData.displayName = accountName;
 				$scope.moveChargeData.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
 				$scope.moveChargeData.fromBillId = billTabsData[$scope.currentActiveBill].bill_id;
-
+				$scope.moveChargeData.isMoveAllCharges = false;
+				$scope.moveChargeData.totalCount = $scope.transactionsDetails.bills[$scope.currentActiveBill].total_count;
+				$scope.moveChargeData.date = $scope.invoiceDate;
 
 				if (chargeCodes.length > 0) {
 					_.each(chargeCodes, function(chargeCode, index) {
@@ -311,6 +317,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 							}
 						}
 					});
+					$scope.origin = 'ACCOUNT';
 					ngDialog.open({
 						template: '/assets/partials/bill/rvMoveTransactionPopup.html',
 						controller: 'RVMoveChargeCtrl',
@@ -447,7 +454,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		/*
 		 * success method move charge
 		 */
-		var moveChargeSuccess = $scope.$on('moveChargeSuccsess', function(event) {
+		var moveChargeSuccess = $scope.$on('moveChargeSuccsess', function(event, response) {
 
 			var chargesMoved = function(data) {
 					onTransactionFetchSuccess(data);
@@ -460,7 +467,16 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					successCallBack: chargesMoved
 				};
 
-			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, options);
+			if (response.is_move_charges_inprogress) {
+				ngDialog.open({
+					template: '/assets/partials/bill/rvMoveAllChargesInprogress.html',
+					className: '',
+					scope: $scope
+				});
+			}
+			else {
+				$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, options);
+			}
 		});
 
 		$scope.$on('$destroy', moveChargeSuccess);
@@ -970,17 +986,24 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 				finalInvoiceSettlement(params, false);
 			} else {
+				$scope.closeDialog();
 				var mailSent = function(data) {
-						// Handle mail Sent Success
-						$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
-						$scope.status = "success";
+						if (data.is_invoice_issued) {
+							// Handle mail Sent Success
+							$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+							$scope.status = "success";
 
-						if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
-							$scope.$broadcast("UPDATE_WINDOW");
+							if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
+								$scope.$broadcast("UPDATE_WINDOW");
+							} else {
+								$scope.showEmailSentStatusPopup();
+							}
+							$scope.switchTabTo('TRANSACTIONS');
 						} else {
-							$scope.showEmailSentStatusPopup();
+							$timeout(function() {
+								showInvoicePendingInfoPopup();
+							}, 500);
 						}
-						$scope.switchTabTo('TRANSACTIONS');
 					},
 					mailFailed = function(errorMessage) {
 						$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
@@ -1002,6 +1025,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var finalInvoiceSettlement = function(data, isPrint) {
 			var settleInvoiceSuccess = function() {
 					$scope.shouldGenerateFinalInvoice = false;
+					getTransactionDetails();
 					if (isPrint) {
 						printBillCard(data);
 					} else {
@@ -1016,11 +1040,24 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.callAPI(RVBillCardSrv.settleFinalInvoice, options);
 		};		
 
+			/*
+		*	Method to show Invoice pending while fiskilazation in progress.
+		*	This is for EFSTA only.
+		*/
+		var showInvoicePendingInfoPopup = function() {
+			ngDialog.open({
+				template: '/assets/partials/popups/billFormat/rvInvoicePendingInfoPopup.html',
+				className: '',
+				scope: $scope
+			});
+		};
+
 		$scope.clickedEmail = function(requestParams) {
 			$scope.sendEmail(requestParams);
 		};
 
 		$scope.clickedPrint = function(requestParams) {
+			$scope.closeDialog();
 			sntActivity.start("PRINT_STARTED");
 			printBillCard(requestParams);
 		};
@@ -1098,33 +1135,37 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 							copyInvoiceLabel = responseData.posting_account_invoice_copy_label || responseData.translation.copy_of_invoice;
 							responseData.invoiceLabel = copyInvoiceLabel.replace("#count", copyCount);
 						}
-						$scope.invoiceActive = true;
-						$scope.printData = responseData;
-						$scope.errorMessage = "";
+						if (responseData.is_invoice_issued) {
+							$scope.invoiceActive = true;
+							$scope.printData = responseData;
+							$scope.errorMessage = "";
 
-						$('.nav-bar').addClass('no-print');
-						$('.cards-header').addClass('no-print');
-						$('.card-tabs-nav').addClass('no-print');
-						$("body #loading").html("");
+							$('.nav-bar').addClass('no-print');
+							$('.cards-header').addClass('no-print');
+							$('.card-tabs-nav').addClass('no-print');
+							$("body #loading").html("");
 
-						// this will show the popup with full report
-						$timeout(function() {
+							// this will show the popup with full report
+							$timeout(function() {
 
-							if (sntapp.cordovaLoaded) {
-								cordova.exec(accountsPrintCompleted,
-									function(error) {
+								if (sntapp.cordovaLoaded) {
+									cordova.exec(accountsPrintCompleted,
+										function(error) {
+											accountsPrintCompleted();
+										}, 'RVCardPlugin', 'printWebView', []);
+								}
+								else
+								{
+									$timeout(function() {
+										window.print();
 										accountsPrintCompleted();
-									}, 'RVCardPlugin', 'printWebView', []);
-							}
-							else
-							{
-								$timeout(function() {
-									window.print();
-									accountsPrintCompleted();
-								}, timeDelay); // CICO-61122 
-							}
+									}, timeDelay); // CICO-61122 
+								}
 
-						}, 100);
+							}, 100);
+						} else {
+							showInvoicePendingInfoPopup();
+						}
 				};
 
 				var printBillFailure = function(errorData) {

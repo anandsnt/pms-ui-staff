@@ -67,32 +67,35 @@ sntRover.controller('RVGuestCardActivityLogController',
 	 * @param  { String } [Page No to API]
 	 */
 	that.loadAPIData = function ( pageNo ) {
+		// API call should be made only when the guest exists
+		if (($scope.guestCardData && $scope.guestCardData.guestId) || $stateParams.guestId) {
+			$scope.activityLogObj.page = pageNo ? pageNo : 1;
+			$scope.activityLogObj.accountId = (typeof $scope.guestCardData === 'undefined') ? $stateParams.guestId : $scope.guestCardData.guestId;
 
-		$scope.activityLogObj.page = pageNo ? pageNo : 1;
-		$scope.activityLogObj.accountId = ( typeof $scope.guestCardData === 'undefined' ) ? $stateParams.guestId : $scope.guestCardData.guestId;
+			var dataToSend = {
+				params: {
+					'page': $scope.activityLogObj.page,
+					'per_page': $scope.activityLogObj.perPage,
+					'sort_field': $scope.activityLogObj.sortField,
+					'sort_order': $scope.activityLogObj.sortOrder,
+					'id': $scope.activityLogObj.accountId
+				},
+				successCallBack: function (data) {
+					$scope.activityLogObj.response = data;
+					$scope.errorMessage = '';
+					refreshScroll();
+					$timeout(function () {
+						$scope.$broadcast('updatePagination', 'GUEST_ACTIVITY_LOG');
+					}, CONST_INTERVAL);
+				},
+				failureCallBack: function (errorMessage) {
+					$scope.errorMessage = errorMessage;
+				}
+			};
 
-		var dataToSend = {
-			params: {
-				'page': $scope.activityLogObj.page,
-				'per_page': $scope.activityLogObj.perPage,
-				'sort_field': $scope.activityLogObj.sortField,
-				'sort_order': $scope.activityLogObj.sortOrder,
-				'id': $scope.activityLogObj.accountId
-			},
-			successCallBack: function( data ) {
-				$scope.activityLogObj.response = data;
-				$scope.errorMessage = '';
-				refreshScroll();
-				$timeout(function () {
-					$scope.$broadcast('updatePagination', 'GUEST_ACTIVITY_LOG');
-				}, CONST_INTERVAL );
-			},
-			failureCallBack: function( errorMessage ) {
-				$scope.errorMessage = errorMessage;
-			}
-		};
-
-		$scope.callAPI(RVGuestCardActivityLogSrv.fetchActivityLog, dataToSend);
+			$scope.callAPI(RVGuestCardActivityLogSrv.fetchActivityLog, dataToSend);
+		}
+		
 	};
 
 	/*
