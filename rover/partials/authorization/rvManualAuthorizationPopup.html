@@ -1,12 +1,12 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
-    <div class="modal-content form card-authorize" ng-show="!hasShownReleaseConfirm">
-    	<button ng-click="closeDialog()" class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
+    <div class="modal-content form card-authorize" ng-class="{'show-right-content': showRightContentForMobile}" ng-show="!hasShownReleaseConfirm">
+        <button ng-click="closeDialog();setLeftSideContent()" class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <fieldset class="content-left">
             <strong class="h2 message" translate>CREDIT_CARD_AUTHORIZATION</strong>
             <div class="credit-cards scrollable" ng-iscroll='cardsList' ng-iscroll-delay='300'>
                 <ul class="wrapper">
-                    <li ng-click="selectCCforAuth($index)" class="block-item item-payment" ng-class="{ 'item-active' : card.active }" ng-repeat="card in authData.billData">
+                    <li ng-click="selectCCforAuth($index);onSelectCCforAuth()" class="block-item item-payment" ng-class="{ 'item-active' : card.active }" ng-repeat="card in authData.billData">
                         <figure class="card-logo">
                             <img ng-src="/assets/images/{{card.card_code | lowercase }}.png" alt="" />
                         </figure>
@@ -26,7 +26,7 @@
                         <span class="amount">
                                 {{ 'AMOUNT' | translate }}
                             <span class="value" ng-if="card.last_authorization.amount">
-                                {{ currencySymbol }}{{ card.last_authorization.amount | number : 2 }}
+                                <span ng-bind-html="card.last_authorization.amount | sntCurrency:this"></span>
                             </span>
                             <span class="value" ng-if="!card.last_authorization.amount">-</span>
                         </span>
@@ -43,6 +43,10 @@
         </fieldset>
 
         <fieldset class="content-right">
+
+            <!-- This button is for mobile view -->
+            <button type="button" class="back-button hide-on-desktop" ng-click="setLeftSideContent()">Back to Cards</button> <!-- Remove class ".show-right-content" from L1 when clicked -->
+
             <span class="h2 message" ng-hide="authData.selectedCardDetails.name == '' && authData.selectedCardDetails.number == '' " >      {{authData.selectedCardDetails.name}} {{ 'NO.' | translate }} {{authData.selectedCardDetails.number}}
             </span>
 
@@ -63,7 +67,7 @@
                             <td class="value" ng-class="{
                                 'green' : authData.selectedCardDetails.bill_balance == 0.00,
                                 'red'   : authData.selectedCardDetails.bill_balance > 0.00 }">
-                                {{ currencySymbol }} {{ authData.selectedCardDetails.bill_balance | number : 2 }}
+                                <span ng-bind-html="authData.selectedCardDetails.bill_balance | sntCurrency:this"></span>
                             </td>
                         </tr>
 
@@ -102,7 +106,7 @@
                         type="button" class="button green" translate>
                     AUTHORIZE
                 </button>
-                <button ng-click="closeDialog()" type="button" class="button blank" translate>CANCEL</button>
+                <button ng-click="closeDialog();setLeftSideContent()" type="button" class="button blank" translate>CANCEL</button>
             </div>
         </fieldset>
     </div>
@@ -120,7 +124,7 @@
                 <span class="value">{{selectedCardData.last_authorization.code}}</span>
             </span>
             <span class="amount">{{ 'AMOUNT' | translate }}
-                <span class="value">{{ currencySymbol }}{{ selectedCardData.last_authorization.amount | number : 2 }}</span>
+                <span class="value"><span ng-bind-html="selectedCardData.last_authorization.amount | sntCurrency:this"></span>
             </span>
         </div>
         <div class="actions">

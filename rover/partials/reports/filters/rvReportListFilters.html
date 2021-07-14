@@ -86,11 +86,12 @@
         <input ng-show="uiChosenReport.hasPrevDateLimit && !uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit  && !uiChosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsTillYesterday" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
         <input ng-show="!uiChosenReport.hasPrevDateLimit && uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit && !uiChosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
         <input ng-show="uiChosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsSysLimit" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
-        <input ng-show="!uiChosenReport.hasPrevDateLimit && !uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit && !uiChosenReport.hasOneYearLimit && !uiChosenReport.hasOneMonthLimit && !uiChosenReport.hasSixMonthsLimit && !uiChosenReport.hasThirtyOneDaysLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
+        <input ng-show="!uiChosenReport.hasBDLimit && !uiChosenReport.hasPrevDateLimit && !uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit && !uiChosenReport.hasOneYearLimit && !uiChosenReport.hasOneMonthLimit && !uiChosenReport.hasSixMonthsLimit && !uiChosenReport.hasThirtyOneDaysLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
         <input ng-show="uiChosenReport.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsOneMonthLimit" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
         <input ng-show="uiChosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsOneYearLimit" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
         <input ng-show="uiChosenReport.hasSixMonthsLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsSixMonthsLimit" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
         <input ng-show="uiChosenReport.hasThirtyOneDaysLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsThirtyOneDaysLimit" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
+        <input ng-show="uiChosenReport.hasBDLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsTillBD" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
     </div>
     <label>{{ uiChosenReport.hasDateFilter.description }} <span>(To)</span></label>
     <div class="has-datepicker">
@@ -100,11 +101,12 @@
         <input ng-show="uiChosenReport.hasPrevDateLimit && !uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit && !uiChosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsTillYesterday" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
         <input ng-show="!uiChosenReport.hasPrevDateLimit && uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit && !uiChosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
         <input ng-show="uiChosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsSysLimit" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
-        <input ng-show="!uiChosenReport.hasPrevDateLimit && !uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit && !uiChosenReport.hasOneYearLimit && !uiChosenReport.hasOneMonthLimit && !uiChosenReport.hasSixMonthsLimit && !uiChosenReport.hasThirtyOneDaysLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
+        <input ng-show="!uiChosenReport.hasBDLimit && !uiChosenReport.hasPrevDateLimit && !uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit && !uiChosenReport.hasOneYearLimit && !uiChosenReport.hasOneMonthLimit && !uiChosenReport.hasSixMonthsLimit && !uiChosenReport.hasThirtyOneDaysLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
         <input ng-show="uiChosenReport.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="toDateOptionsOneMonthLimit" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
         <input ng-show="uiChosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="toDateOptionsOneYearLimit" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
         <input ng-show="uiChosenReport.hasSixMonthsLimit" type="text" class="range-datepicker" ui-date="toDateOptionsSixMonthsLimit" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
         <input ng-show="uiChosenReport.hasThirtyOneDaysLimit" type="text" class="range-datepicker" ui-date="toDateOptionsThirtyOneDaysLimit" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
+        <input ng-show="uiChosenReport.hasBDLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsTillBD" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
     </div>
     <button type="button" class="set-to-tomorrow button blue" ng-show="uiChosenReport.hasAddonGroups" ng-click="setTomorrowDate(uiChosenReport)">Set To Tomorrow</button>
 </div>
@@ -240,11 +242,34 @@
     </div>
 </div>
 
+<multi-option-selection ng-show="uiChosenReport.hasDepartments && uiChosenReport.hasDepartments.data.length"
+    label="Department Assigned"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasDepartments.data"
+    options="uiChosenReport.hasDepartments.options"></multi-option-selection>
+
 <multi-option-selection ng-show="uiChosenReport.hasUserFilter && uiChosenReport.empList.data.length"
     label="{{ uiChosenReport.filterTitle }}"
     on-update="refreshFilterScroll"
     data="uiChosenReport.empList.data"
     options="uiChosenReport.empList.options"></multi-option-selection>
+
+<div class="entry" ng-show="uiChosenReport.hasCollapsedOrExpanded && uiChosenReport.hasCollapsedOrExpanded.data.length">
+    <label>Details</label>
+    <div class="select">
+        <select ng-model="uiChosenReport.hasCollapsedOrExpanded.selected" ng-options="CollapsedOrExpanded.description for CollapsedOrExpanded in uiChosenReport.hasCollapsedOrExpanded.data" iscroll-stop-propagation>
+        </select>
+    </div>
+</div>
+    
+<div class="entry" ng-show="uiChosenReport.hasTransactionCategory && uiChosenReport.hasTransactionCategory.data.length">
+    <label>Showing</label>
+    <div class="select">
+        <select ng-model="uiChosenReport.hasTransactionCategory.selected" ng-options="transactionCategory.description for transactionCategory in uiChosenReport.hasTransactionCategory.data" iscroll-stop-propagation>
+            <option value="">Show totals</option>
+        </select>
+    </div>
+</div>
 
 <multi-option-selection ng-show="uiChosenReport.hasGeneralOptions && uiChosenReport.hasGeneralOptions.data.length"
     label="Option(s)"
@@ -425,11 +450,6 @@
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasCompletionStatus.data"
     options="uiChosenReport.hasCompletionStatus.options"></multi-option-selection>
-<multi-option-selection ng-show="uiChosenReport.hasDepartments && uiChosenReport.hasDepartments.data.length"
-    label="Department Assigned"
-    on-update="refreshFilterScroll"
-    data="uiChosenReport.hasDepartments.data"
-    options="uiChosenReport.hasDepartments.options"></multi-option-selection>
 <div class="entry" ng-show="uiChosenReport.hasLanguages && uiChosenReport.hasLanguages.data.length">
     <label>Language</label>
     <div class="select">
@@ -514,6 +534,12 @@
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasFloorList.data"
     options="uiChosenReport.hasFloorList.options"></multi-option-selection>
+    
+<multi-option-selection ng-show="uiChosenReport.hasPaymentType && uiChosenReport.hasPaymentType.data.length"
+    label="Payment type"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasPaymentType.data"
+    options="uiChosenReport.hasPaymentType.options"></multi-option-selection>
 
 <div class="entry" ng-show="uiChosenReport.hasMinRevenue">
     <label>Minimum Revenue</label>

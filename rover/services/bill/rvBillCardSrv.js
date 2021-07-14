@@ -45,12 +45,17 @@ angular.module('sntRover').service('RVBillCardSrv',
 						// take actual charge code description from allowance data and include it in bill data
 						_.each(billData.total_fees[0].fees_details, function(feeDetail) {
 							if (feeDetail.id === entry.id) {
+								feeDetail.hidden = entry.inclusive_in_rate;
 								_.each(feeDetail.description, function(description) {
 									description.fees_desc = entry.description;
 								});
 								feeDetail.reference_text = '';
 								feeDetail.is_description_edited = false;
 							}
+						});
+
+						billData.total_fees[0].fees_details = _.reject(billData.total_fees[0].fees_details, function(feeDetail) {
+							return feeDetail.hidden;
 						});
 					}
 				});

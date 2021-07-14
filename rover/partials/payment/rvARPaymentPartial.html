@@ -28,7 +28,7 @@
     <span ng-show="feeData.showFee" class="total">
           Total:
           <strong ng-if="!payment.isRateSuppressed">
-              {{payment.selectedPaymentCurrencySymbol}}{{feeData.totalOfValueAndFee | number: 2}}
+            <span ng-bind-html="feeData.totalOfValueAndFee | sntCurrency:this:payment.selectedPaymentCurrencySymbol">
           </strong>
     </span>
 </div>
@@ -56,7 +56,7 @@
         <li ng-if="feeData.showFee">
             Amount paid:
             <span class="value">
-                {{payment.selectedPaymentCurrencySymbol}}{{payment.amount |number:2}} + {{currencySymbol}}{{feeData.calculatedFee|number:2}} fee
+                <i ng-bind-html="payment.amount | sntCurrency:this:payment.selectedPaymentCurrencySymbol"></i> + <i ng-bind-html="feeData.calculatedFee | sntCurrency:this"></i> fee
             </span>
         </li>
         <li ng-if="!feeData.showFee">
@@ -93,7 +93,7 @@
       <button type="button" class="button blue" ng-disabled="shouldHidePaymentButton()"
             ng-class="{'grey':shouldHidePaymentButton()}" click-touch="submitPayment()"
               ng-show="isRefund()">
-          REFUND {{payment.selectedPaymentCurrencySymbol}}{{ -1 * payment.amount | number:2 }}
+          REFUND <span ng-bind-html="-1 * payment.amount | sntCurrency:this:payment.selectedPaymentCurrencySymbol"></span>
       </button>
   </div>
 </div>

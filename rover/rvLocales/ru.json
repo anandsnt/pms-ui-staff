@@ -1,0 +1,245 @@
+{
+    "HK_GUESTS": {
+        "translation": "Гостей"
+    },
+    "HK_OCCUPIED": {
+        "translation": "Занят"
+    },
+    "HK_VACANT_DIRTY": {
+        "translation": "Вакантный (грязный)"
+    },
+    "HK_VACANT_CLEAN": {
+        "translation": "Вакантный (чистый)"
+    },
+    "HK_OOOS": {
+        "translation": "Не в порядке \/ Сервис"
+    },
+    "OWS_ERROR_MSG": {
+        "translation": "Ровер не может ответить. Повторите попытку, если проблема не исчезнет, обратитесь в нашу службу поддержки по адресу support@stayntouch.com."
+    },
+    "ROOM_STATUS": {
+        "translation": "Статус комнаты"
+    },
+    "ENTER_ROOM_NUMBER": {
+        "translation": "Введите номер комнаты"
+    },
+    "SEARCH_BY_ROOM_NO": {
+        "translation": "Поиск по номеру комнаты."
+    },
+    "FILTER_ROOMS": {
+        "translation": "Фильтровать комнаты"
+    },
+    "CLEAR_QUERY": {
+        "translation": "Очистить запрос"
+    },
+    "CLEAR": {
+        "translation": "ясно"
+    },
+    "DONE": {
+        "translation": "Сделанный"
+    },
+    "VIP": {
+        "translation": "Очень важный человек"
+    },
+    "HOUSEKEEPING_STATUS": {
+        "translation": "Статус уборки"
+    },
+    "SHOW_DIRTY": {
+        "translation": "Показать грязный"
+    },
+    "SHOW_PICKUP": {
+        "translation": "Показать пикап"
+    },
+    "SHOW_CLEAN": {
+        "translation": "Показать чистый"
+    },
+    "SHOW_INSPECTED": {
+        "translation": "Показать проверено"
+    },
+    "SHOW_OOO": {
+        "translation": "Шоу не в порядке"
+    },
+    "SHOW_OOS": {
+        "translation": "Показать не работает"
+    },
+    "RESERVATION_STATUS": {
+        "translation": "Статус бронирования"
+    },
+    "SHOW_VACANT": {
+        "translation": "Показать вакантные"
+    },
+    "SHOW_OCCUPIED": {
+        "translation": "Показать Занят"
+    },
+    "SHOW_QUEUED": {
+        "translation": "Показать в очереди"
+    },
+    "FRONT_OFFICE_STATUS": {
+        "translation": "Статус фронт-офиса"
+    },
+    "SHOW_STAYOVER": {
+        "translation": "Показать Stayover"
+    },
+    "SHOW_NOT_RESERVED": {
+        "translation": "Показать не зарезервировано"
+    },
+    "SHOW_ARRIVAL": {
+        "translation": "Показать прибытие"
+    },
+    "SHOW_ARRIVED": {
+        "translation": "Показать прибыл"
+    },
+    "SHOW_DAY_USE": {
+        "translation": "Показать дневное использование"
+    },
+    "SHOW_DUE_OUT": {
+        "translation": "Показать к оплате"
+    },
+    "SHOW_DEPARTED": {
+        "translation": "Показать вылетел"
+    },
+    "ROOM_DETAILS": {
+        "translation": "Детали номера"
+    },
+    "ROOM_IS_VACANT": {
+        "translation": "Комната свободна."
+    },
+    "HK_FLOORS": {
+        "translation": "Полы"
+    },
+    "SHOW_ALL_FLOORS": {
+        "translation": "Показать все этажи"
+    },
+    "HK_SINGLE": {
+        "translation": "Одинокий"
+    },
+    "FLOOR_#": {
+        "translation": "Пол #"
+    },
+    "HK_MULTIPLE": {
+        "translation": "Несколько"
+    },
+    "HK_FROM": {
+        "translation": "Из"
+    },
+    "HK_TO": {
+        "translation": "К"
+    },
+    "PULL_REFRESH": {
+        "translation": "Потяните вниз, чтобы обновить страницу"
+    },
+    "RELEASE_REFRESH": {
+        "translation": "Отпустите, чтобы обновить страницу"
+    },
+    "PULL_LOAD_NEXT": {
+        "translation": "Потяните вверх, чтобы загрузить следующую страницу"
+    },
+    "RELEASE_LOAD_NEXT": {
+        "translation": "Отпустите, чтобы загрузить следующую страницу"
+    },
+    "PULL_LOAD_PREV": {
+        "translation": "Потяните вниз, чтобы загрузить предыдущую страницу"
+    },
+    "RELEASE_LOAD_PREV": {
+        "translation": "Отпустите, чтобы загрузить предыдущую страницу"
+    },
+    "ROOM_TYPE_FILTER_TITLE": {
+        "translation": "Тип номера"
+    },
+    "SELECT_WORK_TYPE": {
+        "translation": "Выберите тип работы"
+    },
+    "WORK_TYPE": {
+        "translation": "Тип работы"
+    },
+    "ALL_WORK_TYPES": {
+        "translation": "Все виды работ"
+    },
+    "OO": {
+        "translation": "Не работает"
+    },
+    "OS": {
+        "translation": "Не работает"
+    },
+    "FIND_ROOM_MAID": {
+        "translation": "Найти комнату или сотрудника"
+    },
+    "DEP_TO_CLEAN": {
+        "translation": "Выезд на уборку"
+    },
+    "SO_TO_CLEAN": {
+        "translation": "Выезд на уборку"
+    },
+    "TOTAL": {
+        "translation": "Общее"
+    },
+    "TOTAL_STAFF_REQUIRED": {
+        "translation": "Всего требуется персонал"
+    },
+    "TOTAL_ROOMS_ASSIGNED": {
+        "translation": "Всего назначено комнат"
+    },
+    "TOTAL_ROOMS_COMPLETED": {
+        "translation": "Всего завершено комнат"
+    },
+    "MANAGE_WS": {
+        "translation": "Управление рабочими листами"
+    },
+    "CREATE_WS": {
+        "translation": "Создать рабочий лист"
+    },
+    "EMPLOYEE_NAME": {
+        "translation": "Имя сотрудника"
+    },
+    "SELECT_EMPLOYEE": {
+        "translation": "Выберите сотрудника"
+    },
+    "MAID": {
+        "translation": "Служанка"
+    },
+    "EMP": {
+        "translation": "Работник"
+    },
+    "UNASSIGNED": {
+        "translation": "Не назначен"
+    },
+    "ALL_UNASSIGNED": {
+        "translation": "Все не назначены"
+    },
+    "ALL_FLOORS": {
+        "translation": "Все этажи"
+    },
+    "NO_ROOM_ASSIGNED": {
+        "translation": "Комната не назначена."
+    },
+    "DRAG_DROP_TO_ASSIGN": {
+        "translation": "Перетащите комнаты, которые нужно назначить."
+    },
+    "UNASSIGN_ROOM": {
+        "translation": "Отменить назначение комнаты"
+    },
+    "TIME_ALLOCATED": {
+        "translation": "Отведенное время"
+    },
+    "STAYOVERS": {
+        "translation": "Остаться"
+    },
+    "COMPLETED": {
+        "translation": "Завершенный"
+    },
+    "NO_EMPLOYEES_SELECTED": {
+        "translation": "Сотрудники не выбраны."
+    },
+    "SELECT_EMPLOYEES_TO_ASSIGN": {
+        "translation": "Выберите сотрудников, которым нужно назначить комнаты."
+    },
+    "WEB_IN_PROGRESS_HOUSE_KEEPING": {
+        "translation": "Онлайн-бронирование в процессе. Запрос ООО \/ ООС не может быть выполнен"
+    },
+    "AUTO_ASSIGN": {
+        "translation": "Автоматическое назначение"
+    },
+    "DO_NOT_DISTURB": {
+        "translation": "Просьба не беспокоить"
+    }
+}

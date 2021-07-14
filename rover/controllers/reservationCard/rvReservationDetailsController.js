@@ -61,6 +61,9 @@ sntRover.controller('reservationDetailsController',
 		$scope.hasOverBookHousePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
 		$scope.hasBorrowFromHousePermission = rvPermissionSrv.getPermissionValue('GROUP_HOUSE_BORROW');
 
+		// For mobile view - To toggle b/w left and right content on the popup
+		$scope.showRightContentForMobile = false;
+
 		$scope.shouldShowTaxExempt = function() {
             return (rvPermissionSrv.getPermissionValue('TAX_EXEMPT') && $scope.taxExemptTypes.length);
         };
@@ -1655,6 +1658,7 @@ sntRover.controller('reservationDetailsController',
 					console.warn("There should be atleast one credit card needed");
 					$scope.closeDialog();
 				}
+				$scope.showRightContentForMobile = false;
 			};
 
 			var fetchCreditCardAuthInfoFaliure = function( errorMessage ) {
@@ -1695,6 +1699,16 @@ sntRover.controller('reservationDetailsController',
 				card.active = false;
 			});
 			$scope.authData.billData[index].active = true;
+		};
+
+		// To set right content for mobile view
+		$scope.onSelectCCforAuth = function() {
+			$scope.showRightContentForMobile = true;
+		};
+
+		// To set left content for mobile view
+		$scope.setLeftSideContent = function() {
+			$scope.showRightContentForMobile = false;
 		};
 
 		var authInProgress = function() {
@@ -1895,6 +1909,7 @@ sntRover.controller('reservationDetailsController',
 	* Method to invoke while clicking on cancel btn in release confirm section
 	*/
      $scope.onCancelClick = function() {
+		$scope.showRightContentForMobile = false;
      	$scope.hasShownReleaseConfirm = false;
      };
 

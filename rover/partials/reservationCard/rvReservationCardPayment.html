@@ -46,6 +46,11 @@
 	  			{{ reservationData.reservation_card.payment_method_description }}
 		</a>
 
+		<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" class="next-view" ng-show="reservationData.reservation_card.payment_method_used === '' || reservationData.reservation_card.payment_method_used === null" ng-click="openPaymentList()">
+	  			<span class="value code"></span>
+	  			{{ 'PAYMENT_NOT_ADDED' | translate }}
+		</a>
+
 		<!-- CICO-17067 : If there are buttons to show, otput this as well: -->
 	    <div class="actions">
 
@@ -59,11 +64,6 @@
 			</button>
 
 	    </div>
-
-		<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" class="next-view" ng-show="reservationData.reservation_card.payment_method_used === '' || reservationData.reservation_card.payment_method_used === null" ng-click="openPaymentList()">
-	  			<span class="value code"></span>
-	  			{{ 'PAYMENT_NOT_ADDED' | translate }}
-		</a>
 
 	</form>
 </span>

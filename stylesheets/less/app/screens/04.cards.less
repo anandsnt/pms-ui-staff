@@ -2585,18 +2585,84 @@
                                 #fade > .in();
 
                                 &.green,
-                                &.red,
                                 &.grey {
                                     margin-bottom: 10px;
-                                    .calc-width(50, 5);
-                                    .pull-left;
+                                    width: 100%;
                                 }
 
-                                &.green { margin-right: 10px; }
+                                &.blank {
+                                    width: 100%;
+                                }
 
                                 &.blue { width: 100%; }
 
                                 &.hidden { #fade > .out(); }
+                            }
+
+                            .add-new-button {
+                                line-height: 35px;
+                                height: 35px;
+                                margin-top: 5px;
+                                border-radius: 3px;
+                            }
+
+                            .switch-button {
+                                width: 100%;
+                                background: rgba(0,0,0,.1);
+                                #border-radius > .rounded();
+                                .show;
+                                .size( 40px, 100% );
+        
+                                input {
+                                    .square(100%);
+                                }
+        
+                                &:not(.disabled) {
+                                    .data-off,
+                                    .data-on {
+                                        .switch-icon {
+                                            color: @black;
+                                        }
+                                    }
+                                }
+        
+                                .data-off,
+                                .data-on {
+                                    font-size: 14px;
+                                    line-height: 30px;
+                                    height: 30px;
+                                    text-transform: uppercase;
+        
+                                    .switch-icon {
+                                        text-shadow: none;
+                                        .clickable;
+                                        background: @white;
+                                    }
+        
+                                    .value {
+                                        color: @grey3;
+                                        font-weight: 600;
+                                    }
+        
+                                    &.data-off {
+                                        left: auto;
+                                        right: 0;
+        
+                                        .switch-icon { margin: 0 5px 0 0; }
+                                    }
+        
+                                    &.data-on {
+                                        left: auto;
+                                        right: 100%;
+        
+                                        .switch-icon { margin: 0 0 0 5px; }
+                                    }
+                                }
+        
+                                &.on {
+                                    .data-off { left: auto; right: -100%; }
+                                    .data-on { left: auto; right: 0; }
+                                }
                             }
 
                             &.extended-timeline { height: 170px; }
@@ -2626,6 +2692,10 @@
                                     .square(40px);
                                     .show;
                                 }
+                            }
+
+                            &.room-block-actions-rates {
+                                height: 100px;
                             }
                         }
 
@@ -2741,6 +2811,12 @@
                                 }
                             }
 
+                            &.room-block-timeline-rates {
+                                li {
+                                    height: 100px;
+                                }
+                            }
+
                             &.cols-3 {
                                 li {
                                     width: 270px;
@@ -2816,6 +2892,11 @@
                                 top: 150px;
                                 .calc-height(100, 150);
                             }
+
+                            &.room-block-grid-rates {
+                                top: 100px;
+                                .calc-height(100, 100);
+                            }
                         }
 
                         .room-block-sidebar {
@@ -2853,8 +2934,21 @@
                                         justify-content: flex-start;
                                         cursor: pointer;
                                         background: @arrowDown 90% 50% no-repeat;
+                                        
+                                        .type { 
+                                            .hide(); 
+                                            color: @grey3;
+                                            line-height: 1;
+                                        }
 
-                                        &.active { background-image: @arrowUp; }
+                                        &.active { 
+                                            background-image: @arrowUp;
+                                            flex-direction: column;
+                                            align-items: flex-start;
+                                            justify-content: center;
+
+                                            .type { .show(); }
+                                        }
                                     }
 
                                     &.add {
@@ -2990,6 +3084,16 @@
                                     .cell { .calc-width(33.33333, 6.66666); }
 
                                     &:first-child { width: 310px; }
+                                }
+                            }
+
+                            &.room-block-grid-rates {
+                                .row {
+                                    .column {
+                                        .cell {
+                                            width: 100%;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -3333,7 +3437,7 @@
                                 box-shadow: none;
 
                                 &.search {
-                                    .calc-width(100, 260);
+                                    .calc-width(100, 410);
 
                                     input {
                                         font-size: 18px;
@@ -3353,6 +3457,29 @@
                                     }
 
                                     .entry-data { width: 120px; }
+                                }
+                                
+                                &.sort {
+                                    width: 150px;
+                                }
+
+                                .select {
+                                    &.with-label {
+                                        position: relative;
+
+                                        select {
+                                            padding: 10px 30px 0 10px;
+                                        }
+
+                                        label {
+                                            position: absolute;
+                                            top: 0;
+                                            left: 10px;
+                                            font-size: 12px;
+                                            text-transform: uppercase;
+                                            color: @grey3;
+                                        }
+                                    }
                                 }
                             }
                         }

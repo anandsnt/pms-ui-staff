@@ -40,11 +40,11 @@
                         Your Authorize code is: <span class="auth">{{authorizationCode}}</span>
                     </li>
                     <li ng-if="feePaid">
-                        Amount paid: <span class="value"> {{currencySymbol}}{{depositAmount}} + {{currencySymbol}}{{feePaid}} fee
+                        Amount paid: <span class="value"> <i ng-bind-html="depositAmount | sntCurrency:this"></i> + <i ng-bind-html="feePaid | sntCurrency:this"></i> fee
                         </span>
                     </li>
                     <li ng-if="!feePaid">
-                        Amount paid: <span class="value"> {{currencySymbol}}{{depositAmount}}
+                        Amount paid: <span class="value"> <span ng-bind-html="depositAmount | sntCurrency:this"></span>
                         </span>
                     </li>
                 </ul>

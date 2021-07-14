@@ -62,7 +62,9 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 			// we only showing if associated with that group
 			$scope.selectedRoomTypeAndRates = _.where($scope.selectedRoomTypeAndRates, {
 				is_configured_in_group: true
-			});
+            });
+            
+            $scope.originalConfiguredRoomTypeAndRates = util.deepCopy($scope.selectedRoomTypeAndRates);
 
 			// if nothing is configured, we have to add a new row
 			if ($scope.selectedRoomTypeAndRates.length === 0) {
@@ -104,6 +106,7 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 					row.single_rate = selectedRateDetails.single_rate;
 					row.double_rate = selectedRateDetails.double_rate;
 					row.extra_adult_rate = selectedRateDetails.extra_adult_rate;
+					row.room_type_name = selectedRateDetails.room_type_name;
 				}
 			} else {
 				row.best_available_rate_amount = "";
@@ -117,7 +120,7 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		 */
 		$scope.shouldShowAddNewButton = function(obj) {
 			return (!util.isEmpty(obj.room_type_id) &&
-				(_.pluck($scope.selectedRoomTypeAndRates, "room_type_id").length < $scope.roomTypes.length));
+				(_.pluck($scope.selectedRoomTypeAndRates, "room_type_id").length < $scope.roomTypes.length) && !$scope.groupConfigData.summary.is_cancelled);
 		};
 
 		/**
@@ -125,7 +128,7 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldShowDeleteButton = function() {
-			return ($scope.selectedRoomTypeAndRates.length >= 2);
+			return ($scope.selectedRoomTypeAndRates.length >= 2 && !$scope.groupConfigData.summary.is_cancelled);
 		};
 
 		/**
@@ -170,9 +173,13 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 			$scope.closeDialog();
 		};
 
-		var successCallBackOfSaveNewRoomTypesAndRates = function(data) {
-			$scope.fetchCurrentSetOfRoomBlockData();
-			$scope.closeDialog();
+		var successCallBackOfSaveNewRoomTypesAndRates = function() {
+            if ($scope.isRoomViewActive) {
+                $scope.fetchCurrentSetOfRoomBlockData();
+            } else {
+                $scope.fetchRoomTypesDailyRates();
+            }
+            $scope.closeDialog();
 		};
 
 		var failureCallBackOfSaveNewRoomTypesAndRates = function(error) {
@@ -208,7 +215,43 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 										});
 
 			return isSingleRateConfigured;
-		};
+        };
+        
+        /**
+         * Checks whether the custom rate has been changed or not
+         */
+        var hasRatesChanged = function() {
+            var hasChanged = false;                
+
+            _.each($scope.selectedRoomTypeAndRates, function(item) {
+                if (item.single_rate !== item.old_single_rate || item.double_rate !== item.old_double_rate || item.extra_adult_rate !== item.old_extra_adult_rate) {
+                    hasChanged = true;
+                }
+            });
+
+            var hasConfiguredRoomTypesChanged = function() {
+                    var originalRoomTypeIds = _.pluck($scope.originalConfiguredRoomTypeAndRates, 'room_type_id'),
+                        selectedRoomTypeAndRates = _.filter($scope.selectedRoomTypeAndRates, function(obj) {
+                            return !!obj.room_type_id;
+                        }),
+                        selectedRoomTypeIds = _.pluck(selectedRoomTypeAndRates, 'room_type_id');
+
+                    // Convert string to integer
+                    selectedRoomTypeIds = selectedRoomTypeIds.map(function (id) {
+                        return +id;
+                    });
+
+                    return !_.isEqual(_.sortBy(originalRoomTypeIds), _.sortBy(selectedRoomTypeIds));
+                },
+                isGroupRateRoomTypeNotConfigured = function() {
+                    var isGroupRate = $scope.groupConfigData.summary.rate !== -1,
+                        groupRateRoomTypeCount = $scope.groupConfigData.summary.selected_room_types_and_bookings.length || 0;
+
+                    return isGroupRate && (groupRateRoomTypeCount == 0);
+                };
+
+            return hasChanged || hasConfiguredRoomTypesChanged() || isGroupRateRoomTypeNotConfigured();            
+        };
 
 		/**
 		 * Check whether group custom rate is changed and open new popup if true, otherwise updates room
@@ -220,27 +263,29 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 				return;
 			}
 
-			if (isGroupCustomRateChanged()) {
+			if (isGroupCustomRateChangedAndReservationExists()) {
 				$scope.closeDialog();
 				$timeout(function(argument) {
 					$scope.confirmUpdateRatesWithPickedReservations($scope.selectedRoomTypeAndRates);
 				}, 700);
-			}
-			else {
-				var options = {
+			} else if (hasRatesChanged()) {
+                var options = {
 					params: formSaveNewRoomTypesAndRatesParams(),
 					successCallBack: successCallBackOfSaveNewRoomTypesAndRates,
 					failureCallBack: failureCallBackOfSaveNewRoomTypesAndRates
 				};
 
 				$scope.callAPI(rvGroupConfigurationSrv.updateSelectedRoomTypesAndRates, options);
-			}
+            } else {
+                $scope.closeDialog(); 
+            }
+			
 		};
 
 		/**
-		 * Checks whether group custom rate is changed.
+		 * Checks whether group custom rate is changed and reservations already exists
 		 */
-		var isGroupCustomRateChanged = function () {
+		var isGroupCustomRateChangedAndReservationExists = function () {
 			updateExistingReservationsRate = false;
 			angular.forEach ($scope.selectedRoomTypeAndRates, function (row) {
 				if (row.total_reservations_count > 0) {
@@ -275,6 +320,15 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 										});
 			
 			return !!isRoomTypeAlreadyAdded;
-		};
+        };
+        
+        /**
+         * Should disable edit of rates in room types/rate popup
+         * @param {Object} rateInfo rate info
+         * @return {Boolean} flag indicating whether to disable edit
+         */
+        $scope.shouldDisableRateEdit = function(rateInfo) {
+            return ($scope.groupConfigData.summary.is_cancelled || (rateInfo.isRateConfigured && $scope.isGroupDailyRatesEnabled) );
+        };
 	}
 ]);

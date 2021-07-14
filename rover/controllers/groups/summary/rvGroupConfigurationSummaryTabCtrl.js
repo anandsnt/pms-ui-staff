@@ -169,6 +169,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             $scope.groupConfigData.summary.block_from = summaryMemento.block_from;
             $scope.groupConfigData.summary.shoulder_from_date = summaryMemento.shoulder_from_date;
             $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
+            $scope.groupConfigData.summary.rate = summaryMemento.rate;
             $scope.$emit('hideLoader');
         };
 
@@ -200,6 +201,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             $scope.groupConfigData.summary.block_from = summaryMemento.block_from;
             $scope.groupConfigData.summary.shoulder_from_date = summaryMemento.shoulder_from_date;
             $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
+            $scope.groupConfigData.summary.rate = summaryMemento.rate;
             $scope.$emit('hideLoader');
         };
 
@@ -243,6 +245,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             $scope.groupConfigData.summary.block_to = summaryMemento.block_to;
             $scope.groupConfigData.summary.shoulder_to_date = summaryMemento.shoulder_to_date;
             $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
+            $scope.groupConfigData.summary.rate = summaryMemento.rate;
             $scope.$emit('hideLoader');
         };
 
@@ -283,6 +286,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             $scope.groupConfigData.summary.block_to = summaryMemento.block_to;
             $scope.groupConfigData.summary.shoulder_to_date = summaryMemento.shoulder_to_date;
             $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
+            $scope.groupConfigData.summary.rate = summaryMemento.rate;
             $scope.$emit('hideLoader');
         };
 
@@ -2160,11 +2164,11 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         };
 
         $scope.shouldDisableShoulderFrom = function () {
-            return $scope.isShoulderDateDisabled || (new tzIndependentDate($scope.groupConfigData.summary.block_from) <= new tzIndependentDate($rootScope.businessDate));
+            return ($scope.isShoulderDateDisabled || (new tzIndependentDate($scope.groupConfigData.summary.block_from) <= new tzIndependentDate($rootScope.businessDate)) || $scope.groupConfigData.summary.is_cancelled);
         };
 
         $scope.shouldDisableShoulderTo = function () {
-            return $scope.isShoulderDateDisabled || (new tzIndependentDate($scope.groupConfigData.summary.block_to) < new tzIndependentDate($rootScope.businessDate));
+            return ($scope.isShoulderDateDisabled || (new tzIndependentDate($scope.groupConfigData.summary.block_to) < new tzIndependentDate($rootScope.businessDate)) || $scope.groupConfigData.summary.is_cancelled);
         };
 
         $scope.addListener('DATE_CHANGE_FAILED', function() {

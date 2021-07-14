@@ -31,7 +31,7 @@
     </form>
 
     <!-- Search pagination -->
-    <div ng-show="isShowPagination()">
+    <div ng-show="isShowPagination()" class="hide-on-mobile">
         <rv-pagination page-options="arPaginationObj" page-data="filterData.totalCount"></rv-pagination>
     </div>
 

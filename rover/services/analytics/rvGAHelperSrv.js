@@ -2,42 +2,42 @@ angular.module('sntRover').service('RVGAHelperSrv', ['$window', '$log', function
 	var actionMapping = {
 		'LOAD_RESERVATION': {
 			id: '',
-			confNum: '',
+			label: '',
 			startTime: ''
 		},
 		'CHECKIN': {
 			id: '',
-			confNum: '',
+			label: '',
 			startTime: ''
 		},
 		'CHECKOUT': {
 			id: '',
-			confNum: '',
+			label: '',
 			startTime: ''
 		}
 	};
 	var resetEventType = function(eventType) {
 		actionMapping[eventType] = {
 			id: '',
-			confNum: '',
+			label: '',
 			startTime: ''
 		};
 	};
 
-	this.startEventTiming = function(eventType, id, confNum) {
+	this.startEventTiming = function(eventType, id, label) {
 		actionMapping[eventType] = {
 			id: id,
-			confNum: confNum,
+			label: label,
 			startTime: new Date().getTime()
 		};
 	};
 
-	this.sendEventToGA = function(eventType, id) {
-		if ((actionMapping[eventType].id === id || actionMapping[eventType].confNum === id) && actionMapping[eventType].startTime) {
+	this.sendEventToGA = function(eventType, id, label) {
+		if ((actionMapping[eventType].id === id || actionMapping[eventType].label === id) && actionMapping[eventType].startTime) {
 			var eventAttributes = {
 				name: eventType.replace("_", " ").toLowerCase(),
 				time: ((new Date().getTime() - actionMapping[eventType].startTime) / 1000).toFixed(2),
-				entity: '#' + actionMapping[eventType].confNum
+				entity: '#' + (label ? label : actionMapping[eventType].label)
 			};
 
 			resetEventType(eventType);
