@@ -811,7 +811,6 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.showPrintOption = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/financialTransactionRevenueReport/reportDetails.html';
                     break;
-
                 
                 case reportNames['FINANCIAL_TRANSACTION_PAYMENT_REPORT']:
                     $scope.hasReportTotals = true;
@@ -819,7 +818,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.showPrintOption = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/financialTransactionsPaymentReport/reportDetails.html';
                     break;
-    
+                
                 case reportNames['CREDIT_CHECK_REPORT']:
                     $scope.hasReportTotals = true;
                     $scope.showReportHeader = true;

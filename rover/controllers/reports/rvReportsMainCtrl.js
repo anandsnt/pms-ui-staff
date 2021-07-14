@@ -1797,6 +1797,17 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
             }
             
+            // include status
+            if (report.hasOwnProperty('hasTransactionCategory')) {
+                var selectedItem = report['hasTransactionCategory']['selected'] ? report['hasTransactionCategory']['selected'] : report['hasTransactionCategory']['data'][0];
+
+                key = reportParams['TRANSACTION_CATEGORY'];
+                params[key] = selectedItem.id;
+                if (changeAppliedFilter) {
+                    $scope.appliedFilter.transaction_category = selectedItem.value;
+                }
+            }
+
             // include hold status
             if (report.hasOwnProperty('hasHoldStatus')) {
                 selected = _.where(report['hasHoldStatus']['data'], { selected: true });
@@ -1910,17 +1921,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     if (changeAppliedFilter && report['hasDepartments']['data'].length === selected.length) {
                         $scope.appliedFilter.assigned_departments = ['All Departments'];
                     }
-                }
-            }
-
-            // include status
-            if (report.hasOwnProperty('hasTransactionCategory')) {
-                var selectedItem = report['hasTransactionCategory']['selected'] ? report['hasTransactionCategory']['selected'] : report['hasTransactionCategory']['data'][0];
-
-                key = reportParams['TRANSACTION_CATEGORY'];
-                params[key] = selectedItem.value;
-                if (changeAppliedFilter) {
-                    $scope.appliedFilter.transaction_category = selectedItem.value;
                 }
             }
     

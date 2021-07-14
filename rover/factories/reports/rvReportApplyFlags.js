@@ -32,8 +32,8 @@ angular.module('reportsModule')
                         'DEPARTURE': ['hasOneMonthLimit'],
                         'FINANCIAL_TRANSACTION_REVENUE_REPORT': ['hasUserFilter', 'hasBDLimit'],              
                         'FINANCIAL_TRANSACTION_PAYMENT_REPORT': ['hasUserFilter', 'hasBDLimit'],
-                        'TAX_OUTPUT_REPORT': ['hasOneYearLimit'],
-                        'FINANCIAL_TRANSACTION_SUMMARY_REPORT': ['hasDateLimit']
+                        'FINANCIAL_TRANSACTION_SUMMARY_REPORT': ['hasDateLimit'],
+                        'TAX_OUTPUT_REPORT': ['hasOneYearLimit']
                     };
 
                     var reportName = _.findKey(reportNames, function(value, key) {
