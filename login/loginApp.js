@@ -266,7 +266,7 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 	var loadCordovaWithVersion = function(version) {
 		var script_node = document.createElement('script');
 
-		script_node.setAttribute('src', '/assets/shared/cordova/' + version + '/cordova.js');
+		script_node.setAttribute('src', '/ui/pms-ui/shared/cordova/' + version + '/cordova.js');
 		script_node.setAttribute('type', 'application/javascript');
 		document.body.appendChild(script_node);
 	};

@@ -45,13 +45,13 @@
 	@greenEnd: 			#54d115;
 
 /* Images				==================================*/
-	@images: 			~"/assets/cssimg";
+	@images: 			~"/ui/pms-ui/cssimg";
 
 	@textureImage:		url("@{images}/texture.png");
 	@darkTexture: 		url("@{images}/texture-dark.png");
 
 /* Type 				==================================*/
-	@type: 				~"/assets/type";
+	@type: 				~"/ui/pms-ui/type";
 
 	@baseFontSize:		16px;
 	@baseLineHeight:	1.5;
