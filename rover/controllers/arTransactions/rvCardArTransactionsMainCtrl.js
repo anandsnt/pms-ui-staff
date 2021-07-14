@@ -19,6 +19,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		var DEBOUNCE_DELAY = 800, // Delay the function execution by this much ms
 			that = this; // Reference to this pointer.
 
+		$scope.showSortFilter = true;
+
 		$scope.arFlags = {
 			'currentSelectedArTab': 'balance',
 			'isAddBalanceScreenVisible': false,
@@ -39,7 +41,21 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'toDate': '',
 			'includePayments': false,
 			'isSummary': false,
-			'statementEmailAddress': ''
+			'statementEmailAddress': '',
+			'sortField': 'aging_date',
+			'sortOptions': [{
+				'value': 'aging_date',
+				'name': 'AGING DATE'
+			}, {
+				'value': 'invoice_num',
+				'name': 'INVOICE #'
+			}, {
+				'value': 'ar_invoice',
+				'name': 'AR INVOICE #'
+			}, {
+				'value': 'name',
+				'name': 'NAME'
+			}]
 		};
 
 		/*
@@ -98,11 +114,13 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					dataToSend.getParams.transaction_type = 'CHARGES';
 					dataToSend.getParams.paid = false;
 					dataToSend.getParams.page = $scope.arDataObj.balancePageNo;
+					dataToSend.getParams.sort_field = $scope.filterData.sortField;
 					break;
 				case 'paid-bills':
 					dataToSend.getParams.transaction_type = 'CHARGES';
 					dataToSend.getParams.paid = true;
 					dataToSend.getParams.page = $scope.arDataObj.paidPageNo;
+					dataToSend.getParams.sort_field = $scope.filterData.sortField;
 					break;
 				case 'unallocated':
 					dataToSend.getParams.transaction_type = 'PAYMENTS';
@@ -266,6 +284,13 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 */
 		$scope.switchArTransactionTab = function(tab) {
 			$scope.arFlags.currentSelectedArTab = tab;
+			// sort option available for open and paid bill screens
+			if (tab === 'balance' || tab === 'paid-bills') {
+				$scope.showSortFilter = true;
+			}
+			else {
+				$scope.showSortFilter = false;
+			}
 			if (tab !== 'balance') {
 				$scope.arFlags.isAddBalanceScreenVisible = false;
 			}
@@ -280,6 +305,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.showAddBalanceScreen = function () {
 			$scope.arFlags.isAddBalanceScreenVisible = true;
 			$scope.$broadcast('ADD_BALANCE_TAB');
+		};
+
+		/* Handle Sort filter change */ 
+		$scope.changedSortBy = function() {
+			that.filterChanged();
 		};
 
 		/* Handling different date picker clicks */
@@ -704,11 +734,13 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             if ($scope.arFlags.currentSelectedArTab === 'balance') {
                 paramsToSend.paid = false;
                 paramsToSend.transaction_type = 'CHARGES';
-                paramsToSend.include_payments = $scope.filterData.includePayments;
+				paramsToSend.include_payments = $scope.filterData.includePayments;
+				paramsToSend.sort_field = $scope.filterData.sortField;
             } else if ($scope.arFlags.currentSelectedArTab === 'paid-bills') {
                 paramsToSend.paid = true;
                 paramsToSend.transaction_type = 'CHARGES';
-                paramsToSend.include_payments = $scope.filterData.includePayments;
+				paramsToSend.include_payments = $scope.filterData.includePayments;
+				paramsToSend.sort_field = $scope.filterData.sortField;
             } else if ($scope.arFlags.currentSelectedArTab === 'unallocated') {
                 paramsToSend.transaction_type = 'PAYMENTS';
                 paramsToSend.allocated = false;

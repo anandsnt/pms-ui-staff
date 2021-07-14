@@ -11,37 +11,18 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-if="printData.manual_balance_details.length > 0" class="person" ng-repeat="statement in printData.manual_balance_details">
-                <td>{{statement.departure_date}}</td>
+            <tr ng-if="printData.sorted_details.length > 0" class="person" ng-repeat="statement in printData.sorted_details">
+              <td>{{statement.departure_date}}</td>
                 <td>{{statement.name}}</td>
-                <td> {{statement.invoice_number}}</td>
-                <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.debit}}</td>
-                <td class="align-right" ng-if="statement.credit !== '' && statement.credit !== nil && statement.credit !== null"><span class="currency">{{currencySymbol}}</span>{{statement.credit}}</td>
-                <td class="align-right" ng-if="statement.credit === '' || statement.credit === nil || statement.credit === null">-</td>
-                <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.amount_due}}</td>
-            </tr>    
-            <tr ng-if="printData.posting_account_details.length > 0" class="person" ng-repeat="statement in printData.posting_account_details">
-                <td>{{statement.departure_date}}</td>
-                <td>{{statement.name}}</td>
-                <td ng-if="shouldPrintArInvoiceNumber(printData, statement)">{{statement.ar_invoice_number}}</td>
-                <td ng-if="shouldPrintFolioNumber(printData, statement)">{{statement.folio_number}}</td>
-                <td ng-if="shouldPrintInvoiceNumber(printData, statement)">{{statement.invoice_number}}</td>
-                <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.debit}}</td>
-                <td class="align-right" ng-if="statement.credit !== '' && statement.credit !== nil && statement.credit !== null"><span class="currency">{{currencySymbol}}</span>{{statement.credit}}</td>
-                <td class="align-right" ng-if="statement.credit === '' || statement.credit === nil || statement.credit === null">-</td>
-                <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.amount_due}}</td>
-            </tr>
-            <tr ng-if="printData.reservation_details.length > 0" class="person" ng-repeat="statement in printData.reservation_details">
-                <td>{{statement.departure_date}}</td>
-                <td>{{statement.name}}</td>
+                <td ng-if="statement.type === 'manual'"> {{statement.invoice_number}}</td>
 
-                <td ng-if="shouldPrintArInvoiceNumber(printData, statement)">{{statement.ar_invoice_number}}</td>
-                <td ng-if="shouldPrintFolioNumber(printData, statement)">{{statement.folio_number}}</td>
-                <td ng-if="shouldPrintInvoiceNumber(printData, statement)">{{statement.invoice_number}}</td>
+                <td ng-if="shouldPrintArInvoiceNumber(printData, statement) && statement.type !== 'manual'">{{statement.ar_invoice_number}}</td>
+                <td ng-if="shouldPrintFolioNumber(printData, statement) && statement.type !== 'manual'">{{statement.folio_number}}</td>
+                <td ng-if="shouldPrintInvoiceNumber(printData, statement) && statement.type !== 'manual'">{{statement.invoice_number}}</td>
                 <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.debit}}</td>
                 <td class="align-right" ng-if="statement.credit !== '' && statement.credit !== nil && statement.credit !== null"><span class="currency">{{currencySymbol}}</span>{{statement.credit}}</td>
                 <td class="align-right" ng-if="statement.credit === '' || statement.credit === nil || statement.credit === null">-</td>
-                <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.amount_due}}</td>
+                <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.amount_due}}</td>  
             </tr>
           </tbody>
           <tfoot>

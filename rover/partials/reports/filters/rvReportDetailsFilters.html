@@ -856,7 +856,15 @@
         data="uiChosenReport.hasIncludeAgingBalance.data"
         options="uiChosenReport.hasIncludeAgingBalance.options"></multi-option-selection>
 
-        
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasCollapsedOrExpanded && chosenReport.hasCollapsedOrExpanded.data.length" ng-class="{'active': filterItemsToggle.item_60}" ng-click="toggleFilterItems('item_60')">
+            <span class="title">Details</label>
+        </a>
+        <div id="sidebar-charge-groups" class="settings-content" ng-class="{'hidden': !filterItemsToggle.item_60}">
+            <div class="select">
+                <select ng-model="chosenReport.hasCollapsedOrExpanded.selected" ng-options="CollapsedOrExpanded.description for CollapsedOrExpanded in chosenReport.hasCollapsedOrExpanded.data" iscroll-stop-propagation>
+                </select>
+            </div>
+        </div>
 
         <div class="entry search" ng-show="uiChosenReport.hasIncludeAccountName">
             <label>Account Name</label>
