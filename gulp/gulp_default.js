@@ -15,48 +15,48 @@ module.exports = function(gulp, $, options) {
             });
 
             gulp.task('copy-all-dev', [
-                // 'copy-rover-files', 
+                'copy-rover-files', 
                 'copy-login-files', 
                 'copy-station-login-files',
-                // 'copy-workers'
+                'copy-workers'
             ]);
 
             var compilationTasks = [
-                    // 'rover-asset-prod-precompile',
+                    'rover-asset-prod-precompile',
                     'login-asset-prod-precompile',
                     'station-login-asset-prod-precompile',
-                    // 'payment-asset-prod-precompile',
-                    // 'copy-workers'
+                    'payment-asset-prod-precompile',
+                    'copy-workers'
                 ],
 
         tasksAfterCompilation = [
-                    // 'rover-inject-assets-to-templates',
+                    'rover-inject-assets-to-templates',
                     'login-inject-assets-to-templates', 
                     'station-login-inject-assets-to-templates',
-                    // 'copy-cordova-assets'
+                    'copy-cordova-assets'
                 ],
 
         copyBaseHtmlToPublicAssets = [
                     'copy-login-base-html',
                     'copy-station-login-base-html',
-                    // 'copy-rover-base-html',
-                    // 'compress-images-loselessly'
+                    'copy-rover-base-html',
+                    'compress-images-loselessly'
                 ],
 
         developmentTasks = [
-                    // 'build-rover-dev', 
+                    'build-rover-dev', 
                     'build-login-dev',
                     'build-station-login-dev',
-                    // 'build-payment-dev',
-                    // 'copy-cordova-assets'
+                    'build-payment-dev',
+                    'copy-cordova-assets'
                 ],
 
         watchTasks = [
-                    // 'watch-rover-files', 
+                    'watch-rover-files', 
                     'watch-login-files',
                     'watch-station-login-files',
-                    // 'watch-payment-files',
-                    // 'watch-workers'
+                    'watch-payment-files',
+                    'watch-workers'
                 ];
 
     var processArgs = function() {

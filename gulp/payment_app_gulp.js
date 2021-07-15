@@ -3,7 +3,7 @@ module.exports = function (gulp, $, options) {
     'use strict';
     var MANIFEST_DIR = __dirname + "/payment/manifests/",
         generated = "____generated",
-        newJsonFileName = '../../public/assets/asset_list/____generatedgatewayJsMappings/____generatedpayment/____generatedpaymentTemplateJsMappings.json',
+        newJsonFileName = 'dist/asset_list/____generatedgatewayJsMappings/____generatedpayment/____generatedpaymentTemplateJsMappings.json',
         _ = require('lodash');
 
     _.extend(options, {
