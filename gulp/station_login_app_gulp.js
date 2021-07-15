@@ -1,7 +1,7 @@
 module.exports = function(gulp, $, options) {
 
     var runSequence         = require('run-sequence'),
-        STATION_LOGIN_TEMPLATE_ROOT    = '../views/login/',
+        STATION_LOGIN_TEMPLATE_ROOT    = 'login/',
         STATION_LOGIN_HTML_FILE     = STATION_LOGIN_TEMPLATE_ROOT + 'station_new.html',
         _ = require('lodash');
 
