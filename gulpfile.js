@@ -30,12 +30,12 @@ var gulp       = require('gulp'),
                 };
 
 require('./gulp/gulp_default')(gulp, $, options);
-// require('./gulp/gulp_dev_server')(gulp, $, options); 
+require('./gulp/gulp_dev_server')(gulp, $, options); 
 require('./gulp/login_app_gulp')(gulp, $, options);
 require('./gulp/station_login_app_gulp')(gulp, $, options);
-// require('./gulp/rover_app_gulp')(gulp, $, options);
+require('./gulp/rover_app_gulp')(gulp, $, options);
 // require('./gulp/zest_app_gulp')(gulp, $, options);
-// require('./gulp/image_optimization_gulp')(gulp, $, options);
-// require('./gulp/payment_app_gulp')(gulp, $, options);
-// require('./gulp/gulp_gtm_tasks')(gulp, $, options);
-// require('./gulp/gulp_workers')(gulp, $, options);
+require('./gulp/image_optimization_gulp')(gulp, $, options);
+require('./gulp/payment_app_gulp')(gulp, $, options);
+require('./gulp/gulp_gtm_tasks')(gulp, $, options);
+require('./gulp/gulp_workers')(gulp, $, options);
