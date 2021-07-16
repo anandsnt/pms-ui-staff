@@ -1,7 +1,7 @@
 <div id="page-main-second" ng-click="clickedOnSearchArea()" class="" style="">
     <!-- Search form -->
     <div ng-include="'/assets/partials/common/header.html'"></div>
-    <form method="get" action="" class="search-form card-search guest-search" role="search" ng-class="{'enable-adding': viewState.isViewSelected && textInQueryBox !== '', 'show-merge': !viewState.isViewSelected}">
+    <form class="search-form card-search guest-search" role="search" ng-class="{'enable-adding': viewState.isViewSelected && textInQueryBox !== '', 'show-merge': !viewState.isViewSelected}">
         <div class="entry switch">
             <!-- add .disabled if showing archived -->
             <div class="switch-button" ng-class="{'on': viewState.isViewSelected}">
