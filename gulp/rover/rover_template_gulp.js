@@ -2,7 +2,7 @@ module.exports = function(gulp, $, options) {
 	
 	var ROVER_TEMPLATE_ROOT     = options['ROVER_TEMPLATE_ROOT'],
 	    ROVER_HTML_FILE     	= options['ROVER_HTML_FILE'],
-	    PARTIALS_PATH_LIST 		= ['rover/**/*.html', 'shared/sntUtils/**/*.html'],
+	    PARTIALS_PATH_LIST 		= ['rover/**/*.html', 'shared/sntUtils/**/*.html', '!rover/index.html'],
 	    ROVER_TEMPLATES_FILE    = 'rover_templates.js',
 	    MANIFEST_DIR 			=  __dirname + "/manifests/",
 	    ROVER_TEMPLTE_MANFEST_FILE = "rover_template_manifest.json",
