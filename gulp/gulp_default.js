@@ -90,7 +90,7 @@ module.exports = function(gulp, $, options) {
     };
 
     $.onChangeJSinDev = function(file) {
-        const destination = file.replace(/\/app\//ig, '/public/');
+        const destination = file.replace(/\/pms-ui-staff\//ig, '/pms-ui-staff/dist/');
 
         console.log('\x1b[33m%s\x1b[0m', 'change detected on file... ' + file);
 
