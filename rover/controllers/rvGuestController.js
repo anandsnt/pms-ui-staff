@@ -2217,7 +2217,7 @@ angular.module('sntRover').controller('guestCardController', [
             var guestCardData = {};
 
             guestCardData.contactInfo = data;
-            guestCardData.contactInfo.avatar = guestId ? "/assets/images/avatar-trans.png" : "";
+            guestCardData.contactInfo.avatar = guestId ? "/ui/pms-ui/images/avatar-trans.png" : "";
             guestCardData.contactInfo.vip = guestId ? data.vip : "";
             guestCardData.userId = guestId;
             guestCardData.guestId = guestId;

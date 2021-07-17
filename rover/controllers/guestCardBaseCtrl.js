@@ -143,7 +143,7 @@ window.GuestCardBaseCtrl = function ($scope, RVSearchSrv, RVContactInfoSrv, rvPe
     $scope.getUpdatedContactInfo = function(data, guestId) {
         var contactInfo = data;
 
-        contactInfo.avatar = guestId ? "/assets/images/avatar-trans.png" : "";
+        contactInfo.avatar = guestId ? "/ui/pms-ui/images/avatar-trans.png" : "";
         contactInfo.vip = guestId ? data.vip : "";
         contactInfo.birthday = guestId ? data.birthday : null;
         contactInfo.user_id = guestId ? guestId : "";

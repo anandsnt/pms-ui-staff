@@ -37,7 +37,7 @@
 		<!-- If payment CC:-->
         <span ng-if="each.payment.payment_type == 'Credit Card'" class="data payment">
             <figure class="card-logo">
-            	<img ng-src="/assets/images/{{ each.payment.card_type | lowercase }}.png" alt="" />
+            	<img ng-src="/ui/pms-ui/images/{{ each.payment.card_type | lowercase }}.png" alt="" />
             </figure>
             <span>ending with</span> {{ each.payment.card_number }}
         </span>

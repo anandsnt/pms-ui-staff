@@ -37,7 +37,7 @@
 			<li ng-repeat="note in notes" ng-class="{'editing': (editingNote && note.id === editingNote.id)}"
 				ng-click="clickedOnNote(note)">
 				<figure class="guest-image">
-					<img ng-if="note.posted_user_image_url===''" src="/assets/images/avatar-trans.png" alt="" />
+					<img ng-if="note.posted_user_image_url===''" src="/ui/pms-ui/images/avatar-trans.png" alt="" />
 					<img ng-if="note.posted_user_image_url!==''" ng-src="{{note.posted_user_image_url}}" alt="" />
 				</figure>
 				<div class="note-title">

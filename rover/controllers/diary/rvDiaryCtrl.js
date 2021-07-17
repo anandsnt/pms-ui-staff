@@ -2687,7 +2687,7 @@ angular.module('sntRover')
                         };
                         if (item.company_logo === '') {
                             img_url = item.account_type === 'COMPANY' ? 'avatar-company.png' : 'avatar-travel-agent.png';
-                            eachItem.image = '/assets/images/' + img_url;
+                            eachItem.image = '/ui/pms-ui/images/' + img_url;
                         }
                         // making sure that the newly created 'eachItem'
                         // doesnt exist in 'companyCardResults' array

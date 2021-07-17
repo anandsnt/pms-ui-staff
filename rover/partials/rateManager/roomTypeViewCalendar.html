@@ -32,10 +32,10 @@
                     <td class="first-row force-align">    
                         <span ng-class="{'expanded': currentExpandedRow === $index}">{{rate.name}}</span>
                         <span style="float:right" ng-hide="currentExpandedRow === $index || !!rate.is_hourly">
-                            <img class="down" src="/assets/cssimg/arrow-down.png" ng-click="expandRow($index)">
+                            <img class="down" src="/ui/pms-ui/cssimg/arrow-down.png" ng-click="expandRow($index)">
                         </span>
                         <span style="float:right" ng-show="currentExpandedRow === $index && !rate.is_hourly">
-                            <img class="up" src="/assets/cssimg/arrow-up.png" ng-click="expandRow($index)">
+                            <img class="up" src="/ui/pms-ui/cssimg/arrow-up.png" ng-click="expandRow($index)">
                         </span>
                     </td>
                 </tr>
