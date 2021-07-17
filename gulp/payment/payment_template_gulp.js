@@ -22,18 +22,18 @@ module.exports = function (gulp, $, options) {
         return gulp.watch(PAYMENT_PARTIALS, ['build-payment-template-cache-dev']);
     });
 
-    //Build
+    //Build - retain root as '/assets/', templates will be cached in payment_templates file
     gulp.task('build-payment-template-cache-dev', function () {
         return gulp.src(PAYMENT_PARTIALS, {cwd: 'payment/'})
             .pipe($.templateCache(PAYMENT_TEMPLATES_FILE, {
                 module: MODULE_NAME,
-                root: URL_APPENDER
+                root: '/assets/'
             }))
             .pipe(gulp.dest(DEST_ROOT_PATH));
     });
 
 
-    //Be careful: PRODUCTION
+    //Be careful: PRODUCTION - retain root as '/assets/', templates will be cached in payment_templates file
     gulp.task('payment-template-cache-production', function () {
       return gulp.src(PAYMENT_PARTIALS, {cwd:'payment/'})
             .pipe($.minifyHTML({
@@ -43,7 +43,7 @@ module.exports = function (gulp, $, options) {
             }))
             .pipe($.templateCache(PAYMENT_TEMPLATES_FILE, {
                 module: MODULE_NAME,
-                root: URL_APPENDER
+                root: '/assets/'
             }))
             .pipe($.uglify({compress:true}))
             .pipe($.rev())
