@@ -20,7 +20,7 @@
 
 			<label class="active-item item-payment" ng-click="setCreditCardFromList($index)" ng-repeat="card in cardsList" ng-show="card.is_credit_card"> <!-- Add class "primary" when selected -->
 				<figure class="card-logo">
-					<img ng-src="/assets/images/{{card.card_code}}.png" alt="">
+					<img ng-src="/ui/pms-ui/images/{{card.card_code}}.png" alt="">
 				</figure>
 				<span class="number">{{'ENDING_WITH' | translate}} <span class="value number">{{card.mli_token}}</span></span>
 				<span class="date">{{'DATE' | translate}} <span class="value date">{{card.card_expiry}}</span></span>

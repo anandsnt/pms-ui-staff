@@ -61,7 +61,7 @@
                     <h2 class="type">{{allocatedPayment.payment_type}}</h2>
                     <div class="card-data" ng-if="allocatedPayment.card_details">
                         <figure class="card-logo">
-                            <img ng-src="/assets/images/{{allocatedPayment.card_details.card_code.toLowerCase()}}.png" alt="">
+                            <img ng-src="/ui/pms-ui/images/{{allocatedPayment.card_details.card_code.toLowerCase()}}.png" alt="">
                         </figure>
                         <span class="number" ng-if="!!allocatedPayment.card_details">Ending With<span class="value">{{::allocatedPayment.card_details.last_digits}}</span></span>
                         <span class="date" ng-if="!!allocatedPayment.card_details">Expires<span class="value">{{::allocatedPayment.card_details.expire_date}}</span></span>

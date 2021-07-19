@@ -137,7 +137,7 @@
                         <td class="description">
                             <div class="payment-data" ng-if="payment.is_cc_payment">
                                 <figure class="card-logo">
-                                    <img ng-src="/assets/images/{{payment.card_details.card_code.toLowerCase()}}.png" alt="">
+                                    <img ng-src="/ui/pms-ui/images/{{payment.card_details.card_code.toLowerCase()}}.png" alt="">
                                 </figure>
                                 <span class="number">{{payment.card_details.last_digits}}</span>
                                 <span class="date"><span class="value">{{payment.card_details.expire_date | date : dateFormat}}</span></span>

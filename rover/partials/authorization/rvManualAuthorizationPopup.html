@@ -8,7 +8,7 @@
                 <ul class="wrapper">
                     <li ng-click="selectCCforAuth($index);onSelectCCforAuth()" class="block-item item-payment" ng-class="{ 'item-active' : card.active }" ng-repeat="card in authData.billData">
                         <figure class="card-logo">
-                            <img ng-src="/assets/images/{{card.card_code | lowercase }}.png" alt="" />
+                            <img ng-src="/ui/pms-ui/images/{{card.card_code | lowercase }}.png" alt="" />
                         </figure>
                         <span class="number">
                                 {{ 'NO.' | translate }}
@@ -115,7 +115,7 @@
         <span class="h2 message">{{ 'RELEASE' | translate }}?</span>
         <div class="block-item item-payment">
             <figure class="card-logo">
-                 <img ng-src="/assets/images/{{selectedCardData.card_code | lowercase }}.png" alt="" />
+                 <img ng-src="/ui/pms-ui/images/{{selectedCardData.card_code | lowercase }}.png" alt="" />
             </figure>
             <span class="number">{{ 'NO.' | translate }}
                 <span class="value">{{selectedCardData.card_number}}</span>
