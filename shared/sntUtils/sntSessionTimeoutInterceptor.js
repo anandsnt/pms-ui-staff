@@ -7,7 +7,7 @@ angular.module('snt.utils').service('sessionTimeoutHandlerSrv', [
             loginEmail;
            
         service.initWorker = function () {
-            worker = new Worker('assets/shared/sntUtils/workers/sessionTimeoutWorker.js');
+            worker = new Worker('/ui/pms-ui/shared/sntUtils/workers/sessionTimeoutWorker.js');
             $timeout(function () {
                 worker.postMessage('init');
             }, 500);
