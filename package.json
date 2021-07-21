@@ -83,20 +83,16 @@
   "description": "Stayntouch",
   "repository": {
     "type": "git",
-    "url": "https://github.com/StayNTouch/pms.git"
+    "url": "https://github.com/StayNTouch/pms-ui-staff.git"
   },
   "scripts": {
     "gulp": "gulp",
-    "glite": "gulp --no-zs",
     "lint": "eslint -c .eslintrc.json .",
     "lintRover": "eslint -c .eslintrc.json rover",
-    "lintAdmin": "eslint -c .eslintrc.json admin",
     "testLogin": "cd login && karma start --single-run",
     "testRover": "cd rover && karma start --single-run",
-    "testAdmin": "cd admin && karma start --single-run",
     "testShared": "cd shared && karma start --single-run",
-    "testGW": "cd guestweb_v2 && karma start --single-run",
-    "testZS": "cd zest_station && karma start --single-run",
-    "testPayment": "cd payment && karma start --single-run"
+    "testPayment": "cd payment && karma start --single-run",
+    "test": "npm run testLogin && npm run testRover && npm run testShared && npm run testLogin && npm run testPayment"
   }
 }
