@@ -7,7 +7,7 @@
                 <div class="payment-data">
                     <!-- if card, show card logo -->
                     <figure class="card-logo" ng-show="unallocatedCreditTransaction.is_cc_payment">
-                        <img ng-src="/assets/images/{{unallocatedCreditTransaction.card_details.card_code.toLowerCase()}}.png" alt="">
+                        <img ng-src="/ui/pms-ui/images/{{unallocatedCreditTransaction.card_details.card_code.toLowerCase()}}.png" alt="">
                     </figure>
                     <!-- if number, show ending number -->
                     <span class="number" ng-show="unallocatedCreditTransaction.is_cc_payment">{{unallocatedCreditTransaction.card_details.last_digits}}</span>

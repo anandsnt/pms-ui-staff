@@ -32,6 +32,8 @@ module.exports = function(gulp, $, options) {
 			fs = require('fs'),
 			edit = require('gulp-json-editor');
 
+			file_name = file_name.replace("/ui/pms-ui/", "dist/");
+
 		mkdirp(roverGenDir, function (err) {
 		    if (err) console.error('rover JS mapping directory failed!! (' + err + ')');
 	    	fs.writeFile(roverGenFile, JSON.stringify(extendedMappings), function(err) {
@@ -44,7 +46,7 @@ module.exports = function(gulp, $, options) {
 		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true })
 		        .pipe($.rev.manifest())
 		        .pipe(edit(function(manifest){
-		        	gulp.src('../../public' + extendedMappings['rover.dashboard'][0])
+		        	gulp.src('dist/' + extendedMappings['rover.dashboard'][0])
 		        	.pipe($.replace(/\/assets\/asset_list\/____generatedStateJsMappings\/____generatedrover\/____generatedroverStateJsMappings.json/g ,
 		        		URL_APPENDER + '/' + manifest[Object.keys(manifest)[0]]))
 		        	.pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
@@ -57,7 +59,7 @@ module.exports = function(gulp, $, options) {
 		});
 
 	    return gulp.src(ROVER_HTML_FILE)
-	        .pipe($.inject(gulp.src('../../public' + file_name, {read:false}), {
+	        .pipe($.inject(gulp.src(file_name, {read:false}), {
 	            transform: function(filepath, file, i, length) {
 	            	console.log('Rover injecting dashboard js file (' + (file_name) + ") to "  + ROVER_HTML_FILE);
 	                arguments[0] = URL_APPENDER + "/" + file.relative;
@@ -149,7 +151,7 @@ module.exports = function(gulp, $, options) {
 			combinedList 	= require(stateMappingList[state].filename).getList();
 			fileList 		= combinedList.minifiedFiles.concat(combinedList.nonMinifiedFiles);
 			extendedMappings[state] = glob.sync(fileList).map(function(e){
-				return "/assets/" + e;
+				return "/ui/pms-ui/" + e;
 			});
 		}
 		mkdirp(roverGenDir, function (err) {
@@ -210,7 +212,7 @@ module.exports = function(gulp, $, options) {
 		//since extendedMappings contains /assets/ and that is not a valid before gulp.src
 		var dashboardFiles = extendedMappings['rover.dashboard']
 			.map(function(e){
-				e = e.replace("/assets/", "");
+				e = e.replace("/ui/pms-ui/", "");
 				return e;
 			});
 

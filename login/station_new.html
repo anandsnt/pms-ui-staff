@@ -1,0 +1,31 @@
+<html ng-app="login">
+    <head>
+        <base href="/">
+        <meta charset="utf-8"/>
+        <meta content="noindex, nofollow" name="robots"/>
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes" name="viewport"/>
+        <meta content="yes" name="apple-mobile-web-app-capable"/>
+        <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+        <meta content="StayNTouch" name="apple-mobile-web-app-title"/>
+        <title ng-bind="$root.title+' | StayNTouch PMS | StayNTouch PMS'"></title>
+        <link href="/assets/favicon.png" rel="icon" type="image/png" />
+        <link href="/assets/apple-touch-icon-precomposed.png" rel="apple-touch-icon-precomposed" />
+        <link href="/assets/apple-touch-startup-image-768x1004.png" media="(device-width: 768px) and (orientation: portrait)" rel="apple-touch-startup-image" />
+        <link href="/assets/apple-touch-startup-image-1024x748.png" media="(device-width: 768px) and (orientation: landscape)" rel="apple-touch-startup-image" />
+        <link href="/assets/apple-touch-startup-image-1536x2008.png" media="(device-width: 768px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+        <link href="/assets/apple-touch-startup-image-2048x1496.png" media="(device-width: 768px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+
+        <!-- inject:less:css -->
+        <!-- endinject -->
+    </head>
+    <body id="login-page" document-touch-move-prevent>
+        <div class="container" ng-class="{'signing-in': signingIn}" ng-controller="loginRootCtrl">
+            <ui-view> </ui-view>
+        </div>
+        <!-- inject:js -->
+        <!-- endinject -->
+
+        <!-- inject:templates:js -->
+        <!-- endinject -->
+    </body>
+</html>

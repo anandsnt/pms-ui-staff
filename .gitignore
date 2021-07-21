@@ -1,0 +1,6 @@
+/node_modules/*
+/dist/*
+/gulp/payment/manifests/
+/gulp/rover/manifests/
+/gulp/login/manifests/
+/gulp/station_login/manifests/

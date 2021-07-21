@@ -2,7 +2,7 @@ module.exports = function(gulp, $, options) {
 	
 	var ROVER_TEMPLATE_ROOT     = options['ROVER_TEMPLATE_ROOT'],
 	    ROVER_HTML_FILE     	= options['ROVER_HTML_FILE'],
-	    PARTIALS_PATH_LIST 		= ['rover/**/*.html', 'shared/sntUtils/**/*.html'],
+	    PARTIALS_PATH_LIST 		= ['rover/**/*.html', 'shared/sntUtils/**/*.html', '!rover/index.html'],
 	    ROVER_TEMPLATES_FILE    = 'rover_templates.js',
 	    MANIFEST_DIR 			=  __dirname + "/manifests/",
 	    ROVER_TEMPLTE_MANFEST_FILE = "rover_template_manifest.json",
@@ -33,7 +33,7 @@ module.exports = function(gulp, $, options) {
 	    return templateInjector(file_name);
 	});
 
-	//Be careful: PRODUCTION
+	//Be careful: PRODUCTION - retain root as '/assets/', templates will be cached in rover_templates file
 	gulp.task('rover-template-cache-production', function () {
 	  return gulp.src(PARTIALS_PATH_LIST)
 	  		.pipe($.minifyHTML({
@@ -43,7 +43,7 @@ module.exports = function(gulp, $, options) {
 	  		}))
 	        .pipe($.templateCache(ROVER_TEMPLATES_FILE, {
 	            module: 'sntRover',
-	            root: URL_APPENDER
+	            root: '/assets/'
 	        }))
 	        .pipe($.uglify({compress:true}))
 			.pipe($.rev())
@@ -59,12 +59,13 @@ module.exports = function(gulp, $, options) {
 	    return templateInjector(ROVER_TEMPLATES_FILE);
 	});
 
+	// retain root as '/assets/', templates will be cached in rover_templates file
 	gulp.task('rover-template-cache-dev', function () {
 
 	  return gulp.src(PARTIALS_PATH_LIST)
 	        .pipe($.templateCache(ROVER_TEMPLATES_FILE, {
 	            module: 'sntRover',
-	            root: URL_APPENDER
+	            root: '/assets/'
 	        }))
 	        .pipe(gulp.dest(DEST_ROOT_PATH));
 	});

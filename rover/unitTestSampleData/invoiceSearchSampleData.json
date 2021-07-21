@@ -8,7 +8,7 @@
                 "company_card": null,
                 "item_id": 1661644,
                 "travel_agent_card": "Redbus TA",
-                "image_url": "https://pms-dev.stayntouch.com/assets/images/avatar-trans.png",
+                "image_url": "https://pms-dev.stayntouch.com/ui/pms-ui/images/avatar-trans.png",
                 "accompanying_guests": [],
                 "is_print_ar_invoice_number_enabled": true,
                 "ar_invoice_label": "AR Invoice Number",

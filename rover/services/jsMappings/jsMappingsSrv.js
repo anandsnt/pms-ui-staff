@@ -13,7 +13,7 @@ angular.module('sntRover').service('jsMappings',
             this.fetchMappingList = function() {
                 var deferred = $q.defer();
                 // if you are updating the url, make sure that same in rover's gulp task
-                var url = '/assets/asset_list/____generatedStateJsMappings/____generatedrover/____generatedroverStateJsMappings.json';
+                var url = '/ui/pms-ui/asset_list/____generatedStateJsMappings/____generatedrover/____generatedroverStateJsMappings.json';
 
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
                     mappingList = data;
@@ -78,7 +78,7 @@ angular.module('sntRover').service('jsMappings',
                 if (!!paymentMappingList) {
                     deferred.resolve(paymentMappingList);
                 } else {
-                    locMappingFile = "/assets/asset_list/____generatedgatewayJsMappings/____generatedpayment/____" +
+                    locMappingFile = "/ui/pms-ui/asset_list/____generatedgatewayJsMappings/____generatedpayment/____" +
                         "generatedpaymentTemplateJsMappings.json";
 
                     rvBaseWebSrvV2.getJSON(locMappingFile).then(function(data) {

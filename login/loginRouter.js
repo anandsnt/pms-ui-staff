@@ -31,7 +31,7 @@ login.config([
 
         $stateProvider.state('login?select_property', {
             url: '/login',
-            templateUrl: '/assets/partials/login.html',
+            templateUrl: '/ui/pms-ui/login/partials/login.html',
             controller: 'loginCtrl',
             title: 'Login',
             onEnter: [
@@ -54,27 +54,27 @@ login.config([
 
         $stateProvider.state('stationlogin', {
             url: '/stationlogin',
-            templateUrl: '/assets/partials/stationLogin.html',
+            templateUrl: '/ui/pms-ui/login/partials/stationLogin.html',
             controller: 'stationLoginCtrl',
             title: 'Zest Station Login'
         });
         $stateProvider.state('resetpassword', {
             url: '/reset/:token/:notifications?status',
-            templateUrl: '/assets/partials/reset.html',
+            templateUrl: '/ui/pms-ui/login/partials/reset.html',
             controller: 'resetCtrl',
             title: 'Reset Password'
         });
 
         $stateProvider.state('activateuser', {
             url: '/activate/:token/:user/:username',
-            templateUrl: '/assets/partials/activate.html',
+            templateUrl: '/ui/pms-ui/login/partials/activate.html',
             controller: 'activateCtrl',
             title: 'Activate User'
         });
 
         $stateProvider.state('selectProperty', {
             url: '/property',
-            templateUrl: '/assets/partials/selectProperty.html',
+            templateUrl: '/ui/pms-ui/login/partials/selectProperty.html',
             controller: 'selectPropertyCtrl',
             title: 'Select Property'
         });

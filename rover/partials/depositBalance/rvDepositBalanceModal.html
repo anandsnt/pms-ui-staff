@@ -77,7 +77,7 @@
 						<!-- Selected card -->
 						<label class="active-item item-payment primary" ng-click="selectPayment(existingPayments.value)" ng-show="existingPayments.is_credit_card" ng-repeat="existingPayments in depositBalanceData.data.existing_payments">
 							<figure class="card-logo">
-								<img ng-src="/assets/images/{{existingPayments.card_code}}.png" alt="">
+								<img ng-src="/ui/pms-ui/images/{{existingPayments.card_code}}.png" alt="">
 							</figure> 
 							<span class="number"> Ending with 
 								<span class="value number"> {{existingPayments.ending_with}} </span> 

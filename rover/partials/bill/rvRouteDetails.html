@@ -60,7 +60,7 @@
 							<!-- add class active when selected -->
 							<span ng-show = "paymentType.payment_type_id == 1">
 								<figure class="card-logo">
-									<img src="/assets/images/{{paymentType.card_code}}.png" alt="" />
+									<img src="/ui/pms-ui/images/{{paymentType.card_code}}.png" alt="" />
 								</figure>
 								<span class="number">{{'NUMBER' | translate}} <span class="value number">{{paymentType.mli_token}}</span></span>
 								<span class="date">{{'DATE' | translate}} <span class="value date">{{paymentType.card_expiry}}</span></span>
@@ -75,7 +75,7 @@
 						<!-- add class active when selected -->
 						<span ng-show = "renderAddedPayment.payment_type == 'CC'">
 							<figure class="card-logo">
-								<img src="/assets/images/{{renderAddedPayment.creditCardType | lowercase}}.png" alt="" />
+								<img src="/ui/pms-ui/images/{{renderAddedPayment.creditCardType | lowercase}}.png" alt="" />
 							</figure>
 							<span class="number">{{'NUMBER' | translate}} <span class="value number">{{renderAddedPayment.endingWith}}</span></span>
 							<span class="date">{{'DATE' | translate}} <span class="value date">{{renderAddedPayment.cardExpiry}}</span></span>

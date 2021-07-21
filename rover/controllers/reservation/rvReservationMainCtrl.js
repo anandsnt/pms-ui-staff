@@ -148,7 +148,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             $scope.otherData.booking_max_stay_length = baseSearchData.settings.max_stay_length || 92;
 
             $scope.guestCardData = {};
-            $scope.guestCardData.cardHeaderImage = "/assets/images/avatar-trans.png";
+            $scope.guestCardData.cardHeaderImage = "/ui/pms-ui/images/avatar-trans.png";
             $scope.guestCardData.contactInfo = {};
             $scope.guestCardData.userId = '';
 

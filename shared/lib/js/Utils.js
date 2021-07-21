@@ -333,9 +333,9 @@ function getAvatharUrl(title) {
     title = $.trim(title).toLowerCase().split('.')[0];
     try{
         if((title == "mr") || (title == "mrs") || (title == "miss")|| (title == "ms"))
-            return ('/assets/images/' + avatharImgs[title]);
+            return ('/ui/pms-ui/images/' + avatharImgs[title]);
         else
-            return ('/assets/images/' + avatharImgs['']);
+            return ('/ui/pms-ui/images/' + avatharImgs['']);
     }
     catch (e) {
         console.log(e.message);
@@ -716,8 +716,10 @@ var getTZIndependentDateFromDayMonthYear = function(day, month, year) {
 };
 
 var isValidEmail = function(email) {
-    return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email));
-}
+    var  regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    
+    return regex.test(email);
+};
 
 // Get display password to show in the password form fields
 var getTemporaryDisplayPassword = function() {

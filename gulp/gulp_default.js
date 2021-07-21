@@ -90,7 +90,7 @@ module.exports = function(gulp, $, options) {
     };
 
     $.onChangeJSinDev = function(file) {
-        const destination = file.replace(/\/app\//ig, '/public/');
+        const destination = file.replace(/\/pms-ui-staff\//ig, '/pms-ui-staff/dist/');
 
         console.log('\x1b[33m%s\x1b[0m', 'change detected on file... ' + file);
 
@@ -146,21 +146,5 @@ module.exports = function(gulp, $, options) {
     gulp.task('default', function(callback) {
         processArgs();
         return runSequence(['build', 'watch'], callback);
-    });
-
-    // starting sever & perform the default tasks
-    gulp.task('s', function(callback){
-        processArgs();
-        return runSequence(['start-server', 'build', 'watch'], callback);
-    });
-
-    // start server with only zestweb assets
-    gulp.task('only-gw', function(callback) {
-        return runSequence(['start-server', 'build-guestweb-dev', 'copy-guestweb-base-html', 'watch-guestweb-files'], callback);
-    });
-
-    // start server with only zeststation assets
-    gulp.task('only-zs', function(callback) {
-        return runSequence(['build-zest-dev', 'copy-zest-base-html', 'watch-zest-files'], callback);
     });
 }

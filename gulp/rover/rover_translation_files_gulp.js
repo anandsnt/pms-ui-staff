@@ -5,7 +5,7 @@ module.exports = function(gulp, $, options) {
 
 	gulp.task('concat-translation-en-rover-files-dev', function(){
 		return gulp.src(TRNSLTN_FILES)
-			.pipe($.translationConcat(DEST_ROOT_PATH + 'rvLocales/EN.json', {sep: ',', process: function(src){
+			.pipe($.translationConcat('rvLocales/EN.json', {sep: ',', process: function(src){
 				return (src.trim().replace(/\n/g, ''));
 			}}))
 			.pipe($.translationConcat.header('{'))
