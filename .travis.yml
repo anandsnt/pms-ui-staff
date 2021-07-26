@@ -1,8 +1,0 @@
-env:
-  global:
-    - CC_TEST_REPORTER_ID=6bf19a3db7c3b3492f1e4fbd30a4dd24010cc7d68ebf107d351cd49ee06f2d61
-    - COVERAGE=true
-dist: bionic
-language: "node_js"
-node_js: "8.16.2"
-sudo: required
