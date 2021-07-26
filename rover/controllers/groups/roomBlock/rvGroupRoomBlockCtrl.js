@@ -2698,14 +2698,26 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             return !$scope.isGroupDailyRatesEnabled || $scope.groupConfigData.summary.is_cancelled;
         };
 
-        /*
-		 * To disable the bulk update option
-		 * @return {Boolean}
-		 */
+        /**
+         * Should disable the bulk room block count update option for room view
+         * @param {Object} dateData date data
+         * @return {Boolean}
+         */
         $scope.shouldDisableBulkUpdateButton = function(dateData) {
             var pastDate = new tzIndependentDate(dateData.date) < new tzIndependentDate($rootScope.businessDate);
 
             return !!$scope.groupConfigData.summary.is_cancelled || pastDate;
+        };
+
+        /**
+         * Should disable bulk rate update option in rates view
+         * @param {Object} dateData date data
+         * @return {Boolean}
+         */
+        $scope.shouldDisableBulkRateUpdateButton = function(dateData) {
+            var pastDate = new tzIndependentDate(dateData.date) < new tzIndependentDate($rootScope.businessDate);
+
+            return !!$scope.groupConfigData.summary.is_cancelled || pastDate || $scope.groupConfigData.summary.rate != -1; 
         };
 
         
