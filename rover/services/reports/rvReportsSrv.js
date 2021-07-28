@@ -645,6 +645,11 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_OCTOBER',
                 'LAST_NOVEMBER',
                 'LAST_DECEMBER'                
+            ],
+            'Financial Transaction - Revenue Report': [
+                'YESTERDAY',
+                'TODAY',
+                'DATE_RANGE'
             ]
         };
 
