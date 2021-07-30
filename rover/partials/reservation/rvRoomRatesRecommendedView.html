@@ -14,7 +14,7 @@
         <div class="book-rate" ng-if="rate.isCollapsed">
             <span class="reservation-type red" ng-if="rate.isDayUse">D</span>
             <div class="price" ng-if="!rate.isSuppressed">
-                <span ng-bind-html="rate.defaultADR | sntCurrency:this:rate.rateCurrency"></span>
+                {{rate.rateCurrency}}<p class="room-rate-currency" ng-bind-html="rate.defaultADR | sntCurrency:this:null:true"></p>
                 <span translate>RESV_AVG_NIGHT</span>
             </div>
             <div class="price" ng-if="rate.isSuppressed">
@@ -70,7 +70,7 @@
                     </span>
                 </h3>  -->
                 <div class="price" ng-if="!rate.isSuppressed">
-                    <span ng-bind-html="room.adr | sntCurrency:this:room.rateCurrency"></span>
+                    {{room.rateCurrency}}<p class="room-rate-currency" ng-bind-html="room.adr | sntCurrency:this:null:true"></span>
                     <span translate>RESV_AVG_NIGHT</span>
                 </div>
                 <div class="price" ng-if="rate.isSuppressed">

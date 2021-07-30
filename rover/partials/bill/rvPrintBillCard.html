@@ -174,24 +174,24 @@
                     </div>
                     <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
                 </td>
-                <td ng-if="!item.isCredit" class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}
+                <td ng-if="!item.isCredit" class="align-right"><span ng-bind-html="item.amount | sntCurrency:this"></span>
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && item.invoice_currency_amount !== null">
-                        {{invoiceCurrencySymbol}}{{item.invoice_currency_amount}}
+                        <span ng-bind-html="item.invoice_currency_amount | sntCurrency:this:invoiceCurrencySymbol"></span>
                     </div>
 
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.rate_converted_amount">
-                        {{item.rate_currency}}{{item.rate_converted_amount}}
+                        <span ng-bind-html="item.rate_converted_amount | sntCurrency:this:item.rate_currency"></span>
                     </div>
                 </td>
                 <td ng-if="!item.isCredit" class="align-right"></td>
                 <td class="align-right" ng-if="item.isCredit"></td>
-                <td ng-if="item.isCredit" class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}
+                <td ng-if="item.isCredit" class="align-right"><span ng-bind-html="item.amount | sntCurrency:this"></span>
 
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && item.invoice_currency_amount !== null">
-                        {{invoiceCurrencySymbol}}{{item.invoice_currency_amount}}
+                        <span ng-bind-html="item.invoice_currency_amount | sntCurrency:this:invoiceCurrencySymbol"></span>
                     </div>
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.rate_converted_amount">
-                        {{item.rate_currency}}{{item.rate_converted_amount}}
+                        <span ng-bind-html="item.rate_converted_amount | sntCurrency:this:item.rate_currency"></span>
                     </div>
                 </td>
             </tr>
@@ -200,7 +200,7 @@
                 <td></td>
                 <td></td>
                 <td><strong >{{printData.translation.total_charge}}</strong></td>
-                <td ><strong>{{currencySymbol}}{{printData.total_fees}}</strong>
+                <td ><strong><span ng-bind-html="printData.total_fees | sntCurrency:this"></span></strong>
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && printData.invoice_currency_total_fees !== null">
                         <span ng-bind-html="printData.invoice_currency_total_fees | sntCurrency:this:invoiceCurrencySymbol"></span>
                     </div>
@@ -210,7 +210,7 @@
                 <td></td>
                 <td></td>
                 <td><strong >{{printData.translation.total_credits}}<strong></td>
-                <td><strong>{{currencySymbol}}{{printData.credits}} </strong>
+                    <td><strong><span ng-bind-html="printData.credits | sntCurrency:this"></span></strong>
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && printData.invoice_currency_credits !== null">
                         <span ng-bind-html="printData.invoice_currency_credits | sntCurrency:this:invoiceCurrencySymbol"></span>
                     </div>
@@ -220,7 +220,7 @@
                 <td></td>
                 <td></td>
                 <td ><strong>{{printData.translation.net_amount}}</strong></td>
-                <td><strong>{{currencySymbol}}{{printData.net_amount}}</strong>
+                <td><strong><span ng-bind-html="printData.net_amount | sntCurrency:this"></span></strong>
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && printData.invoice_currency_net_amount !== null">
                         <span ng-bind-html="printData.invoice_currency_net_amount | sntCurrency:this:invoiceCurrencySymbol"></span>
                     </div>
@@ -230,7 +230,7 @@
                 <td></td>
                 <td></td>
                 <td><strong >{{printData.translation.balance}}</strong></td>
-                <td><strong>{{currencySymbol}}{{printData.balance}} </strong>
+                <td><strong><span ng-bind-html="printData.balance | sntCurrency:this"></span></strong>
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && printData.invoice_currency_balance !== null">
                         <span ng-bind-html="printData.invoice_currency_balance | sntCurrency:this:invoiceCurrencySymbol"></span>
                     </div>
