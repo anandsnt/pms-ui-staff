@@ -42,7 +42,7 @@
             <div class="entry" ng-hide="!scheduleTimePeriods.length || isGuestBalanceReport || isYearlyTaxReport || isCreditCheckReport || isReservationsByUserReport || isRoomStatusReport || isRateAdjustmentReport">
                 <label for="time-period">Time Period</label>
                 <div class="select">
-                    <select ng-model="scheduleParams.time_period_id" ng-options="timePeriod.id as timePeriod.description for timePeriod in scheduleTimePeriods" ng-disabled="isGuestBalanceReport" iscroll-stop-propagation>
+                    <select ng-model="scheduleParams.time_period_id" ng-options="timePeriod.id as timePeriod.description for timePeriod in scheduleTimePeriods" ng-disabled="isGuestBalanceReport" ng-change="refreshSecondColumnScroll()" iscroll-stop-propagation>
                         <option value="">Time period</option>
                     </select>
                 </div>
@@ -87,6 +87,19 @@
                     </select>
                 </div>
             </div>
+            <div class="entry date-range" ng-show="scheduleParams.time_period_id === dateRangeTimePeriodId">
+                <label>FROM DATE</label>
+                <div class="has-datepicker">
+                    <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
+                    <input type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="selectedEntityDetails.report.fromDate" readonly>
+                </div>
+                <label>TO DATE</label>
+                <div class="has-datepicker">
+                    <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
+                    <input type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="selectedEntityDetails.report.untilDate" readonly>
+                </div>
+            </div>
+
             <multi-option-selection ng-show="filters.hasShow && filters.hasShow.data.length" label="Show" on-update="refreshSecondColumnScroll" data="filters.hasShow.data" options="filters.hasShow.options">
             </multi-option-selection>
             <multi-option-selection ng-show="isGuestBalanceReport" label="Guest/Account" on-update="refreshSecondColumnScroll" data="filters.hasGeneralOptions.data" options="filters.hasGeneralOptions.options"></multi-option-selection>
@@ -115,6 +128,16 @@
                     Cards Without Tax ID
                 </label>
             </div>
+            
+            <multi-option-selection ng-show="filters.empList && filters.empList.data.length" label="{{ filters.filterTitle }}" on-update="refreshSecondColumnScroll" data="filters.empList.data" options="filters.empList.options"></multi-option-selection>
+            <div class="entry" ng-show="filters.hasTransactionCategory && filters.hasTransactionCategory.data.length">
+                <label>Showing</label>
+                <div class="select">
+                    <select ng-model="filters.hasTransactionCategory.selected" ng-options="transactionCategory.description for transactionCategory in filters.hasTransactionCategory.data" iscroll-stop-propagation>
+                    </select>
+                </div>
+            </div>
+
             <multi-option-selection ng-show="isYearlyTaxReport" label="Country" on-update="refreshFilterScroll" data="filters.hasIncludeCountry.data" options="filters.hasIncludeCountry.options"></multi-option-selection>
             <multi-option-selection ng-show="filters.hasByChargeGroup && filters.hasByChargeGroup.data.length" label="Charge Group(s)" on-update="refreshSecondColumnScroll" data="filters.hasByChargeGroup.data" options="filters.hasByChargeGroup.options" affects-filter="filters.hasByChargeGroup.affectsFilter"
                 filter-holder-obj="filters"></multi-option-selection>
