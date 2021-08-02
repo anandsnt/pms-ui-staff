@@ -598,9 +598,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             // they are assigned at populateShoulderDates in rvGroupConfigurationSummaryTab controller
 
             // ensure the start and end dates are within the shoulder boundaries
-            if ($scope.timeLineStartDate < summary.shoulder_from_date) {
+            if (($scope.timeLineStartDate < summary.shoulder_from_date) || ($scope.timeLineStartDate < tzIndependentDate(summary.shoulder_from_date))) {
                 $scope.timeLineStartDate = new tzIndependentDate(summary.shoulder_from_date);
-            } else if ($scope.timeLineStartDate > summary.shoulder_to_date) {
+            } else if (($scope.timeLineStartDate > summary.shoulder_to_date) || ($scope.timeLineStartDate > tzIndependentDate(summary.shoulder_to_date))) {
                 $scope.timeLineStartDate = new tzIndependentDate(summary.shoulder_to_date);
             }
 
