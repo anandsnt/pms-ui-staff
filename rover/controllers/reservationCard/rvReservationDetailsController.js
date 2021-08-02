@@ -321,10 +321,11 @@ sntRover.controller('reservationDetailsController',
 			}
 		};
 
-		var guestIdList;
+		var fetchedGuestId = {};
+
 		var fetchGuestIDs = function() {
 			var successCallBack = function(response) {
-				guestIdList = response;
+				fetchedGuestId = response;
 				sntActivity.stop('GUEST_ID_FETCH');
 			};
 
@@ -538,7 +539,6 @@ sntRover.controller('reservationDetailsController',
 	//  showing Guest button arrow as part of CICO-25774
 
 		// $scope.shouldShowGuestDetails = false;
-		fetchGuestIDs();
 		fetchAddonsDetails();
 		$scope.toggleGuests = function(isFromCheckin) {
 
@@ -1974,10 +1974,11 @@ sntRover.controller('reservationDetailsController',
 	}
 
 	var retrieveGuestDocDetails = function(guestId) {
-		var guestIdInfo = _.find(guestIdList, function(guestIdData) {
-			return guestIdData.guest_id === guestId;
-		});
+		var guestIdInfo;
 
+		if (fetchedGuestId.guest_id === guestId) {
+			guestIdInfo = fetchedGuestId;
+		}
 		return guestIdInfo;
 	};
 
