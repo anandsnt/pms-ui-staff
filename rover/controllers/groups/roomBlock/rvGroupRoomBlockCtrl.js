@@ -2692,7 +2692,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
         };
 
         /**
-         * Should disable the room/rates togglle btn
+         * Should disable the room/rates toggle button
          */
         $scope.shouldDisableRoomRatesToggleBtn = function() {
             return !$scope.isGroupDailyRatesEnabled || $scope.groupConfigData.summary.is_cancelled;
