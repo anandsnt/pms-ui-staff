@@ -51,7 +51,8 @@ angular.module('accountsModule', [])
                 id: 'NEW_ACCOUNT',
                 activeTab: 'ACCOUNT',
                 isFromArTransactions: '',
-                isFromCards: ''
+                isFromCards: '',
+                isFromArTab: ''
             },
             templateUrl: '/assets/partials/accounts/rvAccountsConfiguration.html',
             controller: 'rvAccountsConfigurationCtrl',

@@ -20,6 +20,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			that = this; // Reference to this pointer.
 
 		$scope.showSortFilter = true;
+		$scope.showToggleFilter = true;
 
 		$scope.arFlags = {
 			'currentSelectedArTab': 'balance',
@@ -32,7 +33,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'insufficientAmount': false,
 			'isFromAddPaymentOrAllocateButton': false,
 			'shouldShowRefundButton': false,
-			'hasAllocateUnallocatePermission': rvPermissionSrv.getPermissionValue ('ALLOCATE_UNALLOCATE_PAYMENT')
+			'hasAllocateUnallocatePermission': rvPermissionSrv.getPermissionValue ('ALLOCATE_UNALLOCATE_PAYMENT'),
+			'isPayableTab': true,
+			'shouldShowOnHoldFooter': false
 		};
 
 		$scope.filterData = {
@@ -66,6 +69,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'paidList': [],
 			'unallocatedList': [],
 			'allocatedList': [],
+			'onHoldList': [],
 
 			'unpaidAmount': '',
 			'paidAmount': '',
@@ -78,12 +82,15 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'paidPageNo': 1,
 			'allocatePageNo': 1,
 			'unallocatePageNo': 1,
+			'onHoldPageNo': 1,
 
 			'balanceTotalCount': 0,
 			'paidTotalCount': 0,
 			'allocatedTotalCount': 0,
 			'unallocatedTotalCount': 0,
 			'totalOfAllInvoicesInBalanceTab': 0,
+			'OnHoldTotalCount': 0,
+			'selectedOnHoldInvoices': [],
 			// Params - Balance tab
 			'selectedInvoices': [],
 			'totalAllocatedAmount': 0,
@@ -115,6 +122,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					dataToSend.getParams.paid = false;
 					dataToSend.getParams.page = $scope.arDataObj.balancePageNo;
 					dataToSend.getParams.sort_field = $scope.filterData.sortField;
+					dataToSend.getParams.on_hold = false;
 					break;
 				case 'paid-bills':
 					dataToSend.getParams.transaction_type = 'CHARGES';
@@ -131,6 +139,13 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					dataToSend.getParams.transaction_type = 'PAYMENTS';
 					dataToSend.getParams.allocated = true;
 					dataToSend.getParams.page = $scope.arDataObj.allocatePageNo;
+					break;
+				case 'on-hold':
+					dataToSend.getParams.transaction_type = 'CHARGES';
+					dataToSend.getParams.paid = false;
+					dataToSend.getParams.page = $scope.arDataObj.onHoldPageNo;
+					dataToSend.getParams.sort_field = $scope.filterData.sortField;
+					dataToSend.getParams.on_hold = true;
 					break;
 				}
 
@@ -226,6 +241,23 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					}, 1000);
 
 				break;
+				case 'on-hold':
+					_.each(data.ar_transactions, function (eachItem) {
+						eachItem.onHoldAmount = parseFloat(eachItem.amount).toFixed(2);
+						eachItem.isonHoldSelected = false;
+						eachItem.onHoldInitialAmount = eachItem.onHoldAmount;
+					});
+					$scope.arDataObj.onHoldList = [];
+					$scope.arDataObj.onHoldList = data.ar_transactions;
+					$scope.arDataObj.onHoldTotalCount = data.total_count;
+					appendActiveClass($scope.arDataObj.onHoldList);
+					$scope.$broadcast("FETCH_COMPLETE_ONHOLD_LIST");
+
+					$timeout(function () {
+						$scope.$broadcast('updatePagination', 'ONHOLD' );
+					}, 1000);
+
+					break;
 				}
 
 				// CICO-53406 : Workaround to focus textbox
@@ -265,6 +297,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				case 'allocated':
 					$scope.arDataObj.allocatePageNo = 1;
 					break;
+				case 'on-hold':
+					$scope.arDataObj.onHoldPageNo = 1;
+					break;
 			}
 
 			that.fetchTransactions();
@@ -285,20 +320,48 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.switchArTransactionTab = function(tab) {
 			$scope.arFlags.currentSelectedArTab = tab;
 			// sort option available for open and paid bill screens
-			if (tab === 'balance' || tab === 'paid-bills') {
+			if (tab === 'balance' || tab === 'paid-bills' || tab === 'on-hold') {
 				$scope.showSortFilter = true;
 			}
 			else {
 				$scope.showSortFilter = false;
 			}
+			// toggle option available for open bill and on hold screens
+			if (tab === 'balance' || tab === 'on-hold') {
+				$scope.showToggleFilter = true;
+			} else {
+				$scope.showToggleFilter = false;
+				// switch tab back to payable
+				$scope.arFlags.isPayableTab = true;
+			}
 			if (tab !== 'balance') {
 				$scope.arFlags.isAddBalanceScreenVisible = false;
 			}
 			$scope.arDataObj.balancePageNo = $scope.arDataObj.paidPageNo
-			= $scope.arDataObj.unallocatePageNo = $scope.arDataObj.allocatePageNo = 1;
+			= $scope.arDataObj.unallocatePageNo = $scope.arDataObj.allocatePageNo = $scope.arDataObj.onHoldPageNo = 1;
 
 			that.fetchTransactions();
 		};
+
+		var clearFilters = function() {
+			$scope.filterData.query = '';
+			$scope.filterData.fromDate = '';
+			$scope.filterData.toDate = '';
+			$scope.filterData.sortField = 'aging_date';
+		};
+
+		$scope.switchArTransactionOpenBillTab = function() {
+			clearFilters();
+			// switch to payable tab
+			if ($scope.arFlags.isPayableTab) {
+				$scope.switchArTransactionTab('balance');
+			} else {
+				// Clear selected checkbox and switch to on hold Tab
+				$scope.arDataObj.selectedOnHoldInvoices = [];
+				$scope.switchArTransactionTab('on-hold');
+			}
+		};
+
 		/*
 		 * Show Add balance screen
 		 */
@@ -480,6 +543,113 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			});
 			that.fetchTransactions();
 		};
+		// ON HOLD TAB FUNCTIONALITIES
+
+		/* Should show footer instead of pagination
+		* 1 case - if invoice selected
+		*/
+		$scope.shouldShowOnHoldFooter = function() {
+			return $scope.arDataObj.selectedOnHoldInvoices.length !== 0;
+		   };
+	
+			   /*
+			 * Clicked Cancel from  on hold footer
+			 */
+			$scope.clickCancelFromOnHoldFooter = function() {
+				$scope.arFlags.shouldShowOnHoldFooter = false;
+				$scope.arDataObj.selectedOnHoldInvoices = [];
+				_.each($scope.arDataObj.onHoldList, function (eachItem) {
+					eachItem.isonHoldSelected = false;
+				});
+				that.fetchTransactions();
+			};
+	
+			   /*
+			 * Success callback of hold invoices
+			 */
+			var successCallBackOfHoldInvoice = function() {
+				$scope.arDataObj.selectedInvoices = [];
+				$scope.arFlags.shouldShowFooter = false;
+	
+				that.fetchTransactions();
+			};
+	
+			/*
+			 * Failure callback of hold invoices
+			 */
+			var failureCallBackOfHoldInvoice = function(errorMessage) {
+				$scope.arDataObj.selectedInvoices = [];
+				// In this case - we have to show the error in footer
+				$scope.errorMessage = errorMessage;
+			};
+	
+			/* Hold selected invoices */    
+			$scope.holdSelectedInvoices = function() {
+				var postData = {},
+				 postParams = {},
+				 selectedInvoiceId = [];
+	
+				_.each($scope.arDataObj.selectedInvoices, function (eachItem) {			
+					selectedInvoiceId.push(eachItem.invoice_id);
+				});
+				
+				postData.selected_invoice_ids = selectedInvoiceId;
+	
+				postParams.account_id = $scope.arDataObj.accountId;
+				postParams.data = postData;
+	
+				var options = {
+					params: postParams,
+					successCallBack: successCallBackOfHoldInvoice,
+					failureCallBack: failureCallBackOfHoldInvoice
+				};
+	
+				$scope.callAPI(rvAccountsArTransactionsSrv.holdSelectedInvoices, options);
+			};
+	
+			/*
+			 * Success callback of release invoices
+			 */
+			var successCallBackOfReleaseInvoice = function() {
+				$scope.arDataObj.selectedOnHoldInvoices = [];
+				$scope.arFlags.shouldShowOnHoldFooter = false;
+	
+				that.fetchTransactions();
+			};
+	
+			/*
+			 * Failure callback of hold invoices
+			 */
+			var failureCallBackOfReleaseInvoice = function(errorMessage) {
+				$scope.arDataObj.selectedOnHoldInvoices = [];
+				// In this case - we have to show the error in footer
+				$scope.errorMessage = errorMessage;
+			};
+	
+			/* Release selected Invoices */ 
+			$scope.releaseSelectedInvoices = function() {
+				var postData = {}, 
+					postParams = {},
+					selectedReleaseInvoiceId = [];
+	
+				_.each($scope.arDataObj.selectedOnHoldInvoices, function (eachItem) {			
+					selectedReleaseInvoiceId.push(eachItem.invoice_id)
+				});
+				
+				postData.selected_invoice_ids = selectedReleaseInvoiceId;
+	
+				postParams.account_id = $scope.arDataObj.accountId;
+				postParams.data = postData;
+	
+				var options = {
+					params: postParams,
+					successCallBack: successCallBackOfReleaseInvoice,
+					failureCallBack: failureCallBackOfReleaseInvoice
+				};
+	
+				$scope.callAPI(rvAccountsArTransactionsSrv.releaseSelectedInvoices, options);
+			};
+	
 		/*
 		 * Should show footer instead of pagination
 		 * 2 cases - one if invoice selected
@@ -556,13 +726,22 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		listeners['SHOW_ERROR_MSG'] = $scope.$on('SHOW_ERROR_MSG', function( event, errorMessage ) {
 			$scope.errorMessage = errorMessage;
 		});
-		// Refresh balance list - after adding new manual balance
+		// Refresh payable balance list - after adding new manual balance
 		// and after succesfull payment with Allocate payment after posting checked
-		listeners['REFRESH_BALANCE_LIST'] = $scope.$on('REFRESH_BALANCE_LIST', function() {
+		listeners['REFRESH_PAYABLE_LIST'] = $scope.addListener('REFRESH_PAYABLE_LIST', function() {
 			$scope.arFlags.currentSelectedArTab = 'balance';
 			$scope.arDataObj.balancePageNo = 1;
+			$scope.arFlags.isPayableTab = true;
+			$scope.showToggleFilter = true;
 			that.fetchTransactions();
 		});
+		
+		// Refresh payable OR on-hold balance list - move invoice, post charge
+		// and invoice adjust charge code, invoice unallocate charge
+		listeners['REFRESH_BALANCE_LIST'] = $scope.addListener('REFRESH_BALANCE_LIST', function() {
+			$scope.switchArTransactionOpenBillTab();
+		});
+
 		// Refresh balance list - after adding new manual balance
 		// and after succesfull payment with Allocate payment after posting checked
 		listeners['REFRESH_UNALLOCATED'] = $scope.$on('REFRESH_UNALLOCATED', function() {
@@ -589,6 +768,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		listeners['CLICKED_ALLOCATE_BUTTON'] = $scope.$on('CLICKED_ALLOCATE_BUTTON', function(event, selectedPaymentData) {
 			$scope.arFlags.shouldShowPayAllButton = true;
 			$scope.arFlags.currentSelectedArTab = 'balance';
+			$scope.showToggleFilter = true; // show toggle in openbills
+			$scope.arFlags.isPayableTab = true; // show payable tab selected
 			$scope.allocatedPayment = selectedPaymentData;
 			$scope.arFlags.isPaymentSelected = true;
 			$scope.arDataObj.availableAmount = selectedPaymentData.available_amount ? parseFloat(selectedPaymentData.available_amount).toFixed(2) : "0.00";
@@ -630,6 +811,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				case 'UNALLOCATE':
 					$scope.arDataObj.unallocatePageNo = pageNo;
 					break;
+				case 'ONHOLD':
+					$scope.arDataObj.onHoldPageNo = pageNo;
+					break;
 			}
 
 			$scope.callAPI(rvAccountsArTransactionsSrv.fetchTransactionDetails, {
@@ -663,6 +847,13 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.unallocatePagination = {
 			id: 'UNALLOCATE',
 			api: [ loadAPIData, 'UNALLOCATE' ],
+			perPage: $scope.arDataObj.perPage
+		};
+
+		// Pagination options for ONHOLD
+		$scope.onHoldPagination = {
+			id: 'ONHOLD',
+			api: [ loadAPIData, 'ONHOLD' ],
 			perPage: $scope.arDataObj.perPage
 		};
 
@@ -908,17 +1099,21 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             });
 		};
 		// Popup for AR invoice print flow
-		$scope.showFormatBillPopup = function(index, is_from_paid) {
+		$scope.showFormatBillPopup = function(index, is_from) {
 			$scope.is_from_ar = true;
 			$scope.is_bill_lock_enabled = $scope.arDataObj.is_bill_lock_enabled;
 			$scope.billFormat = {};
 			$scope.billFormat.isInformationalInvoice = false;
 			$scope.arTransactionsData = $scope.arDataObj;
-			if (is_from_paid) {
+			// Print invoice from paid list
+			if (is_from === 'paid') {
 				$scope.item = $scope.arDataObj.paidList[index]
-			} else {
+			} else if (is_from === 'payable') {
 				$scope.item = $scope.arDataObj.balanceList[index]
+			} else {
+				$scope.item = $scope.arDataObj.onHoldList[index]
 			}
+
 			if ($scope.item.paid) {
 				if($scope.item.is_locked || !$scope.is_bill_lock_enabled) {
 					$scope.isInvoiceStepOneActive = false;
@@ -1221,6 +1416,12 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		listeners['BACK_FROM_STAY_CARD'] = $scope.$on('BACK_FROM_STAY_CARD', function() {
 			if (typeof $scope.arDataObj.accountId === 'undefined') {
 				$timeout(function() {
+					// Switch back to on-hold tab
+					if ($stateParams.isBackFromStaycardToARTab === 'on-hold') {
+						$scope.arFlags.isPayableTab = false;
+					}
+					// switch back to previous AR Tab
+					$scope.switchArTransactionTab($stateParams.isBackFromStaycardToARTab);
 					init();
 				}, 2000);
 			}

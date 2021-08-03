@@ -152,6 +152,7 @@ sntRover.controller('reservationDetailsController',
 				}
 			};
 		} else if ($stateParams.isFromCards) {
+			var fromArTab = $stateParams.isFromArTab;
 
 			setNavigationBookMark();
 			$rootScope.setPrevState = {
@@ -161,7 +162,8 @@ sntRover.controller('reservationDetailsController',
 					id: $vault.get('cardId'),
 					type: $vault.get('type'),
 					query: $vault.get('query'),
-					isBackFromStaycard: true
+					isBackFromStaycard: true,
+					isBackFromStaycardToARTab: fromArTab
 				}
 			};
 

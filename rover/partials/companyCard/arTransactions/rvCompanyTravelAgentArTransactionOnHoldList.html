@@ -1,9 +1,9 @@
 <ul class="search-results">
     <!-- if checked, add class .selected -->
-    <li class="reservation transaction with-checkbox reservation-transaction" ng-class="{'selected': balance.isSelected }" ng-repeat="balance in arDataObj.balanceList track by $index" ng-click="clickedOnParentList( $event, $index )">
-        <label class="checkbox inline" ng-class="{'checked': balance.isSelected }">
-            <span ng-hide="balance.amount < 0" class="icon-form icon-checkbox" ng-class="{'checked': balance.isSelected }"></span>
-            <input value="4" type="checkbox" ng-class="{'checked': balance.isSelected }">
+    <li class="reservation transaction with-checkbox reservation-transaction" ng-class="{'selected': balance.isonHoldSelected }" ng-repeat="balance in arDataObj.onHoldList track by $index" ng-click="clickedOnParentList( $event, $index )">
+        <label class="checkbox inline" ng-class="{'checked': balance.isonHoldSelected }">
+            <span ng-hide="balance.onHoldAmount < 0" class="icon-form icon-checkbox" ng-class="{'checked': balance.isonHoldSelected }"></span>
+            <input value="4" type="checkbox" ng-class="{'checked': balance.isonHoldSelected }">
         </label>
         <div class="faux-anchor has-arrow toggle" ng-class="{ 'active': balance.active}">
                 <!-- add class .group/.allotment if group or allotment -->
@@ -92,21 +92,9 @@
             <div class="reservation-type red" ng-if="balance.is_day_use">D</div>
             <div class="reservation-type" ng-if="!balance.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
 
-            <div class="balance balance-now">
-                Invoiced Amount 
-                <strong class="red"><span ng-bind-html="balance.balanceNow | sntCurrency:this"></span></strong>
-            </div>
-            <div class="balance balance-after">
-                Remaining Balance
-                <strong class="green"><span ng-bind-html="balance.balanceAfter | sntCurrency:this"></span></strong>
-            </div>
             <div class="amount unpaid" ng-class="{'partially-paid':balance.is_partially_paid}">
                 <span ng-if="balance.is_partially_paid" class="icons icon-wallet-green"></span>
-                <span ng-bind-html="balance.amount | sntCurrency:this"></span>
-            </div>
-            <div class="amount input">
-                <span class="currency">{{currencySymbol}}</span>
-                <input class="text-box" type="text" value="{{balance.amount}}" ng-model="balance.amount" ng-change="changeBalanceAmount($index)" ng-blur="addDecimal($index)">
+                <span ng-bind-html="balance.onHoldAmount | sntCurrency:this"></span>
             </div>
         </div>
         <div class="grid-items" ng-show="balance.active">
@@ -171,7 +159,7 @@
                         <td class="description">
                             <div class="payment-data" ng-if="payment.is_cc_payment">
                                 <figure class="card-logo">
-                                    <img ng-src="/ui/pms-ui/images/{{payment.card_details.card_code.toLowerCase()}}.png" alt="">
+                                    <img ng-src="/assets/images/{{payment.card_details.card_code.toLowerCase()}}.png" alt="">
                                 </figure>
                                 <span class="number">{{payment.card_details.last_digits}}</span>
                                 <span class="date"><span class="value">{{payment.card_details.expire_date | date : dateFormat}}</span></span>
@@ -184,8 +172,7 @@
                         </td>
                         <td class="fees"></td>
                         <td class="credits">
-                            <span ng-bind-html="payment.amount | sntCurrency:this"></span>
-                               
+                            <span ng-bind-html="payment.amount | sntCurrency:this"></span>                               
                         </td>
                          <td class="action">
 
@@ -198,18 +185,14 @@
                 </tbody>
             </table>
             <div class="actions">
-                <button type="button" ng-show="balance.amount < 0 && !balance.is_manual_balance" class="button red" ng-click="moveToCreditButtonClicked(balance)">MOVE TO CREDIT</button>
+                <button type="button" ng-show="balance.onHoldAmount < 0 && !balance.is_manual_balance" class="button red" ng-click="moveToCreditButtonClicked(balance)">MOVE TO CREDIT</button>
                 <button type="button" ng-show="arFlags.viewFromOutside && !balance.is_manual_balance" class="button brand-colors" ng-click="goToReservationDetails($index)">StayCard</button>
                 <button type="button" ng-click="moveInvoiceButtonClick(balance)" ng-show="!balance.is_partially_paid" class="button purple">Move Invoice</button>
-                <button type="button" class="button blue" ng-click="showFormatBillPopup($index, payable)">Print Invoice</button>
+                <button type="button" class="button blue" ng-click="showFormatBillPopup($index, 'onhold')">Print Invoice</button>
                 <button type="button" class="button green white-text" ng-click="clickedPostCharge($index)" ng-show="!balance.is_manual_balance && !roverObj.noModifyInvoice">Post Charge</button>
                 <button type="button" class="button white purple-text hidden">Edit Charges</button>
             </div>
         </div>
-	</li>
-	<li id="add-balance">
-		<!-- On click Show Manual Balance Billing Content -->
-		<button class="add-new-button" ng-show="!roverObj.noModifyInvoice" ng-click="showAddBalanceScreen()">Add Manual Balance</button>
 	</li>
     <li ng-if="!printBillCardActive">
         <!-- To fix scroll -->

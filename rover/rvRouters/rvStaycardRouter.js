@@ -273,7 +273,8 @@ angular.module('stayCardModule', [])
                 isBulkCheckoutSelected: false,
                 isAllowOpenBalanceCheckoutSelected: false,
                 isGroupDetachmentRequested: null,
-                isBulkCheckinSelected: null                
+                isBulkCheckinSelected: null,
+                isFromArTab: null                
             },
             resolve: {
                 reservationListData: function (RVReservationCardSrv, $stateParams) {
