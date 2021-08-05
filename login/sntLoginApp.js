@@ -14,7 +14,7 @@ var GlobalApp = function() {
 
     this.setBrowser = function(browser) {
         
-        var url = "/assets/shared/cordova.js";
+        var url = "/ui/pms-ui/shared/cordova.js";
 
         if (typeof browser === 'undefined' || browser === '') {
             that.browser = "other";

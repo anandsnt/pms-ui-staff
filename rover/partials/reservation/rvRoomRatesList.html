@@ -125,7 +125,7 @@
                             -->
                             <!-- <h4 ng-show="!borrowForGroups && room.defaultRate.isCorporate" translate>RESV_COR_RATE</h4> -->
                             <div class="price" ng-if="!borrowForGroups && !room.defaultRate.isSuppressed">
-                                <span ng-bind-html="room.defaultRate.adr | sntCurrency:this:room.rateCurrency"></span>
+                                {{room.rateCurrency}}<p class="room-rate-currency" ng-bind-html="room.defaultRate.adr | sntCurrency:this:null:true"></p>
                                 <span translate>RESV_AVG_NIGHT</span>
                             </div>
                             <div class="price" ng-if="!borrowForGroups && room.defaultRate.isSuppressed">
@@ -177,7 +177,7 @@
                                     <span class="restriction-icon {restriction-icon-class} {restriction-bg-class} {restriction-bgcolor}">{Restriction}</span> -->
                                 <span class="reservation-type red" ng-if="rate.isDayUse">D</span>
                                 <div class="price" ng-if="!rate.isSuppressed">
-                                    <span ng-bind-html="rate.adr | sntCurrency:this:rate.rateCurrency"></span>
+                                    {{rate.rateCurrency}}<p class="room-rate-currency" ng-bind-html="rate.adr | sntCurrency:this:null:true"></p>
                                     <span translate>RESV_AVG_NIGHT</span>
                                 </div>
                                 <div class="price" ng-if="rate.isSuppressed">

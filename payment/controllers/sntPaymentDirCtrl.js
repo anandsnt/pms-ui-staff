@@ -55,6 +55,9 @@ angular.module('sntPay').controller('sntPaymentController',
             $scope.errorMessage = '';
             $scope.precisionTwo = 2;
 
+            // CICO-35453 Currency Format
+            $scope.currencyFormat = $rootScope.hotelDetails.currency_format && $rootScope.hotelDetails.currency_format.value;
+            
             // For some payment gateways, we might need to hide some payment types
             // conditionally. For eg:- Hide Credit card payment type for CBA + MLI payments
             // and hide CBA - Credit card for CBA + MLI card additions

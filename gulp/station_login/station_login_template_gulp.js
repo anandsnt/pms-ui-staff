@@ -42,7 +42,7 @@ module.exports = function(gulp, $, options){
 	  		}))
 	        .pipe($.templateCache(STATION_LOGIN_TEMPLATES_FILE, {
 	            module: 'login',//angular module
-	            root: URL_APPENDER + "/login/partials/"
+	            root: "/assets/partials/"
 	        }))
 	        .pipe($.uglify({compress:true, output: {
 	        	space_colon: false
@@ -61,7 +61,7 @@ module.exports = function(gulp, $, options){
 	  return gulp.src(LOGIN_PARTIALS, {cwd:'login/'})
 	        .pipe($.templateCache(STATION_LOGIN_TEMPLATES_FILE, {
 	            module: 'login',
-	            root: URL_APPENDER + "/login/partials/"
+	            root: "/assets/partials/"
 	        }))
 	        .pipe(gulp.dest(DEST_ROOT_PATH));
 	});

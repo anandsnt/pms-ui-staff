@@ -598,9 +598,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             // they are assigned at populateShoulderDates in rvGroupConfigurationSummaryTab controller
 
             // ensure the start and end dates are within the shoulder boundaries
-            if ($scope.timeLineStartDate < summary.shoulder_from_date) {
+            if (($scope.timeLineStartDate < summary.shoulder_from_date) || ($scope.timeLineStartDate < tzIndependentDate(summary.shoulder_from_date))) {
                 $scope.timeLineStartDate = new tzIndependentDate(summary.shoulder_from_date);
-            } else if ($scope.timeLineStartDate > summary.shoulder_to_date) {
+            } else if (($scope.timeLineStartDate > summary.shoulder_to_date) || ($scope.timeLineStartDate > tzIndependentDate(summary.shoulder_to_date))) {
                 $scope.timeLineStartDate = new tzIndependentDate(summary.shoulder_to_date);
             }
 
@@ -2692,20 +2692,32 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
         };
 
         /**
-         * Should disable the room/rates togglle btn
+         * Should disable the room/rates toggle button
          */
         $scope.shouldDisableRoomRatesToggleBtn = function() {
             return !$scope.isGroupDailyRatesEnabled || $scope.groupConfigData.summary.is_cancelled;
         };
 
-        /*
-		 * To disable the bulk update option
-		 * @return {Boolean}
-		 */
+        /**
+         * Should disable the bulk room block count update option for room view
+         * @param {Object} dateData date data
+         * @return {Boolean}
+         */
         $scope.shouldDisableBulkUpdateButton = function(dateData) {
             var pastDate = new tzIndependentDate(dateData.date) < new tzIndependentDate($rootScope.businessDate);
 
             return !!$scope.groupConfigData.summary.is_cancelled || pastDate;
+        };
+
+        /**
+         * Should disable bulk rate update option in rates view
+         * @param {Object} dateData date data
+         * @return {Boolean}
+         */
+        $scope.shouldDisableBulkRateUpdateButton = function(dateData) {
+            var pastDate = new tzIndependentDate(dateData.date) < new tzIndependentDate($rootScope.businessDate);
+
+            return !!$scope.groupConfigData.summary.is_cancelled || pastDate || $scope.groupConfigData.summary.rate != -1; 
         };
 
         

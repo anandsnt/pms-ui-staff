@@ -216,42 +216,6 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 
 			return isSingleRateConfigured;
         };
-        
-        /**
-         * Checks whether the custom rate has been changed or not
-         */
-        var hasRatesChanged = function() {
-            var hasChanged = false;                
-
-            _.each($scope.selectedRoomTypeAndRates, function(item) {
-                if (item.single_rate !== item.old_single_rate || item.double_rate !== item.old_double_rate || item.extra_adult_rate !== item.old_extra_adult_rate) {
-                    hasChanged = true;
-                }
-            });
-
-            var hasConfiguredRoomTypesChanged = function() {
-                    var originalRoomTypeIds = _.pluck($scope.originalConfiguredRoomTypeAndRates, 'room_type_id'),
-                        selectedRoomTypeAndRates = _.filter($scope.selectedRoomTypeAndRates, function(obj) {
-                            return !!obj.room_type_id;
-                        }),
-                        selectedRoomTypeIds = _.pluck(selectedRoomTypeAndRates, 'room_type_id');
-
-                    // Convert string to integer
-                    selectedRoomTypeIds = selectedRoomTypeIds.map(function (id) {
-                        return +id;
-                    });
-
-                    return !_.isEqual(_.sortBy(originalRoomTypeIds), _.sortBy(selectedRoomTypeIds));
-                },
-                isGroupRateRoomTypeNotConfigured = function() {
-                    var isGroupRate = $scope.groupConfigData.summary.rate !== -1,
-                        groupRateRoomTypeCount = $scope.groupConfigData.summary.selected_room_types_and_bookings.length || 0;
-
-                    return isGroupRate && (groupRateRoomTypeCount == 0);
-                };
-
-            return hasChanged || hasConfiguredRoomTypesChanged() || isGroupRateRoomTypeNotConfigured();            
-        };
 
 		/**
 		 * Check whether group custom rate is changed and open new popup if true, otherwise updates room
@@ -268,7 +232,7 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 				$timeout(function(argument) {
 					$scope.confirmUpdateRatesWithPickedReservations($scope.selectedRoomTypeAndRates);
 				}, 700);
-			} else if (hasRatesChanged()) {
+			} else {
                 var options = {
 					params: formSaveNewRoomTypesAndRatesParams(),
 					successCallBack: successCallBackOfSaveNewRoomTypesAndRates,
@@ -276,8 +240,6 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 				};
 
 				$scope.callAPI(rvGroupConfigurationSrv.updateSelectedRoomTypesAndRates, options);
-            } else {
-                $scope.closeDialog(); 
             }
 			
 		};

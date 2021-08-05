@@ -26,7 +26,7 @@ var GlobalApp = function() {
     this.setBrowser = function(browser) {
 
 
-        var url = "/assets/shared/cordova.js";
+        var url = "/ui/pms-ui/shared/cordova.js";
 
         if (typeof browser === 'undefined' || browser === '') {
             that.browser = "other";
@@ -46,7 +46,7 @@ var GlobalApp = function() {
     this.loadCordovaWithVersion = function(version) {
         var script_node = document.createElement('script');
 
-        script_node.setAttribute('src', '/assets/shared/cordova/' + version + '/cordova.js');
+        script_node.setAttribute('src', '/ui/pms-ui/shared/cordova/' + version + '/cordova.js');
         script_node.setAttribute('type', 'application/javascript');
         document.body.appendChild(script_node);
         document.addEventListener('deviceready', function() {

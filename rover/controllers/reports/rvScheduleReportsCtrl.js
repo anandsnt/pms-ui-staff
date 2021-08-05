@@ -11,7 +11,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
     'rvUtilSrv',
     'ngDialog',
     'RVReportApplyIconClass',
-    function($rootScope, $scope, reportsSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util, ngDialog, applyIconClass) {
+    'RVReportSetupDates',
+    function($rootScope, $scope, reportsSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util, ngDialog, applyIconClass, setupDates) {
 
 
         var REPORT_SCHEDULES_SCROLL = 'REPORT_SCHEDULES_SCROLL';
@@ -277,6 +278,13 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 filter_values.cancelation_date_range = $scope.scheduleParams.cancelation_date_range;
             }
 
+            if ($scope.scheduleParams.time_period_id === $scope.dateRangeTimePeriodId) {
+                params.from_date = $filter('date')($scope.selectedEntityDetails.report.fromDate, 'yyyy/MM/dd');
+                params.to_date = $filter('date')($scope.selectedEntityDetails.report.untilDate, 'yyyy/MM/dd');
+                filter_values.from_date = $filter('date')($scope.selectedEntityDetails.report.fromDate, 'yyyy/MM/dd');
+                filter_values.to_date = $filter('date')($scope.selectedEntityDetails.report.untilDate, 'yyyy/MM/dd');
+            }
+
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
             params.frequency_id = $scope.scheduleParams.frequency_id;
             /**/
@@ -473,6 +481,15 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 } else if (keyName === 'hasAccountSearch') {
                     key = reportParams['ACCOUNT_SEARCH'];
                     filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+                } else if (keyName === 'hasTransactionCategory') {
+                    key = reportParams['TRANSACTION_CATEGORY'];
+                    filter_values[key] = $scope.filters.hasTransactionCategory.selected.id;
+                } else if (keyName === 'empList') {
+                    key = reportParams['USER_IDS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+                    if (filter_values[key].length === filter.data.length) {
+                        filter_values['all_users_selected'] = true;
+                    }
                 } else {
                     _.each(filter.data, function(each) {
                         if (each.selected) {
@@ -589,6 +606,13 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             }
 
             params.format_id = parseInt($scope.scheduleParams.format_id);
+
+            if ($scope.scheduleParams.time_period_id === $scope.dateRangeTimePeriodId) {
+                params.from_date = $filter('date')($scope.selectedEntityDetails.report.fromDate, 'yyyy/MM/dd');
+                params.to_date = $filter('date')($scope.selectedEntityDetails.report.untilDate, 'yyyy/MM/dd');
+                filter_values.from_date = $filter('date')($scope.selectedEntityDetails.report.fromDate, 'yyyy/MM/dd');
+                filter_values.to_date = $filter('date')($scope.selectedEntityDetails.report.untilDate, 'yyyy/MM/dd');
+            }
 
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
             params.frequency_id = $scope.scheduleParams.frequency_id;
@@ -794,6 +818,15 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 } else if (keyName === 'hasAccountSearch') {
                     key = reportParams['ACCOUNT_SEARCH'];
                     filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+                } else if (keyName === 'hasTransactionCategory') {
+                    key = reportParams['TRANSACTION_CATEGORY'];
+                    filter_values[key] = $scope.filters.hasTransactionCategory.selected.id;
+                } else if (keyName === 'empList') {
+                    key = reportParams['USER_IDS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+                    if (filter_values[key].length === filter.data.length) {
+                        filter_values['all_users_selected'] = true;
+                    }
                 } else {
                     _.each(filter.data, function(each) {
                         if (each.selected) {
@@ -1147,6 +1180,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     reportUtils.fillAgingBalances($scope.filters, $scope.selectedEntityDetails.filter_values);
                 } else if (filter.value === 'ACCOUNT_NAME') {
                     reportUtils.fillAccountNames($scope.filters, $scope.selectedEntityDetails.filter_values); 
+                } else if (filter.value === 'TRANSACTION_CATEGORY') {
+                    reportUtils.fillTransactionCategory($scope.filters, $scope.selectedEntityDetails.filter_values);
+                } else if (filter.value === 'SHOW_EMPLOYEES_INCLUDING_EOD') {
+                    reportUtils.fillEmployees($scope.filters, $scope.selectedEntityDetails.filter_values);
                 } else if (filter.value === 'CANCELATION_DATE_RANGE') {
                     $scope.cancellationDateTimePeriods = reportsSrv.getScheduleReportTimePeriods($scope.selectedEntityDetails.report.title + ':' + filter.value);
                     $scope.cancellationDateTimePeriods = populateTimePeriodsData($scope.cancellationDateTimePeriods);
@@ -1438,6 +1475,31 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOT);
 
             $scope.scheduleParams.includeTitleHeader = $scope.selectedEntityDetails.include_title_header;
+
+            if ($scope.selectedEntityDetails.report.title === reportNames['FINANCIAL_TRANSACTION_REVENUE_REPORT']) {
+
+                $scope.fromDateOptions = angular.extend({
+                    maxDate: tzIndependentDate($rootScope.businessDate),
+                    onSelect: function(value) {
+                        $scope.untilDateOptions.minDate = value;
+                    }
+                }, datePickerCommon);
+
+                $scope.untilDateOptions = angular.extend({
+                    maxDate: tzIndependentDate($rootScope.businessDate),
+                    onSelect: function(value) {
+                        $scope.fromDateOptions.maxDate = value;
+                    }
+                }, datePickerCommon);
+
+                setupDates.init($scope.selectedEntityDetails.report);
+
+                if ($scope.selectedEntityDetails.from_date && $scope.selectedEntityDetails.to_date) {
+                    $scope.selectedEntityDetails.report.fromDate = $scope.selectedEntityDetails.from_date;
+                    $scope.selectedEntityDetails.report.untilDate = $scope.selectedEntityDetails.to_date;
+                }
+            }
+
         };
 
         var fetch_reportSchedules_frequency_timePeriod_scheduableReports = function() {
@@ -1461,6 +1523,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                 $scope.originalScheduleTimePeriods = payload.scheduleTimePeriods;
                 $scope.originalScheduleFrequency = payload.scheduleFrequency;
+                $scope.dateRangeTimePeriodId = _.filter($scope.originalScheduleTimePeriods, (timeperiod) => timeperiod.value === 'DATE_RANGE')[0].id;
                 runDuringEodScheduleFrequencyId = (_.find($scope.originalScheduleFrequency, { value: 'RUN_DURING_EOD'})).id;
                 $scope.scheduleFormat = payload.scheduleFormat;
                 originalScheduleFormats = dclone(payload.scheduleFormat);
@@ -1707,7 +1770,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Market Segment Statistics Report': true,
                 'A/R Aging': true,
                 'Complimentary Room Report': true,
-                'Cancellation & No Show': true
+                'Cancellation & No Show': true,
+                'Financial Transaction - Revenue Report': true
             };
 
             var forWeekly = {
@@ -1733,7 +1797,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Forecast Guests & Groups': true,
                 'A/R Aging': true,
                 'Complimentary Room Report': true,
-                'Cancellation & No Show': true
+                'Cancellation & No Show': true,
+                'Financial Transaction - Revenue Report': true
             };
             var forMonthly = {
                 'Arrival': true,
@@ -1758,7 +1823,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Forecast Guests & Groups': true,
                 'A/R Aging': true,
                 'Complimentary Room Report': true,
-                'Cancellation & No Show': true
+                'Cancellation & No Show': true,
+                'Financial Transaction - Revenue Report': true
             };
 
             var forHourly = {
@@ -2009,7 +2075,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     selectedEntity.report.title === reportNames['ROOM_STATUS_REPORT'] ||
                     selectedEntity.report.title === reportNames['OCCUPANCY_REVENUE_SUMMARY'] ||
                     selectedEntity.report.title === reportNames['ADDON_FORECAST'] || 
-                    selectedEntity.report.title === reportNames['COMPLIMENTARY_ROOM_REPORT'])) {
+                    selectedEntity.report.title === reportNames['COMPLIMENTARY_ROOM_REPORT'] ||
+                    selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTION_REVENUE_REPORT'])) {
                 $scope.scheduleFormat = _.filter(originalScheduleFormats, function(object) {
                     return object.value === 'CSV';
                 });
@@ -2052,7 +2119,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['MARKET_SEGMENT_STAT_REPORT'] || 
                 selectedEntity.report.title === reportNames['A/R_AGING'] || 
                 selectedEntity.report.title === reportNames['COMPLIMENTARY_ROOM_REPORT'] || 
-                selectedEntity.report.title === reportNames['CANCELLATION_NO_SHOW']);
+                selectedEntity.report.title === reportNames['CANCELLATION_NO_SHOW'] ||
+                selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTION_REVENUE_REPORT']);
 
         };
 
