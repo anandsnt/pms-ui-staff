@@ -7,7 +7,7 @@
 .journal-header-print {
     background-color: rgba(0,0,0,.1);
     padding: 10px;
-    margin-bottom: 10px;
+    height: 60px;
 
     li {
         font-size: 14px;
@@ -30,8 +30,12 @@
 }
 
 .journal-content {
-    padding: 0 10px;
-    height: 100%;
+    position: relative;
+    .calc-height(100, 60);
+
+    .wrapper {
+        padding: 10px;
+    }
 
     h3 {
         font-size: 18px;
@@ -115,7 +119,7 @@
 
             &:nth-child(4) {
                 &:before {
-                    content: 'Scoring';
+                    content: 'Closing';
                 }
             }
         }
