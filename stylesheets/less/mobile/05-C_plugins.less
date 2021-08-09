@@ -1690,5 +1690,51 @@
             }
 
         }
+        
+        /** CC modal **/
+        &.card-content {
+            padding: 50px 0 20px 0 !important;
+            
+            .iScrollVerticalScrollbar {
+                right: 5px !important;
+            }
+
+            .scrollable {
+                .calc-height(100, 80);
+                max-height: 100%;
+            }
+
+            .payment-method {
+                align-items: flex-start;
+
+                .item-payment {
+                    .show;
+                    .float;
+                    padding: 10px;
+                    line-height: 30px;
+
+                    .number:not(.value),
+                    .date:not(.value) {
+                        width: 50%;
+                        margin: 0;
+                        .pull-left;
+                    }
+
+                    .date:not(.value) {
+                        justify-content: flex-end;
+                    }
+
+                    .name {
+                        clear: both;
+                    }
+
+                    &.active-item {
+                        .primary {
+                            top: 10px;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
