@@ -3458,7 +3458,71 @@
 
                                     .entry-data { width: 120px; }
                                 }
-                                
+
+                                &.switch {
+                                    padding: 0;
+                                    width: 170px;
+
+                                    .switch-button {
+                                        width: 100%;
+                                        background: rgba(0,0,0,.1);
+                                        #border-radius > .rounded();
+                                        .show;
+                                        .size( 40px, 100% );
+                
+                                        input {
+                                            .square(100%);
+                                        }
+                
+                                        &:not(.disabled) {
+                                            .data-off,
+                                            .data-on {
+                                                .switch-icon {
+                                                    color: @black;
+                                                }
+                                            }
+                                        }
+                
+                                        .data-off,
+                                        .data-on {
+                                            font-size: 14px;
+                                            line-height: 30px;
+                                            height: 30px;
+                                            text-transform: uppercase;
+                
+                                            .switch-icon {
+                                                text-shadow: none;
+                                                .clickable;
+                                                background: @white;
+                                            }
+                
+                                            .value {
+                                                color: @grey3;
+                                                font-weight: 600;
+                                            }
+                
+                                            &.data-off {
+                                                left: auto;
+                                                right: 0;
+                
+                                                .switch-icon { margin: 0 5px 0 0; }
+                                            }
+                
+                                            &.data-on {
+                                                left: auto;
+                                                right: 100%;
+                
+                                                .switch-icon { margin: 0 0 0 5px; }
+                                            }
+                                        }
+                
+                                        &.on {
+                                            .data-off { left: auto; right: -100%; }
+                                            .data-on { left: auto; right: 0; }
+                                        }
+                                    }
+                                }
+
                                 &.sort {
                                     width: 150px;
                                 }
@@ -3479,6 +3543,14 @@
                                             text-transform: uppercase;
                                             color: @grey3;
                                         }
+                                    }
+                                }
+                            }
+                            
+                            &.has-switch {
+                                .entry {
+                                    &.search {
+                                        .calc-width(100, 580);
                                     }
                                 }
                             }
@@ -3524,6 +3596,44 @@
                             &.with-footer {
                                 .calc-height(100, 60);
                                 .iScrollVerticalScrollbar { bottom: 70px; }
+                            }
+
+                            .search-results {
+                                li {
+                                    &:not(.no-content) {
+                                        &.reservation {
+                                            &.transaction {
+
+                                                .toggle {
+                                                    &.active:hover {
+                                                        .box-shadow(none);
+                                                    }
+                                                }
+
+                                            }
+                                        }
+
+                                        &.select-bills-checkbox {
+                                            padding-left: 15px;
+                                            padding-right: 15px;
+                                            line-height: 30px;
+                                            font-size: 14px;
+                                            text-transform: uppercase;
+                                            #flexbox > .parent( row, space-between, '', '' );
+
+                                            .checkbox {
+                                                margin: 0;
+                                                line-height: 30px;
+                                                height: 30px;
+                                                width: 30px;
+
+                                                .icon-form {
+                                                    top: 3px;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
 
                             .manual-balance {

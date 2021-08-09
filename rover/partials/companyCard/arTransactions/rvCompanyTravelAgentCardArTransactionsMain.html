@@ -10,7 +10,22 @@
                 <span ng-bind-html="arDataObj.arBalance | sntCurrency:this"></span>
             </strong>
         </div>
-        <div class="search-form has-dates">
+        <div class="search-form has-dates has-switch">
+            <!-- Remove .hidden if on balance (open bills) -->
+            <div class="entry switch" ng-if = "showToggleFilter">
+                <!-- If showing on-hold, remove .on -->
+                <div class="switch-button" ng-class="{ 'on' : arFlags.isPayableTab}">
+                    <input id="ar-on-hold-switch" value="" type="checkbox" checked="" ng-model="arFlags.isPayableTab" ng-change="switchArTransactionOpenBillTab()">
+                    <label class="data-off">
+                        <span class="value">Payable</span>
+                        <span class="switch-icon">On Hold</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="switch-icon">Payable</span>
+                        <span class="value">On Hold</span>
+                    </label>
+                </div>
+            </div>
             <div class="entry search">
                 <button class="clear-query" ng-click="clearResults()" ng-class="{'visible': filterData.query!=''}">
                     <span class="icons icon-clear-search">Clear query</span>
@@ -41,7 +56,8 @@
                 </div>
             </div>
         </div>
-        <div class="actions">
+        <!-- Hide statement print for On Hold Tab -->
+        <div class="actions" ng-hide = "!arFlags.isPayableTab && showToggleFilter">
             <button type="button" class="button orange with-icon" ng-click="clickedArStatementButton()"> 
                 <span class="icons icon-invoice"></span>
                 Statement
