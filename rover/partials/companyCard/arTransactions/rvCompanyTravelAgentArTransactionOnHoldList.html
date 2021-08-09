@@ -110,13 +110,6 @@
                 </thead>
                 <tbody>
 
-                    <!-- 'row-class' => 'odd' or 'even' on each new charge item
-                          1. tr => 'odd',
-                          2. tr => 'even',
-                             'If charge item has charge items'
-                             tr.charge-items => 'even'
-                          3. tr => 'odd' ...
-                     -->
                     <tr ng-repeat="debit in balance.debits" ng-class="{'odd': $odd, 'even': $even}">
                         <td>{{ debit.date | date : dateFormat}}</td>
                         <td><span ng-if="isStandAlone && !debit.is_group_by_ref">{{ debit.charge_code }}</span></td>

@@ -85,13 +85,9 @@
                     <button type="button" class="button blank" ng-click="clickCancelFromFooter()">Cancel</button>
                 </li>
                 <li>
-                    <!-- remove .red, add .grey if can't hold
-                         add disabled="disabled" if can't hold -->
                     <button type="button" class="button" ng-disabled="arDataObj.selectedInvoices.length === 0" ng-class="{'red': arDataObj.selectedInvoices.length > 0, 'grey': arDataObj.selectedInvoices.length === 0}" ng-click="holdSelectedInvoices()">Hold Selected</button>
                 </li>
                 <li>
-                    <!-- remove .green, add .grey if can't pay
-                         add disabled="disabled" if can't pay -->
                     <button type="button" ng-disabled="!arFlags.isPaymentSelected || arDataObj.selectedInvoices.length === 0 || arDataObj.availableAmount < arDataObj.totalAllocatedAmount" class="button" ng-class="{'green': arFlags.isPaymentSelected && arDataObj.selectedInvoices.length > 0 && arDataObj.availableAmount >= arDataObj.totalAllocatedAmount, 'grey': !arFlags.isPaymentSelected || arDataObj.selectedInvoices.length === 0 || arDataObj.availableAmount < arDataObj.totalAllocatedAmount}" ng-click="paySelectedInvoices()">Pay Selected</button>
                 </li>
 
@@ -108,8 +104,6 @@
         <rv-pagination ng-show="!shouldShowFooter()" page-options="balancePagination" page-data="arDataObj.balanceTotalCount"></rv-pagination>
 
     </div>
-
-<!-- Open Bills - On Hold Tab Billing Content -->
 
 <div class="billing-content scrollable"  ng-controller="RvArOnHoldController" ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'on-hold')}" ng-show="arDataObj.onHoldList.length === 0">
     <!-- if no open bills -->
@@ -135,8 +129,6 @@
                 <button type="button" class="button blank" ng-click="clickCancelFromOnHoldFooter()">Cancel</button>
             </li>
             <li>
-                <!-- remove .green, add .grey if can't release
-                     add disabled="disabled" if can't release -->
                 <button type="button" class="button" ng-disabled="arDataObj.selectedOnHoldInvoices.length === 0" ng-class="{'blue': arDataObj.selectedOnHoldInvoices.length > 0, 'grey': arDataObj.selectedOnHoldInvoices.length === 0}" ng-click="releaseSelectedInvoices()">Release Selected</button>
             </li>
         </ul>
@@ -147,8 +139,6 @@
 </div>
 
 <!-- Manual Balance Billing Content -->
-    <!-- remove .hidden to show this screen -->
-    <!-- add .with-footer when showing footer -->
     <div class="billing-content scrollable" ng-controller="RvArAddBalanceController" ng-iscroll="arAddBalanceScroller" ng-iscroll-delay="100" ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || !arFlags.isAddBalanceScreenVisible)}" >
 
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArAddBalance.html'">
@@ -171,8 +161,6 @@
     </div>
 
 <!-- Paid Bills Billing Content -->
-    <!-- remove .hidden to show this screen -->
-    <!-- add .with-pagination when showing pagination -->
     <div class="billing-content scrollable" ng-controller="RvArPaidController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'paid-bills'}" ng-iscroll="paid-list">
 
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArPaid.html'">
@@ -185,8 +173,6 @@
     </div>
 
 <!-- Unallocated Billing Content -->
-    <!-- remove .hidden to show this screen -->
-    <!-- Add .with-pagination when showing pagination -->
     <div class="billing-content scrollable" ng-controller="RvArUnallocatedController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'unallocated'}"  ng-iscroll="unallocated-list-scroller">
 
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArUnallocated.html'">
@@ -199,8 +185,6 @@
     </div>
 
 <!-- Allocated Billing Content -->
-    <!-- remove .hidden to show this screen -->
-    <!-- Add .with-pagination when showing pagination -->
     <div class="billing-content scrollable" ng-controller="RvArAllocatedController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'allocated'}"  ng-iscroll="allocated-list-scroller">
 
          <div class="wrapper"  ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArAllocated.html'">
