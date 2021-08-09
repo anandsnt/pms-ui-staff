@@ -16,7 +16,6 @@
                     <i class="icons icon-action icon-completed" ng-if="balanceData.deposit_balance_difference === 0"></i>
                     <!-- If there's difference, show this instead of L53: -->
                     <span class="color-red" ng-if="balanceData.deposit_balance_difference !== 0" ng-bind-html="balanceData.deposit_balance_difference | sntCurrency:this"></span>
-                    </span> 
                 </li>
             </ul>
         </div>
