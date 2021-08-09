@@ -60,7 +60,7 @@
                     <button type="button" class="button white has-arrow next-view" ng-click="clickedNavigationToSearch('OPEN_BILL_CHECKOUT')">
                         <i class="guest-status departed"></i>
                         <span class="label">Checked out</span>
-                        <span ng-bind-html="balanceData.checkout_with_balance | sntCurrency:this"></span>
+                        <ng-bind-html ng-bind-html="balanceData.checkout_with_balance | sntCurrency:this"></ng-bind-html>
                     </button>
                 </li>
                 <li ng-if="false">
