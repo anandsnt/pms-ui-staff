@@ -201,7 +201,7 @@
                 <button type="button" ng-show="balance.amount < 0 && !balance.is_manual_balance" class="button red" ng-click="moveToCreditButtonClicked(balance)">MOVE TO CREDIT</button>
                 <button type="button" ng-show="arFlags.viewFromOutside && !balance.is_manual_balance" class="button brand-colors" ng-click="goToReservationDetails($index)">StayCard</button>
                 <button type="button" ng-click="moveInvoiceButtonClick(balance)" ng-show="!balance.is_partially_paid" class="button purple">Move Invoice</button>
-                <button type="button" class="button blue" ng-click="showFormatBillPopup($index, payable)">Print Invoice</button>
+                <button type="button" class="button blue" ng-click="showFormatBillPopup($index, 'payable')">Print Invoice</button>
                 <button type="button" class="button green white-text" ng-click="clickedPostCharge($index)" ng-show="!balance.is_manual_balance && !roverObj.noModifyInvoice">Post Charge</button>
                 <button type="button" class="button white purple-text hidden">Edit Charges</button>
             </div>
