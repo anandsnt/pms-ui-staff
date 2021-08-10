@@ -1,6 +1,16 @@
 <ul class="search-results">
+    <li class="select-bills-checkbox no-print" ng-show="arFlags.isPayableTab && arFlags.showSelectAllOpenBills">
+        <!-- If checked, all open bills will be checked. Don't show if we can pay all of them (Showing below Pay All button)-->
+        <div class="select-bills">
+            <label class="checkbox inline" ng-class="{'checked': arDataObj.selectAllOpenBills }">
+                <span class="icon-form icon-checkbox" ng-class="{'checked': arDataObj.selectAllOpenBills }"></span>
+                <input type="checkbox" ng-class="{'checked': arDataObj.selectAllOpenBills}" ng-model="arDataObj.selectAllOpenBills" ng-change="clickedSelectAllBills()">
+            </label>
+            Select all {{arDataObj.total_count}} Bills
+        </div>
+    </li>
     <!-- if checked, add class .selected -->
-    <li class="reservation transaction with-checkbox reservation-transaction" ng-class="{'selected': balance.isSelected }" ng-repeat="balance in arDataObj.balanceList track by $index" ng-click="clickedOnParentList( $event, $index )">
+    <li class="reservation transaction with-checkbox reservation-transaction" ng-class="{'selected': balance.isSelected, 'overlay': arDataObj.selectAllOpenBills }" ng-repeat="balance in arDataObj.balanceList track by $index" ng-click="clickedOnParentList( $event, $index )">
         <label class="checkbox inline" ng-class="{'checked': balance.isSelected }">
             <span ng-hide="balance.amount < 0" class="icon-form icon-checkbox" ng-class="{'checked': balance.isSelected }"></span>
             <input value="4" type="checkbox" ng-class="{'checked': balance.isSelected }">

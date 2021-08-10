@@ -35,7 +35,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'shouldShowRefundButton': false,
 			'hasAllocateUnallocatePermission': rvPermissionSrv.getPermissionValue ('ALLOCATE_UNALLOCATE_PAYMENT'),
 			'isPayableTab': true,
-			'shouldShowOnHoldFooter': false
+			'shouldShowOnHoldFooter': false,
+			'showSelectAllOpenBills': true
 		};
 
 		$scope.filterData = {
@@ -184,6 +185,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             $scope.arDataObj.isPrintArInvoiceNumberEnabled = data.is_print_ar_invoice_number_enabled;
             $scope.arDataObj.arInvoiceLabel = data.ar_invoice_label;
             $scope.arDataObj.is_bill_lock_enabled = data.is_bill_lock_enabled;
+			$scope.arDataObj.selectAllOpenBills = false;
+			if ($scope.arFlags.currentSelectedArTab === 'balance') {
+				$scope.arDataObj.total_count = data.total_count;
+			}
 
 			switch ($scope.arFlags.currentSelectedArTab) {
 				case 'balance':
@@ -279,10 +284,32 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		};
 
 		/*
+		Select all open bills
+		*/
+		$scope.clickedSelectAllBills = function() {
+			$scope.arDataObj.selectedInvoices = [];
+			if ($scope.arDataObj.selectAllOpenBills) {
+				_.each($scope.arDataObj.balanceList, function (eachItem) {
+					eachItem.isSelected = false;
+				});
+				$scope.arDataObj.totalAllocatedAmount = parseFloat($scope.arDataObj.unpaidPaymentAmount).toFixed(2);
+			}
+			else {
+				$scope.arDataObj.totalAllocatedAmount = 0;
+			}
+		};
+
+		/*
 		 * Here is the method to fetch the data in each tab
 		 * Params will be different on each tab
 		 */
 		that.filterChanged = function() {
+			$scope.arDataObj.selectAllOpenBills = false;
+			if ($scope.filterData.query === '' && $scope.filterData.fromDate === '' && $scope.filterData.toDate === '') {
+				$scope.arFlags.showSelectAllOpenBills = true;
+			} else {
+				$scope.arFlags.showSelectAllOpenBills = false;
+			}
 
 			switch ($scope.arFlags.currentSelectedArTab) {
 				case 'balance':
@@ -348,6 +375,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.filterData.fromDate = '';
 			$scope.filterData.toDate = '';
 			$scope.filterData.sortField = 'aging_date';
+			$scope.arFlags.showSelectAllOpenBills = true;
 		};
 
 		$scope.switchArTransactionOpenBillTab = function() {
@@ -479,12 +507,15 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			var postParamsToPay = {},
 				postData = {};
 
-			postData.credit_id = $scope.allocatedPayment.transaction_id;
-			postData.invoices = $scope.arDataObj.selectedInvoices;
-			postData.selected_amount = $scope.arDataObj.totalAllocatedAmount ;
-			postData.available_amount = $scope.arDataObj.availableAmount;
-			postParamsToPay.account_id = $scope.arDataObj.accountId;
-			postParamsToPay.data = postData;
+				postData.credit_id = $scope.allocatedPayment.transaction_id;
+				postData.select_all = $scope.arDataObj.selectAllOpenBills;
+				if (!$scope.arDataObj.selectAllOpenBills) {
+					postData.selected_amount = $scope.arDataObj.totalAllocatedAmount;
+					postData.available_amount = $scope.arDataObj.availableAmount;
+					postData.invoices = $scope.arDataObj.selectedInvoices;
+				}
+				postParamsToPay.account_id = $scope.arDataObj.accountId;
+				postParamsToPay.data = postData;
 
 			var options = {
 				params: postParamsToPay,
@@ -658,7 +689,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.shouldShowFooter = function() {
 			var flag = true;
 
-			if ($scope.arDataObj.selectedInvoices.length === 0 && !$scope.arFlags.isFromAddPaymentOrAllocateButton) {
+			if ($scope.arDataObj.selectedInvoices.length === 0 && !$scope.arFlags.isFromAddPaymentOrAllocateButton && !$scope.arDataObj.selectAllOpenBills) {
 				flag = false;
 			}
 			return flag;

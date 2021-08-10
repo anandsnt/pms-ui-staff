@@ -80,23 +80,18 @@
             </ul>
 
             <ul class="actions">
-
                 <li>
                     <button type="button" class="button blank" ng-click="clickCancelFromFooter()">Cancel</button>
                 </li>
                 <li>
-                    <button type="button" class="button" ng-disabled="arDataObj.selectedInvoices.length === 0" ng-class="{'red': arDataObj.selectedInvoices.length > 0, 'grey': arDataObj.selectedInvoices.length === 0}" ng-click="holdSelectedInvoices()">Hold Selected</button>
+                    <button type="button" class="button" ng-disabled="arDataObj.selectedInvoices.length === 0" ng-class="{'red': arDataObj.selectedInvoices.length > 0, 'grey': arDataObj.selectedInvoices.length === 0, 'hidden': arDataObj.selectAllOpenBills}" ng-click="holdSelectedInvoices()">Hold Selected</button>
                 </li>
                 <li>
-                    <button type="button" ng-disabled="!arFlags.isPaymentSelected || arDataObj.selectedInvoices.length === 0 || arDataObj.availableAmount < arDataObj.totalAllocatedAmount" class="button" ng-class="{'green': arFlags.isPaymentSelected && arDataObj.selectedInvoices.length > 0 && arDataObj.availableAmount >= arDataObj.totalAllocatedAmount, 'grey': !arFlags.isPaymentSelected || arDataObj.selectedInvoices.length === 0 || arDataObj.availableAmount < arDataObj.totalAllocatedAmount}" ng-click="paySelectedInvoices()">Pay Selected</button>
+                    <button type="button" ng-disabled="!arFlags.isPaymentSelected || (!arDataObj.selectAllOpenBills && (arDataObj.selectedInvoices.length === 0 || arDataObj.availableAmount < arDataObj.totalAllocatedAmount))" class="button" ng-class="{'green': arFlags.isPaymentSelected && ( arDataObj.selectAllOpenBills || (arDataObj.selectedInvoices.length > 0 && arDataObj.availableAmount >= arDataObj.totalAllocatedAmount)), 'grey': !arFlags.isPaymentSelected || (!arDataObj.selectAllOpenBills && (arDataObj.selectedInvoices.length === 0 || arDataObj.availableAmount < arDataObj.totalAllocatedAmount))}" ng-click="paySelectedInvoices()">Pay Selected</button>
                 </li>
-
-                <!-- if we can Pay All -->
-                    <li class="break" ng-show="arFlags.shouldShowPayAllButton">
-                        <button type="button" class="button blue" ng-disabled="arDataObj.availableAmount < arDataObj.totalOfAllInvoicesInBalanceTab" ng-class="{'blue':  arDataObj.availableAmount >= arDataObj.totalOfAllInvoicesInBalanceTab, 'grey':  arDataObj.availableAmount < arDataObj.totalOfAllInvoicesInBalanceTab}" ng-click="clickedPayAllButton()">Pay All</button>
-                    </li>
-                
-
+                <li class="break" ng-show="arFlags.shouldShowPayAllButton">
+                    <button type="button" class="button blue" ng-disabled="arDataObj.availableAmount < arDataObj.totalOfAllInvoicesInBalanceTab" ng-class="{'blue':  arDataObj.availableAmount >= arDataObj.totalOfAllInvoicesInBalanceTab, 'grey':  arDataObj.availableAmount < arDataObj.totalOfAllInvoicesInBalanceTab, 'hidden': arDataObj.selectAllOpenBills}" ng-click="clickedPayAllButton()">Pay All</button>
+                </li>
             </ul>
 
         </div>
