@@ -55,5 +55,10 @@ angular.module("sntPayConfig", []).constant("PAYMENT_CONFIG", Object.freeze({
         partial: "/assets/partials/payCBAAndMLIPartial.html",
         params: null,
         disableCardSelection: null
+    },
+    "SHIFT4": {
+        iFrameUrl: '/api/ipage/shift4',
+        partial: '/assets/partials/payShift4Partial.html',
+        params: iFrameParams
     }
 }));

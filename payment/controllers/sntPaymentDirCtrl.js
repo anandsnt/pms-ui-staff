@@ -424,7 +424,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.hotelConfig.paymentGateway === 'sixpayments' && !!$('#sixIframe').length) {
                     iFrame = document.getElementById('sixIframe');
                     iFrame.src = iFrame.src;
-                } else if ($scope.hotelConfig.paymentGateway === 'SHIJI') {
+                } else {
                     $scope.$broadcast('RELOAD_IFRAME');
                 }
             }
@@ -1148,7 +1148,8 @@ angular.module('sntPay').controller('sntPaymentController',
 
                     if (shouldReset && $scope.selectedPaymentType === 'CC' && $scope.hotelConfig.paymentGateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
                         changeToCardAddMode();
-                    } else if (PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
+                    }
+                    else if (PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl && $scope.hotelConfig.paymentGateway !== "SHIFT4") {
                         // Add to guestcard feature for C&P
                         //  The payment info may change after adding a payment method; in such a case, should not reset back to C&P mode
                         $scope.selectedCC = $scope.selectedCC || {};
@@ -1159,7 +1160,7 @@ angular.module('sntPay').controller('sntPaymentController',
                         }
                         // Add to guestcard feature for C&P
                         $scope.payment.showAddToGuestCard = !!$scope.reservationId && !$scope.payment.isManualEntryInsideIFrame;
-                    } else if ($scope.hotelConfig.isEMVEnabled) {
+                    } else if ($scope.hotelConfig.isEMVEnabled && $scope.hotelConfig.paymentGateway !== "SHIFT4") {
                         $scope.selectedCC = $scope.selectedCC || {};
 
                         if ($scope.payment.screenMode !== 'CARD_ADD_MODE' && !$scope.selectedCC.value) {
@@ -1169,8 +1170,8 @@ angular.module('sntPay').controller('sntPaymentController',
                         // Add to guestcard feature for C&P
                         $scope.payment.showAddToGuestCard = !!$scope.reservationId && !$scope.payment.isManualEntryInsideIFrame;
                     } else if (!isCardSelectionDisabled() &&
-                               !$scope.showSelectedCard() &&
-                               !isEMVEnabledForOverlayDeposit()) {
+                        !$scope.showSelectedCard() &&
+                        !isEMVEnabledForOverlayDeposit()) {
                         //  In case no card has been selected yet, move to add card mode
                         changeToCardAddMode();
                     }

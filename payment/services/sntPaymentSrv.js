@@ -456,6 +456,9 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                 case "sixpayments":
                     iFrameUrlWithParams = getiFrameUrlWithParams();
                     break;
+                case "SHIFT4":
+                    iFrameUrlWithParams = getiFrameUrlWithParams();
+                    break;
                 default:
                     throw new Error("Payment Gateway not configured");
             }
