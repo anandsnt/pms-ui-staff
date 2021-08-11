@@ -458,6 +458,7 @@ angular.module('sntRover').service('rvMenuSrv',
 				title: "MENU_HOUSEKEEPING",
 				action: "",
 				iconClass: "icon-housekeeping",
+				hideOnMobile: true,
 				submenu: [
 					{
 						title: "MENU_ROOM_STATUS",
@@ -467,10 +468,18 @@ angular.module('sntRover').service('rvMenuSrv',
 				]
 			},
 			{
+				title: "MENU_ROOM_STATUS",
+				action: "rover.housekeeping.roomStatus",
+				menuIndex: "roomStatus",
+				iconClass: "icon-housekeeping",
+				showOnMobile: true
+			},
+			{
 		        title: "MENU_REPORTS",		        
 		        action: "",
 		        iconClass: "icon-reports",
-		        menuIndex: "reports",		        
+		        menuIndex: "reports",
+		        hideOnMobile: true,	
 		        submenu: [{
 		            title: "MENU_NEW_REPORT",
 		            action: "rover.reports.dashboard",
