@@ -95,13 +95,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- 'row-class' => 'odd' or 'even' on each new charge item
-                          1. tr => 'odd',
-                          2. tr => 'even',
-                             'If charge item has charge items'
-                             tr.charge-items => 'even'
-                          3. tr => 'odd' ...
-                     -->
+                    
                     <tr ng-repeat="debit in paidInvoice.debits" ng-class="{'odd': $odd, 'even': $even}" >
                         <td>{{ debit.date | date : dateFormat}}</td>
                         <td>
@@ -164,7 +158,7 @@
             <div class="actions">
                 <button type="button" ng-show="arFlags.viewFromOutside && !paidInvoice.is_manual_balance " class="button brand-colors" ng-click="goToReservationDetails($index)">StayCard</button>
                 <button type="button" class="button purple hidden">Move Invoice</button>
-                <button type="button" class="button blue" ng-click="showFormatBillPopup($index, paid)" >Print Invoice</button>
+                <button type="button" class="button blue" ng-click="showFormatBillPopup($index, 'paid')">Print Invoice</button>
                 <button type="button" class="button white green-text hidden">Post Charge</button>
                 <button type="button" class="button white purple-text hidden">Edit Charges</button>
             </div>
