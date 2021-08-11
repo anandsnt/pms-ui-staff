@@ -19,7 +19,7 @@
 	<div class="menu-scroll scrollable" ng-iscroll="MENU_SCROLLER" ng-isroll-delay="300">
 		<div class="wrapper">
 			<ul id="large-menu" class="main">
-				<li ng-repeat="menuItem in ::menu | filter:{hidden:'!'+true}" ng-class="{'hide-on-mobile': menuItem.hideOnMobile}" ng-click="updateSubMenu($index,menuItem)">
+				<li ng-repeat="menuItem in ::menu | filter:{hidden:'!'+true}" ng-class="{'hide-on-mobile': menuItem.hideOnMobile, 'show-only-on-mobile': menuItem.showOnMobile}" ng-click="updateSubMenu($index,menuItem)">
 					<!--ng-repeat="menuItem in menu | filter:{hidden:'!'+true}"  -->
 					<!--ng-hide="(isHotelAdmin || isHotelStaff) && menuItem.standAlone && !isStandAlone" -->
 					<a class="icon-menu {{::menuItem.iconClass}}"
