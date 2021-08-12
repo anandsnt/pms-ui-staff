@@ -358,7 +358,9 @@
 										<td class="column-allowance" ng-if="allowanceEntry.type !== 'CONSUMED' && allowanceEntry.type !== 'UNUSED ALLOWANCE / ALLOWANCE LOSS'">
 										</td>
 										<td class="column-allowance" ng-if="allowanceEntry.type === 'CONSUMED' || allowanceEntry.type === 'UNUSED ALLOWANCE / ALLOWANCE LOSS'">
-											{{ allowanceEntry.description }} <span class="icons time {{ allowanceEntry.amount > 0 ? 'check-in' : 'check-out' }} rotate-up"></span>
+											{{ allowanceEntry.description }}
+											<span class="value" ng-if="allowanceEntry.reference_text && allowanceEntry.reference_text != ''">{{ allowanceEntry.reference_text }}</span>
+											<span class="icons time {{ allowanceEntry.amount > 0 ? 'check-in' : 'check-out' }} rotate-up"></span>
 										</td>
 									</tr>
 								</tbody>
