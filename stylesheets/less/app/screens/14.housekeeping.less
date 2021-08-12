@@ -923,52 +923,78 @@
     /* Room Tab - Change Room Service Status ***/
     .room-service-status {
         .row {
+            margin-bottom: 0;
+
             .entry {
+                padding-bottom: 0;
+                .box-shadow(none);
+
                 input {
+                    font-size: 18px;
                     line-height: 60px;
                     min-height: 60px;
+                    padding: 0 10px;
                     .size(60px, 100%);
                 }
-    
+
                 .entry-data {
+                    cursor: pointer;
                     .size(60px, 100%);
+                    .faux-clickable;
+
+                    input,
+                    select {
+                        background: transparent;
+                        border: 0;
+                        .box-shadow(none);
+                    }
                 }
             }
-    
+
             &#dates {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                grid-column-gap: 20px;
-                
-                .entry-data {
-                    padding: 0;
-                    background-position: 90% 20px;
+                .float;
+
+                .entry {
+                    margin-right: 20px;
+                    .pull-left;
                     
-                    .day,
-                    .month,
-                    .year { position: absolute; }
-    
-                    .month,
-                    .year {
-                        left: 80px;
-                        font-size: 18px;
-                        line-height: 18px;
-                    }
-    
-                    .day {
-                        top: 8px;
-                        left: 15px;
-                        font-size: 48px;
-                    }
-    
-                    .month { top: 10px; }
-                    .year { top: 30px; }
-    
-                    &:hover { background-position: 90% -30px; }
-                
+                    &#out-from,
+                    &#out-to {
+                        .calc-width(50, 10);
+
+                        .entry-data {
+                            padding: 0;
+                            background-position: 90% 20px;
+                            
+                            .day,
+                            .month,
+                            .year { position: absolute; }
+
+                            .month,
+                            .year {
+                                left: 80px;
+                                font-size: 18px;
+                                line-height: 18px;
+                            }
+
+                            .day {
+                                top: 8px;
+                                left: 15px;
+                                font-size: 48px;
+                            }
+
+                            .month { top: 10px; }
+                            .year { top: 30px; }
+
+                            &:hover { background-position: 90% -30px; }
+                        
+                        }                       
+                    }                               
+
+                    &:last-child { margin-right: 0; }                   
                 }
             }
-    
+
             &#actions {
                 .button { width: 50%; }
             }
