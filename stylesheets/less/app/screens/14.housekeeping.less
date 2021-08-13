@@ -378,7 +378,7 @@
                     padding: 0;
                     .calc-height(100, 70);
 
-                    .wrapper { padding: 0 20px 20px; }
+                    .wrapper { padding: 0 20px 20px 20px; }
 
                     .iScrollVerticalScrollbar { 
                         top: 20px;
@@ -484,7 +484,10 @@
                     .name {
                         line-height: 30px;
                         vertical-align: top;
+
                         &:empty {
+                            display: none;
+                        }
                     }
 
                     .no-service {
@@ -567,12 +570,13 @@
         .row {
             text-align: left;
 
-            &:not(#actions) {
-                padding: 20px 0;
+            &:not(:last-child) {
+                margin-bottom: 20px;
                 box-shadow: 0 1px 0 rgba(0,0,0,0.15);
             }
 
             .entry {
+                padding-bottom: 20px;
                 
                 label {
                     font-size: 14px;
@@ -612,60 +616,52 @@
 
             &#dates {                
                 .entry-data { 
-                    padding: 0 10px;
-                    background: @white @calendar no-repeat 95% 15px;
-                    background-size: 20px;
-                    position: relative;
-                    /*margin-bottom: 10px;*/
+                        padding: 0 10px;
+                        background: @white @calendar no-repeat 95% 15px;
+                        background-size: 20px;
+                        position: relative;
+                        margin-bottom: 10px;
 
-                    input { 
-                        opacity: 0;
-                        position: absolute;
-                        width:100%;
-                        height:100%;
-                        left:0;
-                        top:0;
+                        input { 
+                            opacity: 0;
+                            position: absolute;
+                            width:100%;
+                            height:100%;
+                            left:0;
+                            top:0;
+                        }
+
+                        .ui-datepicker-trigger {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            z-index: 99;
+                            cursor: pointer;
+                            .square(100%);
+                            .opacity(0);
+                        }
+
+                        .day,
+                        .month,
+                        .year {
+                            display: inline-block;
+                            font-size: 18px;
+                            line-height: 50px;
+                        }
+
+                        &:hover { background-position: 95% -35px; }
+
+                        @media @highdpi { background-image: @calendar2x; }                                
                     }
-
-                    .ui-datepicker-trigger {
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        z-index: 99;
-                        cursor: pointer;
-                        .square(100%);
-                        .opacity(0);
-                    }
-
-                    .day,
-                    .month,
-                    .year {
-                        display: inline-block;
-                        font-size: 18px;
-                        line-height: 50px;
-                    }
-
-                    &:hover { background-position: 95% -35px; }
-
-                    @media @highdpi { background-image: @calendar2x; }                                
-                }
-                
-                .select {
-                    margin-top: 10px;
-                }
 
                 #out-from { color: @green; }
                 #out-to { color: @red; }
             }
-            
-            &#reason {
-                .entry:last-child {
-                    padding-top: 20px;
-                }
-            }
 
             &#actions {
                 text-align: center;
+                box-shadow: none;
+                margin-bottom: 0;
 
                 .button {
                     line-height: 50px;
@@ -724,12 +720,115 @@
             }
         }
     }
- 
+
+    /* Room details ***/
+    #room-details {
+        .room-header {
+            height: 80px;
+
+            .icon-room {
+                margin-top: 10px;
+                .calc-width(100, 330);
+
+                h1 { font-size: 48px; }
+                span { font-size: 14px; }
+            }
+
+            .display {
+                min-width: 80px;
+                max-width: 320px;
+
+                li {
+                    .square(80px);
+
+                    span { 
+                        padding-top: 55px;
+                        text-indent: 0; 
+                        font-size: 15px;
+                        font-weight: 600;
+                        height: 55px;
+                    }
+                }
+            }
+        }
+
+        .room-info {
+            .calc-height(100, 80);
+
+            .room-actions { 
+                padding: 20px 80px;
+                height: 90px;
+
+                &.has-date { 
+                    padding: 20px; 
+
+                    .select,
+                    .has-datepicker {
+                        .calc-width(50, 10);
+                    }
+
+                    .has-datepicker { margin-right: 20px; }
+                }
+            }
+
+            .room-content {
+                padding: 0 80px;
+
+                .h2 { 
+                    font-size: 30px; 
+                    margin-top: 40px;
+                }
+
+                &.scrollable {
+                    padding: 0;
+
+                    .wrapper {  padding: 0 80px 20px 80px; }
+                }
+
+                /* Guest Tab ***/
+                .guest-image {
+                    .square(80px);
+
+                    .vip {
+                        font-size: 12px;
+                        line-height: 30px;
+                        .square(30px);
+                    }
+
+                    .stay-count {
+                        font-size: 14px;
+                        line-height: 30px;
+                        .square(30px);
+                    }
+                }
+
+                h2 { font-size: 36px; }
+
+                .button {
+                    &:not(.action) { width: 50%; }
+                }
+
+                /* Work Tab ***/
+                #room-tasks {
+                    margin: 0 auto 20px auto;
+                    width: 320px;
+
+                    .room-actions { padding: 20px; }
+
+                    .h3 { font-size: 24px; }
+
+                    .action {
+                        font-size: 21px;
+                        .square(120px);
+                    }
+                }
+            }
+        }
+    }
 }
 
 /* 768px+               ==============================*/
 @media only screen and (min-width: 768px) {
-    
     #filter-rooms {
         #filter-options {
             .wrapper {
@@ -761,7 +860,7 @@
             .iScrollVerticalScrollbar { right: 10px; }
         }
     }
-    
+
     /* Room details ***/
     #room-details {
         .room-header {
@@ -787,9 +886,6 @@
                     span { 
                         padding-top: 65px;
                         font-size: 16px;
-                        text-indent: 0; 
-                        font-weight: 600;
-                        height: 55px;
                     }
                 }
             }
@@ -800,7 +896,6 @@
 
             .room-actions {
                 padding: 20px 25%;
-                height: 90px; 
 
                 .select { 
                     width: 280px;
@@ -809,67 +904,17 @@
 
                 &.has-date { 
                    padding: 20px 25%;
-
-                    .select,
-                    .has-datepicker {
-                        .calc-width(50, 10);
-                    }
-
-                    .has-datepicker { margin-right: 20px; }
                 }
             }
 
             .room-content {
                 padding: 0 25%;
 
-                .h2 { 
-                    font-size: 30px; 
-                    margin-top: 40px;
-                }
-
                 &.scrollable {
                     padding: 0;
                     .calc-height(100, 90);
 
                     .wrapper {  padding: 0 25% 20px 25%; }
-                }
-
-                /* Guest Tab ***/
-                .guest-image {
-                    .square(80px);
-
-                    .vip {
-                        font-size: 12px;
-                        line-height: 30px;
-                        .square(30px);
-                    }
-
-                    .stay-count {
-                        font-size: 14px;
-                        line-height: 30px;
-                        .square(30px);
-                    } 
-                }
-
-                h2 { font-size: 36px; }
-
-                .button {
-                    &:not(.action) { width: 50%; }
-                }
-
-                /* Work Tab ***/
-                #room-tasks {
-                    margin: 0 auto 20px auto;
-                    width: 320px;
-
-                    .room-actions { padding: 20px; }
-
-                    .h3 { font-size: 24px; }
-
-                    .action {
-                        font-size: 21px;
-                        .square(120px);
-                    }
                 }
             }
         }
@@ -878,52 +923,78 @@
     /* Room Tab - Change Room Service Status ***/
     .room-service-status {
         .row {
+            margin-bottom: 0;
+
             .entry {
+                padding-bottom: 0;
+                .box-shadow(none);
+
                 input {
+                    font-size: 18px;
                     line-height: 60px;
                     min-height: 60px;
+                    padding: 0 10px;
                     .size(60px, 100%);
                 }
-    
+
                 .entry-data {
+                    cursor: pointer;
                     .size(60px, 100%);
+                    .faux-clickable;
+
+                    input,
+                    select {
+                        background: transparent;
+                        border: 0;
+                        .box-shadow(none);
+                    }
                 }
             }
-    
+
             &#dates {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                grid-column-gap: 20px;
-                
-                .entry-data {
-                    padding: 0;
-                    background-position: 90% 20px;
+                .float;
+
+                .entry {
+                    margin-right: 20px;
+                    .pull-left;
                     
-                    .day,
-                    .month,
-                    .year { position: absolute; }
-    
-                    .month,
-                    .year {
-                        left: 80px;
-                        font-size: 18px;
-                        line-height: 18px;
-                    }
-    
-                    .day {
-                        top: 8px;
-                        left: 15px;
-                        font-size: 48px;
-                    }
-    
-                    .month { top: 10px; }
-                    .year { top: 30px; }
-    
-                    &:hover { background-position: 90% -30px; }
-                
+                    &#out-from,
+                    &#out-to {
+                        .calc-width(50, 10);
+
+                        .entry-data {
+                            padding: 0;
+                            background-position: 90% 20px;
+                            
+                            .day,
+                            .month,
+                            .year { position: absolute; }
+
+                            .month,
+                            .year {
+                                left: 80px;
+                                font-size: 18px;
+                                line-height: 18px;
+                            }
+
+                            .day {
+                                top: 8px;
+                                left: 15px;
+                                font-size: 48px;
+                            }
+
+                            .month { top: 10px; }
+                            .year { top: 30px; }
+
+                            &:hover { background-position: 90% -30px; }
+                        
+                        }                       
+                    }                               
+
+                    &:last-child { margin-right: 0; }                   
                 }
             }
-    
+
             &#actions {
                 .button { width: 50%; }
             }
@@ -960,6 +1031,7 @@
                         .name {margin: 10px 0;}
                     }
 
+
                     &.report-content {
                         height: 100%;
                         &.with-pagination {
@@ -968,6 +1040,7 @@
                         
                         padding:0;
                         margin-top:0;
+
                         .log-table-mobile {
                             display:block;
                             text-transform: uppercase;

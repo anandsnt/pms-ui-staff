@@ -7135,19 +7135,26 @@
                     }
 
                     .row {
-                        display: grid;
-                        grid-template-columns: 1fr 1fr;
-                        grid-column-gap: 20px;
-                        
-                        .entry {
-                            float: none;
+                        &:not(last-child) {
+                            border: 0;
                             margin-bottom: 0;
-                            
+                        }
+
+                        .entry {
+                            &:not(.full-width) {
+                                .calc-width(50,5);
+                            }
+
+                            &.margin {
+                                margin-right: 10px;
+                            }
+
                             label {
                                 font-size: 14px;
                                 line-height: 14px;
                             }
 
+                        
                             .select {
                                 select {
                                     min-height: 40px;
@@ -7155,15 +7162,6 @@
                                     font-size: 16px;
                                 }
                             }
-                            
-                            &.full-width {
-                                grid-column: 1/ span 2;
-                            }
-                        }
-                        
-                        &:before,
-                        &:after {
-                            .hide();
                         }
 
                         &#dates {
@@ -7187,9 +7185,7 @@
                                         font-size: 36px;
                                     }
 
-                                    .month {
-                                        top: 8px;
-                                    }
+                                    .month { top: 8px; }
 
                                     .month,
                                     .year {
@@ -7203,10 +7199,6 @@
                                     }
                                 }
                             }
-                        }
-                        
-                        &#reason {
-                            box-shadow: none;
                         }
                     }
                 }
@@ -7232,8 +7224,11 @@
                     }
 
                     .actions {
+                        margin-top: 0;
                         .button {
                             .show();
+
+                            
                         }
                     }
 
