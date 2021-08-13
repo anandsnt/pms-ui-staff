@@ -605,6 +605,15 @@ angular.module('reportsModule')
                         selectAll: true,
                         hasSearch: false,
                         key: 'description'
+                    },
+                    affectsFilter: {
+                        name: 'hasReservationStatus',
+                        process: function (filter, selectedItems) {
+                            if (report['title'] === reportNames['GUEST_BALANCE_REPORT']) {
+                                var hasGuest = !!_.find(selectedItems, { paramKey: 'guest' });
+                                filter.updateData(!hasGuest)
+                            }
+                        }
                     }
                 };
 
@@ -1373,7 +1382,7 @@ angular.module('reportsModule')
 
                             // CICO-20405: Required custom data for only deposit reports ¯\_(ツ)_/¯
                             customData = angular.copy(data);
-                            if (report['title'] === reportNames['DEPOSIT_REPORT']) {
+                            if (report['title'] === reportNames['DEPOSIT_REPORT'] || report['title'] === reportNames['GUEST_BALANCE_REPORT']) {
                                 customData = [
                                     { id: -2, status: "DUE IN", selected: true },
                                     { id: -1, status: "DUE OUT", selected: true },
@@ -1392,6 +1401,18 @@ angular.module('reportsModule')
                                     selectAll: true,
                                     key: 'status',
                                     defaultValue: 'Select Status'
+                                },
+                                originalData: angular.copy(customData),
+                                updateData: function (shouldHide) {
+                                    if (shouldHide && this.data.length > 0) {
+                                        this.data = [];
+                                    }
+                                    else if (this.data.length === 0) {
+                                        this.data = angular.copy(this.originalData);
+                                        _.each(this.data, function(v) {
+                                            v.selected = true;
+                                        })
+                                    }
                                 }
                             };
                         }
@@ -2257,13 +2278,15 @@ angular.module('reportsModule')
                 if (report['title'] === reportNames['GUEST_BALANCE_REPORT']) {
                     var balance = angular.copy(_.find(report['sort_fields'], { 'value': 'BALANCE' })),
                         name = angular.copy(_.find(report['sort_fields'], { 'value': 'NAME' })),
-                        room = angular.copy(_.find(report['sort_fields'], { 'value': 'ROOM_NO' }));
+                        room = angular.copy(_.find(report['sort_fields'], { 'value': 'ROOM_NO' })),
+                        resstatus = angular.copy(_.find(report['sort_fields'], { 'value': 'RESERVATION_STATUS' }));
 
                     report['sort_fields'][0] = name;
                     report['sort_fields'][1] = room;
                     report['sort_fields'][2] = null;
                     report['sort_fields'][3] = null;
                     report['sort_fields'][4] = balance;
+                    report['sort_fields'][5] = resstatus;
                 }
 
                 // need to reorder the sort_by options
