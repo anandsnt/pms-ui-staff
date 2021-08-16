@@ -650,6 +650,11 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'YESTERDAY',
                 'TODAY',
                 'DATE_RANGE'
+            ],
+            'Financial Transaction - Payment Report': [
+                'YESTERDAY',
+                'TODAY',
+                'DATE_RANGE'
             ]
         };
 

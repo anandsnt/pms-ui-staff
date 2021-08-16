@@ -3035,6 +3035,51 @@ angular.module('reportsModule')
             };
 
             /**
+             * Fill payment types
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @return {void} 
+             */
+             factory.fillPaymentTypes = function (filter, filterValues) {
+                var getSelectAllVal = (paymentTypes) => {
+                    var selectAll = true;
+
+                    if (filterValues && filterValues.payment_types) {
+                        selectAll = paymentTypes.length === filterValues.payment_types.length;
+                    }
+
+                    return selectAll;
+                };
+
+                reportsSubSrv.fetchPaymentTypes().then(function (data) {
+                    var PTCopy = angular.copy(data);
+
+                    if (filterValues && filterValues.payment_types) {
+                        PTCopy = PTCopy.map(paymentTypes => {
+                            paymentTypes.selected = false;
+
+                            if (filterValues.payment_types.indexOf(paymentTypes.id) > -1) {
+                                paymentTypes.selected = true;
+                            }
+                            return paymentTypes;
+                        });
+                    }
+
+                    filter.hasPaymentType = {
+                        data: PTCopy,
+                        options: {
+                            hasSearch: false,
+                            selectAll: getSelectAllVal(PTCopy),
+                            noSelectAll: true,
+                            key: 'description',
+                            defaultValue: 'Show All'
+                        }
+                    };
+                        
+                });
+            };
+
+            /**
              * Fill departments
              * @param {Object} filter - holding filter details
              * @return {void}
