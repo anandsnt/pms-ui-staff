@@ -1,90 +1,48 @@
-sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsArTransactionsSrv', 'RVCompanyCardSrv', '$vault', '$stateParams', '$state', 'sntActivity', 'ngDialog',
+sntRover.controller('RvArOnHoldController', ['$scope', '$timeout', 'rvAccountsArTransactionsSrv', 'RVCompanyCardSrv', '$vault', '$stateParams', '$state', 'sntActivity', 'ngDialog',
 	function($scope, $timeout, rvAccountsArTransactionsSrv, RVCompanyCardSrv, $vault, $stateParams, $state, sntActivity, ngDialog) {
 
 		BaseCtrl.call(this, $scope);	
 
 		var scrollOptions =  {preventDefaultException: { tagName: /^(INPUT|LI)$/ }, preventDefault: false};	
 
-		$scope.setScroller('balance-list', scrollOptions);
+		$scope.setScroller('onhold-list', scrollOptions);
 
 		var refreshScroll = function() {
 			$timeout(function() { 
-				$scope.refreshScroller('balance-list');
+				$scope.refreshScroller('onhold-list');
 			}, 1000);
 		};
 
 		// Refresh scroll after completing fetch data
-		$scope.$on("FETCH_COMPLETE_BALANCE_LIST", function() {
+		$scope.addListener("FETCH_COMPLETE_ONHOLD_LIST", function() {
 			refreshScroll();
-			$scope.arDataObj.totalOfAllInvoicesInBalanceTab = 0;
-			_.each($scope.arDataObj.balanceList, function (eachItem) {			    	    
-				$scope.arDataObj.totalOfAllInvoicesInBalanceTab = parseFloat($scope.arDataObj.totalOfAllInvoicesInBalanceTab) + parseFloat(eachItem.amount);
+			$scope.arDataObj.totalOfAllInvoicesInOnHoldTab = 0;
+			_.each($scope.arDataObj.onHoldList, function (eachItem) {			    	    
+				$scope.arDataObj.totalOfAllInvoicesInOnHoldTab = parseFloat($scope.arDataObj.totalOfAllInvoicesInOnHoldTab) + parseFloat(eachItem.amount);
 			});
-			$scope.arDataObj.totalAllocatedAmount = Number(parseFloat($scope.arDataObj.totalOfAllInvoicesInBalanceTab).toFixed(2));
-			
-		});	
-		/*
-		 * Calculate the total amount of selected invoices - Footer
-		 */
-		var calculateTotalAmount = function() {
-			$scope.arDataObj.totalAllocatedAmount = 0;
-			_.each($scope.arDataObj.balanceList, function (eachItem) {
-				if (eachItem.isSelected) {				    	    
-					$scope.arDataObj.totalAllocatedAmount = parseFloat($scope.arDataObj.totalAllocatedAmount) + parseFloat(eachItem.amount);		    		
-				}
-			});
-			$scope.arDataObj.totalAllocatedAmount = Number(parseFloat($scope.arDataObj.totalAllocatedAmount).toFixed(2));
-		};
-
-		/*
-		 * Changing amount in invoices
-		 */
-		$scope.changeBalanceAmount = function(index) {
-			$scope.arDataObj.balanceList[index].amount = (parseFloat($scope.arDataObj.balanceList[index].amount) > parseFloat($scope.arDataObj.balanceList[index].initialAmount)) ? $scope.arDataObj.balanceList[index].initialAmount : $scope.arDataObj.balanceList[index].amount;
-			$scope.arDataObj.balanceList[index].balanceAfter = $scope.arDataObj.balanceList[index].initialAmount - $scope.arDataObj.balanceList[index].amount;
-			$scope.arDataObj.balanceList[index].balanceNow = $scope.arDataObj.balanceList[index].amount;
-
-			var selectedItem = _.findWhere($scope.arDataObj.selectedInvoices, {invoice_id: $scope.arDataObj.balanceList[index].transaction_id}) ;
-			
-			selectedItem.amount = parseFloat($scope.arDataObj.balanceList[index].amount);
-
-			calculateTotalAmount();
-		};
-		/*
-		 * Adding decimals to text field
-		 */
-		$scope.addDecimal = function(index) {
-			$scope.arDataObj.balanceList[index].amount = parseFloat($scope.arDataObj.balanceList[index].amount).toFixed(2);
-		};
+		});
 
 		/*
 		 * Select individual invoices in balance tab
 		 * update the selected invoices variable
 		 */ 
-		var selectInvoice = function (transactionId, index) { 
-			$scope.arFlags.insufficientAmount = false;
+		var selectInvoice = function (transactionId) { 
 			$timeout(function() { 
-				_.each($scope.arDataObj.balanceList, function (eachItem) {
+				_.each($scope.arDataObj.onHoldList, function (eachItem) {
 					if (eachItem.transaction_id === transactionId) {						
-							eachItem.isSelected = !eachItem.isSelected;
+							eachItem.isonHoldSelected = !eachItem.isonHoldSelected;
 							var selectedInvoiceObj = {};
 
 							selectedInvoiceObj.invoice_id = transactionId;
-							selectedInvoiceObj.amount = eachItem.amount;
-							if (eachItem.isSelected) {								
-								$scope.arDataObj.selectedInvoices.push(selectedInvoiceObj);		    			
+							if (eachItem.isonHoldSelected) {								
+								$scope.arDataObj.selectedOnHoldInvoices.push(selectedInvoiceObj);		    			
 							} else { 						
-								selectedInvoiceObj.amount = eachItem.initialAmount;
-								$scope.arDataObj.selectedInvoices = _.filter($scope.arDataObj.selectedInvoices, function (item) {
+								$scope.arDataObj.selectedOnHoldInvoices = _.filter($scope.arDataObj.selectedOnHoldInvoices, function (item) {
 									return item.invoice_id !== transactionId;
 								});
 							}						
 					}
 				});
-				$scope.arDataObj.balanceList[index].amount = $scope.arDataObj.balanceList[index].initialAmount;
-				$scope.arDataObj.balanceList[index].balanceAfter = 0;
-				$scope.arDataObj.balanceList[index].balanceNow = $scope.arDataObj.balanceList[index].amount;
-				calculateTotalAmount();
 			}, 400);		
 		};
 
@@ -107,13 +65,19 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 				'id': item.transaction_id,
 				'account_id': $scope.arDataObj.accountId
 			};
-			
-			$scope.invokeApi(rvAccountsArTransactionsSrv.expandPaidAndUnpaidList, dataToSend, successCallbackOfExpansionAPI, failureCallbackOfExpansionAPI );
+
+			var options = {
+				params: dataToSend,
+				successCallBack: successCallbackOfExpansionAPI,
+				failureCallBack: failureCallbackOfExpansionAPI
+			};
+
+			$scope.callAPI(rvAccountsArTransactionsSrv.expandPaidAndUnpaidList, options );
 		};
 
 		// Handle click events on balance list
 		$scope.clickedOnParentList = function( event, index ) { 
-			var clikedItem = $scope.arDataObj.balanceList[index],
+			var clikedItem = $scope.arDataObj.onHoldList[index],
 				element = event.target,
 				amount = clikedItem.amount;
 
@@ -132,7 +96,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 
 		// Handle Toggle button click to expand list item
 		var clickedBalanceListItem = function( index ) {
-			var clikedItem = $scope.arDataObj.balanceList[index];			
+			var clikedItem = $scope.arDataObj.onHoldList[index];			
 			
 			if (!clikedItem.active) {
 				callExpansionAPI(clikedItem);
@@ -148,7 +112,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 		 */
 		$scope.goToReservationDetails = function(index) {
 
-			var item = $scope.arDataObj.balanceList[index];
+			var item = $scope.arDataObj.onHoldList[index];
 
 			if ($scope.arFlags.viewFromOutside) {
 				$vault.set('cardId', $stateParams.id);
@@ -164,7 +128,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 						confirmationId: item.reservation_confirm_no,
 						isrefresh: true,
 						isFromCards: true,
-						isFromArTab: 'balance'
+						isFromArTab: 'on-hold'
 					});
 				} 
 				else if (associatedType === 'PostingAccount') {
@@ -172,7 +136,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 						id: associatedId,
 						activeTab: 'ACCOUNT',
 						isFromArTransactions: true,
-						isFromArTab: 'balance'
+						isFromArTab: 'on-hold'
 					});
 				}
 			}
@@ -231,6 +195,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 
 			$scope.callAPI( rvAccountsArTransactionsSrv.unAllocateSelectedPayment, options );
 		};
+
 		/*
 		 *Function which fetches and returns the charge details of a grouped charge.
 		*/
@@ -294,9 +259,9 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 		 *Function to open adjust invoiece dialog
 		 */
 		$scope.clickedEditIconToAdjustInvoice = function(invoiceIndex, transactionIndex) {
-			$scope.selectedInvoice = $scope.arDataObj.balanceList[invoiceIndex];
-			$scope.selectedTransaction = $scope.arDataObj.balanceList[invoiceIndex].debits[transactionIndex];
-			// $scope.isManualBalance = $scope.arDataObj.balanceList[invoiceIndex].is_manual_balance;
+			$scope.selectedInvoice = $scope.arDataObj.onHoldList[invoiceIndex];
+			$scope.selectedTransaction = $scope.arDataObj.onHoldList[invoiceIndex].debits[transactionIndex];
+			// $scope.isManualBalance = $scope.arDataObj.onHoldList[invoiceIndex].is_manual_balance;
 			ngDialog.open({
 				template: '/assets/partials/companyCard/arTransactions/rvArInvoiceAdjustPopup.html',
 				scope: $scope,
@@ -308,7 +273,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 		 * @param index - index of the item
 		 */
 		$scope.clickedPostCharge = function(index) {
-			$scope.selectedItemToPostCharge = $scope.arDataObj.balanceList[index];
+			$scope.selectedItemToPostCharge = $scope.arDataObj.onHoldList[index];
 			ngDialog.open({
 				template: '/assets/partials/companyCard/arTransactions/rvArTransactionPostCharge.html',
 				controller: 'RvArPostChargeController',

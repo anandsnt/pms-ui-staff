@@ -152,6 +152,7 @@ sntRover.controller('reservationDetailsController',
 				}
 			};
 		} else if ($stateParams.isFromCards) {
+			var fromArTab = $stateParams.isFromArTab;
 
 			setNavigationBookMark();
 			$rootScope.setPrevState = {
@@ -161,7 +162,8 @@ sntRover.controller('reservationDetailsController',
 					id: $vault.get('cardId'),
 					type: $vault.get('type'),
 					query: $vault.get('query'),
-					isBackFromStaycard: true
+					isBackFromStaycard: true,
+					isBackFromStaycardToARTab: fromArTab
 				}
 			};
 
@@ -321,11 +323,11 @@ sntRover.controller('reservationDetailsController',
 			}
 		};
 
-		var fetchedGuestId = {};
+		var guestIdList;
 
 		var fetchGuestIDs = function() {
 			var successCallBack = function(response) {
-				fetchedGuestId = response;
+				guestIdList = response;
 				sntActivity.stop('GUEST_ID_FETCH');
 			};
 
@@ -1974,11 +1976,10 @@ sntRover.controller('reservationDetailsController',
 	}
 
 	var retrieveGuestDocDetails = function(guestId) {
-		var guestIdInfo;
+		var guestIdInfo = _.find(guestIdList, function(guestIdData) {
+			return guestIdData.guest_id === guestId;
+		});
 
-		if (fetchedGuestId.guest_id === guestId) {
-			guestIdInfo = fetchedGuestId;
-		}
 		return guestIdInfo;
 	};
 

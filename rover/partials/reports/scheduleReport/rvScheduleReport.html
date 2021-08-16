@@ -137,6 +137,7 @@
                     </select>
                 </div>
             </div>
+            <multi-option-selection ng-show="filters.hasPaymentType && filters.hasPaymentType.data.length" label="Payment type" on-update="refreshSecondColumnScroll" data="filters.hasPaymentType.data" options="filters.hasPaymentType.options"></multi-option-selection>
 
             <multi-option-selection ng-show="isYearlyTaxReport" label="Country" on-update="refreshFilterScroll" data="filters.hasIncludeCountry.data" options="filters.hasIncludeCountry.options"></multi-option-selection>
             <multi-option-selection ng-show="filters.hasByChargeGroup && filters.hasByChargeGroup.data.length" label="Charge Group(s)" on-update="refreshSecondColumnScroll" data="filters.hasByChargeGroup.data" options="filters.hasByChargeGroup.options" affects-filter="filters.hasByChargeGroup.affectsFilter"

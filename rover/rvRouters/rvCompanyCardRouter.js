@@ -37,7 +37,8 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
                 selectedIds: [],
                 isMergeViewSelected: null,
                 activeSubView: '',
-                cardType: null
+                cardType: null,
+                isBackFromStaycardToARTab: ''
             },
             templateUrl: '/assets/partials/companyCard/rvCompanyCardDetails.html',
             controller: 'companyCardDetailsController',

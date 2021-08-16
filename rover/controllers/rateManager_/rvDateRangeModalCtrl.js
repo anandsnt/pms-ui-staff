@@ -37,6 +37,9 @@ angular.module('sntRover')
             $scope.toDate = ($scope.fromDate > $scope.toDate) ? $scope.fromDate : $scope.toDate;
             $scope.toDateOptions.minDate = tzIndependentDate($scope.fromDate);
             $scope.toDateOptions.maxDate = formMaxDateRangeForToDate();
+            if ($scope.toDate > $scope.toDateOptions.maxDate) {
+                $scope.toDate = $scope.toDateOptions.maxDate;
+            }
         }
 
         /**

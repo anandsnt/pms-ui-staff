@@ -86,11 +86,12 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 		};
 
 		// Handle balance tab save action.
+		// manual balance save is applicable only on payable tab
 		$scope.clickedSaveAddBalance = function() {
 
 			var successCallbackOfSaveArBalanceAPI = function() {
 				$scope.$emit('hideLoader');
-				$scope.$emit('REFRESH_BALANCE_LIST');
+				$scope.$emit('REFRESH_PAYABLE_LIST');
 				$scope.arFlags.isAddBalanceScreenVisible = false;
 			},
 			failureCallbackOfSaveArBalanceAPI = function( errorMessage ) {

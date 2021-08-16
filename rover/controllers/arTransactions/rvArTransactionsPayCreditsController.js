@@ -106,8 +106,9 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         $scope.arDataObj.selectedInvoices = [];
 
         // Reload the ar transaction listing after payment
+        // Allocate Payment after posting checkbox is applicable only on payable tab
         if (data.allocatePaymentAfterPosting) {
-            $scope.$emit('REFRESH_BALANCE_LIST');
+            $scope.$emit('REFRESH_PAYABLE_LIST');
         } else {
             $scope.$emit('REFRESH_SELECTED_LIST');
         }

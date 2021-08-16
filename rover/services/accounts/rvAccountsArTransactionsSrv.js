@@ -103,6 +103,41 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
 
         return deferred.promise;
     };
+    
+    // hold selected invoices
+    this.holdSelectedInvoices = function(data) {
+        var deferred = $q.defer(),
+        url = '/api/accounts/' + data.account_id + '/ar_transactions/add_hold';
+
+        rvBaseWebSrvV2.putJSON(url, data.data).then(
+            function(data) {
+                deferred.resolve(data);
+            },
+            function(errorMessage) {
+                deferred.reject(errorMessage);
+            }
+        );
+
+        return deferred.promise;
+    };
+
+    // release selected invoices
+    this.releaseSelectedInvoices = function(data) {
+        var deferred = $q.defer(),
+        url = '/api/accounts/' + data.account_id + '/ar_transactions/release_hold';
+
+        rvBaseWebSrvV2.putJSON(url, data.data).then(
+            function(data) {
+                deferred.resolve(data);
+            },
+            function(errorMessage) {
+                deferred.reject(errorMessage);
+            }
+        );
+
+        return deferred.promise;
+    };
+
     // Expand Manual Balance & Paid Listing
   this.expandPaidAndUnpaidList = function( param ) {
     var deferred = $q.defer(),

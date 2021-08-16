@@ -490,6 +490,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     if (filter_values[key].length === filter.data.length) {
                         filter_values['all_users_selected'] = true;
                     }
+                } else if (keyName === 'hasPaymentType') {
+                    key = reportParams['PAYMENT_TYPES'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
                 } else {
                     _.each(filter.data, function(each) {
                         if (each.selected) {
@@ -827,6 +830,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     if (filter_values[key].length === filter.data.length) {
                         filter_values['all_users_selected'] = true;
                     }
+                } else if (keyName === 'hasPaymentType') {
+                    key = reportParams['PAYMENT_TYPES'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
                 } else {
                     _.each(filter.data, function(each) {
                         if (each.selected) {
@@ -1184,6 +1190,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     reportUtils.fillTransactionCategory($scope.filters, $scope.selectedEntityDetails.filter_values);
                 } else if (filter.value === 'SHOW_EMPLOYEES_INCLUDING_EOD') {
                     reportUtils.fillEmployees($scope.filters, $scope.selectedEntityDetails.filter_values);
+                } else if (filter.value === 'PAYMENT_TYPES') {
+                    reportUtils.fillPaymentTypes($scope.filters, $scope.selectedEntityDetails.filter_values);
                 } else if (filter.value === 'CANCELATION_DATE_RANGE') {
                     $scope.cancellationDateTimePeriods = reportsSrv.getScheduleReportTimePeriods($scope.selectedEntityDetails.report.title + ':' + filter.value);
                     $scope.cancellationDateTimePeriods = populateTimePeriodsData($scope.cancellationDateTimePeriods);
@@ -1476,7 +1484,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             $scope.scheduleParams.includeTitleHeader = $scope.selectedEntityDetails.include_title_header;
 
-            if ($scope.selectedEntityDetails.report.title === reportNames['FINANCIAL_TRANSACTION_REVENUE_REPORT']) {
+            if ($scope.selectedEntityDetails.report.title === reportNames['FINANCIAL_TRANSACTION_REVENUE_REPORT'] || 
+                $scope.selectedEntityDetails.report.title === reportNames['FINANCIAL_TRANSACTION_PAYMENT_REPORT']) {
 
                 $scope.fromDateOptions = angular.extend({
                     maxDate: tzIndependentDate($rootScope.businessDate),
@@ -1771,7 +1780,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'A/R Aging': true,
                 'Complimentary Room Report': true,
                 'Cancellation & No Show': true,
-                'Financial Transaction - Revenue Report': true
+                'Financial Transaction - Revenue Report': true,
+                'Financial Transaction - Payment Report': true
             };
 
             var forWeekly = {
@@ -1798,7 +1808,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'A/R Aging': true,
                 'Complimentary Room Report': true,
                 'Cancellation & No Show': true,
-                'Financial Transaction - Revenue Report': true
+                'Financial Transaction - Revenue Report': true,
+                'Financial Transaction - Payment Report': true
             };
             var forMonthly = {
                 'Arrival': true,
@@ -1824,7 +1835,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'A/R Aging': true,
                 'Complimentary Room Report': true,
                 'Cancellation & No Show': true,
-                'Financial Transaction - Revenue Report': true
+                'Financial Transaction - Revenue Report': true,
+                'Financial Transaction - Payment Report': true
             };
 
             var forHourly = {
@@ -2076,7 +2088,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     selectedEntity.report.title === reportNames['OCCUPANCY_REVENUE_SUMMARY'] ||
                     selectedEntity.report.title === reportNames['ADDON_FORECAST'] || 
                     selectedEntity.report.title === reportNames['COMPLIMENTARY_ROOM_REPORT'] ||
-                    selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTION_REVENUE_REPORT'])) {
+                    selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTION_REVENUE_REPORT'] ||
+                    selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTION_PAYMENT_REPORT'])) {
                 $scope.scheduleFormat = _.filter(originalScheduleFormats, function(object) {
                     return object.value === 'CSV';
                 });
@@ -2120,7 +2133,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['A/R_AGING'] || 
                 selectedEntity.report.title === reportNames['COMPLIMENTARY_ROOM_REPORT'] || 
                 selectedEntity.report.title === reportNames['CANCELLATION_NO_SHOW'] ||
-                selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTION_REVENUE_REPORT']);
+                selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTION_REVENUE_REPORT'] ||
+                selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTION_PAYMENT_REPORT']);
 
         };
 

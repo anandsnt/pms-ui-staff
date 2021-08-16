@@ -189,6 +189,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        action: "",
 		        iconClass: "icon-frontdesk",
 		        menuIndex: "front_desk",
+		        hideOnMobile: true,
 		        submenu: [{
 		            title: "MENU_SEARCH_RESERVATIONS",
 		            action: "rover.search",
@@ -288,6 +289,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        action: "",
 		        iconClass: "icon-revenue",
 		        menuIndex: "revenue-manager",
+		        hideOnMobile: true,
 		        submenu: [{
  		            title: "MENU_RATE_MANAGER",
 		            action: "rover.rateManager",
@@ -314,6 +316,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        action: "",
 		        iconClass: "icon-housekeeping",
 		        menuIndex: "housekeeping",
+		        hideOnMobile: true,
 		        submenu: [{
 		            title: "MENU_ROOM_STATUS",
 		            action: "rover.housekeeping.roomStatus",
@@ -333,11 +336,19 @@ angular.module('sntRover').service('rvMenuSrv',
 					hideOnMobile: true
 		        }]
 		    }, {
+				title: "MENU_ROOM_STATUS",
+				action: "rover.housekeeping.roomStatus",
+				menuIndex: "roomStatus",
+				iconClass: "icon-housekeeping",
+				showOnMobile: true
+			},
+		    {
 		        title: "MENU_FINANCIALS",
 		        // hidden: true,
 		        action: "",
 		        iconClass: "icon-financials",
 		        menuIndex: "financials",
+		        hideOnMobile: true,
 		        submenu: [{
 		            title: "MENU_JOURNAL",
 		            action: "rover.financials.journal({ id : 'REVENUE'})",
@@ -387,6 +398,7 @@ angular.module('sntRover').service('rvMenuSrv',
                 action: "",
                 iconClass: "icon-actions",
                 menuIndex: "actions",
+                hideOnMobile: true,
                 submenu: [{
 		            title: "MENU_ACTIONS_MANAGER",
 		            action: "rover.actionsManager",
@@ -446,6 +458,7 @@ angular.module('sntRover').service('rvMenuSrv',
 				title: "MENU_HOUSEKEEPING",
 				action: "",
 				iconClass: "icon-housekeeping",
+				hideOnMobile: true,
 				submenu: [
 					{
 						title: "MENU_ROOM_STATUS",
@@ -455,10 +468,18 @@ angular.module('sntRover').service('rvMenuSrv',
 				]
 			},
 			{
+				title: "MENU_ROOM_STATUS",
+				action: "rover.housekeeping.roomStatus",
+				menuIndex: "roomStatus",
+				iconClass: "icon-housekeeping",
+				showOnMobile: true
+			},
+			{
 		        title: "MENU_REPORTS",		        
 		        action: "",
 		        iconClass: "icon-reports",
-		        menuIndex: "reports",		        
+		        menuIndex: "reports",
+		        hideOnMobile: true,	
 		        submenu: [{
 		            title: "MENU_NEW_REPORT",
 		            action: "rover.reports.dashboard",
