@@ -1802,7 +1802,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 var selectedItem = report['hasTransactionCategory']['selected'] ? report['hasTransactionCategory']['selected'] : report['hasTransactionCategory']['data'][0];
 
                 key = reportParams['TRANSACTION_CATEGORY'];
-                params[key] = selectedItem.id;
+                params[key] = selectedItem.value;
                 if (changeAppliedFilter) {
                     $scope.appliedFilter.transaction_category = selectedItem.value;
                 }
@@ -1923,7 +1923,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     }
                 }
             }
-    
+
             // include payment type
             if (report.hasOwnProperty('hasPaymentType')) {
                 selected = _.where(report['hasPaymentType']['data'], { selected: true });

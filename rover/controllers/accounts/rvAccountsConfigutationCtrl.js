@@ -84,6 +84,8 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 				};
 			}
 			else if ($stateParams.isFromArTransactions) {
+				var fromArTab = $stateParams.isFromArTab;
+
 				$rootScope.setPrevState = {
 					title: 'AR Transactions',
 					name: 'rover.companycarddetails',
@@ -91,7 +93,8 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 						id: $vault.get('cardId'),
 						type: $vault.get('type'),
 						query: $vault.get('query'),
-						isBackFromStaycard: true
+						isBackFromStaycard: true,
+						isBackFromStaycardToARTab: fromArTab
 					}
 				};
 			} else if ($scope.previousState.name === 'rover.financials.invoiceSearch') {

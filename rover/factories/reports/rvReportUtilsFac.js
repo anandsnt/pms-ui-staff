@@ -2889,8 +2889,11 @@ angular.module('reportsModule')
                                 this.data = enabled;
                             }
                         };
-                    }
-
+                        
+                        if (reportName === reportNames['FINANCIAL_TRANSACTION_REVENUE_REPORT']) {
+                            filter.hasByChargeCode.options.key = 'description';
+                        }
+                    }           
                 };
 
                 var excludeChargeGroup = 'NONE',
@@ -2945,6 +2948,135 @@ angular.module('reportsModule')
                     }
                 };
 
+            };
+
+            /**
+             * Fill employees for Journal
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @return {void} 
+             */
+             factory.fillEmployees = function (filter, filterValues) {
+                var getSelectAllVal = (employees) => {
+                    var selectAll = true;
+
+                    if (filterValues && filterValues.all_users_selected) {
+                        return selectAll;
+                    }
+                    else if (filterValues && filterValues.user_ids) {
+                        selectAll = employees.length === filterValues.user_ids.length;
+                    }
+
+                    return selectAll;
+                };
+
+                reportsSubSrv.fetchEmployees().then(function (data) {
+                    var employeesCopy = angular.copy(data);
+
+                    if (filterValues && filterValues.user_ids) {
+                        employeesCopy = employeesCopy.map(employee => {
+                            employee.selected = false;
+
+                            if (filterValues.user_ids.indexOf(employee.id) > -1) {
+                                employee.selected = true;
+                            }
+                            return employee;
+                        });
+                    }
+                    filter.filterTitle = 'Employees';
+
+                    filter.empList = {
+                        title: 'Employees',
+                        data: employeesCopy,
+                        options: {
+                            selectAll: getSelectAllVal(employeesCopy),
+                            hasSearch: true,
+                            key: 'full_name',
+                            altKey: 'email'
+                        }
+                    };
+                    
+                });
+            };
+
+            /**
+             * Fill Transaction Category
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @return {void} set filter values
+             */
+             factory.fillTransactionCategory = function (filter, filterValues) {
+                var tempSelection, 
+                transactionCategory = [
+                    { id: "TOTAL", description: "Show Totals" },
+                    { id: "PRE STAY", description: "Pre Stay" },
+                    { id: "IN HOUSE", description: "In House"},
+                    { id: "POST STAY", description: "Post Stay" }
+                ];
+
+                if (filterValues && filterValues.transaction_category) {
+                    tempSelection = _.find(transactionCategory, {
+                        id: filterValues.transaction_category
+                    });
+                } 
+                else {
+                    tempSelection = transactionCategory[0];
+                }
+
+                filter.hasTransactionCategory = {
+                    data: transactionCategory,
+                    selected: tempSelection,
+                    options: {
+                        key: 'description',
+                        defaultValue: 'Select Transaction Category'
+                    }
+                };
+               
+            };
+
+            /**
+             * Fill payment types
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @return {void} 
+             */
+             factory.fillPaymentTypes = function (filter, filterValues) {
+                var getSelectAllVal = (paymentTypes) => {
+                    var selectAll = true;
+
+                    if (filterValues && filterValues.payment_types) {
+                        selectAll = paymentTypes.length === filterValues.payment_types.length;
+                    }
+
+                    return selectAll;
+                };
+
+                reportsSubSrv.fetchPaymentTypes().then(function (data) {
+                    var PTCopy = angular.copy(data);
+
+                    if (filterValues && filterValues.payment_types) {
+                        PTCopy = PTCopy.map(paymentTypes => {
+                            paymentTypes.selected = false;
+
+                            if (filterValues.payment_types.indexOf(paymentTypes.id) > -1) {
+                                paymentTypes.selected = true;
+                            }
+                            return paymentTypes;
+                        });
+                    }
+
+                    filter.hasPaymentType = {
+                        data: PTCopy,
+                        options: {
+                            hasSearch: false,
+                            selectAll: getSelectAllVal(PTCopy),
+                            noSelectAll: true,
+                            key: 'description',
+                            defaultValue: 'Show All'
+                        }
+                    };
+                        
+                });
             };
 
             /**

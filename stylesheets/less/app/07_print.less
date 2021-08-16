@@ -1598,7 +1598,7 @@
     #report-details {
         position: static !important;
         height: auto !important;
-        overflow: auto !important;
+        overflow: visible !important;
     }
 
     .report-header {
@@ -1695,6 +1695,22 @@
             }
 
             &:first-child { margin-top: 0; }
+        }
+
+        .report-footer {
+            margin-top: 4pt;
+            .float;
+
+            li {
+                line-height: 1.2;
+                width: 50%;
+                margin: 0;
+                .pull-left;
+
+                span { color: @grey3; }
+
+                &:last-child { text-align: right; }
+            }
         }
 
         table {
@@ -3626,6 +3642,9 @@
         }
 
         &.journal-content {
+            .iScrollVerticalScrollbar,
+            .iScrollHorizontalScrollbar { display: none !important; }
+            
             .journal-summary {
                 .toggle {
                     border: none;

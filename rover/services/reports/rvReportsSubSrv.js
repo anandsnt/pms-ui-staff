@@ -23,6 +23,13 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         };
         // Holds data for Generated Inbox report for pagination
         service.cachedInboxReport = {};
+
+        const reportHasDateFilters = function(reportName) {
+            return reportName === reportNames["DAILY_PRODUCTION_DEMO"] ||
+                   reportName === reportNames["DAILY_PRODUCTION_RATE"] ||
+                   reportName === reportNames["DAILY_PRODUCTION_ROOM_TYPE"];
+        };
+
         /**
          * Handle pagination for generated Inbox report
          * in the below service methods
@@ -35,13 +42,10 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 end = start + params.per_page,
                 hasDateFilters = false,
                 paginatedResult,
-                reportName = params.reportTitle,
                 fromDate,
                 toDate;
 
-                if (reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
-                    reportName === reportNames['DAILY_PRODUCTION_DEMO'] ||
-                    reportName === reportNames['DAILY_PRODUCTION_RATE']) {
+                if (reportHasDateFilters(params.reportTitle)) {
                     hasDateFilters = true;
                 }
                 if (params.fiterFromDate && params.filterToDate && hasDateFilters) {
@@ -80,13 +84,30 @@ angular.module('sntRover').service('RVreportsSubSrv', [
          * @param  {Object} params {page: per_page}
          * @return {Object} processed total result row or Null
          */
-        service.processToatlResultRow = function(params) {
+        service.processTotalResultRow = function(params) {
             var response = angular.copy(service.cachedInboxReport),
-                toatalCount = response.total_count,
-                lastPage = Math.ceil(toatalCount / params.per_page);
+                resultsTotalRow = response.results_total_row,
+                totalCount = response.total_count,
+                hasDateFilters = false,
+                lastPage = Math.ceil(totalCount / params.per_page);
 
-            return (toatalCount < params.per_page || params.page === lastPage ) ? response.results_total_row : null;
+                if (reportHasDateFilters(params.reportTitle)) {
+                    hasDateFilters = true;
+                }
+                if (params.fiterFromDate && params.filterToDate && hasDateFilters) {
+                    var itemDate,
+                        fromDate = new Date(params.fiterFromDate),
+                        toDate = new Date(params.filterToDate);
+   
+                        resultsTotalRow = _.filter(resultsTotalRow, function(obj) {
+                            itemDate = new Date(Object.keys(obj)[0]);
+                            return (itemDate >= fromDate && itemDate <= toDate);
+                        });
+                    }
+   
+                return totalCount < params.per_page || params.page === lastPage ? resultsTotalRow : null;
         };
+
         /**
          * Abstract the response based on params
          * @param  {Object} params {page: per_page}
@@ -102,7 +123,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 response.total_count = totalCount;
             }
             response.results = service.processResults(params);
-            response.results_total_row = service.processToatlResultRow(params);
+            response.results_total_row = service.processTotalResultRow(params);
             response.isPaginatedResponse = true;
             return response;
         };

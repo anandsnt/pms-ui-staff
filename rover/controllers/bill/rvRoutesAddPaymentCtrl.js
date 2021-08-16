@@ -74,7 +74,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl', ['$scope', '$rootScope', '$filter'
 
 			var isAllowDirectDebit = true;
 			
-			if ($scope.selectedEntity.entity_type === 'COMPANY_CARD' || $scope.selectedEntity.entity_type === 'TRAVEL_AGENT') {
+			if (($scope.selectedEntity.entity_type === 'COMPANY_CARD' || $scope.selectedEntity.entity_type === 'TRAVEL_AGENT') && $scope.selectedEntity.is_allow_direct_debit) {
 				isAllowDirectDebit = $scope.selectedEntity.is_allow_direct_debit;
 			}
             var paymentParams = {"direct_bill": isAllowDirectDebit };

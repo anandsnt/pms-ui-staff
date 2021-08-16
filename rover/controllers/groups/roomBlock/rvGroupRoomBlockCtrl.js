@@ -598,18 +598,18 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             // they are assigned at populateShoulderDates in rvGroupConfigurationSummaryTab controller
 
             // ensure the start and end dates are within the shoulder boundaries
-            if ($scope.timeLineStartDate < summary.shoulder_from_date) {
-                $scope.timeLineStartDate = new tzIndependentDate(summary.shoulder_from_date);
-            } else if ($scope.timeLineStartDate > summary.shoulder_to_date) {
-                $scope.timeLineStartDate = new tzIndependentDate(summary.shoulder_to_date);
+            if (($scope.timeLineStartDate < summary.shoulder_from_date) || ($scope.timeLineStartDate < tzIndependentDate(summary.shoulder_from_date))) {
+                $scope.timeLineStartDate = summary.shoulder_from_date;
+            } else if (($scope.timeLineStartDate > summary.shoulder_to_date) || ($scope.timeLineStartDate > tzIndependentDate(summary.shoulder_to_date))) {
+                $scope.timeLineStartDate = summary.shoulder_to_date;
             }
 
             // 14 days are shown by default.
             $scope.timeLineEndDate = moment($scope.timeLineStartDate).add(perPage, 'days');
             $scope.timeLineEndDate = $scope.timeLineEndDate.toDate();
             // restrict end_date in request to shoulder boundary
-            if ($scope.timeLineEndDate > summary.shoulder_to_date) {
-                $scope.timeLineEndDate = new tzIndependentDate(summary.shoulder_to_date);
+            if (($scope.timeLineEndDate > summary.shoulder_to_date) || ($scope.timeLineEndDate > tzIndependentDate(summary.shoulder_to_date))) {
+                $scope.timeLineEndDate = summary.shoulder_to_date;
             }
 
         };
@@ -2692,7 +2692,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
         };
 
         /**
-         * Should disable the room/rates togglle btn
+         * Should disable the room/rates toggle button
          */
         $scope.shouldDisableRoomRatesToggleBtn = function() {
             return !$scope.isGroupDailyRatesEnabled || $scope.groupConfigData.summary.is_cancelled;

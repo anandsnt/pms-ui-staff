@@ -74,14 +74,16 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'RVCompanyCardS
 						id: associatedId,
 						confirmationId: item.reservation_confirm_no,
 						isrefresh: true,
-						isFromCards: true
+						isFromCards: true,
+						isFromArTab: 'paid-bills'
 					});
 				} 
 				else if (associatedType === 'PostingAccount') {
 					$state.go('rover.accounts.config', {
 						id: associatedId,
 						activeTab: 'ACCOUNT',
-						isFromArTransactions: true
+						isFromArTransactions: true,
+						isFromArTab: 'paid-bills'
 					});
 				}
 			}
