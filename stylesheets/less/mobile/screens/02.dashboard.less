@@ -12,7 +12,8 @@
         font-weight: 300;
         margin: 10px 0 30px;
     }
-
+    
+    /* Disabling until we can fully release Mobile PMS
     h3 {
         font-size: 24px;   
         font-weight: 300;
@@ -128,6 +129,7 @@
             .box-shadow(0 1px 0 rgba(0,0,0,.1));
         }
     }
+    ***/
 
     .dashboard-statistics {
 
@@ -208,3 +210,111 @@
         #move > #to > .bottom();
     }
 }
+
+/* Temporary styles to revert to the old dashboard display ***/
+.search-form.dashboard,
+#dashboard-search {
+    display: none !important;
+}
+
+.content#dashboard {
+    top: 50px;
+    .calc-height(100, 50);
+}
+
+#dashboard {
+    
+    h3 {
+        font-size: 21px;
+        font-weight: 600;
+        text-transform: uppercase;
+        text-align: center;
+    }
+    
+    h4 {
+        font-size: 18px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-top: 20px;
+        text-align: center;
+    
+        &.green { color: @green; }
+        &.blue { color: @blue; }
+        &.red { color: @red; }
+    }
+    
+    .dashboard-block {
+        
+        li {
+            text-transform: uppercase;
+            padding: 0;
+            margin: 0;
+            
+            &:not(:last-child) {
+                box-shadow: inset 0 -1px 0 rgba(0,0,0,.1);
+            }
+        }
+        
+        .button {
+            text-align: left;
+            text-shadow: none;
+            background: transparent;
+            box-shadow: none;
+            cursor: default !important;
+            
+            &.green strong { color: @green; }
+            &.red strong,
+            &.red-text strong { color: @red; }
+            &.blue strong { color: @blue; }
+            &.yellow strong { color: @yellow; }
+            &.orange strong { color: @logoPrimary; }
+        }
+        
+        .actions .button,
+        .data li {
+            position: relative;
+            padding: 0 80px 0 0;
+            color: @grey3;
+            font-weight: 400;
+            line-height: 45px;
+            width: 100%;
+            .show();
+            .nowrap();
+            
+            strong,
+            .value {
+                position: absolute;
+                top: 0;
+                right: 0;
+                font-size: 32px;
+                .show();
+            }
+            
+            .value {
+                color: @textColor;
+                font-weight: 300;
+            }
+            
+            strong {
+                font-weight: 600;
+            }
+        }
+        
+        &:first-child:last-child,
+        &:not(:last-child) {
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+    }
+    
+    .dashboard-statistics { 
+        .rate {
+            color: @grey2;
+            line-height: 1;
+            margin: -16px 0 8px;
+            .nowrap();
+            .show();
+        }
+    }
+}
+/* End of temporary styles ***/
