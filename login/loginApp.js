@@ -270,8 +270,10 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 	};
 
 	// for now load cordova 4_5_5
-	loadCordovaWithVersion('4_5_5');
-
+	if (navigator.userAgent.match(/iPad/i) !== null) {
+		loadCordovaWithVersion('4_5_5');
+	}
+	
 	$scope.loadDomainURL = function() {
 		$window.location = $scope.data.domainURL;
 	};
