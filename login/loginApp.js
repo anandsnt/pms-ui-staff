@@ -233,7 +233,7 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 	var loadURLCounter = 0;
 
 	$scope.showDebugOptions = function() {
-		if (!$scope.isIPad) {
+		if (navigator.userAgent.match(/Android|iPad/i) === null) {
 			return;
 		}
 		$scope.data.domainURL = "https://";
@@ -252,8 +252,6 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 			loadURLCounter = 0;
 		}, 5000);
 	};
-
-	$scope.isIPad = navigator.userAgent.match(/iPad/i) != null;
 
 	$scope.loadDomainURL = function() {
 		$window.location = $scope.data.domainURL;
