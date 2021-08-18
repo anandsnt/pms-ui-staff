@@ -123,20 +123,20 @@
                              {{key | date: fulldayInWeek }}, {{key | date: dateFormat }}
                             </td>
                             <!-- Room charge -->
-                            <td ng-if="!rate.isSuppressed"><span ng-bind-html="day.rate | sntCurrency:this:day.rateCurrency"></span></td>
+                            <td ng-if="!rate.isSuppressed"><span ng-bind-html="day.rate | sntCurrency:this:day.rate_currency"></span></td>
                             <td ng-if="rate.isSuppressed">SR</td>
                             <!-- Add on -->
-                            <td ng-if="!rate.isSuppressed && !day.inclusiveAddonsExist"><span ng-bind-html="day.addon | sntCurrency:this:day.rateCurrency"></span></td>
+                            <td ng-if="!rate.isSuppressed && !day.inclusiveAddonsExist"><span ng-bind-html="day.addon | sntCurrency:this:day.rate_currency"></span></td>
                             <td ng-if="!rate.isSuppressed && !!day.inclusiveAddonsExist">INCL</td>
                             <td ng-if="rate.isSuppressed">SR</td>
                             <!-- taxes -->
-                            <td ng-if="!rate.isSuppressed"><span ng-bind-html="day.incl_tax | sntCurrency:this:day.rateCurrency"></span></td>
+                            <td ng-if="!rate.isSuppressed"><span ng-bind-html="day.incl_tax | sntCurrency:this:day.rate_currency"></span></td>
                             <td ng-if="rate.isSuppressed">SR</td>
                             <!-- excl taxes -->
-                            <td ng-if="!rate.isSuppressed"><span ng-bind-html="day.excl_tax | sntCurrency:this:day.rateCurrency"></span></td>
+                            <td ng-if="!rate.isSuppressed"><span ng-bind-html="day.excl_tax | sntCurrency:this:day.rate_currency"></span></td>
                             <td ng-if="rate.isSuppressed">SR</td>
                             <!-- incl taxes -->
-                            <td ng-if="!rate.isSuppressed"><span ng-bind-html="day.total | sntCurrency:this:day.rateCurrency"></span></td>
+                            <td ng-if="!rate.isSuppressed"><span ng-bind-html="day.total | sntCurrency:this:day.rate_currency"></span></td>
                             <td ng-if="rate.isSuppressed">SR</td>
                             <td class="edit"></td>
                         </tr>
