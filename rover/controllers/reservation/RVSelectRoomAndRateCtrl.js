@@ -1882,7 +1882,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				secondary = _.find(roomType.ratesArray, {
 					id: rateId
-				});
+                });
+                availabilityCount = (roomType && roomType.availability) || 0;
+
 			} else if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
 
 				var rate = _.find($scope.display.rateFirstGrid, {
@@ -1891,14 +1893,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				secondary = _.find(rate.rooms, {
 					id: roomId
-				});
-
+                });
+                availabilityCount = (secondary && secondary.availability) || 0;
+                
 			}
-			// CICO-30938 - fixing undefined issue in console
-			if (secondary !== undefined)
-				availabilityCount = _.min(_.pluck(_.toArray(secondary.dates), 'availability'));
+			
 			return availabilityCount;
-
 		};
 
 		$scope.getLeastHouseAvailability = function() {
