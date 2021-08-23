@@ -2127,6 +2127,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             $scope.startDateOptions.maxDate = '';
 
             $scope.changeDatesActions.clickedOnMoveButton ();
+            $scope.actionStatus.isMoveBtnClicked = true;
 
         };
         var getTotalOfIndividualDate = function(passedDate) {
@@ -2719,6 +2720,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
             return !!$scope.groupConfigData.summary.is_cancelled || pastDate || $scope.groupConfigData.summary.rate != -1; 
         };
+
+        $scope.addListener('RESET_DATE_PICKERS', function() {
+            resetDatePickers();
+        });
 
         
     }
