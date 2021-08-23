@@ -7,6 +7,8 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', '$rootScope', functi
 		 * @return {Object}     Deep copied object
 		 */
 
+		var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
 		this.deepCopy = function(obj) {
 			return (JSON.parse (JSON.stringify (obj)));
 		};
@@ -442,4 +444,14 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', '$rootScope', functi
             }
             return diaryMode;
         };
+
+        /*
+		 * util function to check whether weekend day
+		 * @param1 {array} weekendDays
+		 * @param2 {Date Object} date
+		 * @return {boolean}
+		*/
+        this.isWeekendDay = function(weekendDays, date) {
+			return _.contains(weekendDays, daysOfWeek[date.getDay()]);
+		};
 }]);
