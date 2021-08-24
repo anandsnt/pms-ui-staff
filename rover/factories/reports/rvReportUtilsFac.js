@@ -611,7 +611,7 @@ angular.module('reportsModule')
                         process: function (filter, selectedItems) {
                             if (report['title'] === reportNames['GUEST_BALANCE_REPORT']) {
                                 var hasGuest = !!_.find(selectedItems, { paramKey: 'guest' });
-                                filter.updateData(!hasGuest)
+                                filter.updateData(!hasGuest);
                             }
                         }
                     }
