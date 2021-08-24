@@ -152,9 +152,9 @@
                         <li ng-repeat='addon in room.addons'>
                             <em>{{addon.description}}</em>
                             <span class="price" ng-hide="addon.is_inclusive">
-                                <span ng-bind-html="addon.avg_addon_amount | sntCurrency:this:reservationData.rateCurrency"></span>
+                                <label ng-bind-html="addon.avg_addon_amount | sntCurrency:this:reservationData.rateCurrency"></label>
                                 <span translate>EACH</span>
-                            <span class="total"><span ng-bind-html="addon.amount | sntCurrency:this:reservationData.rateCurrency"></span></span>
+                            <span class="total" ng-bind-html="addon.amount | sntCurrency:this:reservationData.rateCurrency"></span>
                             </span>
                             <!-- CICO-18833 Hide all rate refreneces for inclusive addons (Kees Lek) -->
                             <span class="price" ng-show="addon.is_inclusive">
