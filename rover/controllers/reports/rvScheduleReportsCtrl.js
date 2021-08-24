@@ -1290,7 +1290,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     });
                     $scope.filters['hasCompletionStatus']['options']['selectAll'] = $scope.filters['hasCompletionStatus']['data'].length === value.length;
 
-                } else if (key === reportParams['USER_IDS'] && value.length > 0) {
+                } else if (key === reportParams['USER_IDS'] && value.length > 0 && $scope.filters.hasUsers) {
                     var selectedEmps = [],
                         employeesCopy = getUserList();
 

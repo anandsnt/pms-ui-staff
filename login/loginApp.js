@@ -233,7 +233,7 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 	var loadURLCounter = 0;
 
 	$scope.showDebugOptions = function() {
-		if (!$scope.isIPad) {
+		if (navigator.userAgent.match(/Android|iPad/i) === null) {
 			return;
 		}
 		$scope.data.domainURL = "https://";
@@ -253,8 +253,6 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 		}, 5000);
 	};
 
-	$scope.isIPad = navigator.userAgent.match(/iPad/i) != null;
-
 	$scope.loadDomainURL = function() {
 		$window.location = $scope.data.domainURL;
 	};
@@ -272,8 +270,10 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 	};
 
 	// for now load cordova 4_5_5
-	loadCordovaWithVersion('4_5_5');
-
+	if (navigator.userAgent.match(/iPad/i) !== null) {
+		loadCordovaWithVersion('4_5_5');
+	}
+	
 	$scope.loadDomainURL = function() {
 		$window.location = $scope.data.domainURL;
 	};

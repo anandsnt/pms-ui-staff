@@ -1,5 +1,5 @@
-angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSrv', 'dateFilter',
-    function($q, rvBaseWebSrvV2, RVHotelDetailsSrv, dateFilter) {
+angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSrv', 'dateFilter', 'rvUtilSrv',
+    function($q, rvBaseWebSrvV2, RVHotelDetailsSrv, dateFilter, rvUtilSrv) {
 
     var that = this;
 
@@ -124,8 +124,8 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
         _.each(datafromApi.results, function(element, index, lis) {
             var temp = [];
             // Extracting date detail
-            var dateToCheck = tzIndependentDate(element.date);
-            var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
+            var dateToCheck = tzIndependentDate(element.date),
+                isWeekend = rvUtilSrv.isWeekendDay(datafromApi.weekend_days, dateToCheck);
 
             dates.push({'date': element.date, 'isWeekend': isWeekend, 'dateObj': new Date(element.date)});
             // Extracting groupTotalRooms
@@ -231,8 +231,8 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
         _.each(roomAvailabilityData.results, function(item) {
 
             // Extracting date detail
-            var dateToCheck = tzIndependentDate(item.date);
-            var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
+            var dateToCheck = tzIndependentDate(item.date),
+                isWeekend = rvUtilSrv.isWeekendDay(roomAvailabilityData.weekend_days, dateToCheck);
 
             dates.push({'date': item.date, 'isWeekend': isWeekend, 'dateObj': new Date(item.date)});
 
@@ -401,8 +401,8 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
             var temp = [];
 
             // Extracting date detail
-            var dateToCheck = tzIndependentDate(element.date);
-            var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
+            var dateToCheck = tzIndependentDate(element.date),
+                isWeekend = rvUtilSrv.isWeekendDay(datafromApi.weekend_days, dateToCheck);
 
             dates.push({'date': element.date, 'isWeekend': isWeekend, 'dateObj': new Date(element.date)});
 
@@ -765,17 +765,18 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
      * @param toDate String in yyyy-MM-dd format
      * @returns {Array}
      */
-    var getDateRange = function(fromDate, toDate) {
+   var getDateRange = function(fromDate, toDate, weekendDays) {
         var dates = [],
             currDate = new tzIndependentDate(fromDate) * 1,
             lastDate = new tzIndependentDate(toDate) * 1;
 
         for (; currDate <= lastDate; currDate += (24 * 3600 * 1000)) {
-            var dateObj = new tzIndependentDate(currDate);
+            var dateObj = new tzIndependentDate(currDate),
+                isWeekend = rvUtilSrv.isWeekendDay(weekendDays, dateObj);
 
             dates.push({
                 date: dateFilter(dateObj, 'yyyy-MM-dd'),
-                isWeekend: dateObj.getDay() === 0 || dateObj.getDay() === 6
+                isWeekend: isWeekend
             });
         }
         return dates;
@@ -800,7 +801,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
         rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function (resultFromAPI) {
             that.data.gridDataForItemInventory = {
                 "addons": resultFromAPI.addons,
-                "dates": getDateRange(firstDate, secondDate)
+                "dates": getDateRange(firstDate, secondDate, resultFromAPI.weekend_days)
             };
             deferred.resolve(that.data);
         }, function(data) {
