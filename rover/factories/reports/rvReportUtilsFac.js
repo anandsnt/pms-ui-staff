@@ -1404,15 +1404,7 @@ angular.module('reportsModule')
                                 },
                                 originalData: angular.copy(customData),
                                 updateData: function (shouldHide) {
-                                    if (shouldHide && this.data.length > 0) {
-                                        this.data = [];
-                                    }
-                                    else if (this.data.length === 0) {
-                                        this.data = angular.copy(this.originalData);
-                                        _.each(this.data, function(v) {
-                                            v.selected = true;
-                                        })
-                                    }
+                                    this.data = shouldHide ? [] : this.originalData;
                                 }
                             };
                         }
