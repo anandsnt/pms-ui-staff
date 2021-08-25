@@ -516,6 +516,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 *
 		 */
 		var updateTransactionData = $scope.$on('UPDATE_TRANSACTION_DATA', function(event, data) {
+			if (data.response_data && data.response_data.message) {
+				showTaxExemptAlertMessage(data.response_data);
+			}
 				
 			$scope.isFromPaymentScreen = data.isFromPaymentSuccess;
 			if (($scope.isFromPaymentScreen && !$scope.transactionsDetails.is_bill_lock_enabled) || data.selectedPaymentType === 'DB') {
@@ -530,6 +533,18 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			}
 			
 		});
+
+		var showTaxExemptAlertMessage = function(data) {
+			$scope.message = data.message;
+			$timeout(function() {
+				ngDialog.open({
+					template: '/assets/partials/bill/rvShowMessagePopup.html',
+					className: '',
+					closeByDocument: false,
+					scope: $scope
+				});
+			}, 1000);
+		};
 
 		// To destroy listener
 		$scope.$on('$destroy', updateTransactionData);
