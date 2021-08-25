@@ -1373,7 +1373,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             });
 
             if (isInhouseReservationsExists) {
-                openInhouseReservationsExistsPopup();
+                openInhouseReservationsExistsPopup(dialogData);
             } else if (dialogData.isBulkUpdate) {
                 performMassRateUpdateIfReservationExists(dialogData, true);
             } else {
@@ -1384,14 +1384,28 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		/*
 		 * Open popup to inform if inhouse reservations exists.
 		 */
-        var openInhouseReservationsExistsPopup = function () {
+        var openInhouseReservationsExistsPopup = function (dialogData) {
+            var data = dialogData || {};
+
             ngDialog.open({
                 template: '/assets/partials/groups/roomBlock/rvGroupInhouseReservationsExistsPopup.html',
                 scope: $scope,
                 className: '',
                 closeByDocument: false,
-                closeByEscape: false
+                closeByEscape: false,
+                data: JSON.stringify(data)
             });
+        };
+
+        /**
+ 		 * Perform update if inhouse reservation exists.
+ 		 */
+         $scope.updateIfInHouseReservationExists = function(dialogData) {
+            if (dialogData.isBulkUpdate) {
+                performMassRateUpdateIfReservationExists(dialogData, true);
+            } else {
+                $scope.saveRoomTypesDailyRates();
+            }
         };
 
 		/*
@@ -1416,8 +1430,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
          */
          var performMassRateUpdateIfReservationExists = function(dialogData, shouldUpdateExistingReservationRate) {
             var value = dialogData.amount,
-            groupStart = $scope.groupConfigData.summary.block_from,
-            timeLineStart = $scope.timeLineStartDate < groupStart ? groupStart : $scope.timeLineStartDate;
+                groupStart = $scope.groupConfigData.summary.block_from,
+                timeLineStart = $scope.timeLineStartDate < groupStart ? groupStart : $scope.timeLineStartDate;
 
             var requestParams = {
                 start_date: formatDateForAPI(timeLineStart),
@@ -2526,6 +2540,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
         // Checks whether single rate is configured for the room types added
  		var isSingleRateConfigured = function (selectedRoomTypeAndRates) {
             var isSingleRateConfigured = true;
+
             _.each(selectedRoomTypeAndRates, function (roomAndRate) {
                 _.each(roomAndRate.dates, function(row) {
                     if (row.single_amount === "") {
