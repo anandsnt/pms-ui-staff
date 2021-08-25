@@ -53,7 +53,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
                     "passport_expiry",
                     "passport_number", "postal_code",
                     "reservation_id", "title", "user_id",
-                    "works_at", "birthday", "avatar"
+                    "works_at", "birthday"
                 ],
                 declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
 
@@ -67,10 +67,9 @@ angular.module('sntRover').controller('rvGuestDetailsController',
          * @return {object} guestCardData
          */
         var getGuestCardData = function (data, guestId) {
-            var guestCardData = {};             
+            var guestCardData = {};
 
             guestCardData.contactInfo = data;
-            guestCardData.contactInfo.avatar = guestId ? "/ui/pms-ui/images/avatar-trans.png" : "";
             guestCardData.contactInfo.vip = guestId ? data.vip : "";            
             guestCardData.userId = guestId;
             guestCardData.guestId = guestId;
@@ -159,19 +158,20 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
         // Back navigation handler
         $scope.navigateBack = function () {
-          if ($stateParams.fromStaycard) {
-              $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
-                  id: $stateParams.reservationId,
-                  confirmationId: $stateParams.confirmationNo
-              });
-          } else {
-              $state.go('rover.guest.search', {
-                  textInQueryBox: $stateParams.query,
-                  selectedIds: $stateParams.selectedIds,
-                  isMergeViewSelected: $stateParams.isMergeViewSelected
-              });
-          }
-          
+            if ($stateParams.fromStaycard) {
+                $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+                    id: $stateParams.reservationId,
+                    confirmationId: $stateParams.confirmationNo
+                });
+            } else {
+                $timeout(function() {
+                    $state.go('rover.guest.search', {
+                        textInQueryBox: $stateParams.query,
+                        selectedIds: $stateParams.selectedIds,
+                        isMergeViewSelected: $stateParams.isMergeViewSelected
+                    });
+                }, 100);
+            } 
         };
 
         /**
@@ -312,6 +312,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
             $scope.isGuestCardFromMenu = true;
             $scope.shouldShowStatisticsTab = !!$stateParams.guestId;
+            $scope.guestImage = $stateParams.guestId ? contactInfo.image_url : "";
 
             if (!$stateParams.guestId) {
                 $scope.guestCardData = {};                
@@ -430,6 +431,17 @@ angular.module('sntRover').controller('rvGuestDetailsController',
                 }
             }, 200);
 
+        };
+
+        // For guest photo upload
+        $scope.uploadGuestImage = function() {
+            $timeout(function() {
+                angular.element('#uploadImage').trigger('click');
+            }, 0, false);
+        };
+
+        $scope.onImageUpload = function() {
+            $scope.guestImage = $scope.guestCardData.contactInfo.guestImageBase64;
         };
 
         init();        
