@@ -1375,7 +1375,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             if (isInhouseReservationsExists) {
                 openInhouseReservationsExistsPopup();
             } else if (dialogData.isBulkUpdate) {
-                performMassRateUpdateIfReservationExists(dialogData);
+                performMassRateUpdateIfReservationExists(dialogData, true);
             } else {
                 $scope.saveRoomTypesDailyRates();
             }
@@ -1405,7 +1405,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                 }
             });
             if (dialogData.isBulkUpdate) {
-                performMassRateUpdateIfReservationExists(dialogData);
+                performMassRateUpdateIfReservationExists(dialogData, false);
             } else {
                 $scope.saveRoomTypesDailyRates();
             }
@@ -1414,7 +1414,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
         /**
          * Perform mass update operation for rates if reservation exists
          */
-         var performMassRateUpdateIfReservationExists = function(dialogData) {
+         var performMassRateUpdateIfReservationExists = function(dialogData, shouldUpdateExistingReservationRate) {
             var value = dialogData.amount,
             groupStart = $scope.groupConfigData.summary.block_from,
             timeLineStart = $scope.timeLineStartDate < groupStart ? groupStart : $scope.timeLineStartDate;
@@ -1426,7 +1426,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                 room_type_id: $scope.selectedRoomType.room_type_id,
                 amount: value,
                 groupId: $scope.groupConfigData.summary.group_id,
-                update_existing_reservations_rate: true
+                update_existing_reservations_rate: shouldUpdateExistingReservationRate
             };
 
             $scope.processMassRateUpdate(requestParams);
