@@ -370,7 +370,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @return {void} 
          */
         this.fillReservationStatus = (value, key, promises, formatedFilter, report) => {
-            if (report.name === reportNames['DEPOSIT_REPORT']) {                
+            if (report.name === reportNames['DEPOSIT_REPORT'] || report.name === reportNames['GUEST_BALANCE_REPORT']) {
                 formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(RESERVATION_STATUS_DEPOSIT_REPORT, value, 'id'), 'status').join(', ');
             } else {
               promises.push(RVreportsSubSrv.fetchReservationStatus().then((statuses) => {
