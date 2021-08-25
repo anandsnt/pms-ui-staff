@@ -1,8 +1,9 @@
 <div id="guest-card-header" class="card-header" >
     <section>
-        <figure class="guest-image" ng-click="switchCard('guest-card')" ng-class="{'blacklisted':guestCardData.contactInfo.is_flagged}">
-            <img ng-src="{{guestCardData.contactInfo.avatar}}" />
-             <span class="stay-count" ng-if="guestCardData.contactInfo.stay_count > 0 && isStandAlone">{{guestCardData.contactInfo.stay_count}}</span>
+        <input class="hidden" type="file" name="guest-image" id="uploadImage" ng-model="guestCardData.contactInfo.guestImageBase64" ng-change="onImageUpload()" accept="*" app-filereader />
+        <figure class="guest-image" ng-click="switchCard('guest-card');uploadGuestImage()" ng-class="{'blacklisted':guestCardData.contactInfo.is_flagged}">
+            <img ng-src="{{guestImage}}" alt="" />
+            <span class="stay-count" ng-if="guestCardData.contactInfo.stay_count > 0 && isStandAlone">{{guestCardData.contactInfo.stay_count}}</span>
             <span class="vip" ng-show="guestCardData.contactInfo.vip">VIP</span>
         </figure>
         <form name="change-name" id="change-name" class="dual-actions">
