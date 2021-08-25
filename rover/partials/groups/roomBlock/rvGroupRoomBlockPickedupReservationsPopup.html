@@ -11,8 +11,8 @@
 		<span class="message h2" ng-if="!isFromSummary" translate>GROUP_CUSTOM_RATE_HAS_CHANGED</span>
 		<span class="message h2" ng-if="isFromSummary" translate>RATE_HAS_CHANGED</span>
 
-		<button type="button" class="button green modal-close" ng-click="checkIfInhouseReservationsExists();" ng-if="!isFromSummary"translate>APPLY_TO_NEW_AND_EXISTING_RESERVATIONS</button>
-		<button type="button" class="button blue modal-close" ng-click="updateRateToNewReservations();" ng-if="!isFromSummary" translate>APPLY_TO_NEW_RESERVATIONS_ONLY</button>
+		<button type="button" class="button green modal-close" ng-click="checkIfInhouseReservationsExists(ngDialogData);" ng-if="!isFromSummary"translate>APPLY_TO_NEW_AND_EXISTING_RESERVATIONS</button>
+		<button type="button" class="button blue modal-close" ng-click="updateRateToNewReservations(ngDialogData);" ng-if="!isFromSummary" translate>APPLY_TO_NEW_RESERVATIONS_ONLY</button>
 
 		<button type="button" class="button green modal-close" ng-click="updateRateToNewAndExistingReservations();" ng-if="isFromSummary" translate>APPLY_TO_NEW_AND_EXISTING_RESERVATIONS</button>
 		<button type="button" class="button blue modal-close" ng-click="updateRateToNewReservations();" ng-if="isFromSummary" translate>APPLY_TO_NEW_RESERVATIONS_ONLY</button>

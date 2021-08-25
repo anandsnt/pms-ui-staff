@@ -1,7 +1,7 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
 	<div class="modal-content">
 		<span class="h3 message" translate>INHOUSE_RESERVATIONS_EXISTS_BUT_ARE_EXCLUDED_FROM_THIS_RATE_UPDATE</span>
-		<button id="ok" class="button green modal-close" ng-click="saveNewRoomTypesAndRates();" ng-if="!isFromSummary">
+		<button id="ok" class="button green modal-close" ng-click="updateIfInHouseReservationExists(ngDialogData);" ng-if="!isFromSummary">
 			OK
 		</button>
 		<button id="ok" class="button green modal-close" ng-click="updateRate(true)" ng-if="isFromSummary">
