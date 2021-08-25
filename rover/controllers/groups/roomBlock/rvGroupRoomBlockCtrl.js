@@ -1345,22 +1345,24 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		/**
 		 * To open Room Block Pickedup Reservations Popup. Called from within the room and rates popup
 		 */
-        var confirmUpdateRatesWithPickedReservations = function(selectedRoomTypeAndRates) {
+        var confirmUpdateRatesWithPickedReservations = function(selectedRoomTypeAndRates, data) {
             roomsAndRatesSelected = selectedRoomTypeAndRates;
+            var data = data || {};
 
             ngDialog.open({
                 template: '/assets/partials/groups/roomBlock/rvGroupRoomBlockPickedupReservationsPopup.html',
                 scope: $scope,
                 className: '',
                 closeByDocument: false,
-                closeByEscape: false
+                closeByEscape: false,
+                data: JSON.stringify(data)
             });
         };
 
 		/**
 		 * To check whether inhouse reservations exists.
 		 */
-        $scope.checkIfInhouseReservationsExists = function () {
+        $scope.checkIfInhouseReservationsExists = function (dialogData) {
             ngDialog.close();
             var isInhouseReservationsExists = false;
 
@@ -1372,8 +1374,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
             if (isInhouseReservationsExists) {
                 openInhouseReservationsExistsPopup();
-            }
-            else {
+            } else if (dialogData.isBulkUpdate) {
+                performMassRateUpdateIfReservationExists(dialogData);
+            } else {
                 $scope.saveRoomTypesDailyRates();
             }
         };
@@ -1401,7 +1404,32 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                     row.update_existing_reservations_rate = false;
                 }
             });
-            $scope.saveRoomTypesDailyRates();
+            if (dialogData.isBulkUpdate) {
+                performMassRateUpdateIfReservationExists(dialogData);
+            } else {
+                $scope.saveRoomTypesDailyRates();
+            }
+        };
+
+        /**
+         * Perform mass update operation for rates if reservation exists
+         */
+         var performMassRateUpdateIfReservationExists = function(dialogData) {
+            var value = dialogData.amount,
+            groupStart = $scope.groupConfigData.summary.block_from,
+            timeLineStart = $scope.timeLineStartDate < groupStart ? groupStart : $scope.timeLineStartDate;
+
+            var requestParams = {
+                start_date: formatDateForAPI(timeLineStart),
+                end_date: formatDateForAPI($scope.massUpdateEndDate),
+                bulk_updated_for: dialogData.occupancy.toUpperCase(),
+                room_type_id: $scope.selectedRoomType.room_type_id,
+                amount: value,
+                groupId: $scope.groupConfigData.summary.group_id,
+                update_existing_reservations_rate: true
+            };
+
+            $scope.processMassRateUpdate(requestParams);
         };
 
 		/**
@@ -2514,22 +2542,38 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
          * types and rates.  
          */ 
         $scope.checkIfGroupCustomRateChanged = function() {
-            var selectedRoomTypeAndRates = util.deepCopy($scope.groupConfigData.summary.selected_room_types_and_daily_rates);
+            var selectedRoomTypeAndRates = $scope.groupConfigData.summary.selected_room_types_and_daily_rates,
+            data = {};
 
             if (!isSingleRateConfigured(selectedRoomTypeAndRates)) {
                 $scope.errorMessage = [$filter('translate')('NO_SINGLE_RATE_CONFIGURED')];
                 return;
-            } else {
-                angular.forEach(selectedRoomTypeAndRates, function (row) {
-                    if (row.total_reservations_count > 0) {
-                        row.update_existing_reservations_rate = true;
-                        $scope.groupConfigData.summary.selected_room_types_and_daily_rates = selectedRoomTypeAndRates;
-                        confirmUpdateRatesWithPickedReservations(selectedRoomTypeAndRates); 
-                    } else {
-                        $scope.saveRoomTypesDailyRates();
-                    }
-                });
             }
+            if (isGroupCustomRateChangedAndReservationExists(selectedRoomTypeAndRates)) { 
+                confirmUpdateRatesWithPickedReservations(selectedRoomTypeAndRates, data); 
+            }
+            else {
+                $scope.saveRoomTypesDailyRates();
+            }
+        };
+
+        /**
+ 		 * Checks whether group custom rate is changed and reservations already exists
+ 		 */
+ 		var isGroupCustomRateChangedAndReservationExists = function (selectedRoomTypeAndRates) {
+            var updateExistingReservationsRate = false;
+
+            angular.forEach (selectedRoomTypeAndRates, function (roomAndRate) {
+                if (roomAndRate.total_reservations_count > 0) {
+                    _.each(roomAndRate.dates, function(row) {
+                        if (row.single_amount !== row.old_single_amount || row.double_amount !== row.old_double_amount || row.extra_adult_amount !== row.old_extra_adult_amount) {
+                            updateExistingReservationsRate = true;
+                            roomAndRate.update_existing_reservations_rate = true;
+                        }
+                    });
+                }
+            });
+            return updateExistingReservationsRate;
         };
 
 		/**
@@ -2561,7 +2605,6 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {void}
 		 */
         $scope.clickedOnMassRateUpdateButton = function (ngDialogData) {
-
             var value = ngDialogData.value,
                 groupStart = $scope.groupConfigData.summary.block_from,
                 timeLineStart = $scope.timeLineStartDate < groupStart ? groupStart : $scope.timeLineStartDate;
@@ -2575,7 +2618,17 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                 groupId: $scope.groupConfigData.summary.group_id
             };
 			
-            $scope.processMassRateUpdate(requestParams);
+            if (isGroupCustomRateChangedAndReservationExists($scope.groupConfigData.summary.selected_room_types_and_daily_rates)) {
+                var data = {
+                    amount: value,
+                    isBulkUpdate: true,
+                    occupancy: ngDialogData.occupancy
+                };
+
+                confirmUpdateRatesWithPickedReservations($scope.groupConfigData.summary.selected_room_types_and_daily_rates, data);
+            } else {
+                $scope.processMassRateUpdate(requestParams);
+            }
         };
 
         /**
@@ -2693,10 +2746,14 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
         
                     _.each(response.results.data.daily_rates, function(eachRoomType) {
                         eachRoomType.start_date = formatDateForAPI($scope.timeLineStartDate);
+                        eachRoomType.update_existing_reservations_rate = false;
                         _.each(eachRoomType.dates, function(dateData) {
                             var formattedDate = new tzIndependentDate(dateData.date);
                             
                             dateData.isModifiable = formattedDate >= businessDate;
+                            dateData.old_single_amount = dateData.single_amount;
+                            dateData.old_double_amount = dateData.double_amount;
+                            dateData.old_extra_adult_amount = dateData.extra_adult_amount;
                         });
                     });
                     $scope.groupConfigData.summary.selected_room_types_and_daily_rates = response.results.data.daily_rates;
