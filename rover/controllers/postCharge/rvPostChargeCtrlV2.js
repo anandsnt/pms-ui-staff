@@ -591,7 +591,8 @@ sntRover.controller('RVPostChargeControllerV2',
 					$scope.invokeApi(RVPostChargeSrvV2.postCharges, data, callbackApplyToBillOne, failureCallback);
 				};
 
-				var accountsPostcallback = function() {
+				var accountsPostcallback = function(response) {
+					data.response_data = response.data;
 					$scope.$emit( 'hideLoader' );
 					$scope.closeDialog();
 					$scope.$emit('UPDATE_TRANSACTION_DATA', data);
