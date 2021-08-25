@@ -6,7 +6,7 @@
 		<!-- <ng-include ng-if="!cardData.notesViewOn" src="'/assets/directives/fileCloudStorage/partials/rvCardNotes.html'"></ng-include> -->
 		<!-- Create scroll -->
 		<div class="notes-container" ng-class="{'hidden': !cardData.notesViewOn }">
-			<div class="entry">
+			<div class="entry no-print">
 				<textarea ng-model="cardData.noteText" placeholder="Write a note" rows="4"></textarea>
 				<label class="checkbox inline" ng-hide="true">
 					<span class="icon-form icon-checkbox"></span>
@@ -74,7 +74,7 @@
 		</div>
 		<!-- <ng-include ng-if="!cardData.notesViewOn" src="'/assets/directives/fileCloudStorage/partials/rvFileCloudFiles.html'"></ng-include> -->
 		<!-- Create scroll -->
-		<div class="notes-files scrollable" ng-class="{'hidden': cardData.notesViewOn}" ng-iscroll="card_file_list_scroller" style="height: 100%;" rv-drop-file drag-in-progress="cardData.dragInProgress">
+		<div class="notes-files scrollable no-print" ng-class="{'hidden': cardData.notesViewOn}" ng-iscroll="card_file_list_scroller" style="height: 100%;" rv-drop-file drag-in-progress="cardData.dragInProgress">
 			<div class="wrapper">
 				<ng-include ng-if="cardData.group_files_by === 'FILE_TYPE' && !cardData.searchText"
 				src="'/assets/directives/fileCloudStorage/partials/rvGroupedFilesList.html'"></ng-include>

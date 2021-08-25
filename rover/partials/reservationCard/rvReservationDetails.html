@@ -246,7 +246,8 @@
                     <div class="entry" ng-repeat="guest in accompanyingGuests.ADULT">
                         <figure class="guest-image">
                             <!-- Use male or female avatar this already is accompanying guest -->
-                            <span class="icons icon-adult"></span>
+                            <span ng-if="!guest.image" class="icons icon-adult"></span>
+                            <img ng-if="guest.image" ng-src="{{ guest.image }}" alt="" />
 
                         </figure>
                         <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name" ng-blur="saveAccGuestDetails($event)" />
@@ -278,7 +279,8 @@
                             <!-- Use male or female avatar this already is accompanying children -->
                             <img ng-src="" alt="" />
                             <!-- if no image use this: -->
-                            <span class="icons icon-student" ></span>
+                            <span ng-if="!guest.image" class="icons icon-student" ></span>
+                            <img ng-if="guest.image" ng-src="{{ guest.image }}" alt="" />
 
                         </figure>
                         <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name"  />
@@ -309,7 +311,8 @@
                             <!-- Use male or female avatar this already is accompanying infant -->
                             <img ng-src="" alt="" />
                             <!-- if no image use this: -->
-                            <span class="icons icon-infant" ></span>
+                            <span ng-if="!guest.image" class="icons icon-infant" ></span>
+                            <img ng-if="guest.image" ng-src="{{ guest.image }}" alt="" />
 
                         </figure>
                         <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name"  />

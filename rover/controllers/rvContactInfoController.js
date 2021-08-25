@@ -206,13 +206,14 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                 } else {
                     dataToUpdate.id_expiration_date = null;
                 }
-                var unwantedKeys = ['avatar']; // remove unwanted keys for API
+                var unwantedKeys = ['guestImageBase64']; // remove unwanted keys for API
                 
                 if (dataToUpdate.birthday === "Invalid date") {
                     dataToUpdate.birthday = null;
                     $scope.guestCardData.contactInfo.birthday = null;
                 }
-
+                // For guest photo upload
+                dataToUpdate.avatar = dataToUpdate.guestImageBase64 ? dataToUpdate.guestImageBase64 : "";
                 dataToUpdate = dclone(dataToUpdate, unwantedKeys);
             }
 
@@ -228,7 +229,6 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
 
       // CICO-49153 - Added the additional check for user_id in the request params to prevent duplicate guest creation
             if (newGuest && !dataToUpdate.user_id) {
-                dataToUpdate.avatar = '';
                 if (typeof data.data.is_opted_promotion_email === 'undefined') {
                     data.data.is_opted_promotion_email = false;
                 }
@@ -239,7 +239,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             } else if (!dataUpdated) {
                 if (!angular.equals(dataToUpdate, initialGuestCardData)) {     
               // CICO-46709 - Reset the guest card data to reflect the new changes made to contact details
-                    initialGuestCardData = dclone(dataToUpdate, ['avatar', 'confirmation_num']);
+                    initialGuestCardData = dclone(dataToUpdate, ['confirmation_num']);
                     if ($scope.isGuestCardVisible || $scope.isFromMenuGuest) {
                         $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
                     }                    
@@ -321,7 +321,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         var init = function() {
       // Fetch languages
             fetchGuestLanguages();
-            var unwantedKeys = ['avatar', 'confirmation_num']; // remove unwanted keys for API
+            var unwantedKeys = ['confirmation_num']; // remove unwanted keys for API
 
             initialGuestCardData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
             $scope.hasPermissionToFlagGuest = rvPermissionSrv.getPermissionValue('FLAG_GUEST');

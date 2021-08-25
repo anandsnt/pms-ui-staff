@@ -1235,17 +1235,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				// CICO-24923 TEMPORARY
 			}
 
-			if (!!$scope.reservationData.group.id) {
-				
-				if ( availability >= roomCount ) {
-					return false;
-				}
-				// CICO-24923 TEMPORARY
-			}
+            if (!!$scope.reservationData.group.id) {
 
-			if ( availability < roomCount && groupHouseBorrowPermission) {
-				return false;
-			}			
+                if ((availability >= roomCount) || ((availability < roomCount) && groupHouseBorrowPermission)) {
+                    return false;
+                }
+                return true;
+            }
 
 			// CICO-53368 : If there is no Room Type Permission & availability <= 0, ie OverBooking - hide BOOK button.
 			if ( availability < roomCount && !canOverbookRoomType) {
