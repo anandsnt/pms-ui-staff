@@ -434,17 +434,20 @@
     data="uiChosenReport.hasIncludeCountry.data"
     options="uiChosenReport.hasIncludeCountry.options"></multi-option-selection>
 
+<multi-option-selection ng-show="uiChosenReport.hasGuestOrAccountFilter && uiChosenReport.hasGuestOrAccountFilter.data.length"
+    label="Guest/Account"
+    on-update="refreshFilterScroll"
+    report="uiChosenReport"
+    data="uiChosenReport.hasGuestOrAccountFilter.data"
+    options="uiChosenReport.hasGuestOrAccountFilter.options"
+    affects-filter="uiChosenReport.hasGuestOrAccountFilter.affectsFilter"></multi-option-selection>
+
 <multi-option-selection ng-show="uiChosenReport.hasReservationStatus && uiChosenReport.hasReservationStatus.data.length"
     label="Reservation Status"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasReservationStatus.data"
     options="uiChosenReport.hasReservationStatus.options"></multi-option-selection>
 
-<multi-option-selection ng-show="uiChosenReport.hasGuestOrAccountFilter && uiChosenReport.hasGuestOrAccountFilter.data.length"
-    label="Guest/Account"
-    on-update="refreshFilterScroll"
-    data="uiChosenReport.hasGuestOrAccountFilter.data"
-    options="uiChosenReport.hasGuestOrAccountFilter.options"></multi-option-selection>
 <multi-option-selection ng-show="uiChosenReport.hasCompletionStatus && uiChosenReport.hasCompletionStatus.data.length"
     label="Completion Status"
     on-update="refreshFilterScroll"

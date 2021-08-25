@@ -8,7 +8,8 @@
     </td>
     <td class="status">
         <!-- Reservation Status -->
-        <span class="guest-status small-icon" ng-if="item.reservation_status" ng-class="getReservationClass(item.reservation_status)"></span>
+        <span class="guest-status small-icon no-print" ng-if="item.reservation_status" ng-class="getReservationClass(item.reservation_status)"></span>
+        <span class="only-print" ng-if="item.reservation_status">{{item.reservation_status}}</span>
         <!-- For Account Status -->
         <em ng-if="item.account_status" ng-class="{'red': item.account_status === 'CLOSED', 'green': item.account_status === 'OPEN'}">{{item.account_status}}</em> 
     </td>
