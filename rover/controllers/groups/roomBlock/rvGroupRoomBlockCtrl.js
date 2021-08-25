@@ -2697,9 +2697,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @param {Object} [dateData] [description]
 		 * @return {Boolean}
 		 */
-        $scope.shouldDisableRateEntryBox = function(dateData) {
-            // API should provide !roomType.can_edit and then add the condition
-            return !!$scope.groupConfigData.summary.is_cancelled || !dateData.isModifiable || dateData.is_shoulder_date;
+        $scope.shouldDisableRateEntryBox = function(dateData, roomType) {
+            return !!$scope.groupConfigData.summary.is_cancelled || !dateData.isModifiable || dateData.is_shoulder_date || !roomType.can_edit;
         };
 
         /**
