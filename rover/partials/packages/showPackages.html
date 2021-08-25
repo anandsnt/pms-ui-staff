@@ -29,6 +29,7 @@
                          </div>
                          <span class="price" ng-hide="addon.is_rate_addon && addon.is_inclusive">
                             <span ng-bind-html="getAddonTotal(addon) | sntCurrency:this:addon.addon_currency"></span>
+                         </span>
                          <!-- add class .hidden to hide it if it can't be removed/deleted-->
                          <span class="delete" ng-hide="addon.is_rate_addon || addon.is_inclusive" ng-click="removeChosenAddons($event, $index, addon)">
                             <span class="icons icon-remove-10"></span>
