@@ -2716,9 +2716,11 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                     $scope.copy_selected_room_types_and_daily_rates = angular.copy($scope.groupConfigData.summary.selected_room_types_and_bookings);
                     $scope.hasRateChanged = false;
                     $scope.fetchRoomTypesDailyRates();
+                    $scope.closeDialog();
                 },
                 onDailyRateSaveFailure = function(error) {
                     $scope.errorMessage = error;
+                    $scope.closeDialog();
                 };
 
             $timeout(function() {
