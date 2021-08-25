@@ -1345,8 +1345,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		/**
 		 * To open Room Block Pickedup Reservations Popup. Called from within the room and rates popup
 		 */
-        $scope.confirmUpdateRatesWithPickedReservations = function(selectedRoomTypeAndRates) {
+        var confirmUpdateRatesWithPickedReservations = function(selectedRoomTypeAndRates) {
             roomsAndRatesSelected = selectedRoomTypeAndRates;
+
             ngDialog.open({
                 template: '/assets/partials/groups/roomBlock/rvGroupRoomBlockPickedupReservationsPopup.html',
                 scope: $scope,
@@ -1373,7 +1374,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                 openInhouseReservationsExistsPopup();
             }
             else {
-                $scope.saveNewRoomTypesAndRates();
+                $scope.saveRoomTypesDailyRates();
             }
         };
 
@@ -1393,14 +1394,14 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		/*
 		 * To apply rate change only to new reservations by setting flag update_existing_reservations_rate.
 		 */
-        $scope.updateRateToNewReservations = function () {
+        $scope.updateRateToNewReservations = function (dialogData) {
             ngDialog.close();
             angular.forEach (roomsAndRatesSelected, function (row) {
                 if (row.is_configured_in_group) {
                     row.update_existing_reservations_rate = false;
                 }
             });
-            $scope.saveNewRoomTypesAndRates();
+            $scope.saveRoomTypesDailyRates();
         };
 
 		/**
@@ -2492,6 +2493,43 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
         $scope.rateChanging = function() {
             $scope.hasRateChanged = true;
             runDigestCycle();
+        };
+
+        // Checks whether single rate is configured for the room types added
+ 		var isSingleRateConfigured = function (selectedRoomTypeAndRates) {
+            var isSingleRateConfigured = true;
+            _.each(selectedRoomTypeAndRates, function (roomAndRate) {
+                _.each(roomAndRate.dates, function(row) {
+                    if (row.single_amount === "") {
+                        isSingleRateConfigured = false;
+                    }
+                });  
+            });
+
+            return isSingleRateConfigured;
+        };
+
+        /**
+         * Check whether group custom rate is changed and open new popup if true, otherwise updates room
+         * types and rates.  
+         */ 
+        $scope.checkIfGroupCustomRateChanged = function() {
+            var selectedRoomTypeAndRates = util.deepCopy($scope.groupConfigData.summary.selected_room_types_and_daily_rates);
+
+            if (!isSingleRateConfigured(selectedRoomTypeAndRates)) {
+                $scope.errorMessage = [$filter('translate')('NO_SINGLE_RATE_CONFIGURED')];
+                return;
+            } else {
+                angular.forEach(selectedRoomTypeAndRates, function (row) {
+                    if (row.total_reservations_count > 0) {
+                        row.update_existing_reservations_rate = true;
+                        $scope.groupConfigData.summary.selected_room_types_and_daily_rates = selectedRoomTypeAndRates;
+                        confirmUpdateRatesWithPickedReservations(selectedRoomTypeAndRates); 
+                    } else {
+                        $scope.saveRoomTypesDailyRates();
+                    }
+                });
+            }
         };
 
 		/**
