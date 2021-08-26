@@ -99,16 +99,26 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 					var adults = parseInt($scope.guestData.adult_count || 0),
 						children = parseInt($scope.guestData.children_count || 0),
-						rateToday = item.rate_config;
+                        rateToday = item.rate_config,
+                        roomAmount = 0;
 
-					if (!$scope.reservationData.reservation_card.is_hourly_reservation) {
+                    if (!$scope.reservationData.reservation_card.is_hourly_reservation) {
 
-						var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
-						var extraAdults = adults >= 2 ? adults - 2 : 0;
-						var roomAmount = baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child);
+                        var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
 
-						$scope.rateForCurrentGuest = parseFloat(roomAmount).toFixed(2);
-					}
+                        roomAmount = parseFloat(baseRoomRate);
+                        var extraAdults = adults >= 2 ? adults - 2 : 0;
+
+                        if (extraAdults > 0) {
+                            roomAmount += (extraAdults * parseFloat(rateToday.extra_adult));
+                        }
+
+                        if (children > 0) {
+                            roomAmount += (children * parseFloat(rateToday.child));
+                        }
+
+                        $scope.rateForCurrentGuest = parseFloat(roomAmount).toFixed(2);
+                    }
 				}
 			});
 		};
